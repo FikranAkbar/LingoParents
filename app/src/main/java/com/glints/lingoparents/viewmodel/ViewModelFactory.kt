@@ -2,7 +2,7 @@ package com.glints.lingoparents.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.glints.lingoparents.data.source.Repository
+import com.glints.lingoparents.data.Repository
 import com.glints.lingoparents.di.Injection
 import com.glints.lingoparents.ui.forgotpassword.ForgotPasswordViewModel
 import com.glints.lingoparents.ui.home.HomeViewModel

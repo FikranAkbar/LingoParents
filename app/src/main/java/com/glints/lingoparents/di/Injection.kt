@@ -1,7 +1,7 @@
 package com.glints.lingoparents.di
 
-import com.glints.lingoparents.data.source.Repository
-import com.glints.lingoparents.data.source.remote.RemoteDataSource
+import com.glints.lingoparents.data.Repository
+import com.glints.lingoparents.data.remote.RemoteDataSource
 
 object Injection {
 

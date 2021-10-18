@@ -1,13 +1,10 @@
-package com.glints.lingoparents.data.source
+package com.glints.lingoparents.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import com.glints.lingoparents.data.source.remote.vo.ApiResponse
-import com.glints.lingoparents.data.source.remote.vo.StatusResponse
+import com.glints.lingoparents.data.remote.vo.ApiResponse
+import com.glints.lingoparents.data.remote.vo.StatusResponse
 import com.glints.lingoparents.vo.Resource
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.launch
 
 abstract class NetworkBoundResource<ResultType, RequestType> {
     private val result = MediatorLiveData<Resource<ResultType>>()

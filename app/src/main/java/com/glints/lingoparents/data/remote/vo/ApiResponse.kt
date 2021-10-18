@@ -1,4 +1,4 @@
-package com.glints.lingoparents.data.source.remote.vo
+package com.glints.lingoparents.data.remote.vo
 
 class ApiResponse<T>(val status: StatusResponse, val body: T, val message: String?) {
     companion object {

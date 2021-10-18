@@ -1,4 +1,4 @@
-package com.glints.lingoparents.data.source.remote.response
+package com.glints.lingoparents.data.remote.response
 
 data class UserLoginResponse(
     val id: Int? = null,

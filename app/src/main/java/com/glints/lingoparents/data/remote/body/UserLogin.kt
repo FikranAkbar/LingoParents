@@ -1,4 +1,4 @@
-package com.glints.lingoparents.data.source.remote.body
+package com.glints.lingoparents.data.remote.body
 
 data class UserLogin(
     val email: String,

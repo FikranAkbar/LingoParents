@@ -25,6 +25,8 @@ class ForgotPasswordActivity : AppCompatActivity() {
         factory = ViewModelFactory.getInstance()
     }
 
+
+
     private fun setViewModel() {
         viewModel = ViewModelProvider(
             this, factory)[

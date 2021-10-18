@@ -1,12 +1,12 @@
-package com.glints.lingoparents.data.source.remote
+package com.glints.lingoparents.data.remote
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.glints.lingoparents.data.source.remote.api.ApiClient
-import com.glints.lingoparents.data.source.remote.body.UserLogin
-import com.glints.lingoparents.data.source.remote.response.UserLoginResponse
-import com.glints.lingoparents.data.source.remote.vo.ApiResponse
-import com.glints.lingoparents.data.source.remote.vo.StatusResponse
+import com.glints.lingoparents.data.remote.api.ApiClient
+import com.glints.lingoparents.data.remote.body.UserLogin
+import com.glints.lingoparents.data.remote.response.UserLoginResponse
+import com.glints.lingoparents.data.remote.vo.ApiResponse
+import com.glints.lingoparents.data.remote.vo.StatusResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
