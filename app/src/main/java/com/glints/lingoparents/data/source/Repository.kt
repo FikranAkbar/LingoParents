@@ -22,7 +22,7 @@ class Repository private constructor(private val remoteDataSource: RemoteDataSou
             }
     }
 
-    override fun userLogin(email: String, password: String): LiveData<Resource<UserEntity>> {
+    override fun loginUser(email: String, password: String): LiveData<Resource<UserEntity>> {
         return object : NetworkBoundResource<UserEntity, UserLoginResponse>() {
             override fun createCall(): LiveData<ApiResponse<UserLoginResponse>> =
                 remoteDataSource.loginUser(email, password)

@@ -5,5 +5,5 @@ import com.glints.lingoparents.data.source.local.entity.UserEntity
 import com.glints.lingoparents.vo.Resource
 
 interface DataSource {
-    fun userLogin(email: String, password: String): LiveData<Resource<UserEntity>>
+    fun loginUser(email: String, password: String): LiveData<Resource<UserEntity>>
 }
