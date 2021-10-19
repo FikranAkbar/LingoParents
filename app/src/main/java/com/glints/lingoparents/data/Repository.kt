@@ -1,7 +1,7 @@
 package com.glints.lingoparents.data
 
 import androidx.lifecycle.LiveData
-import com.glints.lingoparents.data.local.entity.UserEntity
+import com.glints.lingoparents.data.model.UserEntity
 import com.glints.lingoparents.data.remote.RemoteDataSource
 import com.glints.lingoparents.data.remote.response.UserLoginResponse
 import com.glints.lingoparents.data.remote.vo.ApiResponse

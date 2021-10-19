@@ -44,13 +44,9 @@ class RemoteDataSource {
                             result.postValue(ApiResponse.success(response.body()!!))
                         }
                         else {
-                            try {
-                                val jsonObjError = JSONObject(response.errorBody()!!.string())
-                                val msg = jsonObjError.getString("errorMessage")
-                                result.postValue(ApiResponse.error(msg, UserLoginResponse()))
-                            } catch (e: Exception) {
-                                throw e
-                            }
+                            val jsonObjError = JSONObject(response.errorBody()!!.string())
+                            val msg = jsonObjError.getString("errorMessage")
+                            result.postValue(ApiResponse.error(msg, UserLoginResponse()))
                         }
                     }
 
