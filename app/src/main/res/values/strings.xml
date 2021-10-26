@@ -12,4 +12,8 @@
     <string name="enter_your_email_and_we_will_send_you_instructions_to_reset_your_password">Enter your email and we will send you instructions to reset your password.</string>
     <string name="submit">Submit</string>
     <string name="back_to_login">Back to Login</string>
+    <string name="register">Register</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="phone">Phone</string>
 </resources>

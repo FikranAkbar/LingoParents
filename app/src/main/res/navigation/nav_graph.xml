@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/forgotPasswordFragment">
+    app:startDestination="@id/registerFragment">
     <fragment
-        android:id="@+id/forgotPasswordFragment"
-        android:name="com.glints.lingoparents.ui.forgotpassword.ForgotPasswordFragment"
-        android:label="fragment_forgot_password"
-        tools:layout="@layout/fragment_forgot_password" />
+        android:id="@+id/registerFragment"
+        android:name="com.glints.lingoparents.ui.register.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" />
 </navigation>
