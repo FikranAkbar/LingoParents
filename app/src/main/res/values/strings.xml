@@ -3,10 +3,13 @@
     <string name="welcome_back">Welcome back!</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="forgot_your_password">Forgot your password?</string>
     <string name="login">Login</string>
     <string name="or">Or</string>
     <string name="continue_with_google">Continue with Google</string>
     <string name="terms_privacy_bottom_text">By signing in to lingoparents you agree to our Terms &amp; Conditions and Privacy Policy</string>
     <string name="new_to_lingoparents">New to lingoparents? Register Now!</string>
+    <string name="forgot_your_password">Forgot your password?</string>
+    <string name="enter_your_email_and_we_will_send_you_instructions_to_reset_your_password">Enter your email and we will send you instructions to reset your password.</string>
+    <string name="submit">Submit</string>
+    <string name="back_to_login">Back to Login</string>
 </resources>
