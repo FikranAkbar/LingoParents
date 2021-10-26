@@ -268,11 +268,11 @@
         android:fontFamily="@font/poppins_w500"
         android:letterSpacing="0.01"
         android:text="@string/submit"
-        app:layout_constraintVertical_bias="0.8"
         android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@id/tv_or"
         app:layout_constraintEnd_toEndOf="@id/tf_phone"
         app:layout_constraintTop_toBottomOf="@id/tf_phone"
-        app:layout_constraintBottom_toTopOf="@id/tv_or" />
+        app:layout_constraintVertical_bias="0.8" />
 
     <View
         android:id="@+id/line_left"
@@ -289,13 +289,13 @@
         android:id="@+id/tv_or"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:fontFamily="@font/poppins_w400"
         android:text="@string/or"
         android:textColor="@color/black"
-        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@id/mbtn_login_with_google"
         app:layout_constraintEnd_toEndOf="@id/guideline_vertical"
-        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
-        app:layout_constraintBottom_toTopOf="@id/mbtn_login_with_google"/>
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical" />
 
     <View
         android:id="@+id/line_right"
@@ -325,9 +325,9 @@
         app:icon="@drawable/ic_google_color"
         app:iconGravity="textStart"
         app:iconTint="@null"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="UnusedAttribute" />
 
