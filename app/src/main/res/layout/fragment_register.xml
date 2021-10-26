@@ -42,117 +42,218 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_logo" />
 
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_first_name"
+        style="@style/CustomCardViewStyle"
+        android:layout_width="45dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        app:cardBackgroundColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@id/tf_first_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tf_first_name">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_user"
+            tools:ignore="ContentDescription" />
+    </com.google.android.material.card.MaterialCardView>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tf_first_name"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
         android:layout_marginTop="20dp"
-        android:hint="@string/first_name"
+        android:layout_marginEnd="8dp"
         app:boxCornerRadiusBottomEnd="5dp"
         app:boxCornerRadiusBottomStart="0dp"
         app:boxCornerRadiusTopEnd="5dp"
         app:boxCornerRadiusTopStart="0dp"
+        app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/cv_first_name"
         app:layout_constraintTop_toBottomOf="@id/tv_register">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:hint="@string/first_name" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_last_name"
+        style="@style/CustomCardViewStyle"
+        android:layout_width="45dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        app:cardBackgroundColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@id/tf_last_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tf_last_name">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_user"
+            tools:ignore="ContentDescription" />
+    </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tf_last_name"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:hint="@string/last_name"
         app:boxCornerRadiusBottomEnd="5dp"
         app:boxCornerRadiusBottomStart="0dp"
         app:boxCornerRadiusTopEnd="5dp"
         app:boxCornerRadiusTopStart="0dp"
+        app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/cv_last_name"
         app:layout_constraintTop_toBottomOf="@id/tf_first_name">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:hint="@string/last_name" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_email"
+        style="@style/CustomCardViewStyle"
+        android:layout_width="45dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        app:cardBackgroundColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@id/tf_email"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tf_email">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingHorizontal="10dp"
+            android:src="@drawable/ic_email"
+            tools:ignore="ContentDescription" />
+    </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tf_email"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
         android:layout_marginTop="16dp"
-        android:hint="@string/email"
+        android:layout_marginEnd="8dp"
         app:boxCornerRadiusBottomEnd="5dp"
         app:boxCornerRadiusBottomStart="0dp"
         app:boxCornerRadiusTopEnd="5dp"
         app:boxCornerRadiusTopStart="0dp"
+        app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/cv_email"
         app:layout_constraintTop_toBottomOf="@id/tf_last_name">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:hint="@string/email" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_password"
+        style="@style/CustomCardViewStyle"
+        android:layout_width="45dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        app:cardBackgroundColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@id/tf_password"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tf_password">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_password"
+            tools:ignore="ContentDescription" />
+    </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tf_password"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
         android:layout_marginTop="16dp"
-        android:hint="@string/password"
+        android:layout_marginEnd="8dp"
         app:boxCornerRadiusBottomEnd="5dp"
         app:boxCornerRadiusBottomStart="0dp"
         app:boxCornerRadiusTopEnd="5dp"
         app:boxCornerRadiusTopStart="0dp"
         app:endIconMode="password_toggle"
+        app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/cv_password"
         app:layout_constraintTop_toBottomOf="@id/tf_email">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:hint="@string/password"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_phone"
+        style="@style/CustomCardViewStyle"
+        android:layout_width="45dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        app:cardBackgroundColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@id/tf_phone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tf_phone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_phone"
+            tools:ignore="ContentDescription" />
+    </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tf_phone"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
         android:layout_marginTop="16dp"
-        android:hint="@string/phone"
+        android:layout_marginEnd="8dp"
         app:boxCornerRadiusBottomEnd="5dp"
         app:boxCornerRadiusBottomStart="0dp"
         app:boxCornerRadiusTopEnd="5dp"
         app:boxCornerRadiusTopStart="0dp"
+        app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/cv_phone"
         app:layout_constraintTop_toBottomOf="@id/tf_password">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:hint="@string/phone" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="160dp"
-        android:paddingHorizontal="-20dp"
         android:src="@drawable/img_home_students_backdrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -163,14 +264,15 @@
         android:id="@+id/mbtn_submit"
         android:layout_width="wrap_content"
         android:layout_height="45dp"
-        android:layout_marginTop="20dp"
         android:layout_marginEnd="12dp"
         android:fontFamily="@font/poppins_w500"
         android:letterSpacing="0.01"
         android:text="@string/submit"
+        app:layout_constraintVertical_bias="0.8"
         android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="@id/tf_phone"
-        app:layout_constraintTop_toBottomOf="@id/tf_phone" />
+        app:layout_constraintTop_toBottomOf="@id/tf_phone"
+        app:layout_constraintBottom_toTopOf="@id/tv_or" />
 
     <View
         android:id="@+id/line_left"
@@ -187,13 +289,13 @@
         android:id="@+id/tv_or"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:fontFamily="@font/poppins_w400"
         android:text="@string/or"
         android:textColor="@color/black"
+        android:layout_marginBottom="16dp"
         app:layout_constraintEnd_toEndOf="@id/guideline_vertical"
         app:layout_constraintStart_toStartOf="@id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@id/mbtn_submit" />
+        app:layout_constraintBottom_toTopOf="@id/mbtn_login_with_google"/>
 
     <View
         android:id="@+id/line_right"
@@ -211,7 +313,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="24dp"
         android:foreground="?attr/selectableItemBackgroundBorderless"
         android:letterSpacing="0.01"
         android:text="@string/continue_with_google"
@@ -223,11 +325,10 @@
         app:icon="@drawable/ic_google_color"
         app:iconGravity="textStart"
         app:iconTint="@null"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_or"
-        app:layout_constraintBottom_toBottomOf="parent"
         tools:ignore="UnusedAttribute" />
 
     <androidx.constraintlayout.widget.Guideline
