@@ -3,6 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/drawable/ic_badge_captain_america.xml" value="0.2" />
+        <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/drawable/ic_insight_dislike.xml" value="0.290625" />
+        <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/drawable/ic_insight_like.xml" value="0.1" />
+        <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
+        <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/drawable/ic_pin_location.xml" value="0.1" />
+        <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_login.xml" value="0.27447916666666666" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/img_affordable.xml" value="0.15989583333333332" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/img_city_scenery.xml" value="0.15989583333333332" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/img_city_scenery_transparant.xml" value="0.15989583333333332" />
@@ -41,7 +47,6 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
