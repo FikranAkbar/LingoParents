@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/splashFragment"
+        android:id="@+id/homeFragment"
         android:icon="@drawable/ic_home"
         android:title="@string/home" />
 
@@ -23,7 +23,7 @@
         android:title="@string/course" />
 
     <item
-        android:id="@+id/homeFragment"
+        android:id="@+id/splashFragment"
         android:icon="@drawable/ic_progress"
         android:title="@string/progress" />
 
