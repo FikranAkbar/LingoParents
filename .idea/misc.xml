@@ -3,6 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/ic_course.xml" value="0.2916666666666667" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/ic_event.xml" value="0.2916666666666667" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/ic_home.xml" value="0.2916666666666667" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/ic_insight.xml" value="0.2916666666666667" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/ic_ph_graduation_cap_duotone.xml" value="0.2916666666666667" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/ic_progress.xml" value="0.2916666666666667" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/img_affordable.xml" value="0.15989583333333332" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/img_city_scenery.xml" value="0.15989583333333332" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/img_city_scenery_transparant.xml" value="0.15989583333333332" />
@@ -22,7 +28,7 @@
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/activity_register.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/activity_splash.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_forgot_password.xml" value="0.2755208333333333" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_header.xml" value="0.1" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_header.xml" value="0.67" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_home.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_login.xml" value="0.21" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_register.xml" value="0.5" />
