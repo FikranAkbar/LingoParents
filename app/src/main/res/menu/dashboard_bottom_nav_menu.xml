@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:icon="@drawable/ic_home"
+        android:title="@string/home" />
+
+    <item
+        android:icon="@drawable/ic_event"
+        android:title="@string/event" />
+
+    <item
+        android:icon="@drawable/ic_insight"
+        android:title="@string/insight" />
+
+    <item
+        android:icon="@drawable/ic_course"
+        android:title="@string/course" />
+
+    <item
+        android:icon="@drawable/ic_progress"
+        android:title="@string/progress" />
+
+</menu>

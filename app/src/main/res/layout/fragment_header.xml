@@ -24,7 +24,7 @@
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:logo="@drawable/logo_lingoparents_header"
-            app:menu="@menu/home_app_bar_menu"
+            app:menu="@menu/dashboard_app_bar_menu"
             app:navigationIcon="@null" />
     </com.google.android.material.appbar.AppBarLayout>
 </com.google.android.material.card.MaterialCardView>
