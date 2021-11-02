@@ -17,8 +17,10 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentDashboardBinding.bind(view)
 
+
+
         binding.apply {
-            bottomNavigationView.setupWithNavController(navHostHomeFragment.findNavController())
+            //bottomNavigationView.setupWithNavController(navController)
         }
     }
 

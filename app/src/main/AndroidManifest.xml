@@ -13,15 +13,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LingoParents"
         tools:ignore="AllowBackup">
-
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.DashboardActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true">
+
         </activity>
 
         <meta-data

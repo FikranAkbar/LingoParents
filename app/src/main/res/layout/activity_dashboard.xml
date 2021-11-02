@@ -4,7 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.dashboard.DashboardFragment">
+    tools:context=".ui.DashboardActivity">
+
+    <fragment
+        android:id="@+id/nav_host_dashboard_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:defaultNavHost="false"
+        app:navGraph="@navigation/dashboard_nav_graph"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"
+        tools:ignore="FragmentTagUsage" />
 
     <include
         android:id="@+id/header"
@@ -15,17 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
+        app:defaultNavHost="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/dashboard_bottom_nav_menu" />
-
-    <fragment
-        android:id="@+id/nav_host_dashboard_fragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:defaultNavHost="false"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"
-        app:layout_constraintTop_toBottomOf="@id/header"
-        app:navGraph="@navigation/dashboard_nav_graph"
-        tools:ignore="FragmentTagUsage" />
 </androidx.constraintlayout.widget.ConstraintLayout>
