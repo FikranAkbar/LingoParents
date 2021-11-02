@@ -7,6 +7,7 @@
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/img_city_scenery.xml" value="0.15989583333333332" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/img_city_scenery_transparant.xml" value="0.15989583333333332" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/img_easy_setup.xml" value="0.15989583333333332" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/img_lingoparents_header.xml" value="0.15989583333333332" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/font/poppins.xml" value="0.30572916666666666" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/font/poppins_medium.xml" value="0.30572916666666666" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/font/poppins_medium_w500.xml" value="0.17395833333333333" />
@@ -21,11 +22,14 @@
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/activity_register.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/activity_splash.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_forgot_password.xml" value="0.2755208333333333" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_header.xml" value="0.1" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_home.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_login.xml" value="0.21" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_register.xml" value="0.67" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_register.xml" value="0.5" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_splash.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragmnet_login.xml" value="0.2755208333333333" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/layout_or_divider.xml" value="0.67" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/menu/home_app_bar_menu.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/mobile-lingoparent/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1125" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/mobile-lingoparent/app/src/main/res/drawable/ic_badge_captain_america.xml" value="0.1125" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/mobile-lingoparent/app/src/main/res/drawable/ic_baseline_account_circle_24.xml" value="0.11614583333333334" />
@@ -38,7 +42,6 @@
         <entry key="..\:/Users/Amin/AndroidStudioProjects/mobile-lingoparent/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/mobile-lingoparent/app/src/main/res/layout/fragment_header.xml" value="0.22" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/mobile-lingoparent/app/src/main/res/layout/item_header.xml" value="0.2" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/layout_or_divider.xml" value="0.67" />
       </map>
     </option>
   </component>
