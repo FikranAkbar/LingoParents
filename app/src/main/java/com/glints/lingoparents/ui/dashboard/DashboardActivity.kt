@@ -1,4 +1,4 @@
-package com.glints.lingoparents.ui
+package com.glints.lingoparents.ui.dashboard
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

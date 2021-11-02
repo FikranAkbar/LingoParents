@@ -14,7 +14,7 @@
         android:theme="@style/Theme.LingoParents"
         tools:ignore="AllowBackup">
         <activity
-            android:name=".ui.DashboardActivity"
+            android:name=".ui.dashboard.DashboardActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
