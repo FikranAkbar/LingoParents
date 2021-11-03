@@ -5,6 +5,7 @@
     android:layout_width="340dp"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="10dp"
+    android:layout_marginVertical="12dp"
     android:background="@drawable/img_dummy_insight"
     android:clickable="true"
     android:focusable="true"

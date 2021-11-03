@@ -27,4 +27,9 @@
     <string name="view_all">View All</string>
     <string name="live_event">Live Event</string>
     <string name="show_more">Show more</string>
+    <string name="children">Children</string>
+    <string name="_1s_years_old">(%1s years old)</string>
+    <string name="relationship_1s">Relationship : %1s</string>
+    <string name="_1s_sublevel_2s">%1s - Sublevel %2s</string>
+    <string name="learning_progress"><![CDATA[Learning Progress >]]></string>
 </resources>

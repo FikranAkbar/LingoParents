@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.glints.lingoparents.R
+import com.glints.lingoparents.data.model.ChildrenItem
 import com.glints.lingoparents.data.model.InsightSliderItem
 import com.glints.lingoparents.data.model.LiveEventSliderItem
 import com.glints.lingoparents.databinding.FragmentHomeBinding
@@ -12,12 +14,13 @@ import com.opensooq.pluto.base.PlutoAdapter
 import com.opensooq.pluto.listeners.OnItemClickListener
 import com.opensooq.pluto.listeners.OnSlideChangeListener
 
-class HomeFragment : Fragment(R.layout.fragment_home) {
+class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemClickCallback {
 
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var insightSliderAdapter: InsightSliderAdapter
     private lateinit var liveEventSliderAdapter: LiveEventSliderAdapter
+    private lateinit var childrenAdapter: ChildrenAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentHomeBinding.bind(view)
@@ -70,5 +73,28 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
             })
         }
+
+
+        binding.apply {
+            rvChildren.apply {
+                setHasFixedSize(true)
+                layoutManager = LinearLayoutManager(activity)
+                childrenAdapter = ChildrenAdapter(this@HomeFragment)
+                adapter = childrenAdapter
+
+                childrenAdapter.submitList(
+                    listOf(
+                        ChildrenItem("", "", "", "", ""),
+                        ChildrenItem("", "", "", "", ""),
+                        ChildrenItem("", "", "", "", ""),
+                        ChildrenItem("", "", "", "", ""),
+                    )
+                )
+            }
+        }
+    }
+
+    override fun onItemClicked(children: ChildrenItem) {
+
     }
 }
