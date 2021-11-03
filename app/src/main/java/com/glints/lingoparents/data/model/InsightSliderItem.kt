@@ -1,6 +1,6 @@
 package com.glints.lingoparents.data.model
 
-data class Insight(
+data class InsightSliderItem(
     val title: String,
     val img: String
 )

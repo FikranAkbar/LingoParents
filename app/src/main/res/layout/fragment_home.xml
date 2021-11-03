@@ -24,14 +24,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_view_all"
+            android:id="@+id/tv_view_all_insight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
             android:text="@string/view_all"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_insight_header"
             app:layout_constraintBottom_toBottomOf="@id/tv_insight_header"
-            android:layout_marginEnd="12dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_insight_header" />
 
         <com.opensooq.pluto.PlutoView
             android:id="@+id/slider_insight"
@@ -39,5 +39,78 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_insight_header" />
+
+        <com.opensooq.pluto.PlutoIndicator
+            android:id="@+id/slider_insight_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:visibility="true"
+            app:selected_color="#0095BF"
+            app:unselected_color="#55333333"
+            app:shape="rect"
+            app:selected_padding_left="2dp"
+            app:selected_padding_right="2dp"
+            app:unselected_padding_left="2dp"
+            app:unselected_padding_right="2dp"
+            app:selected_width="10dp"
+            app:selected_height="10dp"
+            app:unselected_width="6dp"
+            app:unselected_height="6dp"
+            app:layout_constraintStart_toStartOf="@id/tv_insight_header"
+            app:layout_constraintEnd_toEndOf="@id/tv_insight_header"
+            app:layout_constraintTop_toBottomOf="@id/slider_insight" />
+
+        <TextView
+            android:id="@+id/tv_live_event_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/poppins_w700"
+            android:text="@string/live_event"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/slider_insight_indicator" />
+
+        <TextView
+            android:id="@+id/tv_view_all_live_event"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:text="@string/view_all"
+            app:layout_constraintBottom_toBottomOf="@id/tv_live_event_header"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_live_event_header" />
+
+        <com.opensooq.pluto.PlutoView
+            android:id="@+id/slider_live_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_live_event_header" />
+
+        <com.opensooq.pluto.PlutoIndicator
+            android:id="@+id/slider_live_event_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:visibility="true"
+            app:selected_color="#0095BF"
+            app:unselected_color="#55333333"
+            app:shape="rect"
+            app:selected_padding_left="2dp"
+            app:selected_padding_right="2dp"
+            app:unselected_padding_left="2dp"
+            app:unselected_padding_right="2dp"
+            app:selected_width="10dp"
+            app:selected_height="10dp"
+            app:unselected_width="6dp"
+            app:unselected_height="6dp"
+            app:layout_constraintStart_toStartOf="@id/tv_live_event_header"
+            app:layout_constraintEnd_toEndOf="@id/tv_live_event_header"
+            app:layout_constraintTop_toBottomOf="@id/slider_live_event" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

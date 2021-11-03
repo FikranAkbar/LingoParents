@@ -25,4 +25,6 @@
     <string name="course">Course</string>
     <string name="progress">Progress</string>
     <string name="view_all">View All</string>
+    <string name="live_event">Live Event</string>
+    <string name="show_more">Show more</string>
 </resources>

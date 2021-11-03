@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         app:defaultNavHost="true"
+        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/dashboard_bottom_nav_menu" />
 </androidx.constraintlayout.widget.ConstraintLayout>
