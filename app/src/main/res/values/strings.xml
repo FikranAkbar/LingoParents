@@ -41,4 +41,9 @@
     <string name="phone_number">Phone Number</string>
     <string name="edit">Edit</string>
     <string name="logout">Logout</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="change_your_password">Change Your Password</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
 </resources>
