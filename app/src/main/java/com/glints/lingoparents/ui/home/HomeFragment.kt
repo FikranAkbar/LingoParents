@@ -12,7 +12,9 @@ import com.glints.lingoparents.data.model.ChildrenItem
 import com.glints.lingoparents.data.model.InsightSliderItem
 import com.glints.lingoparents.data.model.LiveEventSliderItem
 import com.glints.lingoparents.databinding.FragmentHomeBinding
-import com.opensooq.pluto.PlutoView
+import com.glints.lingoparents.ui.home.adapter.ChildrenAdapter
+import com.glints.lingoparents.ui.home.adapter.InsightSliderAdapter
+import com.glints.lingoparents.ui.home.adapter.LiveEventSliderAdapter
 import com.opensooq.pluto.base.PlutoAdapter
 import com.opensooq.pluto.listeners.OnItemClickListener
 import com.opensooq.pluto.listeners.OnSlideChangeListener

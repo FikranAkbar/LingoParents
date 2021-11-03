@@ -1,4 +1,4 @@
-package com.glints.lingoparents.ui.home
+package com.glints.lingoparents.ui.home.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
