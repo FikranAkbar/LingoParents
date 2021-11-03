@@ -12,9 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:defaultNavHost="false"
-        app:navGraph="@navigation/dashboard_nav_graph"
-        app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:navGraph="@navigation/dashboard_nav_graph"
         tools:ignore="FragmentTagUsage" />
 
     <include
@@ -23,9 +23,9 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_view"
+        style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         app:defaultNavHost="true"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
