@@ -20,10 +20,10 @@
         <ImageView
             android:id="@+id/iv_live_event_poster"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="230dp"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             tools:src="@drawable/img_dummy_live_event" />
 
         <TextView
@@ -66,6 +66,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:fontFamily="@font/poppins_w400"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@id/iv_live_event_price"
             app:layout_constraintTop_toBottomOf="@id/tv_live_event_price"
             tools:text="08 Oct 2021, 19:00" />
@@ -76,6 +78,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/show_more"
+            android:fontFamily="@font/poppins_w500"
+            android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_live_event_date"

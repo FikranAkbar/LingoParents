@@ -28,7 +28,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
+            android:fontFamily="@font/poppins_w700"
             android:text="@string/view_all"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/tv_insight_header"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_insight_header" />
@@ -79,7 +81,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
+            android:fontFamily="@font/poppins_w700"
             android:text="@string/view_all"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/tv_live_event_header"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_live_event_header" />

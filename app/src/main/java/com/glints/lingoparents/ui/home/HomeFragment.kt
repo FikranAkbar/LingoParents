@@ -28,7 +28,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         val binding: FragmentHomeBinding = FragmentHomeBinding.inflate(inflater)
 
@@ -49,7 +49,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
 
         binding.sliderInsight.apply {
             create(insightSliderAdapter, lifecycle = lifecycle)
-            setCustomIndicator(binding.sliderInsightIndicator)
             setOnSlideChangeListener(object : OnSlideChangeListener {
                 override fun onSlideChange(adapter: PlutoAdapter<*, *>, position: Int) {
 
@@ -74,7 +73,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
 
         binding.sliderLiveEvent.apply {
             create(liveEventSliderAdapter, lifecycle = lifecycle)
-            setIndicatorPosition(PlutoView.IndicatorPosition.CENTER_BOTTOM)
             setOnSlideChangeListener(object : OnSlideChangeListener {
                 override fun onSlideChange(adapter: PlutoAdapter<*, *>, position: Int) {
 
