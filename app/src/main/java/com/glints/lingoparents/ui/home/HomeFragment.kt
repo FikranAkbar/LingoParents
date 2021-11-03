@@ -1,7 +1,9 @@
 package com.glints.lingoparents.ui.home
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,27 +12,33 @@ import com.glints.lingoparents.data.model.ChildrenItem
 import com.glints.lingoparents.data.model.InsightSliderItem
 import com.glints.lingoparents.data.model.LiveEventSliderItem
 import com.glints.lingoparents.databinding.FragmentHomeBinding
+import com.opensooq.pluto.PlutoView
 import com.opensooq.pluto.base.PlutoAdapter
 import com.opensooq.pluto.listeners.OnItemClickListener
 import com.opensooq.pluto.listeners.OnSlideChangeListener
 
 class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemClickCallback {
 
-    private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var insightSliderAdapter: InsightSliderAdapter
     private lateinit var liveEventSliderAdapter: LiveEventSliderAdapter
     private lateinit var childrenAdapter: ChildrenAdapter
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding = FragmentHomeBinding.bind(view)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        val binding: FragmentHomeBinding = FragmentHomeBinding.inflate(inflater)
+
         insightSliderAdapter = InsightSliderAdapter(
             mutableListOf(
-                InsightSliderItem("TEST", "@drawable/img_dummy_insight"),
-                InsightSliderItem("TEST", "@drawable/img_dummy_insight"),
-                InsightSliderItem("TEST", "@drawable/img_dummy_insight"),
-                InsightSliderItem("TEST", "@drawable/img_dummy_insight"),
-                InsightSliderItem("TEST", "@drawable/img_dummy_insight"),
+                InsightSliderItem("7 Challenges of Parenting a Special Kid", "@drawable/img_dummy_insight"),
+                InsightSliderItem("7 Challenges of Parenting a Special Kid", "@drawable/img_dummy_insight"),
+                InsightSliderItem("7 Challenges of Parenting a Special Kid", "@drawable/img_dummy_insight"),
+                InsightSliderItem("7 Challenges of Parenting a Special Kid", "@drawable/img_dummy_insight"),
+                InsightSliderItem("7 Challenges of Parenting a Special Kid", "@drawable/img_dummy_insight"),
             ),
             object : OnItemClickListener<InsightSliderItem> {
                 override fun onItemClicked(item: InsightSliderItem?, position: Int) {
@@ -66,7 +74,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
 
         binding.sliderLiveEvent.apply {
             create(liveEventSliderAdapter, lifecycle = lifecycle)
-            setCustomIndicator(binding.sliderLiveEventIndicator)
+            setIndicatorPosition(PlutoView.IndicatorPosition.CENTER_BOTTOM)
             setOnSlideChangeListener(object : OnSlideChangeListener {
                 override fun onSlideChange(adapter: PlutoAdapter<*, *>, position: Int) {
 
@@ -92,6 +100,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
                 )
             }
         }
+
+        return binding.root
     }
 
     override fun onItemClicked(children: ChildrenItem) {
