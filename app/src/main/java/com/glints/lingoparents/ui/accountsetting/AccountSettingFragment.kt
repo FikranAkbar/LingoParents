@@ -1,12 +1,15 @@
 package com.glints.lingoparents.ui.accountsetting
 
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
@@ -40,6 +43,20 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
         TabLayoutMediator(tabs, viewPager2) { tab, position ->
             tab.text = resources.getString(TAB_TITLES[position])
         }.attach()
+
+        val root = tabs.getChildAt(0)
+        if (root is LinearLayout) {
+            root.apply {
+                showDividers = LinearLayout.SHOW_DIVIDER_MIDDLE
+                val drawable = GradientDrawable()
+                drawable.apply {
+                    setColor(ContextCompat.getColor(requireContext(), R.color.teal_700))
+                    setSize(4, 1)
+                }
+                dividerPadding = 18
+                dividerDrawable = drawable
+            }
+        }
 
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {

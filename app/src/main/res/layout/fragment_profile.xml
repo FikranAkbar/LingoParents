@@ -212,10 +212,10 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingVertical="8dp"
-                        android:textSize="12sp"
                         android:inputType="text"
                         android:maxLines="1"
+                        android:paddingVertical="8dp"
+                        android:textSize="12sp"
                         tools:ignore="SpeakableTextPresentCheck" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -244,11 +244,13 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="24dp"
             android:fontFamily="@font/poppins_w600"
+            android:paddingVertical="6dp"
             android:text="@string/logout"
             android:textAllCaps="false"
-            android:textSize="18sp"
+            android:textSize="14sp"
             app:icon="@drawable/ic_logout"
             app:iconGravity="textStart"
+            app:iconSize="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cv_your_profile_information" />
 
@@ -259,9 +261,10 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="24dp"
             android:fontFamily="@font/poppins_w600"
+            android:paddingVertical="6dp"
             android:text="@string/save"
             android:textAllCaps="false"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/cv_your_profile_information" />
 
@@ -273,9 +276,10 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="16dp"
             android:fontFamily="@font/poppins_w600"
+            android:paddingVertical="6dp"
             android:text="@string/cancel"
             android:textAllCaps="false"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/mbtn_save" />

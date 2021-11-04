@@ -77,26 +77,29 @@
         android:layout_height="1dp"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="12dp"
-        android:background="@color/teal_700"
+        android:background="@color/teal_200"
         app:layout_constraintTop_toBottomOf="@id/cv_profile_picture" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_account_setting"
+        style="@style/AccountSettingTabsTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:tabSelectedTextColor="@color/black"
-        app:tabMode="fixed"
-        app:tabGravity="start"
-        app:tabIndicator="@null"
-        app:tabTextColor="@color/teal_700"
+        android:layout_marginTop="12dp"
         app:layout_constraintStart_toStartOf="@id/line_separator"
         app:layout_constraintTop_toBottomOf="@id/line_separator"
-        style="@style/AccountSettingTabsTextStyle" />
+        app:tabGravity="start"
+        app:tabIndicator="@null"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/black"
+        app:tabTextColor="@color/teal_700"
+        app:tabUnboundedRipple="false" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager_account_setting"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tab_account_setting" />
 </androidx.constraintlayout.widget.ConstraintLayout>
