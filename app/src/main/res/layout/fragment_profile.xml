@@ -66,6 +66,8 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLines="1"
                         android:paddingVertical="8dp"
                         android:textSize="12sp"
                         tools:ignore="SpeakableTextPresentCheck" />
@@ -158,6 +160,8 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLines="1"
                         android:paddingVertical="8dp"
                         android:textSize="12sp"
                         tools:ignore="SpeakableTextPresentCheck" />
@@ -210,6 +214,8 @@
                         android:layout_height="wrap_content"
                         android:paddingVertical="8dp"
                         android:textSize="12sp"
+                        android:inputType="text"
+                        android:maxLines="1"
                         tools:ignore="SpeakableTextPresentCheck" />
                 </com.google.android.material.textfield.TextInputLayout>
 
