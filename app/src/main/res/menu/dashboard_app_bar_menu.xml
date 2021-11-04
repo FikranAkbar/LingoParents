@@ -7,5 +7,4 @@
         android:icon="@drawable/ic_baseline_account_circle_24"
         app:showAsAction="ifRoom"
         android:title="@string/acoount_setting" />
-
 </menu>

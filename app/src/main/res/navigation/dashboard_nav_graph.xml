@@ -31,7 +31,8 @@
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
     <fragment
-        android:id="@+id/changePasswordFragment"
-        android:name="com.glints.lingoparents.ui.accountsetting.changepassword.ChangePasswordFragment"
-        android:label="ChangePasswordFragment" />
+        android:id="@+id/accountSettingFragment"
+        android:name="com.glints.lingoparents.ui.accountsetting.AccountSettingFragment"
+        android:label="fragment_account_setting"
+        tools:layout="@layout/fragment_account_setting" /><action android:id="@+id/action_global_accountSettingFragment" app:destination="@id/accountSettingFragment"/>
 </navigation>

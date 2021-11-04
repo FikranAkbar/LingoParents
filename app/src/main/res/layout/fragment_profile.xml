@@ -79,12 +79,12 @@
                     android:layout_marginTop="4dp"
                     android:ellipsize="end"
                     android:fontFamily="@font/poppins_w600"
+                    android:text="@string/parent_s_name"
                     android:textColor="@color/black"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_full_name_title"
-                    tools:text="Parent's name" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_full_name_title" />
 
                 <TextView
                     android:id="@+id/tv_email_title"
@@ -106,12 +106,12 @@
                     android:layout_marginTop="4dp"
                     android:ellipsize="end"
                     android:fontFamily="@font/poppins_w600"
+                    android:text="@string/parents_email_com"
                     android:textColor="@color/black"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_email_title"
-                    tools:text="parents@email.com" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_email_title" />
 
                 <TextView
                     android:id="@+id/tv_address_title"
@@ -133,12 +133,12 @@
                     android:layout_marginTop="4dp"
                     android:ellipsize="end"
                     android:fontFamily="@font/poppins_w600"
+                    android:text="@string/parent_s_address"
                     android:textColor="@color/black"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_address_title"
-                    tools:text="Parent's Address" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_address_title" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tf_address"
@@ -183,12 +183,12 @@
                     android:layout_marginTop="4dp"
                     android:ellipsize="end"
                     android:fontFamily="@font/poppins_w600"
+                    android:text="@string/parent_s_number"
                     android:textColor="@color/black"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_phone_number_title"
-                    tools:text="Parent's Number" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_phone_number_title" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tf_phone_number"

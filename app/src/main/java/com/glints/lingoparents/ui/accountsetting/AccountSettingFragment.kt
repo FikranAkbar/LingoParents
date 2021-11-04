@@ -4,11 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentAccountSettingBinding
+import com.glints.lingoparents.ui.dashboard.DashboardActivity
 import com.google.android.material.tabs.TabLayoutMediator
 
 class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
@@ -35,9 +38,26 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
         viewPager2.adapter = sectionsPagerAdapter
         val tabs = binding.tabAccountSetting
         TabLayoutMediator(tabs, viewPager2) { tab, position ->
-            tab.text
+            tab.text = resources.getString(TAB_TITLES[position])
         }.attach()
 
-        return super.onCreateView(inflater, container, savedInstanceState)
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    findNavController().popBackStack()
+                    (activity as DashboardActivity).showBottomNav(true)
+                }
+            })
+
+        (activity as DashboardActivity).showBottomNav(false)
+
+        binding.apply {
+            cvBackButton.setOnClickListener {
+                findNavController().popBackStack()
+                (activity as DashboardActivity).showBottomNav(true)
+            }
+        }
+
+        return binding.root
     }
 }

@@ -50,4 +50,8 @@
     <string name="parent">Parent!</string>
     <string name="account_setting_tab_text_1">Profile</string>
     <string name="account_setting_tab_text_2">Change Password</string>
+    <string name="parent_s_name">Parent\'s name</string>
+    <string name="parents_email_com">parents@email.com</string>
+    <string name="parent_s_address">Parent\'s Address</string>
+    <string name="parent_s_number">Parent\'s Number</string>
 </resources>

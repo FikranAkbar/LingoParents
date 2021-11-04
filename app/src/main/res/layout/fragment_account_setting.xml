@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ui.accountsetting.AccountSettingFragment">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_back_button"
@@ -83,13 +84,19 @@
         android:id="@+id/tab_account_setting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:tabSelectedTextColor="@color/black"
+        app:tabMode="fixed"
+        app:tabGravity="start"
+        app:tabIndicator="@null"
+        app:tabTextColor="@color/teal_700"
         app:layout_constraintStart_toStartOf="@id/line_separator"
-        app:layout_constraintTop_toBottomOf="@id/line_separator" />
+        app:layout_constraintTop_toBottomOf="@id/line_separator"
+        style="@style/AccountSettingTabsTextStyle" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager_account_setting"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/tab_account_setting"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tab_account_setting" />
 </androidx.constraintlayout.widget.ConstraintLayout>
