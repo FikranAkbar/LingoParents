@@ -30,4 +30,8 @@
         android:name="com.glints.lingoparents.ui.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.glints.lingoparents.ui.accountsetting.changepassword.ChangePasswordFragment"
+        android:label="ChangePasswordFragment" />
 </navigation>

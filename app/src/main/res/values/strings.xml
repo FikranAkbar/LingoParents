@@ -46,4 +46,8 @@
     <string name="change_your_password">Change Your Password</string>
     <string name="current_password">Current Password</string>
     <string name="new_password">New Password</string>
+    <string name="hello">Hello,</string>
+    <string name="parent">Parent!</string>
+    <string name="account_setting_tab_text_1">Profile</string>
+    <string name="account_setting_tab_text_2">Change Password</string>
 </resources>
