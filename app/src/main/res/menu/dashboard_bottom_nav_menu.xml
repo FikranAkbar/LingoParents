@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/ic_home"
+        android:title="@string/home" />
+
+    <item
+        android:id="@+id/forgotPasswordFragment"
+        android:icon="@drawable/ic_event"
+        android:title="@string/event" />
+
+    <item
+        android:id="@+id/registerFragment"
+        android:icon="@drawable/ic_insight"
+        android:title="@string/insight" />
+
+    <item
+        android:id="@+id/loginFragment"
+        android:icon="@drawable/ic_course"
+        android:title="@string/course" />
+
+    <item
+        android:id="@+id/splashFragment"
+        android:icon="@drawable/ic_progress"
+        android:title="@string/progress" />
+
+</menu>
