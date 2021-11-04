@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
@@ -33,8 +34,10 @@ class DashboardActivity : AppCompatActivity(), Toolbar.OnMenuItemClickListener {
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         return when(item?.itemId) {
             R.id.user_profile -> {
-                navController.navigate(R.id.action_global_accountSettingFragment)
-                true
+                if (navController.currentDestination?.id != R.id.accountSettingFragment){
+                    navController.navigate(R.id.action_global_accountSettingFragment)
+                }
+                false
             }
             else -> {
                 false
