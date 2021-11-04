@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.glints.lingoparents.databinding.FragmentInsightListBinding
+import com.google.android.material.tabs.TabLayoutMediator
 
 class InsightListFragment : Fragment() {
 
@@ -18,16 +19,27 @@ class InsightListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentInsightListBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[
-                InsightListViewModel::class.java]
+
+        binding.vpInsight.isUserInputEnabled = false
+
+        initViews()
 
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(InsightListViewModel::class.java)
+        viewModel = ViewModelProvider(this)[InsightListViewModel::class.java]
         // TODO: Use the ViewModel
     }
 
+    private fun initViews(){
+        binding.vpInsight.adapter = ViewPagerAdapter(parentFragmentManager, lifecycle)
+
+        val tabNames = arrayOf("All Insights", "Parenting", "Lifestyle")
+        TabLayoutMediator(binding.tlInsightCategory, binding.vpInsight){tab,position ->
+            tab.text = tabNames[position]
+        }.attach()
+
+    }
 }

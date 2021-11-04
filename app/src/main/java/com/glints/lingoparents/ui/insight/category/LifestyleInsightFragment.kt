@@ -6,26 +6,28 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import com.glints.lingoparents.R
+import com.glints.lingoparents.databinding.ActivityDashboardBinding.inflate
+import com.glints.lingoparents.databinding.FragmentAllInsightBinding
+import com.glints.lingoparents.databinding.FragmentLifestyleInsightBinding
 
 class LifestyleInsightFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = LifestyleInsightFragment()
-    }
-
-    private lateinit var viewModel: LifestyleInsightViewModel
+    private lateinit var binding: FragmentLifestyleInsightBinding
+    private val viewModel: CategoriesViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_lifestyle_insight, container, false)
+        binding = FragmentLifestyleInsightBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(LifestyleInsightViewModel::class.java)
+//        viewModel = ViewModelProvider(this).get(LifestyleInsightViewModel::class.java)
         // TODO: Use the ViewModel
     }
 

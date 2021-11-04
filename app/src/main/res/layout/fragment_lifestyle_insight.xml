@@ -5,6 +5,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.insight.category.LifestyleInsightFragment">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lifestyle Fragment"
+        android:layout_gravity="center"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_lifestyle_insight"
         android:layout_width="match_parent"
