@@ -65,14 +65,14 @@
             app:layout_constraintTop_toBottomOf="@id/tf_search_insight"
             app:tabGravity="fill"
             app:tabMode="fixed"
-            app:tabTextAppearance="@style/Typography.Subtitle1"/>
+            app:tabTextAppearance="@style/Typography.Subtitle1" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
-            android:layout_width="325dp"
+            android:layout_width="match_parent"
             android:layout_height="444dp"
-            android:layout_marginTop="22dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="20dp"
             android:background="@drawable/shadow_border"
             android:elevation="8dp"
             android:orientation="vertical"
@@ -97,7 +97,6 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.viewpager2.widget.ViewPager2
-                android:padding="10dp"
                 android:id="@+id/vp_insight"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

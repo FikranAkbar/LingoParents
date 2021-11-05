@@ -1,17 +1,16 @@
 package com.glints.lingoparents.ui.insight.category
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import com.glints.lingoparents.R
-import com.glints.lingoparents.databinding.FragmentAllInsightBinding
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.glints.lingoparents.data.model.InsightSliderItem
 import com.glints.lingoparents.databinding.FragmentParentingInsightBinding
 
-class ParentingInsightFragment : Fragment() {
+class ParentingInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
 
     private lateinit var binding: FragmentParentingInsightBinding
     private val viewModel: CategoriesViewModel by activityViewModels()
@@ -19,8 +18,26 @@ class ParentingInsightFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentParentingInsightBinding.inflate(inflater, container, false)
+
+        binding.rvParentingInsight.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(activity)
+
+            adapter = CategoriesAdapter(
+                this@ParentingInsightFragment,
+                mutableListOf(
+                    InsightSliderItem("", ""),
+                    InsightSliderItem("", ""),
+                    InsightSliderItem("", ""),
+                    InsightSliderItem("", ""),
+                    InsightSliderItem("", ""),
+                    InsightSliderItem("", "")
+                )
+            )
+        }
+
         return binding.root
     }
 
@@ -28,6 +45,10 @@ class ParentingInsightFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 //        viewModel = ViewModelProvider(this).get(ParentingInsightViewModel::class.java)
         // TODO: Use the ViewModel
+    }
+
+    override fun onItemClicked(insightSliderItem: InsightSliderItem) {
+        TODO("Not yet implemented")
     }
 
 }
