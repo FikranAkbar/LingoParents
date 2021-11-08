@@ -13,7 +13,7 @@
         android:title="@string/event" />
 
     <item
-        android:id="@+id/registerFragment"
+        android:id="@+id/insightListFragment"
         android:icon="@drawable/ic_insight"
         android:title="@string/insight" />
 

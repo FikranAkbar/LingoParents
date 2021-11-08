@@ -35,4 +35,9 @@
         android:name="com.glints.lingoparents.ui.accountsetting.AccountSettingFragment"
         android:label="fragment_account_setting"
         tools:layout="@layout/fragment_account_setting" /><action android:id="@+id/action_global_accountSettingFragment" app:destination="@id/accountSettingFragment"/>
+    <fragment
+        android:id="@+id/insightListFragment"
+        android:name="com.glints.lingoparents.ui.insight.InsightListFragment"
+        android:label="fragment_insight_list"
+        tools:layout="@layout/fragment_insight_list" />
 </navigation>
