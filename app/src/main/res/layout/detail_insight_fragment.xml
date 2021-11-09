@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.insight.detail.DetailInsightFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="19dp"
+        android:paddingStart="9dp"
+        android:paddingEnd="9dp">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                style="@style/Typography.Headline5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="18dp"
+                android:gravity="center"
+                android:text="@string/detail_insight"
+                app:drawableStartCompat="@drawable/ic_back" />
+        </androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:id="@+id/iv_insight_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_user_avatar_female"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_insight_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.209"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_insight_title" />
+
+        <TextView
+            android:id="@+id/tv_insight_title"
+            style="@style/Typography.Subtitle2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:layout_marginEnd="16dp"
+            android:maxLines="3"
+            android:padding="10dp"
+            android:text="7 Challenges of Parenting a Special Kid"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_insight_detail"
+            app:layout_constraintTop_toBottomOf="@+id/cardView"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/tv_insight_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="14th October 2021"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_insight_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.175"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_insight_detail"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/tv_insight_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Parents occupy a special place in our familial ecosystem. The children look up to the parents for every aspect of their lives. This job is the most demanding and satisfying task in the world. Being a parent is not easy, and it is highly complex. Though most parents pretend to know it all, the reality is slightly different. They are always filled with guilt and confusion. There are loads of queries that arise in their minds while raising a child.
+
+Establishment of unique ways of communication
+
+There are different kinds of neurological issues that can cause developmental problems in a child. The primary issue faced by parents is the lack of a hehe
+
+Handling of social expectation
+We live in a competitive environment where most things are measured by number. Though most peop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_insight_date" />
+
+        <TextView
+            android:id="@+id/tv_insight_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="19"
+            app:drawableStartCompat="@drawable/ic_insight_like"
+            app:layout_constraintBottom_toBottomOf="@id/tv_insight_dislike"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_insight_dislike" />
+
+        <TextView
+            android:id="@+id/tv_insight_dislike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="19"
+            app:drawableStartCompat="@drawable/ic_insight_like"
+            app:layout_constraintStart_toEndOf="@id/tv_insight_like"
+            app:layout_constraintTop_toBottomOf="@id/tv_insight_body" />
+
+        <TextView
+            android:id="@+id/tv_insight_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/report"
+            app:layout_constraintBottom_toBottomOf="@id/tv_insight_add_comment"
+            app:layout_constraintEnd_toStartOf="@id/tv_insight_add_comment"
+            app:layout_constraintTop_toTopOf="@id/tv_insight_add_comment" />
+
+        <TextView
+            android:id="@+id/tv_insight_add_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_comment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_insight_body" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/comments"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_insight_like" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tf_insight_comment"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxCornerRadiusBottomEnd="5dp"
+            app:boxCornerRadiusBottomStart="0dp"
+            app:boxCornerRadiusTopEnd="5dp"
+            app:boxCornerRadiusTopStart="0dp"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_insight_add_comment">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Post"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tf_insight_comment" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_comment" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

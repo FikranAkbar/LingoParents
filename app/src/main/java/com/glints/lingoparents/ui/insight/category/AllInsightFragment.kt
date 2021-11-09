@@ -46,7 +46,7 @@ class AllInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
     }
 
     override fun onItemClicked(insightSliderItem: InsightSliderItem) {
-        TODO("Not yet implemented")
+
     }
 
 }

@@ -10,11 +10,15 @@
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/drawable/ic_pin_location.xml" value="0.1" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/drawable/ic_search.xml" value="0.290625" />
+        <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/drawable/shadow_border.xml" value="0.290625" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/activity_dashboard.xml" value="0.2037037037037037" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/activity_main.xml" value="0.24351851851851852" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/all_insight_fragment.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/carousel_item_insight.xml" value="0.27447916666666666" />
+        <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/detail_insight_fragment.xml" value="0.27447916666666666" />
+        <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/detail_insight_fragmentt.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_all_insight.xml" value="0.27447916666666666" />
+        <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_detail_insight.xml" value="0.22037037037037038" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_forgot_password.xml" value="0.2604166666666667" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_header.xml" value="0.2604166666666667" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_home.xml" value="0.27447916666666666" />
