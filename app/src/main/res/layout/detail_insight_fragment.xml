@@ -52,11 +52,9 @@
             android:maxLines="3"
             android:padding="10dp"
             android:text="7 Challenges of Parenting a Special Kid"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_insight_detail"
-            app:layout_constraintTop_toBottomOf="@+id/cardView"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
         <TextView
             android:id="@+id/tv_insight_date"
@@ -64,7 +62,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="14th October 2021"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_insight_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.175"
             app:layout_constraintStart_toStartOf="parent"
@@ -75,6 +72,7 @@
             android:id="@+id/tv_insight_body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="Parents occupy a special place in our familial ecosystem. The children look up to the parents for every aspect of their lives. This job is the most demanding and satisfying task in the world. Being a parent is not easy, and it is highly complex. Though most parents pretend to know it all, the reality is slightly different. They are always filled with guilt and confusion. There are loads of queries that arise in their minds while raising a child.
 
 Establishment of unique ways of communication
