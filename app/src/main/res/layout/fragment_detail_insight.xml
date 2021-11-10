@@ -10,8 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="19dp"
-        android:paddingStart="9dp"
-        android:paddingEnd="9dp">
+        android:background="@drawable/shadow_border"
+        android:paddingHorizontal="9dp">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
@@ -72,15 +72,19 @@
             android:id="@+id/tv_insight_body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Parents occupy a special place in our familial ecosystem. The children look up to the parents for every aspect of their lives. This job is the most demanding and satisfying task in the world. Being a parent is not easy, and it is highly complex. Though most parents pretend to know it all, the reality is slightly different. They are always filled with guilt and confusion. There are loads of queries that arise in their minds while raising a child.
+            android:layout_marginTop="9dp"
+            android:justificationMode="inter_word"
+            android:lineSpacingExtra="9sp"
+            android:paddingVertical="8dp"
+            android:text="Parents occupy a special place in our familial ecosystem. \nThe children look up to the parents for every aspect of their lives. This job is the most demanding and satisfying task in the world. Being a parent is not easy, and it is highly complex. Though most parents pretend to know it all, the reality is slightly different. They are always filled with guilt and confusion. There are loads of queries that arise in their minds while raising a child.
 
-Establishment of unique ways of communication
+\n\nEstablishment of unique ways of communication
 
-There are different kinds of neurological issues that can cause developmental problems in a child. The primary issue faced by parents is the lack of a hehe
+\nThere are different kinds of neurological issues that can cause developmental problems in a child. The primary issue faced by parents is the lack of a hehe
 
-Handling of social expectation
-We live in a competitive environment where most things are measured by number. Though most peop"
+\n\nHandling of social expectation
+\nWe live in a competitive environment where most things are measured by number. Though most peop"
+            android:translationY="-4.5sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_insight_date" />
@@ -100,7 +104,7 @@ We live in a competitive environment where most things are measured by number. T
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="19"
-            app:drawableStartCompat="@drawable/ic_insight_like"
+            app:drawableStartCompat="@drawable/ic_insight_dislike"
             app:layout_constraintStart_toEndOf="@id/tv_insight_like"
             app:layout_constraintTop_toBottomOf="@id/tv_insight_body" />
 
@@ -108,7 +112,9 @@ We live in a competitive environment where most things are measured by number. T
             android:id="@+id/tv_insight_report"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
             android:text="@string/report"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/tv_insight_add_comment"
             app:layout_constraintEnd_toStartOf="@id/tv_insight_add_comment"
             app:layout_constraintTop_toTopOf="@id/tv_insight_add_comment" />
@@ -118,13 +124,17 @@ We live in a competitive environment where most things are measured by number. T
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/add_comment"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_insight_body" />
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/materialTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
             android:text="@string/comments"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_insight_like" />
 
@@ -133,6 +143,7 @@ We live in a competitive environment where most things are measured by number. T
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:boxCornerRadiusBottomEnd="5dp"
             app:boxCornerRadiusBottomStart="0dp"
             app:boxCornerRadiusTopEnd="5dp"
@@ -140,7 +151,7 @@ We live in a competitive environment where most things are measured by number. T
             app:hintEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_insight_add_comment">
+            app:layout_constraintTop_toBottomOf="@+id/materialTextView">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -150,15 +161,20 @@ We live in a competitive environment where most things are measured by number. T
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_comment"
+            style="@style/Typography.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Post"
+            android:text="@string/post"
+            android:textAllCaps="false"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tf_insight_comment" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_insight_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btn_comment" />

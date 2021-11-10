@@ -6,27 +6,34 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.glints.lingoparents.R
+import com.glints.lingoparents.databinding.FragmentDetailInsightBinding
 
 class DetailInsightFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = DetailInsightFragment()
-    }
-
+    private lateinit var binding: FragmentDetailInsightBinding
     private lateinit var viewModel: DetailInsightViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.detail_insight_fragment, container, false)
+        binding = FragmentDetailInsightBinding.inflate(inflater, container, false)
+
+        initViews()
+
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(DetailInsightViewModel::class.java)
+        viewModel = ViewModelProvider(this)[DetailInsightViewModel::class.java]
         // TODO: Use the ViewModel
     }
 
+    private fun initViews(){
+        binding.tvInsightAddComment.setOnClickListener {
+            binding.tfInsightComment.visibility = View.VISIBLE
+            binding.btnComment.visibility = View.VISIBLE
+        }
+    }
 }
