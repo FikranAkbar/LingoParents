@@ -30,9 +30,32 @@
         android:name="com.glints.lingoparents.ui.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
+
     <fragment
-        android:id="@+id/insightListFragment"
-        android:name="com.glints.lingoparents.ui.insight.InsightListFragment"
-        android:label="fragment_insight_list"
-        tools:layout="@layout/fragment_insight_list" />
+        android:id="@+id/detailCourseFragment"
+        android:name="com.glints.lingoparents.ui.course.DetailCourseFragment"
+        android:label="fragment_detail_course"
+        tools:layout="@layout/fragment_detail_course" >
+        <argument
+            android:name="course"
+            app:argType="com.glints.lingoparents.data.model.CourseItem" />
+    </fragment>
+    <fragment
+        android:id="@+id/allCoursesFragment"
+        android:name="com.glints.lingoparents.ui.course.AllCoursesFragment"
+        android:label="fragment_all_courses"
+        tools:layout="@layout/fragment_all_courses" >
+        <action
+            android:id="@+id/action_allCoursesFragment_to_detailCourseFragment"
+            app:destination="@id/detailCourseFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/courseFragment"
+        android:name="com.glints.lingoparents.ui.course.CourseFragment"
+        android:label="fragment_course"
+        tools:layout="@layout/fragment_course">
+        <action
+            android:id="@+id/action_allCoursesFragment_to_detailCourseFragment"
+            app:destination="@id/detailCourseFragment" />
+    </fragment>
 </navigation>

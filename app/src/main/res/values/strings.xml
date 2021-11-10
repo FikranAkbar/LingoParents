@@ -36,4 +36,112 @@
     <string name="learn_the_language_that_your_children_fancy_on_the_time_you_wish_and_the_place_you_like_lingotalk_offer_all_the_flexibility_at_your_fingertip_lets_start_learning_now">Learn the language that your children fancy, on the time you wish, and the place you like! LingoTalk offer all the flexibility at your fingertip. Lets start learning now!</string>
     <string name="enroll_course">Enroll Course</string>
     <string name="search">Search</string>
+    <!--viewpager-->
+    <string name="tab_text_1">Courses</string>
+    <string name="tab_text_2">Children Courses</string>
+
+    <!--coba-->
+    <string-array name="data_course">
+        <item>Arabic</item>
+        <item>English</item>
+        <item>French</item>
+        <item>German</item>
+        <item>Indonesian</item>
+        <item>Japanese</item>
+        <item>Korean</item>
+        <item>Mandarin</item>
+        <item>Spanish</item>
+        <item>Thai</item>
+    </string-array>
+    <string-array name="data_desccourse1">
+        <item>desc 1 Arabic</item>
+        <item>desc 1 English</item>
+        <item>desc 1 French</item>
+        <item>desc 1 German</item>
+        <item>desc 1 Indonesian</item>
+        <item>desc 1 Japanese</item>
+        <item>desc 1 Korean</item>
+        <item>desc 1 Mandarin</item>
+        <item>desc 1 Spanish</item>
+        <item>desc 1 Thai</item>
+    </string-array>
+
+    <string-array name="data_desccourse2">
+        <item>desc 2 Arabic</item>
+        <item>desc 2 English</item>
+        <item>desc 2 French</item>
+        <item>desc 2 German</item>
+        <item>desc 2 Indonesian</item>
+        <item>desc 2 Japanese</item>
+        <item>desc 2 Korean</item>
+        <item>desc 2 Mandarin</item>
+        <item>desc 2 Spanish</item>
+        <item>desc 2 Thai</item>
+    </string-array>
+
+    <string-array name="data_desccourse3">
+        <item>desc 3 Arabic</item>
+        <item>desc 3 English</item>
+        <item>desc 3 French</item>
+        <item>desc 3 German</item>
+        <item>desc 3 Indonesian</item>
+        <item>desc 3 Japanese</item>
+        <item>desc 3 Korean</item>
+        <item>desc 3 Mandarin</item>
+        <item>desc 3 Spanish</item>
+        <item>desc 3 Thai</item>
+    </string-array>
+
+    <integer-array name="data_coursephoto">
+        <item>@drawable/img_course_arabic</item>
+        <item>@drawable/img_course_english</item>
+        <item>@drawable/img_course_french</item>
+        <item>@drawable/img_course_german</item>
+        <item>@drawable/img_course_indonesian</item>
+        <item>@drawable/img_course_japanese</item>
+        <item>@drawable/img_course_korean</item>
+        <item>@drawable/img_course_mandarin</item>
+        <item>@drawable/img_course_spanish</item>
+        <item>@drawable/img_course_thai</item>
+    </integer-array>
+
+    <integer-array name="data_coursecardphoto1">
+        <item>@drawable/french_card1</item>
+        <item>@drawable/french_card1</item>
+        <item>@drawable/french_card1</item>
+        <item>@drawable/french_card1</item>
+        <item>@drawable/french_card1</item>
+        <item>@drawable/french_card1</item>
+        <item>@drawable/french_card1</item>
+        <item>@drawable/french_card1</item>
+        <item>@drawable/french_card1</item>
+        <item>@drawable/french_card1</item>
+    </integer-array>
+
+    <integer-array name="data_coursecardphoto2">
+        <item>@drawable/french_card2</item>
+        <item>@drawable/french_card2</item>
+        <item>@drawable/french_card2</item>
+        <item>@drawable/french_card2</item>
+        <item>@drawable/french_card2</item>
+        <item>@drawable/french_card2</item>
+        <item>@drawable/french_card2</item>
+        <item>@drawable/french_card2</item>
+        <item>@drawable/french_card2</item>
+        <item>@drawable/french_card2</item>
+    </integer-array>
+
+    <integer-array name="data_coursecardphoto3">
+        <item>@drawable/french_card3</item>
+        <item>@drawable/french_card3</item>
+        <item>@drawable/french_card3</item>
+        <item>@drawable/french_card3</item>
+        <item>@drawable/french_card3</item>
+        <item>@drawable/french_card3</item>
+        <item>@drawable/french_card3</item>
+        <item>@drawable/french_card3</item>
+        <item>@drawable/french_card3</item>
+        <item>@drawable/french_card3</item>
+    </integer-array>
+
 </resources>
