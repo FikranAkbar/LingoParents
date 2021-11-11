@@ -44,5 +44,14 @@
         android:id="@+id/liveEventListFragment"
         android:name="com.glints.lingoparents.ui.liveevent.LiveEventListFragment"
         android:label="fragment_live_event_list"
-        tools:layout="@layout/fragment_live_event_list" />
+        tools:layout="@layout/fragment_live_event_list" >
+        <action
+            android:id="@+id/action_liveEventListFragment_to_liveEventDetailFragment"
+            app:destination="@id/liveEventDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/liveEventDetailFragment"
+        android:name="com.glints.lingoparents.ui.liveevent.detail.LiveEventDetailFragment"
+        android:label="fragment_live_event_detail"
+        tools:layout="@layout/fragment_live_event_detail" />
 </navigation>
