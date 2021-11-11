@@ -98,6 +98,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
                         ChildrenItem("", "", "", "", ""),
                     )
                 )
+                isVerticalScrollBarEnabled = false
             }
         }
 
