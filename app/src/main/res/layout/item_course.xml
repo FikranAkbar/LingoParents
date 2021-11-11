@@ -19,10 +19,8 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/courseTitle"
+            app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/img_course_thai" />
 
         <TextView
@@ -33,9 +31,8 @@
             android:textColor="@color/white"
             android:textSize="30sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Course Name" />
 

@@ -39,6 +39,9 @@
         <argument
             android:name="course"
             app:argType="com.glints.lingoparents.data.model.CourseItem" />
+        <action
+            android:id="@+id/action_detailCourseFragment_to_allCoursesFragment"
+            app:destination="@id/allCoursesFragment" />
     </fragment>
     <fragment
         android:id="@+id/allCoursesFragment"

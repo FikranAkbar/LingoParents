@@ -3,6 +3,8 @@ package com.glints.lingoparents.ui.course
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentDetailCourseBinding
 
@@ -22,6 +24,10 @@ class DetailCourseFragment : Fragment(R.layout.fragment_detail_course) {
         binding!!.ivCourseCard1.setImageResource(dataCourse.card1)
         binding!!.ivCourseCard2.setImageResource(dataCourse.card2)
         binding!!.ivCourseCard3.setImageResource(dataCourse.card3)
+        binding!!.cvBackButton.setOnClickListener {
+            //findNavController().popBackStack()
+            findNavController().navigate(DetailCourseFragmentDirections.actionDetailCourseFragmentToAllCoursesFragment())
+        }
 
     }
 

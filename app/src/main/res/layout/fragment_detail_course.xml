@@ -11,86 +11,100 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            app:cardElevation="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_baseline_arrow_back_ios_24"
+                tools:ignore="ContentDescription" />
+        </androidx.cardview.widget.CardView>
+
         <TextView
             android:id="@+id/tvCourse"
-            android:fontFamily="@font/poppins_w700"
-            android:textSize="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_w700"
+            android:text="French"
+            android:textSize="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="French" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/ivCourseCard1"
             android:layout_width="500px"
             android:layout_height="500px"
-            app:layout_constraintBottom_toTopOf="@+id/tvCourse1"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/french_card1"
+            app:layout_constraintEnd_toStartOf="@+id/tvCourse1"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvCourse"
-            android:src="@drawable/french_card1" />
+            app:layout_constraintTop_toBottomOf="@+id/tvCourse" />
 
         <TextView
             android:id="@+id/tvCourse1"
-            android:fontFamily="@font/poppins_w600"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+
             android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_w600"
+            android:gravity="center"
+            android:text="Indulge the beauty of French artistic refinements, such as fine arts, music, dance, and architecture through language."
             app:layout_constraintBottom_toTopOf="@+id/ivCourseCard2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivCourseCard1"
-            android:text="Indulge the beauty of French artistic refinements, such as fine arts, music, dance, and architecture through language." />
+            app:layout_constraintStart_toEndOf="@+id/ivCourseCard1"
+            app:layout_constraintTop_toBottomOf="@+id/tvCourse" />
 
         <ImageView
             android:id="@+id/ivCourseCard2"
             android:layout_width="500px"
             android:layout_height="500px"
-            app:layout_constraintBottom_toTopOf="@+id/tvCourse2"
+            android:src="@drawable/french_card2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvCourse1"
-            android:src="@drawable/french_card2" />
+            app:layout_constraintTop_toBottomOf="@+id/ivCourseCard1" />
 
         <TextView
             android:id="@+id/tvCourse2"
-            android:fontFamily="@font/poppins_w600"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_w600"
+            android:gravity="center"
+            android:text="Spoken across the globe with various pronounciation and used as an official language in 29 countries."
             app:layout_constraintBottom_toTopOf="@+id/ivCourseCard3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/ivCourseCard2"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivCourseCard2"
-            android:text="Spoken across the globe with various pronounciation and used as an official language in 29 countries." />
+            app:layout_constraintTop_toBottomOf="@+id/ivCourseCard1" />
 
         <ImageView
             android:id="@+id/ivCourseCard3"
             android:layout_width="500px"
             android:layout_height="500px"
-            app:layout_constraintBottom_toTopOf="@+id/tvCourse3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            android:src="@drawable/french_card3"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvCourse2"
-            android:src="@drawable/french_card3" />
+            app:layout_constraintTop_toBottomOf="@+id/ivCourseCard2" />
 
         <TextView
             android:id="@+id/tvCourse3"
-            android:fontFamily="@font/poppins_w600"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_w600"
+            android:gravity="center"
+            android:text="French pronounciation is surprisingly simple and more consistent than the other language."
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivCourseCard3"
-            android:text="French pronounciation is surprisingly simple and more consistent than the other language." />
-
+            app:layout_constraintStart_toEndOf="@+id/ivCourseCard3"
+            app:layout_constraintTop_toBottomOf="@+id/ivCourseCard2" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

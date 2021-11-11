@@ -56,7 +56,7 @@
     <string-array name="data_desccourse1">
         <item>desc 1 Arabic</item>
         <item>desc 1 English</item>
-        <item>desc 1 French</item>
+        <item>(desc 1 french)Indulge the beauty of French artistic refinements, such as fine arts, music, dance, and architecture through language.</item>
         <item>desc 1 German</item>
         <item>desc 1 Indonesian</item>
         <item>desc 1 Japanese</item>
@@ -69,7 +69,7 @@
     <string-array name="data_desccourse2">
         <item>desc 2 Arabic</item>
         <item>desc 2 English</item>
-        <item>desc 2 French</item>
+        <item>(desc 2 french)Spoken across the globe with various pronounciation and used as an official language in 29 countries</item>
         <item>desc 2 German</item>
         <item>desc 2 Indonesian</item>
         <item>desc 2 Japanese</item>
@@ -82,7 +82,7 @@
     <string-array name="data_desccourse3">
         <item>desc 3 Arabic</item>
         <item>desc 3 English</item>
-        <item>desc 3 French</item>
+        <item>(desc 3 French)French pronounciation is surprisingly simple and more consistent than the other language.</item>
         <item>desc 3 German</item>
         <item>desc 3 Indonesian</item>
         <item>desc 3 Japanese</item>

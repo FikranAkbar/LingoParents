@@ -59,10 +59,15 @@
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_all_courses.xml" value="0.209375" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_children_courses.xml" value="0.209375" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_course.xml" value="0.209375" />
-        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_detail_course.xml" value="0.209375" />
+<<<<<<< Updated upstream
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_detail_course.xml" value="0.22" />
+=======
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_detail_course.xml" value="0.33" />
+>>>>>>> Stashed changes
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_insight_list.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_lifestyle_insight.xml" value="0.1" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_live_event_list.xml" value="0.20199275362318841" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_parenting_insight.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_register.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_splash.xml" value="0.1" />
