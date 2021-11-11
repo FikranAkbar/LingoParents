@@ -48,6 +48,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_w400"
             android:inputType="text"
+            android:imeOptions="actionDone"
             android:maxLines="1"
             android:paddingVertical="4dp"
             android:textSize="12sp" />
@@ -70,6 +71,7 @@
             style="@style/CustomTabLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:focusable="false"
             app:tabGravity="fill"
             app:tabMode="fixed"
             app:tabSelectedTextColor="@color/white"
