@@ -16,13 +16,15 @@ import com.glints.lingoparents.ui.course.adapter.CourseAdapter
 class AllCoursesFragment : Fragment(R.layout.fragment_all_courses) {
     private lateinit var rvCourse: RecyclerView
     private val list = ArrayList<CourseItem>()
-    private var binding: FragmentAllCoursesBinding? = null
+    private var _binding: FragmentAllCoursesBinding? = null
+    private val binding get() = _binding!!
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentAllCoursesBinding.bind(view)
+        _binding = FragmentAllCoursesBinding.bind(view)
         rvCourse = binding!!.rvCourse
         rvCourse.setHasFixedSize(true)
-        list.addAll(listCourse)
+//        list.clear()
+//        list.addAll(listCourse)
         showRecyclerList()
         Log.d("Coba", list.toString())
         //binding!!.iddarixml
@@ -64,17 +66,24 @@ class AllCoursesFragment : Fragment(R.layout.fragment_all_courses) {
         listCourseAdapter.setOnItemClickCallback(object : CourseAdapter.OnItemClickCallback {
             override fun onItemClicked(course: CourseItem) {
                 //Toast.makeText(context, "Kamu memilih " + course.name, Toast.LENGTH_SHORT).show()
-                val toDetailCourseFragment =
-                    AllCoursesFragmentDirections.actionAllCoursesFragmentToDetailCourseFragment(
-                        course
-                    )
-                findNavController().navigate(toDetailCourseFragment)
+                goToDetail(course)
             }
         })
+        list.clear()
+        list.addAll(listCourse)
+        listCourseAdapter.notifyDataSetChanged()
+    }
+
+    private fun goToDetail(course: CourseItem) {
+        val toDetailCourseFragment =
+            AllCoursesFragmentDirections.actionAllCoursesFragmentToDetailCourseFragment(
+                course
+            )
+        findNavController().navigate(toDetailCourseFragment)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        binding = null
+        _binding = null
     }
 }
