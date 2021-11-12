@@ -40,4 +40,9 @@
         android:name="com.glints.lingoparents.ui.insight.InsightListFragment"
         android:label="fragment_insight_list"
         tools:layout="@layout/fragment_insight_list" />
+    <fragment
+        android:id="@+id/liveEventListFragment"
+        android:name="com.glints.lingoparents.ui.liveevent.LiveEventListFragment"
+        android:label="fragment_live_event_list"
+        tools:layout="@layout/fragment_live_event_list" />
 </navigation>

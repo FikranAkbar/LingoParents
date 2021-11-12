@@ -8,7 +8,7 @@
         android:title="@string/home" />
 
     <item
-        android:id="@+id/forgotPasswordFragment"
+        android:id="@+id/liveEventListFragment"
         android:icon="@drawable/ic_event"
         android:title="@string/event" />
 
