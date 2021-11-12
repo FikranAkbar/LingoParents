@@ -34,7 +34,10 @@
         android:id="@+id/accountSettingFragment"
         android:name="com.glints.lingoparents.ui.accountsetting.AccountSettingFragment"
         android:label="fragment_account_setting"
-        tools:layout="@layout/fragment_account_setting" /><action android:id="@+id/action_global_accountSettingFragment" app:destination="@id/accountSettingFragment"/>
+        tools:layout="@layout/fragment_account_setting" />
+    <action
+        android:id="@+id/action_global_accountSettingFragment"
+        app:destination="@id/accountSettingFragment" />
     <fragment
         android:id="@+id/insightListFragment"
         android:name="com.glints.lingoparents.ui.insight.InsightListFragment"
@@ -44,7 +47,7 @@
         android:id="@+id/liveEventListFragment"
         android:name="com.glints.lingoparents.ui.liveevent.LiveEventListFragment"
         android:label="fragment_live_event_list"
-        tools:layout="@layout/fragment_live_event_list" >
+        tools:layout="@layout/fragment_live_event_list">
         <action
             android:id="@+id/action_liveEventListFragment_to_liveEventDetailFragment"
             app:destination="@id/liveEventDetailFragment" />
