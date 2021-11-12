@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.accountsetting.AccountSettingFragment">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_back_button"
+        android:layout_width="18dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardCornerRadius="40dp"
+        app:cardElevation="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_back_account_setting"
+            tools:ignore="ContentDescription" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tv_title_account_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_w700"
+        android:text="@string/account_setting"
+        android:textColor="#182E7C"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@id/cv_back_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/cv_back_button" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_profile_picture"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="12dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardCornerRadius="40dp"
+        app:cardElevation="0dp"
+        app:layout_constraintStart_toStartOf="@id/cv_back_button"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_account_setting">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_user_avatar_male_square"
+            tools:ignore="ContentDescription" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tv_hello"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:fontFamily="@font/poppins_w700"
+        android:text="@string/hello"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/cv_profile_picture"
+        app:layout_constraintStart_toEndOf="@id/cv_profile_picture"
+        app:layout_constraintTop_toTopOf="@id/cv_profile_picture" />
+
+    <TextView
+        android:id="@+id/tv_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:fontFamily="@font/poppins_w700"
+        android:text="@string/parent"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/cv_profile_picture"
+        app:layout_constraintStart_toEndOf="@id/tv_hello"
+        app:layout_constraintTop_toTopOf="@id/cv_profile_picture" />
+
+    <View
+        android:id="@+id/line_separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/teal_200"
+        app:layout_constraintTop_toBottomOf="@id/cv_profile_picture" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_account_setting"
+        style="@style/AccountSettingTabsTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="@id/line_separator"
+        app:layout_constraintTop_toBottomOf="@id/line_separator"
+        app:tabGravity="start"
+        app:tabIndicator="@null"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/black"
+        app:tabTextColor="@color/teal_700"
+        app:tabUnboundedRipple="false" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager_account_setting"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tab_account_setting" />
+</androidx.constraintlayout.widget.ConstraintLayout>

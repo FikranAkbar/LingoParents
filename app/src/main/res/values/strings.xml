@@ -144,4 +144,24 @@
         <item>@drawable/french_card3</item>
     </integer-array>
 
+    <string name="your_personal_information">Your Personal Information</string>
+    <string name="full_name">Full Name</string>
+    <string name="address">Address</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="edit">Edit</string>
+    <string name="logout">Logout</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="change_your_password">Change Your Password</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
+    <string name="hello">Hello,</string>
+    <string name="parent">Parent!</string>
+    <string name="account_setting_tab_text_1">Profile</string>
+    <string name="account_setting_tab_text_2">Change Password</string>
+    <string name="parent_s_name">Parent\'s name</string>
+    <string name="parents_email_com">parents@email.com</string>
+    <string name="parent_s_address">Parent\'s Address</string>
+    <string name="parent_s_number">Parent\'s Number</string>
+    <string name="account_setting">Account Setting</string>
 </resources>
