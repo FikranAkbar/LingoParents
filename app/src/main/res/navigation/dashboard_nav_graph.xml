@@ -34,19 +34,16 @@
         android:id="@+id/detailCourseFragment"
         android:name="com.glints.lingoparents.ui.course.DetailCourseFragment"
         android:label="fragment_detail_course"
-        tools:layout="@layout/fragment_detail_course" >
+        tools:layout="@layout/fragment_detail_course">
         <argument
             android:name="course"
             app:argType="com.glints.lingoparents.data.model.CourseItem" />
-        <action
-            android:id="@+id/action_detailCourseFragment_to_allCoursesFragment"
-            app:destination="@id/allCoursesFragment" />
     </fragment>
     <fragment
         android:id="@+id/allCoursesFragment"
         android:name="com.glints.lingoparents.ui.course.AllCoursesFragment"
         android:label="fragment_all_courses"
-        tools:layout="@layout/fragment_all_courses" >
+        tools:layout="@layout/fragment_all_courses">
         <action
             android:id="@+id/action_allCoursesFragment_to_detailCourseFragment"
             app:destination="@id/detailCourseFragment" />
@@ -64,9 +61,12 @@
         android:id="@+id/accountSettingFragment"
         android:name="com.glints.lingoparents.ui.accountsetting.AccountSettingFragment"
         android:label="fragment_account_setting"
-        tools:layout="@layout/fragment_account_setting" >
-        <action android:id="@+id/action_global_accountSettingFragment" app:destination="@id/accountSettingFragment"/>
+        tools:layout="@layout/fragment_account_setting">
     </fragment>
+    <action
+        android:id="@+id/action_global_accountSettingFragment"
+        app:destination="@id/accountSettingFragment" />
+
     <fragment
         android:id="@+id/insightListFragment"
         android:name="com.glints.lingoparents.ui.insight.InsightListFragment"

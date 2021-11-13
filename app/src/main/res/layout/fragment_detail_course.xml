@@ -54,10 +54,11 @@
         <TextView
             android:id="@+id/tvCourse1"
             android:layout_width="0dp"
-
             android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:fontFamily="@font/poppins_w600"
             android:gravity="center"
+            android:maxLines="7"
             android:text="Indulge the beauty of French artistic refinements, such as fine arts, music, dance, and architecture through language."
             app:layout_constraintBottom_toTopOf="@+id/ivCourseCard2"
             app:layout_constraintEnd_toEndOf="parent"
@@ -77,14 +78,16 @@
             android:id="@+id/tvCourse2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:fontFamily="@font/poppins_w600"
             android:gravity="center"
-            tools:text="Spoken across the globe with various pronounciation and used as an official language in 29 countries."
+            android:maxLines="7"
             app:layout_constraintBottom_toTopOf="@+id/ivCourseCard3"
             app:layout_constraintEnd_toStartOf="@+id/ivCourseCard2"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivCourseCard1" />
+            app:layout_constraintTop_toBottomOf="@+id/ivCourseCard1"
+            tools:text="Spoken across the globe with various pronounciation and used as an official language in 29 countries." />
 
         <ImageView
             android:id="@+id/ivCourseCard3"
@@ -98,8 +101,10 @@
             android:id="@+id/tvCourse3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:fontFamily="@font/poppins_w600"
             android:gravity="center"
+            android:maxLines="7"
             android:text="French pronounciation is surprisingly simple and more consistent than the other language."
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
