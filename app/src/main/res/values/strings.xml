@@ -56,4 +56,9 @@
     <string name="parent_s_address">Parent\'s Address</string>
     <string name="parent_s_number">Parent\'s Number</string>
     <string name="account_setting">Account Setting</string>
+    <string name="detail_insight">Insight Detail</string>
+    <string name="report">Report</string>
+    <string name="add_comment">Add Comment</string>
+    <string name="comments">Comments</string>
+    <string name="post">Post</string>
 </resources>
