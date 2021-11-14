@@ -56,4 +56,10 @@
     <string name="parent_s_address">Parent\'s Address</string>
     <string name="parent_s_number">Parent\'s Number</string>
     <string name="account_setting">Account Setting</string>
+    <string name="detail_event">Detail Event</string>
+    <string name="date_amp_time"><![CDATA[Date & Time:]]></string>
+    <string name="price">Price</string>
+    <string name="idr">IDR</string>
+    <string name="register">Register</string>
+    <string name="speaker">Speaker</string>
 </resources>
