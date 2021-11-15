@@ -8,7 +8,7 @@
         android:title="@string/home" />
 
     <item
-        android:id="@+id/forgotPasswordFragment"
+        android:id="@+id/liveEventListFragment"
         android:icon="@drawable/ic_event"
         android:title="@string/event" />
 
@@ -18,7 +18,7 @@
         android:title="@string/insight" />
 
     <item
-        android:id="@+id/loginFragment"
+        android:id="@+id/allCoursesFragment"
         android:icon="@drawable/ic_course"
         android:title="@string/course" />
 

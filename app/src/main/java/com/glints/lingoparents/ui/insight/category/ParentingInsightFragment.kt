@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.glints.lingoparents.data.model.InsightSliderItem
 import com.glints.lingoparents.databinding.FragmentParentingInsightBinding
+import com.glints.lingoparents.ui.insight.InsightListFragmentDirections
 
 class ParentingInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
 
@@ -48,7 +50,8 @@ class ParentingInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
     }
 
     override fun onItemClicked(insightSliderItem: InsightSliderItem) {
-        TODO("Not yet implemented")
+        val action = InsightListFragmentDirections.actionInsightListFragmentToDetailInsightFragment()
+        findNavController().navigate(action)
     }
 
 }

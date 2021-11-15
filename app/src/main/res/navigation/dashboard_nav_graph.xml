@@ -31,10 +31,31 @@
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
     <fragment
+        android:id="@+id/detailCourseFragment"
+        android:name="com.glints.lingoparents.ui.course.DetailCourseFragment"
+        android:label="fragment_detail_course"
+        tools:layout="@layout/fragment_detail_course">
+        <argument
+            android:name="course"
+            app:argType="com.glints.lingoparents.data.model.CourseItem" />
+    </fragment>
+    <fragment
+        android:id="@+id/allCoursesFragment"
+        android:name="com.glints.lingoparents.ui.course.AllCoursesFragment"
+        android:label="fragment_all_courses"
+        tools:layout="@layout/fragment_all_courses">
+        <action
+            android:id="@+id/action_allCoursesFragment_to_detailCourseFragment"
+            app:destination="@id/detailCourseFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/accountSettingFragment"
         android:name="com.glints.lingoparents.ui.accountsetting.AccountSettingFragment"
         android:label="fragment_account_setting"
-        tools:layout="@layout/fragment_account_setting" /><action android:id="@+id/action_global_accountSettingFragment" app:destination="@id/accountSettingFragment"/>
+        tools:layout="@layout/fragment_account_setting"/>
+    <action
+        android:id="@+id/action_global_accountSettingFragment"
+        app:destination="@id/accountSettingFragment" />
     <fragment
         android:id="@+id/insightListFragment"
         android:name="com.glints.lingoparents.ui.insight.InsightListFragment"
@@ -45,4 +66,21 @@
         android:name="com.glints.lingoparents.ui.progress.ProgressFragment"
         android:label="fragment_progress"
         tools:layout="@layout/fragment_progress" />
+    <action
+        android:id="@+id/action_insightListFragment_to_detailInsightFragment"
+        app:destination="@id/detailInsightFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    <fragment
+        android:id="@+id/liveEventListFragment"
+        android:name="com.glints.lingoparents.ui.liveevent.LiveEventListFragment"
+        android:label="fragment_live_event_list"
+        tools:layout="@layout/fragment_live_event_list" />
+    <fragment
+        android:id="@+id/detailInsightFragment"
+        android:name="com.glints.lingoparents.ui.insight.detail.DetailInsightFragment"
+        android:label="fragment_detail_insight"
+        tools:layout="@layout/fragment_detail_insight" />
 </navigation>
