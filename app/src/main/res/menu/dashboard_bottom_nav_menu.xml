@@ -18,7 +18,7 @@
         android:title="@string/insight" />
 
     <item
-        android:id="@+id/loginFragment"
+        android:id="@+id/allCoursesFragment"
         android:icon="@drawable/ic_course"
         android:title="@string/course" />
 
