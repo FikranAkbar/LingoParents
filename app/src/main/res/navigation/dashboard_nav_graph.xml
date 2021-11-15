@@ -40,4 +40,9 @@
         android:name="com.glints.lingoparents.ui.insight.InsightListFragment"
         android:label="fragment_insight_list"
         tools:layout="@layout/fragment_insight_list" />
+    <fragment
+        android:id="@+id/progressFragment"
+        android:name="com.glints.lingoparents.ui.progress.ProgressFragment"
+        android:label="fragment_progress"
+        tools:layout="@layout/fragment_progress" />
 </navigation>
