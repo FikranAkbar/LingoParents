@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.glints.lingoparents.data.model.InsightCommentItem
 import com.glints.lingoparents.databinding.FragmentDetailInsightBinding
@@ -38,6 +40,13 @@ class DetailInsightFragment : Fragment() {
             )
         }
 
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner,
+            object: OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    findNavController().popBackStack()
+                }
+            })
+
         return binding.root
     }
 
@@ -48,6 +57,10 @@ class DetailInsightFragment : Fragment() {
     }
 
     private fun initViews(){
+        binding.ivBackButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
         binding.tvInsightAddComment.setOnClickListener {
             binding.tfInsightComment.visibility = View.VISIBLE
             binding.btnComment.visibility = View.VISIBLE

@@ -21,14 +21,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <ImageView
+                android:id="@+id/iv_back_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_back_account_setting"
+                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
             <TextView
                 style="@style/Typography.Headline5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="18dp"
                 android:gravity="center"
-                android:text="@string/detail_insight"
-                app:drawableStartCompat="@drawable/ic_back" />
+                android:text="@string/detail_insight" />
         </androidx.cardview.widget.CardView>
 
         <ImageView
