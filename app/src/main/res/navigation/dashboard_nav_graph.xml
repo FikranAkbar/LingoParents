@@ -42,7 +42,15 @@
         android:id="@+id/insightListFragment"
         android:name="com.glints.lingoparents.ui.insight.InsightListFragment"
         android:label="fragment_insight_list"
-        tools:layout="@layout/fragment_insight_list" />
+        tools:layout="@layout/fragment_insight_list">
+        <action
+            android:id="@+id/action_insightListFragment_to_detailInsightFragment"
+            app:destination="@id/detailInsightFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
     <fragment
         android:id="@+id/liveEventListFragment"
         android:name="com.glints.lingoparents.ui.liveevent.LiveEventListFragment"
@@ -57,4 +65,10 @@
         android:name="com.glints.lingoparents.ui.liveevent.detail.LiveEventDetailFragment"
         android:label="fragment_live_event_detail"
         tools:layout="@layout/fragment_live_event_detail" />
+        tools:layout="@layout/fragment_live_event_list" />
+    <fragment
+        android:id="@+id/detailInsightFragment"
+        android:name="com.glints.lingoparents.ui.insight.detail.DetailInsightFragment"
+        android:label="fragment_detail_insight"
+        tools:layout="@layout/fragment_detail_insight" />
 </navigation>
