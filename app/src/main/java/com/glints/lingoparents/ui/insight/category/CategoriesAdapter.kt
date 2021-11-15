@@ -28,6 +28,9 @@ class CategoriesAdapter(private val listener: OnItemClickCallback, private val d
 
     inner class AdapterHolder(private val binding: ItemInsightBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(insightSliderItem: InsightSliderItem, holder: AdapterHolder){
+            holder.itemView.setOnClickListener {
+                listener.onItemClicked(insightSliderItem)
+            }
             binding.apply {
                 Glide.with(holder.itemView.context).load(R.drawable.img_dummy_insight_card).into(ivInsight)
             }

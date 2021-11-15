@@ -34,7 +34,7 @@ class InsightListFragment : Fragment() {
     }
 
     private fun initViews(){
-        binding.vpInsight.adapter = ViewPagerAdapter(parentFragmentManager, lifecycle)
+        binding.vpInsight.adapter = ViewPagerAdapter(childFragmentManager, lifecycle)
 
         val tabNames = arrayOf("All Insights", "Parenting", "Lifestyle")
         TabLayoutMediator(binding.tlInsightCategory, binding.vpInsight){tab,position ->
