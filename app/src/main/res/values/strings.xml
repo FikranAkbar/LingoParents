@@ -60,6 +60,10 @@
     <string name="date_amp_time"><![CDATA[Date & Time:]]></string>
     <string name="price">Price</string>
     <string name="idr">IDR</string>
-    <string name="register">Register</string>
     <string name="speaker">Speaker</string>
+    <string name="description">Description</string>
+    <string name="pt_markplus_indonesia">PT Markplus Indonesia</string>
+    <string name="marketing_managers">Marketing Managers</string>
+    <string name="long_paragraph_lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean rhoncus quam eu malesuada consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean rhoncus quam eu malesuada consectetur.</string>
+    <string name="olivia_putri_rosmala">Olivia Putri Rosmala</string>
 </resources>
