@@ -53,12 +53,9 @@
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_dashboard.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_forgot_password.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_header.xml" value="0.6558988764044944" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_home.xml" value="0.12" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_login.xml" value="0.21" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_profile.xml" value="0.5" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_register.xml" value="0.5" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_home.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_login.xml" value="0.2755208333333333" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_profile.xml" value="0.5" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_register.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_splash.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragmnet_login.xml" value="0.2755208333333333" />
@@ -68,20 +65,27 @@
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/carousel_item_insight.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/carousel_item_live_event.xml" value="0.1" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_account_setting.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_all_courses.xml" value="0.209375" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_all_insight.xml" value="0.209375" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_change_password.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_children_courses.xml" value="0.209375" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_course.xml" value="0.209375" />
-        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_detail_course.xml" value="0.1" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_detail_course.xml" value="0.33" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_header.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_insight_list.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_lifestyle_insight.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_live_event_list.xml" value="0.33" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_login.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_parenting_insight.xml" value="0.1" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_profile.xml" value="0.1" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_progress.xml" value="0.15" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_register.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_splash.xml" value="0.1" />
-        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/item_course.xml" value="0.209375" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/item_course.xml" value="0.2" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/item_dashboard_children.xml" value="0.1" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/item_insight.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/menu/dashboard_bottom_nav_menu.xml" value="0.209375" />
       </map>
     </option>
