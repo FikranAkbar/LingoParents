@@ -39,13 +39,17 @@
         android:hint="@string/email"
         app:boxBackgroundColor="@color/white"
         app:boxBackgroundMode="filled"
+        app:boxStrokeColor="#F9663A"
+        app:hintTextColor="#F9663A"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_welcome_back">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:textAppearance="@style/Typography.Body1"
+            android:textColor="#F9663A" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -57,7 +61,9 @@
         android:hint="@string/password"
         app:boxBackgroundColor="@color/white"
         app:boxBackgroundMode="filled"
+        app:boxStrokeColor="#F9663A"
         app:endIconMode="password_toggle"
+        app:hintTextColor="#F9663A"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_email">
@@ -65,7 +71,9 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textAppearance="@style/Typography.Body1"
+            android:textColor="#F9663A" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
@@ -93,10 +101,10 @@
         android:fontFamily="@font/poppins_w500"
         android:letterSpacing="0.01"
         android:paddingVertical="8dp"
-        app:backgroundTint="@color/custom_material_button_state_color"
         android:text="@string/login"
         android:textAllCaps="false"
         android:textSize="16sp"
+        app:backgroundTint="@color/custom_material_button_state_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_forget_password" />
