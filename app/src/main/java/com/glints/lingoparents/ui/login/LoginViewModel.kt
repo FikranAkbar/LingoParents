@@ -16,7 +16,7 @@ class LoginViewModel : ViewModel() {
     val loginEvent = loginEventChannel.receiveAsFlow()
 
     fun onLoginButtonClick(email: String, password: String) = viewModelScope.launch {
-        loginUserByEmailPassword(email, password)
+        loginEventChannel.send(LoginEvent.TryToLoginUser(email, password))
     }
 
     fun onForgotPasswordButtonClick() = viewModelScope.launch {
@@ -39,7 +39,7 @@ class LoginViewModel : ViewModel() {
         loginEventChannel.send(LoginEvent.Error(message))
     }
 
-    private fun loginUserByEmailPassword(email: String, password: String) = viewModelScope.launch {
+    fun loginUserByEmailPassword(email: String, password: String) = viewModelScope.launch {
         onApiCallStarted()
         APIClient
             .service
@@ -65,6 +65,7 @@ class LoginViewModel : ViewModel() {
     sealed class LoginEvent {
         object NavigateToForgotPassword : LoginEvent()
         object NavigateToRegister : LoginEvent()
+        data class TryToLoginUser(val email: String, val password: String) : LoginEvent()
         object Loading : LoginEvent()
         data class Success(val result: String) : LoginEvent()
         data class Error(val message: String) : LoginEvent()

@@ -1,6 +1,5 @@
 package com.glints.lingoparents.ui.login
 
-import android.accessibilityservice.AccessibilityService
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -17,6 +16,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentLoginBinding
+import com.glints.lingoparents.utils.AuthFormValidator
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 
@@ -36,15 +36,15 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             mbtnLogin.setOnClickListener {
                 viewModel.onLoginButtonClick(
                     tilEmail.editText?.text.toString(),
-                    tilPassword.editText?.text.toString())
-
+                    tilPassword.editText?.text.toString()
+                )
                 closeKeyboard()
             }
         }
 
         lifecycleScope.launchWhenStarted {
             viewModel.loginEvent.collect { event ->
-                when(event) {
+                when (event) {
                     is LoginViewModel.LoginEvent.Error -> {
 
                     }
@@ -59,6 +59,29 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     }
                     is LoginViewModel.LoginEvent.Success -> {
                         Snackbar.make(binding.root, event.result, Snackbar.LENGTH_SHORT).show()
+                    }
+                    is LoginViewModel.LoginEvent.TryToLoginUser -> {
+                        binding.apply {
+                            AuthFormValidator.apply {
+                                hideFieldError(arrayListOf(tilEmail, tilPassword))
+
+                                val email = event.email
+                                val password = event.password
+
+                                if (isValidEmail(email) &&
+                                    isValidPassword(password)
+                                ) {
+                                    viewModel.loginUserByEmailPassword(email, password)
+                                } else {
+                                    if (!isValidEmail(email)) {
+                                        showFieldError(tilEmail, EMAIL_WRONG_FORMAT_ERROR)
+                                    }
+                                    if (!isValidPassword(password)) {
+                                        showFieldError(tilPassword, PASSWORD_EMPTY_ERROR)
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -131,7 +154,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         requireActivity().apply {
             val view = currentFocus
             if (view != null) {
-                val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                val imm =
+                    requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(view.windowToken, 0)
             }
         }
