@@ -25,6 +25,7 @@
         android:fontFamily="@font/poppins_w600"
         android:text="@string/welcome_back"
         android:textAppearance="@style/Typography.Headline5"
+        android:textColor="#182E7C"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_logo" />
@@ -78,6 +79,7 @@
         android:letterSpacing="0.01"
         android:text="@string/forgot_your_password"
         android:textAppearance="@style/Typography.Subtitle2"
+        android:textColor="#182E7C"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_password" />
@@ -90,8 +92,11 @@
         android:layout_marginTop="32dp"
         android:fontFamily="@font/poppins_w500"
         android:letterSpacing="0.01"
+        android:paddingVertical="8dp"
+        app:backgroundTint="@color/custom_material_button_state_color"
         android:text="@string/login"
         android:textAllCaps="false"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_forget_password" />
@@ -177,10 +182,10 @@
         android:id="@+id/tv_terms_privacy_bottom_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="16dp"
         android:text="@string/terms_privacy_bottom_text"
         android:textAlignment="center"
-        android:layout_marginHorizontal="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
