@@ -81,4 +81,7 @@ dependencies {
 
     // Pagination 3
     implementation("androidx.paging:paging-runtime:3.0.1")
+
+    // MKLoader (Loading View)
+    implementation 'com.tuyenmonkey:mkloader:1.4.0'
 }

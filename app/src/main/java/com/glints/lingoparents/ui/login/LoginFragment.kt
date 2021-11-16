@@ -45,27 +45,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         lifecycleScope.launchWhenStarted {
             viewModel.loginEvent.collect { event ->
                 when (event) {
-                    is LoginViewModel.LoginEvent.Error -> {
-                        event.message.let {
-                            if (it.contains("email", ignoreCase = true)) {
-                                AuthFormValidator.showFieldError(binding.tilEmail, it)
-                            } else if (it.contains("password", ignoreCase = true)) {
-                                AuthFormValidator.showFieldError(binding.tilPassword, it)
-                            }
-                        }
-                    }
-                    is LoginViewModel.LoginEvent.Loading -> {
-
-                    }
-                    is LoginViewModel.LoginEvent.NavigateToForgotPassword -> {
-
-                    }
-                    is LoginViewModel.LoginEvent.NavigateToRegister -> {
-
-                    }
-                    is LoginViewModel.LoginEvent.Success -> {
-                        Snackbar.make(binding.root, event.result, Snackbar.LENGTH_SHORT).show()
-                    }
                     is LoginViewModel.LoginEvent.TryToLoginUser -> {
                         binding.apply {
                             AuthFormValidator.apply {
@@ -89,6 +68,30 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                             }
                         }
                     }
+                    is LoginViewModel.LoginEvent.Loading -> {
+                        showLoading(true)
+                    }
+                    is LoginViewModel.LoginEvent.Success -> {
+                        showLoading(false)
+                        Snackbar.make(binding.root, event.result, Snackbar.LENGTH_SHORT).show()
+                    }
+                    is LoginViewModel.LoginEvent.Error -> {
+                        showLoading(false)
+                        event.message.let {
+                            if (it.contains("email", ignoreCase = true)) {
+                                AuthFormValidator.showFieldError(binding.tilEmail, it)
+                            } else if (it.contains("password", ignoreCase = true)) {
+                                AuthFormValidator.showFieldError(binding.tilPassword, it)
+                            }
+                        }
+                    }
+                    is LoginViewModel.LoginEvent.NavigateToForgotPassword -> {
+
+                    }
+                    is LoginViewModel.LoginEvent.NavigateToRegister -> {
+
+                    }
+
                 }
             }
         }
@@ -163,6 +166,21 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 val imm =
                     requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(view.windowToken, 0)
+            }
+        }
+    }
+
+    private fun showLoading(bool: Boolean) {
+        binding.apply {
+            when(bool) {
+                true -> {
+                    vLoadingBackground.visibility = View.VISIBLE
+                    vLoadingProgress.visibility = View.VISIBLE
+                }
+                else -> {
+                    vLoadingBackground.visibility = View.GONE
+                    vLoadingProgress.visibility = View.GONE
+                }
             }
         }
     }

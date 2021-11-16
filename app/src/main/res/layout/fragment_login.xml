@@ -1,218 +1,232 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ui.login.LoginFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="18dp"
+        android:src="@drawable/logo_lingoparents_small"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tv_welcome_back"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:context=".ui.login.LoginFragment">
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/poppins_w600"
+        android:text="@string/welcome_back"
+        android:textAppearance="@style/Typography.Headline5"
+        android:textColor="#182E7C"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_logo" />
 
-        <ImageView
-            android:id="@+id/iv_logo"
-            android:layout_width="200dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="18dp"
-            android:src="@drawable/logo_lingoparents_small"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="40dp"
+        android:hint="@string/email"
+        app:boxBackgroundColor="@color/white"
+        app:boxBackgroundMode="filled"
+        app:boxStrokeColor="#F9663A"
+        app:hintTextColor="#F9663A"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_welcome_back">
 
-        <TextView
-            android:id="@+id/tv_welcome_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:fontFamily="@font/poppins_w600"
-            android:text="@string/welcome_back"
-            android:textAppearance="@style/Typography.Headline5"
-            android:textColor="#182E7C"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_logo" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:imeOptions="actionNext"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:textAppearance="@style/Typography.Body1"
+            android:textColor="#F9663A" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_email"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginTop="40dp"
-            android:hint="@string/email"
-            app:boxBackgroundColor="@color/white"
-            app:boxBackgroundMode="filled"
-            app:boxStrokeColor="#F9663A"
-            app:hintTextColor="#F9663A"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_welcome_back">
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="20dp"
+        android:hint="@string/password"
+        app:boxBackgroundColor="@color/white"
+        app:boxBackgroundMode="filled"
+        app:boxStrokeColor="#F9663A"
+        app:endIconMode="password_toggle"
+        app:hintTextColor="#F9663A"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/til_email">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:imeOptions="actionNext"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:textAppearance="@style/Typography.Body1"
-                android:textColor="#F9663A" />
-        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:textAppearance="@style/Typography.Body1"
+            android:textColor="#F9663A" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_password"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginTop="20dp"
-            android:hint="@string/password"
-            app:boxBackgroundColor="@color/white"
-            app:boxBackgroundMode="filled"
-            app:boxStrokeColor="#F9663A"
-            app:endIconMode="password_toggle"
-            app:hintTextColor="#F9663A"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/til_email">
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/tv_forget_password"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/poppins_w600"
+        android:letterSpacing="0.01"
+        android:text="@string/forgot_your_password"
+        android:textAppearance="@style/Typography.Subtitle2"
+        android:textColor="#182E7C"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/til_password" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:imeOptions="actionDone"
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:textAppearance="@style/Typography.Body1"
-                android:textColor="#F9663A" />
-        </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mbtn_login"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/poppins_w500"
+        android:letterSpacing="0.01"
+        android:paddingVertical="8dp"
+        android:text="@string/login"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        app:backgroundTint="@color/custom_material_button_state_color"
+        app:layout_constraintBottom_toTopOf="@id/tv_or"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/tv_forget_password"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="@font/poppins_w600"
-            android:letterSpacing="0.01"
-            android:text="@string/forgot_your_password"
-            android:textAppearance="@style/Typography.Subtitle2"
-            android:textColor="#182E7C"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/til_password" />
+    <View
+        android:id="@+id/line_left"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="8dp"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="@id/tv_or"
+        app:layout_constraintEnd_toStartOf="@id/tv_or"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_or" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/mbtn_login"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginTop="32dp"
-            android:fontFamily="@font/poppins_w500"
-            android:letterSpacing="0.01"
-            android:paddingVertical="8dp"
-            android:text="@string/login"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            app:backgroundTint="@color/custom_material_button_state_color"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_forget_password" />
+    <TextView
+        android:id="@+id/tv_or"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/poppins_w400"
+        android:text="@string/or"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@id/mbtn_login_with_google"
+        app:layout_constraintEnd_toEndOf="@id/guideline2"
+        app:layout_constraintStart_toStartOf="@id/guideline2" />
 
-        <View
-            android:id="@+id/line_left"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginHorizontal="8dp"
-            android:background="@color/black"
-            app:layout_constraintBottom_toBottomOf="@id/tv_or"
-            app:layout_constraintEnd_toStartOf="@id/tv_or"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_or" />
+    <View
+        android:id="@+id/line_right"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="8dp"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="@id/tv_or"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_or"
+        app:layout_constraintTop_toTopOf="@id/tv_or" />
 
-        <TextView
-            android:id="@+id/tv_or"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/poppins_w400"
-            android:text="@string/or"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="@id/guideline2"
-            app:layout_constraintStart_toStartOf="@id/guideline2"
-            app:layout_constraintTop_toBottomOf="@id/mbtn_login" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mbtn_login_with_google"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:letterSpacing="0.01"
+        android:text="@string/continue_with_google"
+        android:textAllCaps="false"
+        android:textAppearance="@style/Typography.Caption"
+        android:textColor="@color/black"
+        app:backgroundTint="@color/white"
+        app:backgroundTintMode="src_atop"
+        app:icon="@drawable/ic_google_color"
+        app:iconGravity="textStart"
+        app:iconTint="@null"
+        app:layout_constraintBottom_toTopOf="@id/tv_new_to_lingoparents"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="UnusedAttribute" />
 
-        <View
-            android:id="@+id/line_right"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginHorizontal="8dp"
-            android:background="@color/black"
-            app:layout_constraintBottom_toBottomOf="@id/tv_or"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_or"
-            app:layout_constraintTop_toTopOf="@id/tv_or" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="160dp"
+        android:paddingHorizontal="-20dp"
+        android:src="@drawable/img_home_students_backdrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="ContentDescription" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/mbtn_login_with_google"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginTop="16dp"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:letterSpacing="0.01"
-            android:text="@string/continue_with_google"
-            android:textAllCaps="false"
-            android:textAppearance="@style/Typography.Caption"
-            android:textColor="@color/black"
-            app:backgroundTint="@color/white"
-            app:backgroundTintMode="src_atop"
-            app:icon="@drawable/ic_google_color"
-            app:iconGravity="textStart"
-            app:iconTint="@null"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_or"
-            tools:ignore="UnusedAttribute" />
+    <TextView
+        android:id="@+id/tv_new_to_lingoparents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="@string/new_to_lingoparents"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@id/tv_terms_privacy_bottom_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="160dp"
-            android:paddingHorizontal="-20dp"
-            android:src="@drawable/img_home_students_backdrop"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="ContentDescription" />
+    <TextView
+        android:id="@+id/tv_terms_privacy_bottom_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="12dp"
+        android:text="@string/terms_privacy_bottom_text"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_new_to_lingoparents"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/new_to_lingoparents"
-            android:textAlignment="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/mbtn_login_with_google" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
 
-        <TextView
-            android:id="@+id/tv_terms_privacy_bottom_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="12dp"
-            android:text="@string/terms_privacy_bottom_text"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_new_to_lingoparents" />
+    <View
+        android:id="@+id/v_loading_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#66000000"
+        android:elevation="10dp"
+        android:visibility="gone" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+    <com.tuyenmonkey.mkloader.MKLoader
+        android:id="@+id/v_loading_progress"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:visibility="gone"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:mk_color="#F9663A"
+        app:mk_type="FishSpinner" />
+</androidx.constraintlayout.widget.ConstraintLayout>
