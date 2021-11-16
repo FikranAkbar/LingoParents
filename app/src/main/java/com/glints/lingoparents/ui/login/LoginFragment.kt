@@ -46,7 +46,13 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             viewModel.loginEvent.collect { event ->
                 when (event) {
                     is LoginViewModel.LoginEvent.Error -> {
-
+                        event.message.let {
+                            if (it.contains("email", ignoreCase = true)) {
+                                AuthFormValidator.showFieldError(binding.tilEmail, it)
+                            } else if (it.contains("password", ignoreCase = true)) {
+                                AuthFormValidator.showFieldError(binding.tilPassword, it)
+                            }
+                        }
                     }
                     is LoginViewModel.LoginEvent.Loading -> {
 

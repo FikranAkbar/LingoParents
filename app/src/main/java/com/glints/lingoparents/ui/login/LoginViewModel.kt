@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.model.response.LoginUserResponse
+import com.glints.lingoparents.utils.ErrorUtils
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -52,7 +53,8 @@ class LoginViewModel : ViewModel() {
                     if (response.isSuccessful) {
                         onApiCallSuccess("Login Successful")
                     } else {
-                        onApiCallError("Login Failed...")
+                        val apiError = ErrorUtils.parseError(response)
+                        onApiCallError(apiError.message())
                     }
                 }
 
