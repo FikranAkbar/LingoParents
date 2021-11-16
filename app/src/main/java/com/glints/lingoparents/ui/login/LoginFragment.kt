@@ -1,5 +1,7 @@
 package com.glints.lingoparents.ui.login
 
+import android.accessibilityservice.AccessibilityService
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableString
@@ -8,12 +10,15 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentLoginBinding
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.collect
 
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
@@ -26,6 +31,38 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         setRegisterTextClickListener()
         setTermsPrivacyTextClickListener()
+
+        binding.apply {
+            mbtnLogin.setOnClickListener {
+                viewModel.onLoginButtonClick(
+                    tilEmail.editText?.text.toString(),
+                    tilPassword.editText?.text.toString())
+
+                closeKeyboard()
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.loginEvent.collect { event ->
+                when(event) {
+                    is LoginViewModel.LoginEvent.Error -> {
+
+                    }
+                    is LoginViewModel.LoginEvent.Loading -> {
+
+                    }
+                    is LoginViewModel.LoginEvent.NavigateToForgotPassword -> {
+
+                    }
+                    is LoginViewModel.LoginEvent.NavigateToRegister -> {
+
+                    }
+                    is LoginViewModel.LoginEvent.Success -> {
+                        Snackbar.make(binding.root, event.result, Snackbar.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
     }
 
     private fun setRegisterTextClickListener() {
@@ -87,6 +124,16 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         binding.tvTermsPrivacyBottomText.apply {
             text = ss
             movementMethod = LinkMovementMethod.getInstance()
+        }
+    }
+
+    private fun closeKeyboard() {
+        requireActivity().apply {
+            val view = currentFocus
+            if (view != null) {
+                val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
+            }
         }
     }
 }
