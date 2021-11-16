@@ -7,31 +7,22 @@ import android.text.Spanned
 import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentLoginBinding
-import com.glints.lingoparents.ui.MainActivity
-
-import android.R.string.no
-
-
-
 
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private lateinit var binding: FragmentLoginBinding
-    private lateinit var viewModel: LoginViewModel
+    private val viewModel: LoginViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentLoginBinding.bind(view)
-        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[
-                LoginViewModel::class.java
-        ]
 
         setRegisterTextClickListener()
         setTermsPrivacyTextClickListener()
