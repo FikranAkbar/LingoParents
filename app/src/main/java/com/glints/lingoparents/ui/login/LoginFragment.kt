@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentLoginBinding
 import com.glints.lingoparents.utils.AuthFormValidator
@@ -23,11 +24,12 @@ import kotlinx.coroutines.flow.collect
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
-    private lateinit var binding: FragmentLoginBinding
+    private var _binding: FragmentLoginBinding? = null
+    private val binding get() = _binding!!
     private val viewModel: LoginViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding = FragmentLoginBinding.bind(view)
+        _binding = FragmentLoginBinding.bind(view)
 
         setRegisterTextClickListener()
         setTermsPrivacyTextClickListener()
@@ -89,7 +91,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
                     }
                     is LoginViewModel.LoginEvent.NavigateToRegister -> {
-
+                        val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
+                        findNavController().navigate(action)
                     }
 
                 }
@@ -103,7 +106,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         val registerNowClickableSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
-                Toast.makeText(activity, "Register Clicked", Toast.LENGTH_SHORT).show()
+                viewModel.onRegisterButtonClick()
             }
 
             override fun updateDrawState(ds: TextPaint) {
@@ -183,5 +186,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

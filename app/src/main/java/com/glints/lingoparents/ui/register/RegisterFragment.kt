@@ -2,20 +2,39 @@ package com.glints.lingoparents.ui.register
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentRegisterBinding
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
-    private lateinit var binding: FragmentRegisterBinding
-    private lateinit var viewModel: RegisterViewModel
+    private var _binding: FragmentRegisterBinding? = null
+    private val binding get() = _binding!!
+    private val viewModel: RegisterViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding = FragmentRegisterBinding.bind(view)
-        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[
-                RegisterViewModel::class.java
-        ]
+        _binding = FragmentRegisterBinding.bind(view)
+
+        binding.apply {
+            mbtnLogin.setOnClickListener {
+                findNavController().popBackStack()
+            }
+        }
+
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner,
+            object: OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    findNavController().popBackStack()
+                }
+            })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
