@@ -51,20 +51,20 @@
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         app:cardBackgroundColor="#F9663A"
-        app:layout_constraintBottom_toBottomOf="@id/tf_first_name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tf_first_name">
+        app:layout_constraintTop_toTopOf="@id/til_first_name">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:paddingVertical="10dp"
             android:src="@drawable/ic_user"
             tools:ignore="ContentDescription" />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tf_first_name"
+        android:id="@+id/til_first_name"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -86,7 +86,8 @@
             android:hint="@string/first_name"
             android:imeOptions="actionNext"
             android:inputType="text"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:paddingVertical="12dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.card.MaterialCardView
@@ -96,20 +97,20 @@
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         app:cardBackgroundColor="#F9663A"
-        app:layout_constraintBottom_toBottomOf="@id/tf_last_name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tf_last_name">
+        app:layout_constraintTop_toTopOf="@id/til_last_name">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:paddingVertical="10dp"
             android:src="@drawable/ic_user"
             tools:ignore="ContentDescription" />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tf_last_name"
+        android:id="@+id/til_last_name"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -124,7 +125,7 @@
         app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/cv_last_name"
-        app:layout_constraintTop_toBottomOf="@id/tf_first_name">
+        app:layout_constraintTop_toBottomOf="@id/til_first_name">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -132,7 +133,8 @@
             android:hint="@string/last_name"
             android:imeOptions="actionNext"
             android:inputType="text"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:paddingVertical="12dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.card.MaterialCardView
@@ -142,21 +144,21 @@
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         app:cardBackgroundColor="#F9663A"
-        app:layout_constraintBottom_toBottomOf="@id/tf_email"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tf_email">
+        app:layout_constraintTop_toTopOf="@id/til_email">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:paddingHorizontal="10dp"
+            android:paddingVertical="14dp"
             android:src="@drawable/ic_email"
             tools:ignore="ContentDescription" />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tf_email"
+        android:id="@+id/til_email"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -170,7 +172,7 @@
         app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/cv_email"
-        app:layout_constraintTop_toBottomOf="@id/tf_last_name">
+        app:layout_constraintTop_toBottomOf="@id/til_last_name">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -178,7 +180,8 @@
             android:hint="@string/email"
             android:imeOptions="actionNext"
             android:inputType="textEmailAddress"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:paddingVertical="12dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.card.MaterialCardView
@@ -188,20 +191,20 @@
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         app:cardBackgroundColor="#F9663A"
-        app:layout_constraintBottom_toBottomOf="@id/tf_password"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tf_password">
+        app:layout_constraintTop_toTopOf="@id/til_password">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:paddingVertical="13dp"
             android:src="@drawable/ic_password"
             tools:ignore="ContentDescription" />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tf_password"
+        android:id="@+id/til_password"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -217,7 +220,7 @@
         app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/cv_password"
-        app:layout_constraintTop_toBottomOf="@id/tf_email">
+        app:layout_constraintTop_toBottomOf="@id/til_email">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -225,7 +228,8 @@
             android:hint="@string/password"
             android:imeOptions="actionNext"
             android:inputType="textPassword"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:paddingVertical="12dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.card.MaterialCardView
@@ -235,20 +239,20 @@
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         app:cardBackgroundColor="#F9663A"
-        app:layout_constraintBottom_toBottomOf="@id/tf_phone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tf_phone">
+        app:layout_constraintTop_toTopOf="@id/til_phone">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:paddingVertical="12dp"
             android:src="@drawable/ic_phone"
             tools:ignore="ContentDescription" />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tf_phone"
+        android:id="@+id/til_phone"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -262,7 +266,7 @@
         app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/cv_phone"
-        app:layout_constraintTop_toBottomOf="@id/tf_password">
+        app:layout_constraintTop_toBottomOf="@id/til_password">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -270,7 +274,8 @@
             android:hint="@string/phone"
             android:imeOptions="actionDone"
             android:inputType="number"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:paddingVertical="12dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <ImageView
@@ -293,8 +298,7 @@
         android:textAllCaps="false"
         app:backgroundTint="@color/custom_material_button_state_color"
         app:layout_constraintBottom_toTopOf="@id/tv_or"
-        app:layout_constraintEnd_toEndOf="@id/tf_phone"
-        app:layout_constraintTop_toBottomOf="@id/tf_phone"
+        app:layout_constraintEnd_toEndOf="@id/til_phone"
         app:layout_constraintVertical_bias="0.8" />
 
     <View
@@ -312,7 +316,7 @@
         android:id="@+id/tv_or"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="4dp"
         android:fontFamily="@font/poppins_w400"
         android:text="@string/or"
         android:textColor="@color/black"
@@ -336,7 +340,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="16dp"
         android:foreground="?attr/selectableItemBackgroundBorderless"
         android:letterSpacing="0.01"
         android:text="@string/continue_with_google"

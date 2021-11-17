@@ -1,6 +1,7 @@
 package com.glints.lingoparents.data.api
 
 import com.glints.lingoparents.data.model.response.LoginUserResponse
+import com.glints.lingoparents.data.model.response.RegisterUserResponse
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -22,8 +23,8 @@ interface APIService {
         @Field("lastname") lastname: String,
         @Field("password") password: String,
         @Field("phone") phone: String,
-        @Field("address") address: String,
+        @Field("address") address: String = "_",
         @Field("gender") gender: String = "Male",
         @Field("role") role: String = "parent"
-    )
+    ): Call<RegisterUserResponse>
 }

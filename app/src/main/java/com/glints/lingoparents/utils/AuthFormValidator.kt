@@ -8,6 +8,7 @@ object AuthFormValidator {
 
     const val EMAIL_WRONG_FORMAT_ERROR = "Mush be filled and type of email"
     const val PASSWORD_EMPTY_ERROR = "Passowrd must be minimum $PASSWORD_MIN_SIZE character"
+    const val EMPTY_FIELD_ERROR = "Field must not be empty"
 
     fun <T> showFieldError(v: T, errorText: String? = null) {
         when (v) {
@@ -42,4 +43,6 @@ object AuthFormValidator {
         val length = text?.length ?: 0
         return length >= PASSWORD_MIN_SIZE
     }
+
+    fun isValidField(text: String?): Boolean = text?.length!! > 0
 }
