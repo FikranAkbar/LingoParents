@@ -16,7 +16,7 @@ interface APIService {
     ): Call<LoginUserResponse>
 
     @FormUrlEncoded
-    @POST
+    @POST("api/v1/register")
     fun registerUser(
         @Field("email") email: String,
         @Field("firstname") firstname: String,

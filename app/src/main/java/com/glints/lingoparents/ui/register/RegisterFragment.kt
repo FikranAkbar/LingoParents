@@ -103,14 +103,42 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                         }
                     }
                     is RegisterViewModel.RegisterEvent.Loading -> {
-
+                        showLoading(true)
                     }
                     is RegisterViewModel.RegisterEvent.Success -> {
-
+                        showLoading(false)
                     }
                     is RegisterViewModel.RegisterEvent.Error -> {
-
+                        showLoading(false)
+                        event.message.let {
+                            when {
+                                it.contains("firstname", false) -> {
+                                    AuthFormValidator.showFieldError(binding.tilFirstName, it)
+                                }
+                                it.contains("lastname", false) -> {
+                                    AuthFormValidator.showFieldError(binding.tilLastName, it)
+                                }
+                                it.contains("phone", false) -> {
+                                    AuthFormValidator.showFieldError(binding.tilPhone, it)
+                                }
+                            }
+                        }
                     }
+                }
+            }
+        }
+    }
+
+    private fun showLoading(bool: Boolean) {
+        binding.apply {
+            when (bool) {
+                true -> {
+                    vLoadingBackground.visibility = View.VISIBLE
+                    vLoadingProgress.visibility = View.VISIBLE
+                }
+                else -> {
+                    vLoadingBackground.visibility = View.GONE
+                    vLoadingProgress.visibility = View.GONE
                 }
             }
         }
