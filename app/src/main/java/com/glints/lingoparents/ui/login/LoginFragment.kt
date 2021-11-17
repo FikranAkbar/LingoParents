@@ -12,6 +12,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -94,9 +95,16 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
                         findNavController().navigate(action)
                     }
-
+                    is LoginViewModel.LoginEvent.ShowSnackBarMessage -> {
+                        Snackbar.make(binding.root, event.message, Snackbar.LENGTH_SHORT).show()
+                    }
                 }
             }
+        }
+
+        setFragmentResultListener("register_user") { _, bundle ->
+            val result = bundle.getInt("register_user")
+            viewModel.onRegisterUserSuccessful(result)
         }
     }
 

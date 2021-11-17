@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.model.response.LoginUserResponse
+import com.glints.lingoparents.ui.REGISTER_USER_RESULT_OK
 import com.glints.lingoparents.utils.ErrorUtils
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -28,6 +29,12 @@ class LoginViewModel : ViewModel() {
         loginEventChannel.send(LoginEvent.NavigateToRegister)
     }
 
+    fun onRegisterUserSuccessful(result: Int) = viewModelScope.launch {
+        when (result) {
+            REGISTER_USER_RESULT_OK -> showSnackbarMessage("Register User Successful!")
+        }
+    }
+
     private fun onApiCallStarted() = viewModelScope.launch {
         loginEventChannel.send(LoginEvent.Loading)
     }
@@ -38,6 +45,10 @@ class LoginViewModel : ViewModel() {
 
     private fun onApiCallError(message: String) = viewModelScope.launch {
         loginEventChannel.send(LoginEvent.Error(message))
+    }
+
+    private fun showSnackbarMessage(message: String) = viewModelScope.launch {
+        loginEventChannel.send(LoginEvent.ShowSnackBarMessage(message))
     }
 
     fun loginUserByEmailPassword(email: String, password: String) = viewModelScope.launch {
@@ -71,5 +82,6 @@ class LoginViewModel : ViewModel() {
         object Loading : LoginEvent()
         data class Success(val result: String) : LoginEvent()
         data class Error(val message: String) : LoginEvent()
+        data class ShowSnackBarMessage(val message: String) : LoginEvent()
     }
 }

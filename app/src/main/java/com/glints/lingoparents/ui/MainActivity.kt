@@ -1,5 +1,6 @@
 package com.glints.lingoparents.ui
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.NavController
@@ -14,3 +15,5 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
 }
+
+const val REGISTER_USER_RESULT_OK = Activity.RESULT_FIRST_USER + 1

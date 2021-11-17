@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.api.APIService
 import com.glints.lingoparents.data.model.response.RegisterUserResponse
+import com.glints.lingoparents.ui.REGISTER_USER_RESULT_OK
 import com.glints.lingoparents.utils.ErrorUtils
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -37,6 +38,10 @@ class RegisterViewModel : ViewModel() {
 
     fun onLoginButtonClick() = viewModelScope.launch {
         registerEventChannel.send(RegisterEvent.NavigateBackToLogin)
+    }
+
+    fun onRegisterSuccessful() = viewModelScope.launch {
+        registerEventChannel.send(RegisterEvent.NavigateBackWithResult(REGISTER_USER_RESULT_OK))
     }
 
     private fun onApiCallStarted() = viewModelScope.launch {
@@ -83,6 +88,7 @@ class RegisterViewModel : ViewModel() {
 
     sealed class RegisterEvent {
         object NavigateBackToLogin : RegisterEvent()
+        data class NavigateBackWithResult(val result: Int) : RegisterEvent()
         data class TryToRegisterUser(
             val firstName: String,
             val lastName: String,

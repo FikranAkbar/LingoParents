@@ -3,7 +3,9 @@ package com.glints.lingoparents.ui.register
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -48,6 +50,13 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             viewModel.registerEvent.collect { event ->
                 when (event) {
                     is RegisterViewModel.RegisterEvent.NavigateBackToLogin -> {
+                        findNavController().popBackStack()
+                    }
+                    is RegisterViewModel.RegisterEvent.NavigateBackWithResult -> {
+                        setFragmentResult(
+                            "register_user",
+                            bundleOf("register_user" to event.result)
+                        )
                         findNavController().popBackStack()
                     }
                     is RegisterViewModel.RegisterEvent.TryToRegisterUser -> {
@@ -107,6 +116,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                     }
                     is RegisterViewModel.RegisterEvent.Success -> {
                         showLoading(false)
+                        viewModel.onRegisterSuccessful()
                     }
                     is RegisterViewModel.RegisterEvent.Error -> {
                         showLoading(false)
