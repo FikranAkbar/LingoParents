@@ -69,6 +69,7 @@
         app:hintTextColor="#F9663A"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:endIconTint="@color/custom_password_toggle_color"
         app:layout_constraintTop_toBottomOf="@id/til_email">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -153,6 +154,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="8dp"
         android:foreground="?attr/selectableItemBackgroundBorderless"
         android:letterSpacing="0.01"
         android:text="@string/continue_with_google"
@@ -172,10 +174,12 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="160dp"
+        android:layout_marginBottom="4dp"
         android:paddingHorizontal="-20dp"
         android:src="@drawable/img_home_students_backdrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="ContentDescription" />
 
@@ -183,7 +187,7 @@
         android:id="@+id/tv_new_to_lingoparents"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="24dp"
         android:text="@string/new_to_lingoparents"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@id/tv_terms_privacy_bottom_text"
@@ -221,8 +225,8 @@
         android:id="@+id/v_loading_progress"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:visibility="gone"
         android:elevation="10dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
