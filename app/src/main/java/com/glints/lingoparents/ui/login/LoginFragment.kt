@@ -43,6 +43,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 )
                 closeKeyboard()
             }
+            mbtnForgetPassword.setOnClickListener {
+                viewModel.onForgotPasswordButtonClick()
+            }
         }
 
         lifecycleScope.launchWhenStarted {
@@ -89,7 +92,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         }
                     }
                     is LoginViewModel.LoginEvent.NavigateToForgotPassword -> {
-
+                        val action =
+                            LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment()
+                        findNavController().navigate(action)
                     }
                     is LoginViewModel.LoginEvent.NavigateToRegister -> {
                         val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
@@ -183,7 +188,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun showLoading(bool: Boolean) {
         binding.apply {
-            when(bool) {
+            when (bool) {
                 true -> {
                     vLoadingBackground.visibility = View.VISIBLE
                     vLoadingProgress.visibility = View.VISIBLE
