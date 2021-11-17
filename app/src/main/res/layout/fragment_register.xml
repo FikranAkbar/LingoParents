@@ -39,6 +39,7 @@
         android:fontFamily="@font/poppins_w600"
         android:text="@string/register"
         android:textAppearance="@style/Typography.Headline5"
+        android:textColor="#182E7C"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_logo" />
@@ -212,8 +213,8 @@
         app:boxCornerRadiusTopStart="0dp"
         app:boxStrokeColor="#F9663A"
         app:endIconMode="password_toggle"
-        app:hintEnabled="false"
         app:endIconTint="@color/custom_password_toggle_color"
+        app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/cv_password"
         app:layout_constraintTop_toBottomOf="@id/tf_email">
