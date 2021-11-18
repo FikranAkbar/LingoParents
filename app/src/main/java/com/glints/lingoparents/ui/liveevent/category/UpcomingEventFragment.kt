@@ -62,6 +62,10 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
                     is LiveEventListViewModel.UpcomingLiveEventListEvent.Error -> {
 
                     }
+                    is LiveEventListViewModel.UpcomingLiveEventListEvent.NavigateToDetailLiveEventFragment -> {
+                        val action = LiveEventListFragmentDirections.actionLiveEventListFragmentToLiveEventDetailFragment()
+                        findNavController().navigate(action)
+                    }
                 }
             }
         }
@@ -75,9 +79,7 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
     }
 
     override fun onItemClicked(item: LiveEventListResponse.LiveEventItemResponse) {
-        val action =
-            LiveEventListFragmentDirections.actionLiveEventListFragmentToLiveEventDetailFragment()
-        findNavController().navigate(action)
+        viewModel.onUpcomingLiveEventItemClick(item.id)
     }
 
     private fun showLoading(bool: Boolean) {

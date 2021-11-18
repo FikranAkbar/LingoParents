@@ -62,6 +62,10 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
                     is LiveEventListViewModel.CompletedLiveEventListEvent.Error -> {
 
                     }
+                    is LiveEventListViewModel.CompletedLiveEventListEvent.NavigateToDetailLiveEventFragment -> {
+                        val action = LiveEventListFragmentDirections.actionLiveEventListFragmentToLiveEventDetailFragment()
+                        findNavController().navigate(action)
+                    }
                 }
             }
         }
@@ -75,9 +79,7 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
     }
 
     override fun onItemClicked(item: LiveEventListResponse.LiveEventItemResponse) {
-        val action =
-            LiveEventListFragmentDirections.actionLiveEventListFragmentToLiveEventDetailFragment()
-        findNavController().navigate(action)
+        viewModel.onCompletedLiveEventItemClick(item.id)
     }
 
     private fun showLoading(bool: Boolean) {

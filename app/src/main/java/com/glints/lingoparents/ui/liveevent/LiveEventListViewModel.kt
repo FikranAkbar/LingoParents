@@ -20,9 +20,6 @@ class LiveEventListViewModel : ViewModel() {
         const val COMPLETED_TYPE = "completed"
     }
 
-    private val liveEventListEventChannel = Channel<LiveEventListEvent>()
-    val liveEventListEvent = liveEventListEventChannel.receiveAsFlow()
-
     private val todayLiveEventListEventChannel = Channel<TodayLiveEventListEvent>()
     val todayLiveEventListEvent = todayLiveEventListEventChannel.receiveAsFlow()
 
@@ -32,8 +29,16 @@ class LiveEventListViewModel : ViewModel() {
     private val completedLiveEventListChannel = Channel<CompletedLiveEventListEvent>()
     val completedLiveEventListEvent = completedLiveEventListChannel.receiveAsFlow()
 
-    fun onLiveEventItemClick(id: Int) = viewModelScope.launch {
-        liveEventListEventChannel.send(LiveEventListEvent.NavigateToDetailLiveEventFragment(id))
+    fun onTodayLiveEventItemClick(id: Int) = viewModelScope.launch {
+        todayLiveEventListEventChannel.send(TodayLiveEventListEvent.NavigateToDetailLiveEventFragment(id))
+    }
+
+    fun onUpcomingLiveEventItemClick(id: Int) = viewModelScope.launch {
+        upcomingLiveEventListChannel.send(UpcomingLiveEventListEvent.NavigateToDetailLiveEventFragment(id))
+    }
+
+    fun onCompletedLiveEventItemClick(id: Int) = viewModelScope.launch {
+        completedLiveEventListChannel.send(CompletedLiveEventListEvent.NavigateToDetailLiveEventFragment(id))
     }
 
     private fun onApiCallStarted(status: String) = viewModelScope.launch {
@@ -51,17 +56,17 @@ class LiveEventListViewModel : ViewModel() {
     }
 
     private fun onApiCallSuccess(
-        message: String,
+        status: String,
         list: List<LiveEventListResponse.LiveEventItemResponse>
     ) = viewModelScope.launch {
         when {
-            message.contains("live", true) -> {
+            status.contains("live", true) -> {
                 todayLiveEventListEventChannel.send(TodayLiveEventListEvent.Success(list))
             }
-            message.contains("upcoming", true) -> {
+            status.contains("upcoming", true) -> {
                 upcomingLiveEventListChannel.send(UpcomingLiveEventListEvent.Success(list))
             }
-            message.contains("completed", true) -> {
+            status.contains("completed", true) -> {
                 completedLiveEventListChannel.send(CompletedLiveEventListEvent.Success(list))
             }
         }
@@ -105,16 +110,13 @@ class LiveEventListViewModel : ViewModel() {
             })
     }
 
-    sealed class LiveEventListEvent {
-        data class NavigateToDetailLiveEventFragment(val id: Int) : LiveEventListEvent()
-    }
-
     sealed class TodayLiveEventListEvent {
         object Loading : TodayLiveEventListEvent()
         data class Success(val list: List<LiveEventListResponse.LiveEventItemResponse>) :
             TodayLiveEventListEvent()
 
         data class Error(val message: String) : TodayLiveEventListEvent()
+        data class NavigateToDetailLiveEventFragment(val id: Int) : TodayLiveEventListEvent()
     }
 
     sealed class UpcomingLiveEventListEvent {
@@ -123,6 +125,7 @@ class LiveEventListViewModel : ViewModel() {
             UpcomingLiveEventListEvent()
 
         data class Error(val message: String) : UpcomingLiveEventListEvent()
+        data class NavigateToDetailLiveEventFragment(val id: Int) : UpcomingLiveEventListEvent()
     }
 
     sealed class CompletedLiveEventListEvent {
@@ -131,5 +134,6 @@ class LiveEventListViewModel : ViewModel() {
             CompletedLiveEventListEvent()
 
         data class Error(val message: String) : CompletedLiveEventListEvent()
+        data class NavigateToDetailLiveEventFragment(val id: Int) : CompletedLiveEventListEvent()
     }
 }
