@@ -19,7 +19,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentLoginBinding
-import com.glints.lingoparents.ui.MainActivity
 import com.glints.lingoparents.ui.dashboard.DashboardActivity
 import com.glints.lingoparents.utils.AuthFormValidator
 import com.google.android.material.snackbar.Snackbar
@@ -40,10 +39,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         binding.apply {
             mbtnLogin.setOnClickListener {
-                viewModel.onLoginButtonClick(
-                    tilEmail.editText?.text.toString(),
-                    tilPassword.editText?.text.toString()
-                )
+                if (vLoadingProgress.visibility == View.GONE) {
+                    viewModel.onLoginButtonClick(
+                        tilEmail.editText?.text.toString(),
+                        tilPassword.editText?.text.toString()
+                    )
+                }
                 closeKeyboard()
             }
             mbtnForgetPassword.setOnClickListener {
@@ -84,7 +85,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     }
                     is LoginViewModel.LoginEvent.Success -> {
                         showLoading(false)
-                        val intent = Intent(this@LoginFragment.requireContext(), DashboardActivity::class.java)
+                        val intent = Intent(
+                            this@LoginFragment.requireContext(),
+                            DashboardActivity::class.java
+                        )
                         startActivity(intent)
                     }
                     is LoginViewModel.LoginEvent.Error -> {
