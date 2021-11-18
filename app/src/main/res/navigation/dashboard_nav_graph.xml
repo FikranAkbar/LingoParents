@@ -52,7 +52,7 @@
         android:id="@+id/accountSettingFragment"
         android:name="com.glints.lingoparents.ui.accountsetting.AccountSettingFragment"
         android:label="fragment_account_setting"
-        tools:layout="@layout/fragment_account_setting"/>
+        tools:layout="@layout/fragment_account_setting" />
     <action
         android:id="@+id/action_global_accountSettingFragment"
         app:destination="@id/accountSettingFragment" />
@@ -69,7 +69,6 @@
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
     </fragment>
-        tools:layout="@layout/fragment_insight_list" />
     <fragment
         android:id="@+id/progressFragment"
         android:name="com.glints.lingoparents.ui.progress.ProgressFragment"
