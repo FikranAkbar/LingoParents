@@ -1,11 +1,11 @@
 package com.glints.lingoparents.data.api
 
+import com.glints.lingoparents.data.model.response.LieEventDetailResponse
+import com.glints.lingoparents.data.model.response.LiveEventListResponse
 import com.glints.lingoparents.data.model.response.LoginUserResponse
 import com.glints.lingoparents.data.model.response.RegisterUserResponse
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface APIService {
     @FormUrlEncoded
@@ -27,4 +27,16 @@ interface APIService {
         @Field("gender") gender: String = "Male",
         @Field("role") role: String = "parent"
     ): Call<RegisterUserResponse>
+
+    @FormUrlEncoded
+    @GET("api/v1/events/all/{status}")
+    fun getLiveEventsByStatus(
+        @Path("status") status: String
+    ): Call<LiveEventListResponse>
+
+    @FormUrlEncoded
+    @GET("api/v1/events/{id}")
+    fun getLiveEventById(
+        @Path("id") id: Int
+    ): Call<LieEventDetailResponse>
 }
