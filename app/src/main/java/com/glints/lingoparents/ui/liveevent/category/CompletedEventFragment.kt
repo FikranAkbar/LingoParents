@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,7 +21,7 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
     private var _binding: FragmentCompletedEventBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: LiveEventListViewModel by activityViewModels()
+    private val viewModel: LiveEventListViewModel by viewModels()
     private lateinit var liveEventListAdapter: LiveEventListAdapter
 
     override fun onCreateView(
@@ -51,7 +51,7 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
 
         lifecycleScope.launchWhenStarted {
             viewModel.completedLiveEventListEvent.collect { event ->
-                when(event) {
+                when (event) {
                     is LiveEventListViewModel.CompletedLiveEventListEvent.Loading -> {
                         showLoading(true)
                     }
@@ -85,8 +85,7 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
             if (bool) {
                 rvCompletedEvent.visibility = View.GONE
                 shimmerLayout.visibility = View.VISIBLE
-            }
-            else {
+            } else {
                 rvCompletedEvent.visibility = View.VISIBLE
                 shimmerLayout.visibility = View.GONE
             }

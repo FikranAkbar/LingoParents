@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,7 +22,7 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
     private val binding get() = _binding!!
 
     private lateinit var liveEventListAdapter: LiveEventListAdapter
-    private val viewModel: LiveEventListViewModel by activityViewModels()
+    private val viewModel: LiveEventListViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,7 +51,7 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
 
         lifecycleScope.launchWhenStarted {
             viewModel.upcomingLiveEventListEvent.collect { event ->
-                when(event) {
+                when (event) {
                     is LiveEventListViewModel.UpcomingLiveEventListEvent.Loading -> {
                         showLoading(true)
                     }
@@ -85,8 +85,7 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
             if (bool) {
                 rvUpcomingEvent.visibility = View.GONE
                 shimmerLayout.visibility = View.VISIBLE
-            }
-            else {
+            } else {
                 rvUpcomingEvent.visibility = View.VISIBLE
                 shimmerLayout.visibility = View.GONE
             }
