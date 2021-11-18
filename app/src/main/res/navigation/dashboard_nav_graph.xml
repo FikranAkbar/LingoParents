@@ -60,6 +60,15 @@
         android:id="@+id/insightListFragment"
         android:name="com.glints.lingoparents.ui.insight.InsightListFragment"
         android:label="fragment_insight_list"
+        tools:layout="@layout/fragment_insight_list">
+        <action
+            android:id="@+id/action_insightListFragment_to_detailInsightFragment"
+            app:destination="@id/detailInsightFragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
         tools:layout="@layout/fragment_insight_list" />
     <fragment
         android:id="@+id/progressFragment"
