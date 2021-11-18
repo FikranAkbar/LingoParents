@@ -37,8 +37,8 @@
     <string name="enroll_course">Enroll Course</string>
     <string name="search">Search</string>
     <!--viewpager-->
-    <string name="tab_text_1">Courses</string>
-    <string name="tab_text_2">Children Courses</string>
+    <string name="tab_progress_text_1">Profile</string>
+    <string name="tab_progress_text_2">Progress</string>
 
     <!--coba-->
     <string-array name="data_course">
@@ -169,4 +169,5 @@
     <string name="add_comment">Add Comment</string>
     <string name="comments">Comments</string>
     <string name="post">Post</string>
+    <string name="student_profile">Student Profile</string>
 </resources>

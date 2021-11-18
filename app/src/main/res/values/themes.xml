@@ -123,6 +123,10 @@
         <item name="tabIndicatorColor">@null</item>
         <item name="tabIndicatorHeight">0dp</item>
     </style>
+    <style name="CustomProgressTabLayout" parent="Base.Widget.Design.TabLayout">
+        <item name="tabBackground">@drawable/tab_background</item>
+        <item name="tabIndicatorColor">@null</item>
+    </style>
 
     <style name="AccountSettingTabsTextStyle" parent="@style/Widget.MaterialComponents.TabLayout">
         <item name="tabTextAppearance">@style/TextAppearance_tabs_account_setting</item>
