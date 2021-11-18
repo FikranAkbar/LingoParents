@@ -1,6 +1,6 @@
 package com.glints.lingoparents.data.api
 
-import com.glints.lingoparents.data.model.response.LieEventDetailResponse
+import com.glints.lingoparents.data.model.response.LiveEventDetailResponse
 import com.glints.lingoparents.data.model.response.LiveEventListResponse
 import com.glints.lingoparents.data.model.response.LoginUserResponse
 import com.glints.lingoparents.data.model.response.RegisterUserResponse
@@ -28,15 +28,13 @@ interface APIService {
         @Field("role") role: String = "parent"
     ): Call<RegisterUserResponse>
 
-    @FormUrlEncoded
     @GET("api/v1/events/all/{status}")
     fun getLiveEventsByStatus(
         @Path("status") status: String
     ): Call<LiveEventListResponse>
 
-    @FormUrlEncoded
     @GET("api/v1/events/{id}")
     fun getLiveEventById(
         @Path("id") id: Int
-    ): Call<LieEventDetailResponse>
+    ): Call<LiveEventDetailResponse>
 }

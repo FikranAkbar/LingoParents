@@ -4,24 +4,27 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.glints.lingoparents.data.model.LiveEventItem
+import com.glints.lingoparents.data.model.response.LiveEventListResponse
 import com.glints.lingoparents.databinding.ItemLiveEventBinding
 
 class LiveEventListAdapter(private val listener: OnItemClickCallback) :
     RecyclerView.Adapter<LiveEventListAdapter.CustomViewHolder>() {
 
-    private val liveEventList = ArrayList<LiveEventItem>()
+    private val liveEventList = ArrayList<LiveEventListResponse.LiveEventItemResponse>()
 
     @SuppressLint("NotifyDataSetChanged")
-    fun submitList(list: List<LiveEventItem>) {
+    fun submitList(list: List<LiveEventListResponse.LiveEventItemResponse>) {
         liveEventList.clear()
         liveEventList.addAll(list)
         notifyDataSetChanged()
     }
 
-    inner class CustomViewHolder(private val itemLiveEventBinding: ItemLiveEventBinding) :
+    inner class CustomViewHolder(itemLiveEventBinding: ItemLiveEventBinding) :
         RecyclerView.ViewHolder(itemLiveEventBinding.root) {
-        fun bind(holder: CustomViewHolder, item: LiveEventItem) {
+        fun bind(
+            holder: CustomViewHolder,
+            item: LiveEventListResponse.LiveEventItemResponse
+        ) {
             holder.itemView.setOnClickListener {
                 listener.onItemClicked(item)
             }
@@ -42,6 +45,6 @@ class LiveEventListAdapter(private val listener: OnItemClickCallback) :
     override fun getItemCount(): Int = liveEventList.size
 
     interface OnItemClickCallback {
-        fun onItemClicked(item: LiveEventItem)
+        fun onItemClicked(item: LiveEventListResponse.LiveEventItemResponse)
     }
 }

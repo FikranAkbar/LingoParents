@@ -2,12 +2,24 @@ package com.glints.lingoparents.ui.liveevent
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.model.response.LiveEventListResponse
+import com.glints.lingoparents.utils.ErrorUtils
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class LiveEventListViewModel : ViewModel() {
+
+    companion object {
+        const val TODAY_TYPE = "live"
+        const val UPCOMING_TYPE = "upcoming"
+        const val COMPLETED_TYPE = "completed"
+    }
+
     private val liveEventListEventChannel = Channel<LiveEventListEvent>()
     val liveEventListEvent = liveEventListEventChannel.receiveAsFlow()
 
@@ -70,7 +82,27 @@ class LiveEventListViewModel : ViewModel() {
     }
 
     fun loadTodayLiveEventList(status: String) = viewModelScope.launch {
+        onApiCallStarted(status)
+        APIClient
+            .service
+            .getLiveEventsByStatus(status)
+            .enqueue(object : Callback<LiveEventListResponse> {
+                override fun onResponse(
+                    call: Call<LiveEventListResponse>,
+                    response: Response<LiveEventListResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        onApiCallSuccess(status, response.body()?.data!!)
+                    } else {
+                        val apiError = ErrorUtils.parseError(response)
+                        onApiCallError(apiError.message())
+                    }
+                }
 
+                override fun onFailure(call: Call<LiveEventListResponse>, t: Throwable) {
+                    onApiCallError("Network Failed...")
+                }
+            })
     }
 
     sealed class LiveEventListEvent {

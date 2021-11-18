@@ -1,23 +1,26 @@
 package com.glints.lingoparents.ui.liveevent.category
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.glints.lingoparents.R
-import com.glints.lingoparents.data.model.LiveEventItem
+import com.glints.lingoparents.data.model.response.LiveEventListResponse
 import com.glints.lingoparents.databinding.FragmentUpcomingEventBinding
 import com.glints.lingoparents.ui.liveevent.LiveEventListFragmentDirections
 import com.glints.lingoparents.ui.liveevent.LiveEventListViewModel
+import kotlinx.coroutines.flow.collect
 
 class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
     LiveEventListAdapter.OnItemClickCallback {
-    private lateinit var binding: FragmentUpcomingEventBinding
+    private var _binding: FragmentUpcomingEventBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var liveEventListAdapter: LiveEventListAdapter
     private val viewModel: LiveEventListViewModel by activityViewModels()
 
@@ -25,8 +28,8 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentUpcomingEventBinding.inflate(inflater)
+    ): View {
+        _binding = FragmentUpcomingEventBinding.inflate(inflater)
 
         binding.apply {
             rvUpcomingEvent.apply {
@@ -36,23 +39,43 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
                 adapter = liveEventListAdapter
                 liveEventListAdapter.submitList(
                     listOf(
-                        LiveEventItem("", "", ""),
-                        LiveEventItem("", "", ""),
-                        LiveEventItem("", "", ""),
-                        LiveEventItem("", "", ""),
-                        LiveEventItem("", "", ""),
-                        LiveEventItem("", "", ""),
-                        LiveEventItem("", "", ""),
+                        LiveEventListResponse.LiveEventItemResponse(1, "", "", ""),
+                        LiveEventListResponse.LiveEventItemResponse(1, "", "", ""),
+                        LiveEventListResponse.LiveEventItemResponse(1, "", "", ""),
                     )
                 )
+            }
+        }
+
+        viewModel.loadTodayLiveEventList(LiveEventListViewModel.UPCOMING_TYPE)
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.upcomingLiveEventListEvent.collect { event ->
+                when(event) {
+                    is LiveEventListViewModel.UpcomingLiveEventListEvent.Loading -> {
+
+                    }
+                    is LiveEventListViewModel.UpcomingLiveEventListEvent.Success -> {
+                        liveEventListAdapter.submitList(event.list)
+                    }
+                    is LiveEventListViewModel.UpcomingLiveEventListEvent.Error -> {
+
+                    }
+                }
             }
         }
 
         return binding.root
     }
 
-    override fun onItemClicked(item: LiveEventItem) {
-        val action = LiveEventListFragmentDirections.actionLiveEventListFragmentToLiveEventDetailFragment()
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+    override fun onItemClicked(item: LiveEventListResponse.LiveEventItemResponse) {
+        val action =
+            LiveEventListFragmentDirections.actionLiveEventListFragmentToLiveEventDetailFragment()
         findNavController().navigate(action)
     }
 }
