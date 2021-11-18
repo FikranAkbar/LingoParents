@@ -1,6 +1,7 @@
 package com.glints.lingoparents.ui.liveevent.category
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,10 +54,13 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
             viewModel.todayLiveEventListEvent.collect { event ->
                 when (event) {
                     is LiveEventListViewModel.TodayLiveEventListEvent.Loading -> {
-
+                        showLoading(true)
+                        Log.d("TEST", "MULAI LOADING LIVE EVENT TODAY")
                     }
                     is LiveEventListViewModel.TodayLiveEventListEvent.Success -> {
                         liveEventListAdapter.submitList(event.list)
+                        showLoading(false)
+                        Log.d("TEST", "SELESAI LOADING LIVE EVENT TODAY")
                     }
                     is LiveEventListViewModel.TodayLiveEventListEvent.Error -> {
 
@@ -77,5 +81,18 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
         val action =
             LiveEventListFragmentDirections.actionLiveEventListFragmentToLiveEventDetailFragment()
         findNavController().navigate(action)
+    }
+
+    private fun showLoading(bool: Boolean) {
+        binding.apply {
+            if (bool) {
+                rvTodayEvent.visibility = View.GONE
+                shimmerLayout.visibility = View.VISIBLE
+            }
+            else {
+                rvTodayEvent.visibility = View.VISIBLE
+                shimmerLayout.visibility = View.GONE
+            }
+        }
     }
 }

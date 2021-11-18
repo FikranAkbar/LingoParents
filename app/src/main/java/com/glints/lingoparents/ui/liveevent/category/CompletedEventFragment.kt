@@ -53,10 +53,11 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
             viewModel.completedLiveEventListEvent.collect { event ->
                 when(event) {
                     is LiveEventListViewModel.CompletedLiveEventListEvent.Loading -> {
-
+                        showLoading(true)
                     }
                     is LiveEventListViewModel.CompletedLiveEventListEvent.Success -> {
                         liveEventListAdapter.submitList(event.list)
+                        showLoading(false)
                     }
                     is LiveEventListViewModel.CompletedLiveEventListEvent.Error -> {
 
@@ -77,5 +78,18 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
         val action =
             LiveEventListFragmentDirections.actionLiveEventListFragmentToLiveEventDetailFragment()
         findNavController().navigate(action)
+    }
+
+    private fun showLoading(bool: Boolean) {
+        binding.apply {
+            if (bool) {
+                rvCompletedEvent.visibility = View.GONE
+                shimmerLayout.visibility = View.VISIBLE
+            }
+            else {
+                rvCompletedEvent.visibility = View.VISIBLE
+                shimmerLayout.visibility = View.GONE
+            }
+        }
     }
 }

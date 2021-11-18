@@ -53,10 +53,11 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
             viewModel.upcomingLiveEventListEvent.collect { event ->
                 when(event) {
                     is LiveEventListViewModel.UpcomingLiveEventListEvent.Loading -> {
-
+                        showLoading(true)
                     }
                     is LiveEventListViewModel.UpcomingLiveEventListEvent.Success -> {
                         liveEventListAdapter.submitList(event.list)
+                        showLoading(false)
                     }
                     is LiveEventListViewModel.UpcomingLiveEventListEvent.Error -> {
 
@@ -77,5 +78,18 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
         val action =
             LiveEventListFragmentDirections.actionLiveEventListFragmentToLiveEventDetailFragment()
         findNavController().navigate(action)
+    }
+
+    private fun showLoading(bool: Boolean) {
+        binding.apply {
+            if (bool) {
+                rvUpcomingEvent.visibility = View.GONE
+                shimmerLayout.visibility = View.VISIBLE
+            }
+            else {
+                rvUpcomingEvent.visibility = View.VISIBLE
+                shimmerLayout.visibility = View.GONE
+            }
+        }
     }
 }
