@@ -14,7 +14,16 @@ class ForgotPasswordViewModel : ViewModel() {
         forgotPasswordEventChannel.send(ForgotPasswordEvent.NavigateBackToLogin)
     }
 
+    fun onSubmitButtonClick(email: String) = viewModelScope.launch {
+        forgotPasswordEventChannel.send(ForgotPasswordEvent.TryToSubmitForgotPassword(email))
+    }
+
+    fun sendForgotPasswordRequest(email: String) = viewModelScope.launch {
+
+    }
+
     sealed class ForgotPasswordEvent {
         object NavigateBackToLogin : ForgotPasswordEvent()
+        data class TryToSubmitForgotPassword(val email: String) : ForgotPasswordEvent()
     }
 }

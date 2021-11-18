@@ -5,11 +5,11 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentForgotPasswordBinding
+import com.glints.lingoparents.utils.AuthFormValidator
 import kotlinx.coroutines.flow.collect
 
 class ForgotPasswordFragment : Fragment(R.layout.fragment_forgot_password) {
@@ -25,6 +25,9 @@ class ForgotPasswordFragment : Fragment(R.layout.fragment_forgot_password) {
             mbtnBackToLogin.setOnClickListener {
                 viewModel.onBackToLoginButtonClick()
             }
+            mbtnSubmit.setOnClickListener {
+                viewModel.onSubmitButtonClick(tilEmail.editText?.text.toString())
+            }
         }
 
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner,
@@ -37,9 +40,24 @@ class ForgotPasswordFragment : Fragment(R.layout.fragment_forgot_password) {
 
         lifecycleScope.launchWhenStarted {
             viewModel.forgotPasswordEvent.collect { event ->
-                when(event) {
+                when (event) {
                     is ForgotPasswordViewModel.ForgotPasswordEvent.NavigateBackToLogin -> {
                         findNavController().popBackStack()
+                    }
+                    is ForgotPasswordViewModel.ForgotPasswordEvent.TryToSubmitForgotPassword -> {
+                        binding.apply {
+                            AuthFormValidator.apply {
+                                hideFieldError(tilEmail)
+
+                                val email = event.email
+
+                                if (isValidEmail(email)) {
+                                    viewModel.sendForgotPasswordRequest(email)
+                                } else {
+                                    showFieldError(tilEmail, EMAIL_WRONG_FORMAT_ERROR)
+                                }
+                            }
+                        }
                     }
                 }
             }

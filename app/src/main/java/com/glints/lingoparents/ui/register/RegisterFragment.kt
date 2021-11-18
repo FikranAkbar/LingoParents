@@ -128,6 +128,9 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                                 it.contains("lastname", false) -> {
                                     AuthFormValidator.showFieldError(binding.tilLastName, it)
                                 }
+                                it.contains("email", false) -> {
+                                    AuthFormValidator.showFieldError(binding.tilEmail, it)
+                                }
                                 it.contains("phone", false) -> {
                                     AuthFormValidator.showFieldError(binding.tilPhone, it)
                                 }
