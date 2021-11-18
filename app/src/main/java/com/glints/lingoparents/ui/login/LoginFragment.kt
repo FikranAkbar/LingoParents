@@ -90,6 +90,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                             DashboardActivity::class.java
                         )
                         startActivity(intent)
+                        requireActivity().finish()
                     }
                     is LoginViewModel.LoginEvent.Error -> {
                         showLoading(false)
