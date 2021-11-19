@@ -16,6 +16,7 @@ class LiveEventDetailResponse {
         val speaker_photo: String,
         val speaker_profession: String,
         val speaker_company: String,
-        val status: String
+        val status: String,
+        val started_at: String
     )
 }

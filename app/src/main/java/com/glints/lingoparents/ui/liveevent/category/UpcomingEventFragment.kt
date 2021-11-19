@@ -63,7 +63,7 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
 
                     }
                     is LiveEventListViewModel.UpcomingLiveEventListEvent.NavigateToDetailLiveEventFragment -> {
-                        val action = LiveEventListFragmentDirections.actionLiveEventListFragmentToLiveEventDetailFragment()
+                        val action = LiveEventListFragmentDirections.actionLiveEventListFragmentToLiveEventDetailFragment(event.id)
                         findNavController().navigate(action)
                     }
                 }

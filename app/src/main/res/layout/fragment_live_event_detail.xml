@@ -16,9 +16,24 @@
         app:cardCornerRadius="12dp"
         app:cardElevation="8dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include layout="@layout/shimmer_item_live_event_detail" />
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/main_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible">
 
             <ImageView
                 android:id="@+id/iv_back_button"
@@ -76,7 +91,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/img_dummy_live_event" />
+                    tools:src="@drawable/img_dummy_live_event" />
             </androidx.cardview.widget.CardView>
 
             <TextView
@@ -86,12 +101,12 @@
                 android:layout_marginHorizontal="12dp"
                 android:layout_marginTop="24dp"
                 android:fontFamily="@font/poppins_w600"
-                android:text="@string/down_the_rabbit_hole_of_multinational_start_up_recruitment"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cv_detail_event_poster" />
+                app:layout_constraintTop_toBottomOf="@id/cv_detail_event_poster"
+                tools:text="@string/down_the_rabbit_hole_of_multinational_start_up_recruitment" />
 
             <ImageView
                 android:id="@+id/iv_date_icon"
@@ -121,12 +136,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/poppins_w400"
-                android:text="@string/_30_oct_2021_17_30"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@id/tv_date_and_time_title"
                 app:layout_constraintStart_toEndOf="@id/tv_date_and_time_title"
-                app:layout_constraintTop_toTopOf="@id/tv_date_and_time_title" />
+                app:layout_constraintTop_toTopOf="@id/tv_date_and_time_title"
+                tools:text="@string/_30_oct_2021_17_30" />
 
             <TextView
                 android:id="@+id/tv_price_header"
@@ -155,10 +170,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:text="@string/_99_000"
                 app:layout_constraintBottom_toBottomOf="@id/tv_price_content_kurs"
                 app:layout_constraintStart_toEndOf="@id/tv_price_content_kurs"
-                app:layout_constraintTop_toTopOf="@id/tv_price_content_kurs" />
+                app:layout_constraintTop_toTopOf="@id/tv_price_content_kurs"
+                tools:text="@string/_99_000" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/mbtn_register"
@@ -196,43 +211,53 @@
                     android:id="@+id/iv_photo_content"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_user_avatar_male"
-                    tools:ignore="ContentDescription" />
+                    tools:ignore="ContentDescription"
+                    tools:src="@drawable/ic_user_avatar_male" />
             </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/tv_speaker_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="2dp"
+                android:layout_marginEnd="24dp"
+                android:ellipsize="end"
                 android:fontFamily="@font/poppins_w600"
-                android:text="@string/olivia_putri_rosmala"
+                android:maxLines="1"
                 android:textColor="@color/black"
                 android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/cv_photo_container"
-                app:layout_constraintTop_toTopOf="@id/cv_photo_container" />
+                app:layout_constraintTop_toTopOf="@id/cv_photo_container"
+                tools:text="@string/olivia_putri_rosmala" />
 
             <TextView
                 android:id="@+id/tv_speaker_profession"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
                 android:fontFamily="@font/poppins_w500"
-                android:text="@string/marketing_managers"
+                android:maxLines="1"
                 android:textSize="11sp"
+                app:layout_constraintEnd_toEndOf="@id/tv_speaker_name"
                 app:layout_constraintStart_toStartOf="@id/tv_speaker_name"
-                app:layout_constraintTop_toBottomOf="@id/tv_speaker_name" />
+                app:layout_constraintTop_toBottomOf="@id/tv_speaker_name"
+                tools:text="@string/marketing_managers" />
 
             <TextView
                 android:id="@+id/tv_speaker_company"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
                 android:fontFamily="@font/poppins_w500"
-                android:text="@string/pt_markplus_indonesia"
+                android:maxLines="1"
                 android:textSize="11sp"
+                app:layout_constraintEnd_toEndOf="@id/tv_speaker_name"
                 app:layout_constraintStart_toStartOf="@id/tv_speaker_profession"
                 app:layout_constraintTop_toBottomOf="@id/tv_speaker_profession"
-                tools:ignore="SmallSp" />
+                tools:ignore="SmallSp"
+                tools:text="@string/pt_markplus_indonesia" />
 
             <TextView
                 android:id="@+id/tv_description_header"
@@ -252,11 +277,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/poppins_w400"
-                android:text="@string/long_paragraph_lorem"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="@id/cv_detail_event_poster"
                 app:layout_constraintStart_toStartOf="@id/cv_detail_event_poster"
-                app:layout_constraintTop_toBottomOf="@id/tv_description_header" />
+                app:layout_constraintTop_toBottomOf="@id/tv_description_header"
+                tools:text="@string/long_paragraph_lorem" />
 
             <View
                 android:layout_width="match_parent"

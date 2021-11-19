@@ -63,7 +63,7 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
 
                     }
                     is LiveEventListViewModel.CompletedLiveEventListEvent.NavigateToDetailLiveEventFragment -> {
-                        val action = LiveEventListFragmentDirections.actionLiveEventListFragmentToLiveEventDetailFragment()
+                        val action = LiveEventListFragmentDirections.actionLiveEventListFragmentToLiveEventDetailFragment(event.id)
                         findNavController().navigate(action)
                     }
                 }

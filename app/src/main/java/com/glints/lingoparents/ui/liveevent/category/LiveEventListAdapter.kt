@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.glints.lingoparents.data.model.response.LiveEventListResponse
 import com.glints.lingoparents.databinding.ItemLiveEventBinding
 
@@ -19,7 +21,7 @@ class LiveEventListAdapter(private val listener: OnItemClickCallback) :
         notifyDataSetChanged()
     }
 
-    inner class CustomViewHolder(itemLiveEventBinding: ItemLiveEventBinding) :
+    inner class CustomViewHolder(private val itemLiveEventBinding: ItemLiveEventBinding) :
         RecyclerView.ViewHolder(itemLiveEventBinding.root) {
         fun bind(
             holder: CustomViewHolder,
@@ -27,6 +29,15 @@ class LiveEventListAdapter(private val listener: OnItemClickCallback) :
         ) {
             holder.itemView.setOnClickListener {
                 listener.onItemClicked(item)
+            }
+
+            itemLiveEventBinding.apply {
+                tvLiveEventTitle.text = item.title
+                tvLiveEventDate.text = item.date
+
+                Glide.with(holder.itemView.context)
+                    .load(item.speaker_photo)
+                    .into(ivImage)
             }
         }
     }

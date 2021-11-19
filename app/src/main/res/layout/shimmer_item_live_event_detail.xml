@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/shimmer_iv_back_button"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/shimmer_placeholder"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:padding="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription,UnusedAttribute" />
+
+    <TextView
+        android:id="@+id/shimmer_tv_detail_event"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:background="@color/shimmer_placeholder"
+        android:fontFamily="@font/poppins_w700"
+        android:textColor="#182E7C"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@id/shimmer_iv_back_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/shimmer_iv_back_button" />
+
+    <View
+        android:id="@+id/shimmer_v_line_separator"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="16dp"
+        android:background="#33000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/shimmer_tv_detail_event" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/shimmer_cv_detail_event_poster"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="12dp"
+        app:cardBackgroundColor="@color/shimmer_placeholder"
+        app:cardCornerRadius="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/shimmer_v_line_separator"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/shimmer_tv_detail_event_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/shimmer_placeholder"
+        android:fontFamily="@font/poppins_w600"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/shimmer_cv_detail_event_poster" />
+
+    <ImageView
+        android:id="@+id/shimmer_iv_date_icon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/shimmer_placeholder"
+        app:layout_constraintStart_toStartOf="@id/shimmer_tv_detail_event_title"
+        app:layout_constraintTop_toBottomOf="@id/shimmer_tv_detail_event_title"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/shimmer_tv_date_and_time_title"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:background="@color/shimmer_placeholder"
+        android:fontFamily="@font/poppins_w400"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/shimmer_iv_date_icon"
+        app:layout_constraintStart_toEndOf="@id/shimmer_iv_date_icon"
+        app:layout_constraintTop_toTopOf="@id/shimmer_iv_date_icon" />
+
+    <TextView
+        android:id="@+id/shimmer_tv_date_and_time_content"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:background="@color/shimmer_placeholder"
+        android:fontFamily="@font/poppins_w400"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/shimmer_tv_date_and_time_title"
+        app:layout_constraintStart_toEndOf="@id/shimmer_tv_date_and_time_title"
+        app:layout_constraintTop_toTopOf="@id/shimmer_tv_date_and_time_title" />
+
+    <TextView
+        android:id="@+id/shimmer_tv_price_header"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@color/shimmer_placeholder"
+        android:fontFamily="@font/poppins_w600"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/shimmer_iv_date_icon"
+        app:layout_constraintTop_toBottomOf="@id/shimmer_iv_date_icon" />
+
+    <TextView
+        android:id="@+id/shimmer_tv_price_content_kurs"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:background="@color/shimmer_placeholder"
+        android:fontFamily="@font/poppins_w700"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/shimmer_tv_price_header"
+        app:layout_constraintTop_toBottomOf="@id/shimmer_tv_price_header" />
+
+    <TextView
+        android:id="@+id/shimmer_tv_price_content_number"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:background="@color/shimmer_placeholder"
+        app:layout_constraintBottom_toBottomOf="@id/shimmer_tv_price_content_kurs"
+        app:layout_constraintStart_toEndOf="@id/shimmer_tv_price_content_kurs"
+        app:layout_constraintTop_toTopOf="@id/shimmer_tv_price_content_kurs" />
+
+    <TextView
+        android:id="@+id/shimmer_tv_speaker_header"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@color/shimmer_placeholder"
+        android:fontFamily="@font/poppins_w600"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/shimmer_tv_price_content_kurs"
+        app:layout_constraintTop_toBottomOf="@id/shimmer_tv_price_content_kurs" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/shimmer_cv_photo_container"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="12dp"
+        app:cardBackgroundColor="@color/shimmer_placeholder"
+        app:cardCornerRadius="300dp"
+        app:layout_constraintStart_toStartOf="@id/shimmer_tv_speaker_header"
+        app:layout_constraintTop_toBottomOf="@id/shimmer_tv_speaker_header" />
+
+    <TextView
+        android:id="@+id/shimmer_tv_speaker_name"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/shimmer_placeholder"
+        android:fontFamily="@font/poppins_w600"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/shimmer_cv_photo_container"
+        app:layout_constraintTop_toTopOf="@id/shimmer_cv_photo_container" />
+
+    <TextView
+        android:id="@+id/shimmer_tv_speaker_profession"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:background="@color/shimmer_placeholder"
+        android:fontFamily="@font/poppins_w500"
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="@id/shimmer_tv_speaker_name"
+        app:layout_constraintTop_toBottomOf="@id/shimmer_tv_speaker_name" />
+
+    <TextView
+        android:id="@+id/shimmer_tv_speaker_company"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:background="@color/shimmer_placeholder"
+        android:fontFamily="@font/poppins_w500"
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="@id/shimmer_tv_speaker_profession"
+        app:layout_constraintTop_toBottomOf="@id/shimmer_tv_speaker_profession"
+        tools:ignore="SmallSp" />
+
+    <TextView
+        android:id="@+id/shimmer_tv_description_header"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@color/shimmer_placeholder"
+        android:fontFamily="@font/poppins_w600"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/shimmer_cv_photo_container"
+        app:layout_constraintTop_toBottomOf="@id/shimmer_cv_photo_container" />
+
+    <TextView
+        android:id="@+id/shimmer_tv_description_content"
+        android:layout_width="0dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/shimmer_placeholder"
+        android:fontFamily="@font/poppins_w400"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@id/shimmer_cv_detail_event_poster"
+        app:layout_constraintStart_toStartOf="@id/shimmer_cv_detail_event_poster"
+        app:layout_constraintTop_toBottomOf="@id/shimmer_tv_description_header" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/shimmer_tv_description_content"
+        app:layout_constraintVertical_bias="0" />
+</androidx.constraintlayout.widget.ConstraintLayout>

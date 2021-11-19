@@ -67,7 +67,7 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
                     }
                     is LiveEventListViewModel.TodayLiveEventListEvent.NavigateToDetailLiveEventFragment -> {
                         val action =
-                            LiveEventListFragmentDirections.actionLiveEventListFragmentToLiveEventDetailFragment()
+                            LiveEventListFragmentDirections.actionLiveEventListFragmentToLiveEventDetailFragment(event.id)
                         findNavController().navigate(action)
                     }
                 }
