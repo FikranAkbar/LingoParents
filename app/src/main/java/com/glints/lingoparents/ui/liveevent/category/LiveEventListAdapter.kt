@@ -22,7 +22,9 @@ class LiveEventListAdapter(private val listener: OnItemClickCallback) :
     inner class CustomViewHolder(private val itemLiveEventBinding: ItemLiveEventBinding) :
         RecyclerView.ViewHolder(itemLiveEventBinding.root) {
         fun bind(holder: CustomViewHolder, item: LiveEventItem) {
-
+            holder.itemView.setOnClickListener {
+                listener.onItemClicked(item)
+            }
         }
     }
 

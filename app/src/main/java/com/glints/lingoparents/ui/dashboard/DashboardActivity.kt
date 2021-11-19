@@ -2,6 +2,7 @@ package com.glints.lingoparents.ui.dashboard
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.Toolbar
@@ -13,7 +14,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.ActivityDashboardBinding
 
-class DashboardActivity : AppCompatActivity(), Toolbar.OnMenuItemClickListener {
+class DashboardActivity : AppCompatActivity(), Toolbar.OnMenuItemClickListener{
 
     private lateinit var binding: ActivityDashboardBinding
     private lateinit var navController: NavController
