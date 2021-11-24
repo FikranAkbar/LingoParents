@@ -282,6 +282,7 @@
             android:paddingVertical="6dp"
             android:text="@string/cancel"
             android:textAllCaps="false"
+            android:textColor="#4F4F4F"
             android:textSize="14sp"
             android:visibility="gone"
             app:backgroundTint="@color/custom_material_button_negative_state_color"
