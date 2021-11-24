@@ -1,6 +1,8 @@
 package com.glints.lingoparents.ui.login
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.model.response.LoginUserResponse
@@ -14,7 +16,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginViewModel(tokenPreferences: TokenPreferences) : ViewModel() {
+class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel() {
     private val loginEventChannel = Channel<LoginEvent>()
     val loginEvent = loginEventChannel.receiveAsFlow()
 
@@ -32,7 +34,7 @@ class LoginViewModel(tokenPreferences: TokenPreferences) : ViewModel() {
 
     fun onRegisterUserSuccessful(result: Int) = viewModelScope.launch {
         when (result) {
-            REGISTER_USER_RESULT_OK -> showSnackbarMessage("Register User Successful!")
+            REGISTER_USER_RESULT_OK -> showSnackBarMessage("Register User Successful!")
         }
     }
 
@@ -48,9 +50,15 @@ class LoginViewModel(tokenPreferences: TokenPreferences) : ViewModel() {
         loginEventChannel.send(LoginEvent.Error(message))
     }
 
-    private fun showSnackbarMessage(message: String) = viewModelScope.launch {
+    private fun showSnackBarMessage(message: String) = viewModelScope.launch {
         loginEventChannel.send(LoginEvent.ShowSnackBarMessage(message))
     }
+
+    private fun saveToken(token: String) = viewModelScope.launch {
+        tokenPreferences.saveAccessToken(token)
+    }
+
+    fun getToken(): LiveData<String> = tokenPreferences.getAccessToken().asLiveData()
 
     fun loginUserByEmailPassword(email: String, password: String) = viewModelScope.launch {
         onApiCallStarted()
@@ -64,6 +72,7 @@ class LoginViewModel(tokenPreferences: TokenPreferences) : ViewModel() {
                 ) {
                     if (response.isSuccessful) {
                         onApiCallSuccess("Login Successful")
+                        saveToken(response.body()?.message?.accessToken.toString())
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallError(apiError.message())
