@@ -81,4 +81,7 @@ dependencies {
 
     // Pagination 3
     implementation("androidx.paging:paging-runtime:3.0.1")
+
+    // expandable layout
+    implementation "com.github.skydoves:expandablelayout:1.0.7"
 }

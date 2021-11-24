@@ -59,26 +59,14 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-    <!--        <com.google.android.material.tabs.TabLayout-->
-    <!--            android:id="@+id/tl_live_event_category"-->
-    <!--            style="@style/CustomProgressTabLayout"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:focusable="false"-->
-    <!--            app:tabGravity="fill"-->
-    <!--            app:layout_constraintEnd_toEndOf="parent"-->
-    <!--            app:layout_constraintTop_toTopOf="parent"-->
-    <!--            app:tabMode="fixed"-->
-    <!--            app:tabSelectedTextColor="@color/white"-->
-    <!--            app:tabTextAppearance="@style/Typography.TabLayoutTextAppearance"-->
-    <!--            app:tabTextColor="#FF7900" />-->
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cv_profile_container" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.progress.ProgressProfileFragment">
+    tools:context=".ui.progress.ProgressLearningFragment">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_event_container"
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="20dp"
-        app:cardCornerRadius="25dp"
+        app:cardCornerRadius="12dp"
         app:cardElevation="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,7 +21,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="8dp">
+            android:padding="16dp">
             <!-- tampilan utamanya belm ada di dlm cardview dan blm ada spinner,
             tablayoutnya jg blm fix, tablayout width nya ku atur manual-->
             <com.google.android.material.textview.MaterialTextView
@@ -80,7 +80,7 @@
                 android:maxLines="3"
                 android:text="Beginner - Sublevel 2"
                 android:textColor="#FF7900"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/guideline5"
                 app:layout_constraintTop_toBottomOf="@id/tv_profile_name" />
@@ -96,8 +96,8 @@
 
             <ImageView
                 android:id="@+id/iv_icon_phone"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/ic_rectangle_4"
@@ -108,8 +108,8 @@
 
             <ImageView
                 android:id="@+id/iv_icon_message"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginVertical="8dp"
                 android:background="@drawable/ic_rectangle_4"
                 android:padding="4dp"
@@ -119,21 +119,21 @@
 
             <ImageView
                 android:id="@+id/iv_icon_location"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginVertical="8dp"
                 android:background="@drawable/ic_rectangle_4"
                 android:padding="4dp"
                 android:src="@drawable/ic_baseline_location_on_24"
                 app:layout_constraintStart_toEndOf="@id/guideline5"
-                app:layout_constraintTop_toBottomOf="@id/iv_icon_message" />
+                app:layout_constraintTop_toBottomOf="@id/textView2" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="197dp" />
+                app:layout_constraintGuide_percent="0.52" />
 
             <TextView
                 android:id="@+id/textView"
@@ -165,7 +165,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/iv_icon_location"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline6"
-                app:layout_constraintTop_toTopOf="@+id/iv_icon_location" />
+                app:layout_constraintTop_toBottomOf="@+id/textView2"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

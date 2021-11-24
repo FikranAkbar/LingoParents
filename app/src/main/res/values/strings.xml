@@ -39,6 +39,8 @@
     <!--viewpager-->
     <string name="tab_progress_text_1">Profile</string>
     <string name="tab_progress_text_2">Progress</string>
+    <string name="tab_progress_course_list_text_1">Korean</string>
+    <string name="tab_progress_course_list_text_2">German</string>
 
     <!--coba-->
     <string-array name="data_course">
@@ -143,6 +145,35 @@
         <item>@drawable/french_card3</item>
         <item>@drawable/french_card3</item>
     </integer-array>
+
+    <string-array name="session_name">
+        <item>Session 1</item>
+        <item>Session 2</item>
+        <item>Session 3</item>
+        <item>Session 4</item>
+        <item>Session 5</item>
+    </string-array>
+    <string-array name="session_shortdesc">
+        <item>lorem ipsum</item>
+        <item>lorem ipsum</item>
+        <item>lorem ipsum</item>
+        <item>lorem ipsum</item>
+        <item>lorem ipsum</item>
+    </string-array>
+    <string-array name="session_desc">
+        <item>lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum</item>
+        <item>lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum</item>
+        <item>lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum</item>
+        <item>lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum</item>
+        <item>lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum</item>
+    </string-array>
+    <string-array name="session_score">
+        <item>90</item>
+        <item>99</item>
+        <item>60</item>
+        <item>60</item>
+        <item>50</item>
+    </string-array>
 
     <string name="your_personal_information">Your Personal Information</string>
     <string name="full_name">Full Name</string>

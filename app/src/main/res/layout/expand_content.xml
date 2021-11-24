@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:theme="@style/ProgressBarStyle"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_module"
+        app:layout_constraintTop_toBottomOf="@id/progressBar"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_w400"
+        android:text="Total Module to Complete"/>
+
+    <TextView
+        android:id="@+id/tv_modulevalue"
+        android:fontFamily="@font/poppins_w400"
+        android:layout_width="wrap_content"
+        android:textColor="#F37323"
+        android:text="3 Modules"
+        app:layout_constraintTop_toBottomOf="@id/progressBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tv_hours"
+        app:layout_constraintTop_toBottomOf="@id/tv_module"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_w400"
+        android:text="Total Hours to Complete"/>
+
+    <TextView
+        android:id="@+id/tv_hoursvalue"
+        android:fontFamily="@font/poppins_w400"
+        android:layout_width="wrap_content"
+        android:textColor="#F37323"
+        android:text="3 Hours"
+        app:layout_constraintTop_toBottomOf="@id/tv_modulevalue"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tv_learninghours"
+        app:layout_constraintTop_toBottomOf="@id/tv_hours"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_w400"
+        android:text="Total Learning Hours"/>
+
+    <TextView
+        android:id="@+id/tv_learninghoursvalue"
+        android:fontFamily="@font/poppins_w400"
+        android:layout_width="wrap_content"
+        android:textColor="#F37323"
+        android:text="7 Hours"
+        app:layout_constraintTop_toBottomOf="@id/tv_hoursvalue"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="wrap_content"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

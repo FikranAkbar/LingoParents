@@ -74,6 +74,7 @@
         android:name="com.glints.lingoparents.ui.progress.ProgressFragment"
         android:label="fragment_progress"
         tools:layout="@layout/fragment_progress" />
+
     <action
         android:id="@+id/action_insightListFragment_to_detailInsightFragment"
         app:destination="@id/detailInsightFragment"
@@ -93,7 +94,17 @@
         tools:layout="@layout/fragment_detail_insight" />
     <fragment
         android:id="@+id/progressProfileFragment"
-        android:name="com.glints.lingoparents.ui.progress.ProgressProfileFragment"
+        android:name="com.glints.lingoparents.ui.progress.ProgressLearningFragment"
         android:label="fragment_progress_profile"
         tools:layout="@layout/fragment_progress_profile" />
+    <fragment
+        android:id="@+id/progressLearningCourseFragment"
+        android:name="com.glints.lingoparents.ui.progress.ProgressLearningCourseFragment"
+        android:label="fragment_progress_learning_course"
+        tools:layout="@layout/fragment_progress_learning_course" />
+    <fragment
+        android:id="@+id/assignmentFragment"
+        android:name="com.glints.lingoparents.ui.progress.AssignmentFragment"
+        android:label="fragment_assignment"
+        tools:layout="@layout/fragment_assignment" />
 </navigation>

@@ -136,4 +136,9 @@
         <item name="fontFamily">@font/poppins_w600</item>
         <item name="android:textSize">14sp</item>
     </style>
+
+    <style name="ProgressBarStyle">
+        <item name="colorAccent">#F37323</item>
+    </style>
+
 </resources>
