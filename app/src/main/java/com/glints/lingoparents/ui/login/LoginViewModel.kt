@@ -6,6 +6,7 @@ import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.model.response.LoginUserResponse
 import com.glints.lingoparents.ui.REGISTER_USER_RESULT_OK
 import com.glints.lingoparents.utils.ErrorUtils
+import com.glints.lingoparents.utils.TokenPreferences
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -13,7 +14,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(tokenPreferences: TokenPreferences) : ViewModel() {
     private val loginEventChannel = Channel<LoginEvent>()
     val loginEvent = loginEventChannel.receiveAsFlow()
 
