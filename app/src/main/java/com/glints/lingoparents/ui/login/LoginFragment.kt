@@ -9,33 +9,46 @@ import android.text.Spanned
 import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentLoginBinding
 import com.glints.lingoparents.ui.dashboard.DashboardActivity
 import com.glints.lingoparents.utils.AuthFormValidator
+import com.glints.lingoparents.utils.CustomViewModelFactory
+import com.glints.lingoparents.utils.TokenPreferences
+import com.glints.lingoparents.utils.dataStore
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
-
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: LoginViewModel by viewModels()
+    private lateinit var tokenPreferences: TokenPreferences
+    private lateinit var viewModel: LoginViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _binding = FragmentLoginBinding.bind(view)
 
+        tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
+        viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this))[
+                LoginViewModel::class.java
+        ]
+
         setRegisterTextClickListener()
         setTermsPrivacyTextClickListener()
+
+        viewModel.getToken().observe(viewLifecycleOwner) {
+            Log.d("TEST", it)
+        }
 
         binding.apply {
             mbtnLogin.setOnClickListener {

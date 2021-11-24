@@ -84,4 +84,7 @@ dependencies {
 
     // MKLoader (Loading View)
     implementation 'com.tuyenmonkey:mkloader:1.4.0'
+
+    // Datastore
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
 }
