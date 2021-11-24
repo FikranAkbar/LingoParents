@@ -133,6 +133,6 @@
     </style>
     
     <style name="CustomMaterialButtonStateColor" parent="@style/Widget.MaterialComponents.Button">
-        <item name="backgroundTint">@color/custom_material_button_state_color</item>
+        <item name="backgroundTint">@color/custom_material_button_positive_state_color</item>
     </style>
 </resources>

@@ -38,4 +38,10 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
             preferences[TOKEN_KEY] = token
         }
     }
+
+    suspend fun resetAccessToken() {
+        dataStore.edit { preferences ->
+            preferences[TOKEN_KEY] = ""
+        }
+    }
 }
