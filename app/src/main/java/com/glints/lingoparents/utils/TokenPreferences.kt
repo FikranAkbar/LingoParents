@@ -29,7 +29,7 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
 
     fun getAccessToken(): Flow<String> {
         return dataStore.data.map { preferences ->
-            preferences[TOKEN_KEY] ?: "-"
+            preferences[TOKEN_KEY] ?: ""
         }
     }
 

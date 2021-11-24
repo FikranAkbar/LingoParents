@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import com.glints.lingoparents.ui.login.LoginViewModel
 import com.glints.lingoparents.ui.register.RegisterViewModel
+import com.glints.lingoparents.ui.splash.SplashViewModel
 
 class CustomViewModelFactory(
     private val tokenPref: TokenPreferences,
@@ -21,6 +22,9 @@ class CustomViewModelFactory(
         handle: SavedStateHandle
     ): T {
         return when {
+            modelClass.isAssignableFrom(SplashViewModel::class.java) -> {
+                SplashViewModel(tokenPref) as T
+            }
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
                 LoginViewModel(tokenPref) as T
             }

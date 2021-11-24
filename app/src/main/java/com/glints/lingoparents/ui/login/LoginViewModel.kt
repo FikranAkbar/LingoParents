@@ -42,7 +42,7 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
         loginEventChannel.send(LoginEvent.Loading)
     }
 
-    private fun onApiCallSuccess(result: String) = viewModelScope.launch {
+    private fun onApiCallSuccess(   result: String) = viewModelScope.launch {
         loginEventChannel.send(LoginEvent.Success(result))
     }
 

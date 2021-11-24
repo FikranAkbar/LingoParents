@@ -39,10 +39,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         _binding = FragmentLoginBinding.bind(view)
 
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
-        viewModel = ViewModelProvider(
-            this,
-            CustomViewModelFactory(tokenPreferences, this)
-        )[LoginViewModel::class.java]
+        viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this))[
+                LoginViewModel::class.java
+        ]
 
         setRegisterTextClickListener()
         setTermsPrivacyTextClickListener()
