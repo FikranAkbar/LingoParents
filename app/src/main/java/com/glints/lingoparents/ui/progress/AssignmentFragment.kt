@@ -55,7 +55,7 @@ class AssignmentFragment : Fragment(R.layout.fragment_assignment) {
         )
         binding.tvStudentScore.setText(
             Html.fromHtml(
-                "<b>Student Score: </b>" + "wah jelek sekali nilai pak dosen mohon tolong idbantu ya hahahahahahaha"
+                "<b>Student Score: </b>" + "90"
             )
         )
         binding.tvAssignmentFeedback.setText(
