@@ -63,7 +63,6 @@
     <style name="Typography.Body1">
         <item name="android:fontFamily">@font/poppins_w600</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:letterSpacing">0.5</item>
     </style>
 
     <style name="Typography.Body2">
@@ -137,6 +136,11 @@
         <item name="fontFamily">@font/poppins_w600</item>
         <item name="android:textSize">14sp</item>
     </style>
+
+    <style name="CustomMaterialButtonStateColor" parent="@style/Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/custom_material_button_positive_state_color</item>
+    </style>
+
 
     <style name="ProgressBarStyle">
         <item name="colorAccent">#F37323</item>

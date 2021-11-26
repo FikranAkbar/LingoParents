@@ -27,14 +27,15 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
         )
     }
 
-    private lateinit var binding: FragmentAccountSettingBinding
+    private var _binding: FragmentAccountSettingBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentAccountSettingBinding.inflate(inflater)
+    ): View {
+        _binding = FragmentAccountSettingBinding.inflate(inflater)
 
         val sectionsPagerAdapter = SectionsPagerAdapter(requireActivity() as AppCompatActivity)
         val viewPager2 = binding.viewPagerAccountSetting
@@ -76,5 +77,10 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
         }
 
         return binding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

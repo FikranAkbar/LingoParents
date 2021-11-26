@@ -3,7 +3,6 @@ plugins {
     id 'kotlin-android'
     id "androidx.navigation.safeargs.kotlin"
     id 'kotlin-parcelize'
-
 }
 
 android {
@@ -84,4 +83,13 @@ dependencies {
 
     // expandable layout
     implementation "com.github.skydoves:expandablelayout:1.0.7"
+
+    // MKLoader (Loading View)
+    implementation 'com.tuyenmonkey:mkloader:1.4.0'
+
+    // Datastore
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+
+    // Auth Google
+    implementation 'com.google.android.gms:play-services-auth:19.2.0'
 }
