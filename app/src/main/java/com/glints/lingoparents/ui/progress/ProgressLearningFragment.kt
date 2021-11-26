@@ -27,6 +27,7 @@ class ProgressLearningFragment : Fragment(R.layout.fragment_progress_learning) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentProgressLearningBinding.bind(view)
         //viewpager
+        val tabIcons = arrayOf(R.drawable.ic_small_korea_flag, R.drawable.ic_small_germany_flag)
         val sectionsPagerAdapter = ProgressCourseSectionPagerAdapter(activity as AppCompatActivity)
         val viewPager: ViewPager2 = binding.viewPager
         viewPager.isUserInputEnabled = false
@@ -35,6 +36,8 @@ class ProgressLearningFragment : Fragment(R.layout.fragment_progress_learning) {
         TabLayoutMediator(tabs, viewPager) { tab, position ->
             tab.text = resources.getString(TAB_TITLES[position])
         }.attach()
+        tabs.getTabAt(0)!!.setIcon(tabIcons[0])
+        tabs.getTabAt(1)!!.setIcon(tabIcons[1])
 
 
     }
