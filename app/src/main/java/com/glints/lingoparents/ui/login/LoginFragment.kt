@@ -2,6 +2,7 @@ package com.glints.lingoparents.ui.login
 
 import android.content.Context
 import android.content.Intent
+import android.content.IntentSender
 import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableString
@@ -25,15 +26,31 @@ import com.glints.lingoparents.utils.AuthFormValidator
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.auth.api.identity.SignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
+    companion object {
+        private const val TAG = "LoginFragment"
+        private const val RC_GOOGLE_SIGN_IN = 9001
+    }
+
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var viewModel: LoginViewModel
+
+    private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _binding = FragmentLoginBinding.bind(view)
@@ -45,10 +62,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         setRegisterTextClickListener()
         setTermsPrivacyTextClickListener()
-
-        viewModel.getToken().observe(viewLifecycleOwner) {
-            Log.d("TEST", it)
-        }
+        setGoogleSignInClient()
 
         binding.apply {
             mbtnLogin.setOnClickListener {
@@ -62,6 +76,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             }
             mbtnForgetPassword.setOnClickListener {
                 viewModel.onForgotPasswordButtonClick()
+            }
+            mbtnLoginWithGoogle.setOnClickListener {
+                viewModel.onLoginWithGoogleClick()
             }
             tilEmail.editText?.setText("calvinsan123@gmail.com")
             tilPassword.editText?.setText("calvin123")
@@ -127,6 +144,16 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     is LoginViewModel.LoginEvent.ShowSnackBarMessage -> {
                         Snackbar.make(binding.root, event.message, Snackbar.LENGTH_SHORT).show()
                     }
+                    is LoginViewModel.LoginEvent.TryToLoginWithGoogle -> {
+                        val signInIntent = googleSignInClient.signInIntent
+                        startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN)
+                    }
+                    is LoginViewModel.LoginEvent.LoginWithGoogleSuccess -> {
+                        Snackbar.make(binding.root, event.account.email as CharSequence, Snackbar.LENGTH_SHORT).show()
+                    }
+                    is LoginViewModel.LoginEvent.LoginWithGoogleFailure -> {
+                        Snackbar.make(binding.root, event.errorMessage, Snackbar.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
@@ -135,6 +162,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             val result = bundle.getInt("register_user")
             viewModel.onRegisterUserSuccessful(result)
         }
+    }
+
+    private fun setGoogleSignInClient() {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
     }
 
     private fun setRegisterTextClickListener() {
@@ -222,6 +257,24 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     vLoadingProgress.visibility = View.GONE
                 }
             }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RC_GOOGLE_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            handleSignInResult(task)
+        }
+    }
+
+    private fun handleSignInResult(task: Task<GoogleSignInAccount>?) {
+        try {
+            val account = task?.getResult(ApiException::class.java)
+            viewModel.onLoginWithGoogleSuccessful(account as GoogleSignInAccount)
+        } catch (e: ApiException) {
+            viewModel.onLoginWithGoogleFailure("signInResult:failed code" + e.statusCode)
         }
     }
 
