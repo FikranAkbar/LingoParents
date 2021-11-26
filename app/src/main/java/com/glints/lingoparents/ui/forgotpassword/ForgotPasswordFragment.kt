@@ -2,20 +2,70 @@ package com.glints.lingoparents.ui.forgotpassword
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentForgotPasswordBinding
+import com.glints.lingoparents.utils.AuthFormValidator
+import kotlinx.coroutines.flow.collect
 
 class ForgotPasswordFragment : Fragment(R.layout.fragment_forgot_password) {
 
-    private lateinit var binding: FragmentForgotPasswordBinding
-    private lateinit var viewModel: ForgotPasswordViewModel
+    private var _binding: FragmentForgotPasswordBinding? = null
+    private val binding get() = _binding!!
+    private val viewModel: ForgotPasswordViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding = FragmentForgotPasswordBinding.bind(view)
-        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[
-                ForgotPasswordViewModel::class.java
-        ]
+        _binding = FragmentForgotPasswordBinding.bind(view)
+
+        binding.apply {
+            mbtnBackToLogin.setOnClickListener {
+                viewModel.onBackToLoginButtonClick()
+            }
+            mbtnSubmit.setOnClickListener {
+                viewModel.onSubmitButtonClick(tilEmail.editText?.text.toString())
+            }
+        }
+
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    findNavController().popBackStack()
+                }
+            }
+        )
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.forgotPasswordEvent.collect { event ->
+                when (event) {
+                    is ForgotPasswordViewModel.ForgotPasswordEvent.NavigateBackToLogin -> {
+                        findNavController().popBackStack()
+                    }
+                    is ForgotPasswordViewModel.ForgotPasswordEvent.TryToSubmitForgotPassword -> {
+                        binding.apply {
+                            AuthFormValidator.apply {
+                                hideFieldError(tilEmail)
+
+                                val email = event.email
+
+                                if (isValidEmail(email)) {
+                                    viewModel.sendForgotPasswordRequest(email)
+                                } else {
+                                    showFieldError(tilEmail, EMAIL_WRONG_FORMAT_ERROR)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

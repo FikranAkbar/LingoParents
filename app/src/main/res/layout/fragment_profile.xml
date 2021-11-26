@@ -230,6 +230,7 @@
                     android:text="@string/edit"
                     android:textAllCaps="false"
                     android:textSize="12sp"
+                    app:backgroundTint="@color/custom_material_button_positive_state_color"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_phone_number_content" />
@@ -248,6 +249,7 @@
             android:text="@string/logout"
             android:textAllCaps="false"
             android:textSize="14sp"
+            app:backgroundTint="@color/custom_material_button_positive_state_color"
             app:icon="@drawable/ic_logout"
             app:iconGravity="textStart"
             app:iconSize="16dp"
@@ -266,6 +268,7 @@
             android:textAllCaps="false"
             android:textSize="14sp"
             android:visibility="gone"
+            app:backgroundTint="@color/custom_material_button_positive_state_color"
             app:layout_constraintTop_toBottomOf="@id/cv_your_profile_information" />
 
         <com.google.android.material.button.MaterialButton
@@ -279,8 +282,10 @@
             android:paddingVertical="6dp"
             android:text="@string/cancel"
             android:textAllCaps="false"
+            android:textColor="#4F4F4F"
             android:textSize="14sp"
             android:visibility="gone"
+            app:backgroundTint="@color/custom_material_button_negative_state_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/mbtn_save" />
     </androidx.constraintlayout.widget.ConstraintLayout>

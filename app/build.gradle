@@ -3,7 +3,6 @@ plugins {
     id 'kotlin-android'
     id "androidx.navigation.safeargs.kotlin"
     id 'kotlin-parcelize'
-
 }
 
 android {
@@ -81,4 +80,13 @@ dependencies {
 
     // Pagination 3
     implementation("androidx.paging:paging-runtime:3.0.1")
+
+    // MKLoader (Loading View)
+    implementation 'com.tuyenmonkey:mkloader:1.4.0'
+
+    // Datastore
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+
+    // Auth Google
+    implementation 'com.google.android.gms:play-services-auth:19.2.0'
 }
