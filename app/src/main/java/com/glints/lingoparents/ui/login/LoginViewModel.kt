@@ -9,6 +9,7 @@ import com.glints.lingoparents.data.model.response.LoginUserResponse
 import com.glints.lingoparents.ui.REGISTER_USER_RESULT_OK
 import com.glints.lingoparents.utils.ErrorUtils
 import com.glints.lingoparents.utils.TokenPreferences
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -36,6 +37,18 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
         when (result) {
             REGISTER_USER_RESULT_OK -> showSnackBarMessage("Register User Successful!")
         }
+    }
+
+    fun onLoginWithGoogleClick() = viewModelScope.launch {
+        loginEventChannel.send(LoginEvent.TryToLoginWithGoogle)
+    }
+
+    fun onLoginWithGoogleSuccessful(account: GoogleSignInAccount) = viewModelScope.launch {
+        loginEventChannel.send(LoginEvent.LoginWithGoogleSuccess(account))
+    }
+
+    fun onLoginWithGoogleFailure(message: String) = viewModelScope.launch {
+        loginEventChannel.send(LoginEvent.LoginWithGoogleFailure(message))
     }
 
     private fun onApiCallStarted() = viewModelScope.launch {
@@ -89,6 +102,9 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
         object NavigateToForgotPassword : LoginEvent()
         object NavigateToRegister : LoginEvent()
         data class TryToLoginUser(val email: String, val password: String) : LoginEvent()
+        object TryToLoginWithGoogle : LoginEvent()
+        data class LoginWithGoogleSuccess(val account: GoogleSignInAccount) : LoginEvent()
+        data class LoginWithGoogleFailure(val errorMessage: String) : LoginEvent()
         object Loading : LoginEvent()
         data class Success(val result: String) : LoginEvent()
         data class Error(val message: String) : LoginEvent()

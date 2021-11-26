@@ -3,7 +3,6 @@ plugins {
     id 'kotlin-android'
     id "androidx.navigation.safeargs.kotlin"
     id 'kotlin-parcelize'
-
 }
 
 android {
@@ -87,4 +86,7 @@ dependencies {
 
     // Datastore
     implementation "androidx.datastore:datastore-preferences:1.0.0"
+
+    // Auth Google
+    implementation 'com.google.android.gms:play-services-auth:19.2.0'
 }
