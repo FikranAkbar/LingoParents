@@ -111,22 +111,24 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginVertical="8dp"
+                android:layout_marginTop="24dp"
                 android:background="@drawable/ic_rectangle_4"
                 android:padding="4dp"
                 android:src="@drawable/ic_email"
                 app:layout_constraintStart_toEndOf="@id/guideline5"
-                app:layout_constraintTop_toBottomOf="@id/iv_icon_phone" />
+                app:layout_constraintTop_toBottomOf="@id/tvPhoneNumberValue" />
 
             <ImageView
                 android:id="@+id/iv_icon_location"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginVertical="8dp"
+                android:layout_marginTop="24dp"
                 android:background="@drawable/ic_rectangle_4"
                 android:padding="4dp"
                 android:src="@drawable/ic_baseline_location_on_24"
                 app:layout_constraintStart_toEndOf="@id/guideline5"
-                app:layout_constraintTop_toBottomOf="@id/textView2" />
+                app:layout_constraintTop_toBottomOf="@id/tvEmailValue" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline6"
@@ -136,7 +138,7 @@
                 app:layout_constraintGuide_percent="0.52" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/tvPhoneNumberValue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="010-987"
@@ -146,7 +148,7 @@
                 app:layout_constraintTop_toTopOf="@+id/iv_icon_phone" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/tvEmailValue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:maxLines="3"
@@ -157,7 +159,7 @@
                 app:layout_constraintTop_toTopOf="@+id/iv_icon_message" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/tvAddressValue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:maxLines="3"
@@ -165,7 +167,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/iv_icon_location"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline6"
-                app:layout_constraintTop_toBottomOf="@+id/textView2"/>
+                app:layout_constraintTop_toTopOf="@+id/iv_icon_location" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

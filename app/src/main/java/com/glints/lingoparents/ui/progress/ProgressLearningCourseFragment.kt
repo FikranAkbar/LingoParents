@@ -12,6 +12,8 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -179,8 +181,10 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
         rvSession.adapter = listSessionAdapter
         listSessionAdapter.setOnItemClickCallback(object : SessionAdapter.OnItemClickCallback {
             override fun onItemClicked(session: SessionItem) {
-                Toast.makeText(context, "Kamu memilih " + session.session, Toast.LENGTH_SHORT)
-                    .show()
+//                Toast.makeText(context, "Kamu memilih " + session.session, Toast.LENGTH_SHORT)
+//                    .show()
+                //Navigation.createNavigateOnClickListener(R.id.action_progressLearningCourseFragment_to_assignmentFragment)
+                findNavController().navigate(R.id.action_progressLearningCourseFragment_to_assignmentFragment)
             }
         })
 

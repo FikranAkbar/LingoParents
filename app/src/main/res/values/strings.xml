@@ -174,7 +174,21 @@
         <item>60</item>
         <item>50</item>
     </string-array>
-
+    <string-array name="question_number">
+        <item>1. Question 1</item>
+        <item>1. Question 1</item>
+        <item>1. Question 1</item>
+    </string-array>
+    <string-array name="question_studentanswer">
+        <item>lorem ipsum</item>
+        <item>lorem ipsum</item>
+        <item>lorem ipsum</item>
+    </string-array>
+    <string-array name="question_correctanswer">
+        <item>lorem ipsum</item>
+        <item>lorem ipsum</item>
+        <item>lorem ipsum</item>
+    </string-array>
     <string name="your_personal_information">Your Personal Information</string>
     <string name="full_name">Full Name</string>
     <string name="address">Address</string>

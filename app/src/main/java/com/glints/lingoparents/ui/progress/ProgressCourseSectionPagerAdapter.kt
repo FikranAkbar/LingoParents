@@ -14,7 +14,7 @@ class ProgressCourseSectionPagerAdapter(activity: AppCompatActivity) : FragmentS
         var fragment: Fragment? = null
         when(position) {
             0 -> fragment = ProgressLearningCourseFragment()
-            1 -> fragment = AssignmentFragment()
+            1 -> fragment = ProgressLearningCourseFragment()
         }
 
         return fragment as Fragment

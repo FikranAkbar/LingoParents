@@ -17,12 +17,13 @@
 
     <TextView
         android:id="@+id/tv_module"
-        app:layout_constraintTop_toBottomOf="@id/progressBar"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_w400"
-        android:text="Total Module to Complete"/>
+        android:text="Total Module to Complete"
+        app:layout_constraintEnd_toStartOf="@+id/tv_modulevalue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/progressBar" />
 
     <TextView
         android:id="@+id/tv_modulevalue"
@@ -30,18 +31,20 @@
         android:layout_width="wrap_content"
         android:textColor="#F37323"
         android:text="3 Modules"
-        app:layout_constraintTop_toBottomOf="@id/progressBar"
+        app:layout_constraintTop_toTopOf="@id/tv_module"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_height="wrap_content"/>
+        app:layout_constraintBottom_toBottomOf="@id/tv_module"
+    android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/tv_hours"
-        app:layout_constraintTop_toBottomOf="@id/tv_module"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_w400"
-        android:text="Total Hours to Complete"/>
+        android:text="Total Hours to Complete"
+        app:layout_constraintEnd_toStartOf="@+id/tv_hoursvalue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_module" />
 
     <TextView
         android:id="@+id/tv_hoursvalue"
@@ -49,18 +52,20 @@
         android:layout_width="wrap_content"
         android:textColor="#F37323"
         android:text="3 Hours"
-        app:layout_constraintTop_toBottomOf="@id/tv_modulevalue"
+        app:layout_constraintBottom_toBottomOf="@id/tv_hours"
+        app:layout_constraintTop_toTopOf="@id/tv_hours"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/tv_learninghours"
-        app:layout_constraintTop_toBottomOf="@id/tv_hours"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_w400"
-        android:text="Total Learning Hours"/>
+        android:text="Total Learning Hours"
+        app:layout_constraintEnd_toStartOf="@+id/tv_learninghoursvalue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_hours" />
 
     <TextView
         android:id="@+id/tv_learninghoursvalue"
@@ -68,7 +73,8 @@
         android:layout_width="wrap_content"
         android:textColor="#F37323"
         android:text="7 Hours"
-        app:layout_constraintTop_toBottomOf="@id/tv_hoursvalue"
+        app:layout_constraintBottom_toBottomOf="@id/tv_learninghours"
+        app:layout_constraintTop_toTopOf="@id/tv_learninghours"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_height="wrap_content"/>
 
