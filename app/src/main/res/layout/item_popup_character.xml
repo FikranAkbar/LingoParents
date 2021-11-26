@@ -8,10 +8,10 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvCharacter"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:cardCornerRadius="12dp"
-        app:cardElevation="8dp"
+        app:cardBackgroundColor="@color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -26,7 +26,10 @@
                 android:id="@+id/ivCharacter"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@color/black" />
+                android:src="@drawable/captain"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="0dp" />
 
             <TextView
                 android:id="@+id/tvName"
@@ -37,8 +40,8 @@
                 android:textColor="@color/white"
                 android:textSize="25sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/ivCharacter"
+                app:layout_constraintStart_toStartOf="@id/ivCharacter"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -55,7 +58,7 @@
 
             <TextView
                 android:id="@+id/tvDesc"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginVertical="16dp"
@@ -63,49 +66,39 @@
                 android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit.Aenean rhoncus quam eu malesuada consectetur.Morbi auctor tellus gravida nibh luctus, eget scelerisque ipsum."
                 android:textColor="@color/white"
                 android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintBottom_toBottomOf="@id/ivCharacter"
+                app:layout_constraintEnd_toEndOf="@id/ivCharacter"
+                app:layout_constraintStart_toStartOf="@id/ivCharacter" />
 
             <TextView
                 android:id="@+id/tvPersonalityTraits"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="16dp"
-                android:fontFamily="@font/poppins_w700"
-                android:text="Personality Traits: "
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/tvDesc"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/tvPersonalityTraitsValue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_w400"
-                android:text="Honest and straight forward"
+                android:layout_marginVertical="16dp"
+                android:fontFamily="@font/poppins_w700"
+                android:text="Personality Traits: Honest and straight forward"
                 android:textColor="@color/white"
                 android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@id/tvPersonalityTraits"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tvPersonalityTraits"
-                app:layout_constraintTop_toTopOf="@id/tvPersonalityTraits" />
+                android:layout_marginHorizontal="16dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/tvDesc"
+                app:layout_constraintStart_toStartOf="@id/ivCharacter" />
+
 
             <TextView
                 android:id="@+id/tvSuperheroName"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:fontFamily="@font/poppins_w700"
                 android:text="Captain America"
                 android:textColor="@color/white"
                 android:textSize="25sp"
+                android:layout_margin="16dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/tvPersonalityTraits"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintEnd_toEndOf="@+id/ivCharacter"
+                app:layout_constraintStart_toStartOf="@id/ivCharacter" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
