@@ -52,8 +52,8 @@
                 app:tabGravity="fill"
                 app:tabIconTint="@null"
                 style="@style/CourseTabsTextStyle"
-                app:tabIndicatorColor="#182E7C"
-                app:tabSelectedTextColor="#182E7C"
+                app:tabIndicatorColor="#F9663A"
+                app:tabSelectedTextColor="@color/black"
                 app:tabMode="auto"/>
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/view_pager"
