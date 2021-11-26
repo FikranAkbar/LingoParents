@@ -40,7 +40,7 @@ class AssignmentFragment : Fragment(R.layout.fragment_assignment) {
             })
         binding.tvTutorName.setText(
             Html.fromHtml(
-                "<b>Tutor Name: </b>" + "“Student need deeply learn about time and date”"
+                "<b>Tutor Name: </b>" + "“Eleanor Pena”"
             )
         )
         binding.tvSessionSchedule.setText(
