@@ -23,7 +23,7 @@
         android:title="@string/course" />
 
     <item
-        android:id="@+id/forgotPasswordFragment"
+        android:id="@+id/progressFragment"
         android:icon="@drawable/ic_progress"
         android:title="@string/progress" />
 

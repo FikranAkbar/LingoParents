@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.progress.AssignmentFragment">
+
+    <ImageView
+        android:id="@+id/iv_back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_back_button_orange"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/tvBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/poppins_w500"
+        android:text="Back"
+        android:textColor="#F9663A"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_back_button"
+        app:layout_constraintStart_toEndOf="@id/iv_back_button"
+        app:layout_constraintTop_toTopOf="@id/iv_back_button" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="24dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_back_button">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="16dp">
+
+                <ImageView
+                    android:id="@+id/ivFlag"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/img_course_korean"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvAssignment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/poppins_w500"
+                    android:text="Assignment"
+                    android:textColor="#182E7C"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/ivFlag"
+                    app:layout_constraintStart_toEndOf="@id/guideline8"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvAssignmentLevel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_w500"
+                    android:text="Beginner - Sublevel 2"
+                    android:textColor="#F37323"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivFlag"
+                    app:layout_constraintEnd_toStartOf="@+id/ivFlag"
+                    app:layout_constraintStart_toEndOf="@id/guideline8"
+                    app:layout_constraintTop_toBottomOf="@id/tvAssignment" />
+
+                <TextView
+                    android:id="@+id/tvTutorName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_w400"
+                    android:text="Tutor Name : "
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/guideline8"
+                    app:layout_constraintTop_toBottomOf="@id/tvAssignmentLevel"/>
+
+                <TextView
+                    android:id="@+id/tvSessionSchedule"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_w400"
+                    android:text="Session Schedule : "
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/guideline8"
+                    app:layout_constraintTop_toBottomOf="@id/tvTutorName" />
+
+
+                <TextView
+                    android:id="@+id/tvAttendance"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_w400"
+                    android:text="Attendance : "
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/guideline8"
+                    app:layout_constraintTop_toBottomOf="@id/tvSessionSchedule" />
+
+
+                <TextView
+                    android:id="@+id/tvStudentScore"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_w400"
+                    android:text="Student Score :"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/guideline8"
+                    app:layout_constraintTop_toBottomOf="@id/tvAttendance" />
+
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tvQuestion"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="16dp"-->
+<!--                    android:fontFamily="@font/poppins_w700"-->
+<!--                    android:text="1. Question 1?"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textSize="16sp"-->
+<!--                    android:textStyle="bold"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/tvStudentScore" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tvStudentAnswer"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:fontFamily="@font/poppins_w400"-->
+<!--                    android:text="Student Answer: lorem ipsum"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintStart_toEndOf="@id/guideline9"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/tvQuestion" />-->
+
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tvCorrectAnswer"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:fontFamily="@font/poppins_w400"-->
+<!--                    android:text="Correct Answer: lorem ipsum"-->
+<!--                    android:textColor="#4FE34E"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintStart_toEndOf="@id/guideline9"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/tvStudentAnswer" />-->
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvQuestion"
+                    tools:listitem="@layout/item_question"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvStudentScore"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <TextView
+                    android:id="@+id/tvAssignmentFeedback"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/poppins_w400"
+                    android:text="Assignment Feedback: “Student need deeply learn about time and date”"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/guideline8"
+                    app:layout_constraintTop_toBottomOf="@id/rvQuestion" />
+
+
+                <TextView
+                    android:id="@+id/tvSessionFeedback"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/poppins_w400"
+                    android:text="Session Feedback: “Student active and on time attending the class”"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/guideline8"
+                    app:layout_constraintTop_toBottomOf="@id/tvAssignmentFeedback" />
+
+
+                <TextView
+                    android:id="@+id/tvNotes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/poppins_w400"
+                    android:text="Notes: “Student active and on time attendingdfdfdfdf the class”"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/guideline8"
+                    app:layout_constraintTop_toBottomOf="@id/tvSessionFeedback" />
+
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.05" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.1" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
