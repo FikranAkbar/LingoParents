@@ -8,8 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentChangePasswordBinding
-import com.glints.lingoparents.databinding.FragmentProfileBinding
-import com.glints.lingoparents.ui.accountsetting.AccountSettingViewModel
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
@@ -18,7 +16,7 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
     private var _binding: FragmentChangePasswordBinding? = null
     private val binding get() = _binding!!
     private lateinit var tokenPreferences: TokenPreferences
-    private lateinit var viewModel: AccountSettingViewModel
+    private lateinit var viewModel: PasswordSettingViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,9 +27,14 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
 
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
         viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this))[
-                AccountSettingViewModel::class.java
+                PasswordSettingViewModel::class.java
         ]
 
         return binding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

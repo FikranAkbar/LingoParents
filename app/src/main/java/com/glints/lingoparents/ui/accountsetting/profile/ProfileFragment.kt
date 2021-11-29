@@ -11,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentProfileBinding
 import com.glints.lingoparents.ui.MainActivity
-import com.glints.lingoparents.ui.accountsetting.AccountSettingViewModel
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
@@ -22,7 +21,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private lateinit var tokenPreferences: TokenPreferences
-    private lateinit var viewModel: AccountSettingViewModel
+    private lateinit var viewModel: ProfileViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,7 +32,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
         viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this))[
-                AccountSettingViewModel::class.java
+                ProfileViewModel::class.java
         ]
 
         binding.apply {
@@ -54,7 +53,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         lifecycleScope.launchWhenStarted {
             viewModel.profileEvent.collect { event ->
                 when (event) {
-                    AccountSettingViewModel.ProfileEvent.NavigateToAuthScreen -> {
+                    ProfileViewModel.ProfileEvent.NavigateToAuthScreen -> {
                         val intent =
                             Intent(this@ProfileFragment.requireContext(), MainActivity::class.java)
                         startActivity(intent)
