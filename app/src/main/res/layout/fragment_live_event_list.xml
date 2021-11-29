@@ -47,8 +47,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_w400"
-            android:inputType="text"
+            android:hint="@string/search"
             android:imeOptions="actionDone"
+            android:inputType="text"
             android:maxLines="1"
             android:paddingVertical="4dp"
             android:textSize="12sp" />

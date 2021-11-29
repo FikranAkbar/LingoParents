@@ -59,6 +59,7 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
                 when (event) {
                     is LiveEventListViewModel.UpcomingLiveEventListEvent.Loading -> {
                         showLoading(true)
+                        showEmptyWarning(false)
                     }
                     is LiveEventListViewModel.UpcomingLiveEventListEvent.Success -> {
                         liveEventListAdapter.submitList(event.list)
@@ -66,6 +67,7 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
                     }
                     is LiveEventListViewModel.UpcomingLiveEventListEvent.Error -> {
                         showLoading(false)
+                        showEmptyWarning(true)
                     }
                     is LiveEventListViewModel.UpcomingLiveEventListEvent.NavigateToDetailLiveEventFragment -> {
                         val action =
@@ -100,6 +102,18 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
             } else {
                 rvUpcomingEvent.visibility = View.VISIBLE
                 shimmerLayout.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun showEmptyWarning(bool: Boolean) {
+        binding.apply {
+            if (bool) {
+                ivNoEvent.visibility = View.VISIBLE
+                tvNoEvent.visibility = View.VISIBLE
+            } else {
+                ivNoEvent.visibility = View.GONE
+                tvNoEvent.visibility = View.GONE
             }
         }
     }

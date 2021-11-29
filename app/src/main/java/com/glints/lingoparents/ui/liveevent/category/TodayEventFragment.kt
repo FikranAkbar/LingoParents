@@ -60,6 +60,7 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
                 when (event) {
                     is LiveEventListViewModel.TodayLiveEventListEvent.Loading -> {
                         showLoading(true)
+                        showEmptyWarning(false)
                     }
                     is LiveEventListViewModel.TodayLiveEventListEvent.Success -> {
                         liveEventListAdapter.submitList(event.list)
@@ -67,6 +68,7 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
                     }
                     is LiveEventListViewModel.TodayLiveEventListEvent.Error -> {
                         showLoading(false)
+                        showEmptyWarning(true)
                     }
                     is LiveEventListViewModel.TodayLiveEventListEvent.NavigateToDetailLiveEventFragment -> {
                         val action =
@@ -99,6 +101,18 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
             } else {
                 rvTodayEvent.visibility = View.VISIBLE
                 shimmerLayout.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun showEmptyWarning(bool: Boolean) {
+        binding.apply {
+            if (bool) {
+                ivNoEvent.visibility = View.VISIBLE
+                tvNoEvent.visibility = View.VISIBLE
+            } else {
+                ivNoEvent.visibility = View.GONE
+                tvNoEvent.visibility = View.GONE
             }
         }
     }

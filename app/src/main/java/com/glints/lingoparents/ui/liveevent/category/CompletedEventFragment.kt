@@ -6,12 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.savedstate.SavedStateRegistryOwner
 import com.glints.lingoparents.R
 import com.glints.lingoparents.data.model.response.LiveEventListResponse
 import com.glints.lingoparents.databinding.FragmentCompletedEventBinding
@@ -39,9 +37,10 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
         _binding = FragmentCompletedEventBinding.inflate(inflater)
 
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
-        viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this, arguments))[
-                LiveEventListViewModel::class.java
-        ]
+        viewModel =
+            ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this, arguments))[
+                    LiveEventListViewModel::class.java
+            ]
 
         binding.apply {
             rvCompletedEvent.apply {
@@ -61,6 +60,7 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
                 when (event) {
                     is LiveEventListViewModel.CompletedLiveEventListEvent.Loading -> {
                         showLoading(true)
+                        showEmptyWarning(false)
                     }
                     is LiveEventListViewModel.CompletedLiveEventListEvent.Success -> {
                         liveEventListAdapter.submitList(event.list)
@@ -68,6 +68,7 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
                     }
                     is LiveEventListViewModel.CompletedLiveEventListEvent.Error -> {
                         showLoading(false)
+                        showEmptyWarning(true)
                     }
                     is LiveEventListViewModel.CompletedLiveEventListEvent.NavigateToDetailLiveEventFragment -> {
                         val action =
@@ -101,6 +102,18 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
             } else {
                 rvCompletedEvent.visibility = View.VISIBLE
                 shimmerLayout.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun showEmptyWarning(bool: Boolean) {
+        binding.apply {
+            if (bool) {
+                ivNoEvent.visibility = View.VISIBLE
+                tvNoEvent.visibility = View.VISIBLE
+            } else {
+                ivNoEvent.visibility = View.GONE
+                tvNoEvent.visibility = View.GONE
             }
         }
     }
