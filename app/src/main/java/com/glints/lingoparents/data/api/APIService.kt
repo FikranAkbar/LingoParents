@@ -28,13 +28,15 @@ interface APIService {
         @Field("role") role: String = "parent"
     ): Call<RegisterUserResponse>
 
-    @GET("api/v1/events/all/{status}")
+    @GET("api/v1/events/participants/pages")
     fun getLiveEventsByStatus(
-        @Path("status") status: String
+        @QueryMap options: Map<String, String>,
+        @Header("authorization") authorization: String
     ): Call<LiveEventListResponse>
 
-    @GET("api/v1/events/{id}")
+    @GET("api/v1/events/participants/{id}")
     fun getLiveEventById(
-        @Path("id") id: Int
+        @Path("id") id: Int,
+        @Header("authorization") authorization: String
     ): Call<LiveEventDetailResponse>
 }

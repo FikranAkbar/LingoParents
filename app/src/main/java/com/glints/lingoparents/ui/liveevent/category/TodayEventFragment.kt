@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +16,9 @@ import com.glints.lingoparents.data.model.response.LiveEventListResponse
 import com.glints.lingoparents.databinding.FragmentTodayEventBinding
 import com.glints.lingoparents.ui.liveevent.LiveEventListFragmentDirections
 import com.glints.lingoparents.ui.liveevent.LiveEventListViewModel
+import com.glints.lingoparents.utils.CustomViewModelFactory
+import com.glints.lingoparents.utils.TokenPreferences
+import com.glints.lingoparents.utils.dataStore
 import kotlinx.coroutines.flow.collect
 
 class TodayEventFragment : Fragment(R.layout.fragment_today_event),
@@ -23,7 +27,8 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
     private val binding get() = _binding!!
 
     private lateinit var liveEventListAdapter: LiveEventListAdapter
-    private val viewModel: LiveEventListViewModel by viewModels()
+    private lateinit var tokenPreferences: TokenPreferences
+    private lateinit var viewModel: LiveEventListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +36,11 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTodayEventBinding.inflate(inflater)
+
+        tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
+        viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this)) [
+            LiveEventListViewModel::class.java
+        ]
 
         binding.apply {
             rvTodayEvent.apply {
@@ -48,7 +58,9 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
             }
         }
 
-        viewModel.loadTodayLiveEventList(LiveEventListViewModel.TODAY_TYPE)
+        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
+            viewModel.loadTodayLiveEventList(LiveEventListViewModel.TODAY_TYPE, accessToken)
+        }
 
         lifecycleScope.launchWhenStarted {
             viewModel.todayLiveEventListEvent.collect { event ->

@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +14,9 @@ import com.glints.lingoparents.data.model.response.LiveEventListResponse
 import com.glints.lingoparents.databinding.FragmentUpcomingEventBinding
 import com.glints.lingoparents.ui.liveevent.LiveEventListFragmentDirections
 import com.glints.lingoparents.ui.liveevent.LiveEventListViewModel
+import com.glints.lingoparents.utils.CustomViewModelFactory
+import com.glints.lingoparents.utils.TokenPreferences
+import com.glints.lingoparents.utils.dataStore
 import kotlinx.coroutines.flow.collect
 
 class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
@@ -22,7 +25,8 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
     private val binding get() = _binding!!
 
     private lateinit var liveEventListAdapter: LiveEventListAdapter
-    private val viewModel: LiveEventListViewModel by viewModels()
+    private lateinit var viewModel: LiveEventListViewModel
+    private lateinit var tokenPreferences: TokenPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,6 +34,11 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentUpcomingEventBinding.inflate(inflater)
+
+        tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
+        viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this))[
+                LiveEventListViewModel::class.java
+        ]
 
         binding.apply {
             rvUpcomingEvent.apply {
@@ -47,7 +56,9 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
             }
         }
 
-        viewModel.loadTodayLiveEventList(LiveEventListViewModel.UPCOMING_TYPE)
+        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
+            viewModel.loadTodayLiveEventList(LiveEventListViewModel.UPCOMING_TYPE, accessToken)
+        }
 
         lifecycleScope.launchWhenStarted {
             viewModel.upcomingLiveEventListEvent.collect { event ->
@@ -63,7 +74,10 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
 
                     }
                     is LiveEventListViewModel.UpcomingLiveEventListEvent.NavigateToDetailLiveEventFragment -> {
-                        val action = LiveEventListFragmentDirections.actionLiveEventListFragmentToLiveEventDetailFragment(event.id)
+                        val action =
+                            LiveEventListFragmentDirections.actionLiveEventListFragmentToLiveEventDetailFragment(
+                                event.id
+                            )
                         findNavController().navigate(action)
                     }
                 }

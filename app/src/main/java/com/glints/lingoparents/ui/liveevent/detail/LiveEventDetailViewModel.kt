@@ -1,11 +1,10 @@
 package com.glints.lingoparents.ui.liveevent.detail
 
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.model.response.LiveEventDetailResponse
 import com.glints.lingoparents.utils.ErrorUtils
+import com.glints.lingoparents.utils.TokenPreferences
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -14,10 +13,11 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LiveEventDetailViewModel(
-    state: SavedStateHandle
+    private val tokenPreferences: TokenPreferences,
+    //private val state: SavedStateHandle
 ) : ViewModel() {
 
-    val id = state.getLiveData("id", -1)
+    val id = 1
 
     private val liveEventDetailEventChannel = Channel<LiveEventDetailEvent>()
     val liveEventDetailEvent = liveEventDetailEventChannel.receiveAsFlow()
@@ -35,11 +35,13 @@ class LiveEventDetailViewModel(
         liveEventDetailEventChannel.send(LiveEventDetailEvent.Error(message))
     }
 
-    fun getLiveEventDetailById(id: Int) = viewModelScope.launch {
+    fun getAccessToken(): LiveData<String> = tokenPreferences.getAccessToken().asLiveData()
+
+    fun getLiveEventDetailById(id: Int, accessToken: String) = viewModelScope.launch {
         onApiCallStarted()
         APIClient
             .service
-            .getLiveEventById(id)
+            .getLiveEventById(id, accessToken)
             .enqueue(object : Callback<LiveEventDetailResponse> {
                 override fun onResponse(
                     call: Call<LiveEventDetailResponse>,

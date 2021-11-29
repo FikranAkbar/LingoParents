@@ -36,7 +36,7 @@ class LiveEventListAdapter(private val listener: OnItemClickCallback) :
                 tvLiveEventDate.text = item.date
 
                 Glide.with(holder.itemView.context)
-                    .load(item.speaker_photo)
+                    .load("https://thumbs.dreamstime.com/b/girl-avatar-cartoon-stock-vector-image-cute-beautiful-eyes-93364804.jpg")
                     .into(ivImage)
             }
         }

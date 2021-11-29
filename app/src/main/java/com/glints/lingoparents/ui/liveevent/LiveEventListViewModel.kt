@@ -1,10 +1,13 @@
 package com.glints.lingoparents.ui.liveevent
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.model.response.LiveEventListResponse
 import com.glints.lingoparents.utils.ErrorUtils
+import com.glints.lingoparents.utils.TokenPreferences
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -12,7 +15,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LiveEventListViewModel : ViewModel() {
+class LiveEventListViewModel(private val tokenPref: TokenPreferences) : ViewModel() {
 
     companion object {
         const val TODAY_TYPE = "live"
@@ -86,11 +89,11 @@ class LiveEventListViewModel : ViewModel() {
         }
     }
 
-    fun loadTodayLiveEventList(status: String) = viewModelScope.launch {
+    fun loadTodayLiveEventList(status: String, accessToken: String) = viewModelScope.launch {
         onApiCallStarted(status)
         APIClient
             .service
-            .getLiveEventsByStatus(status)
+            .getLiveEventsByStatus(mapOf("status" to status), accessToken)
             .enqueue(object : Callback<LiveEventListResponse> {
                 override fun onResponse(
                     call: Call<LiveEventListResponse>,
@@ -109,6 +112,8 @@ class LiveEventListViewModel : ViewModel() {
                 }
             })
     }
+
+    fun getAccessToken(): LiveData<String> = tokenPref.getAccessToken().asLiveData()
 
     sealed class TodayLiveEventListEvent {
         object Loading : TodayLiveEventListEvent()

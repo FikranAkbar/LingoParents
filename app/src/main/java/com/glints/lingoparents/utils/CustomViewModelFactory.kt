@@ -6,6 +6,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import com.glints.lingoparents.ui.accountsetting.AccountSettingViewModel
+import com.glints.lingoparents.ui.liveevent.LiveEventListViewModel
+import com.glints.lingoparents.ui.liveevent.detail.LiveEventDetailViewModel
 import com.glints.lingoparents.ui.login.LoginViewModel
 import com.glints.lingoparents.ui.register.RegisterViewModel
 import com.glints.lingoparents.ui.splash.SplashViewModel
@@ -34,6 +36,12 @@ class CustomViewModelFactory(
             }
             modelClass.isAssignableFrom(AccountSettingViewModel::class.java) -> {
                 AccountSettingViewModel(tokenPref) as T
+            }
+            modelClass.isAssignableFrom(LiveEventListViewModel::class.java) -> {
+                LiveEventListViewModel(tokenPref) as T
+            }
+            modelClass.isAssignableFrom(LiveEventDetailViewModel::class.java) -> {
+                LiveEventDetailViewModel(tokenPref) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

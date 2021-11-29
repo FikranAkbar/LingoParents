@@ -8,16 +8,21 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentLiveEventDetailBinding
+import com.glints.lingoparents.utils.CustomViewModelFactory
+import com.glints.lingoparents.utils.TokenPreferences
+import com.glints.lingoparents.utils.dataStore
 import kotlinx.coroutines.flow.collect
 
 class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
     private lateinit var binding: FragmentLiveEventDetailBinding
-    private val viewModel: LiveEventDetailViewModel by viewModels()
+    private lateinit var tokenPreferences: TokenPreferences
+    private lateinit var viewModel: LiveEventDetailViewModel
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -27,14 +32,19 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
     ): View {
         binding = FragmentLiveEventDetailBinding.inflate(inflater)
 
+        tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
+        viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this))[
+                LiveEventDetailViewModel::class.java
+        ]
+
         binding.apply {
             ivBackButton.setOnClickListener {
                 findNavController().popBackStack()
             }
         }
 
-        viewModel.id.observe(viewLifecycleOwner) {
-            viewModel.getLiveEventDetailById(it)
+        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
+            viewModel.getLiveEventDetailById(viewModel.id!!, accessToken)
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
