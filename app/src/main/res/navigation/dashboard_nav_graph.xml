@@ -53,8 +53,7 @@
         android:id="@+id/accountSettingFragment"
         android:name="com.glints.lingoparents.ui.accountsetting.AccountSettingFragment"
         android:label="fragment_account_setting"
-        tools:layout="@layout/fragment_account_setting">
-    </fragment>
+        tools:layout="@layout/fragment_account_setting" />
     <action
         android:id="@+id/action_global_accountSettingFragment"
         app:destination="@id/accountSettingFragment" />
@@ -71,6 +70,19 @@
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
     </fragment>
+    <fragment
+        android:id="@+id/progressFragment"
+        android:name="com.glints.lingoparents.ui.progress.ProgressFragment"
+        android:label="fragment_progress"
+        tools:layout="@layout/fragment_progress" />
+
+    <action
+        android:id="@+id/action_insightListFragment_to_detailInsightFragment"
+        app:destination="@id/detailInsightFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     <fragment
         android:id="@+id/liveEventListFragment"
         android:name="com.glints.lingoparents.ui.liveevent.LiveEventListFragment"
@@ -95,4 +107,27 @@
         android:name="com.glints.lingoparents.ui.insight.detail.DetailInsightFragment"
         android:label="fragment_detail_insight"
         tools:layout="@layout/fragment_detail_insight" />
+    <fragment
+        android:id="@+id/progressProfileFragment"
+        android:name="com.glints.lingoparents.ui.progress.ProgressLearningFragment"
+        android:label="fragment_progress_profile"
+        tools:layout="@layout/fragment_progress_profile" />
+    <fragment
+        android:id="@+id/progressLearningCourseFragment"
+        android:name="com.glints.lingoparents.ui.progress.ProgressLearningCourseFragment"
+        android:label="fragment_progress_learning_course"
+        tools:layout="@layout/fragment_progress_learning_course" />
+
+    <action
+        android:id="@+id/action_progressLearningCourseFragment_to_assignmentFragment"
+        app:destination="@id/assignmentFragment" />
+    <fragment
+        android:id="@+id/assignmentFragment"
+        android:name="com.glints.lingoparents.ui.progress.AssignmentFragment"
+        android:label="fragment_assignment"
+        tools:layout="@layout/fragment_assignment" />
+    <fragment
+        android:id="@+id/progressProfileFragment2"
+        android:name="com.glints.lingoparents.ui.progress.ProgressProfileFragment"
+        android:label="ProgressProfileFragment" />
 </navigation>

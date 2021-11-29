@@ -85,7 +85,7 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
                 ) {
                     if (response.isSuccessful) {
                         onApiCallSuccess("Login Successful")
-                        saveToken(response.body()?.message?.accessToken.toString())
+                        saveToken(response.body()?.data?.accessToken.toString())
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallError(apiError.message())

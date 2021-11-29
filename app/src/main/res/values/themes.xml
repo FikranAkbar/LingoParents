@@ -123,6 +123,11 @@
         <item name="tabIndicatorHeight">0dp</item>
     </style>
 
+    <style name="CustomProgressTabLayout" parent="Base.Widget.Design.TabLayout">
+        <item name="tabBackground">@drawable/tab_background</item>
+        <item name="tabIndicatorColor">@null</item>
+    </style>
+
     <style name="AccountSettingTabsTextStyle" parent="@style/Widget.MaterialComponents.TabLayout">
         <item name="tabTextAppearance">@style/TextAppearance_tabs_account_setting</item>
     </style>
@@ -131,8 +136,22 @@
         <item name="fontFamily">@font/poppins_w600</item>
         <item name="android:textSize">14sp</item>
     </style>
-    
+
     <style name="CustomMaterialButtonStateColor" parent="@style/Widget.MaterialComponents.Button">
         <item name="backgroundTint">@color/custom_material_button_positive_state_color</item>
+    </style>
+
+
+    <style name="ProgressBarStyle">
+        <item name="colorAccent">#F37323</item>
+    </style>
+
+    <style name="CourseTabsTextStyle" parent="@style/Widget.MaterialComponents.TabLayout">
+        <item name="tabTextAppearance">@style/TextAppearance_tabs_course</item>
+    </style>
+
+    <style name="TextAppearance_tabs_course" parent="">
+        <item name="fontFamily">@font/poppins_w600</item>
+        <item name="android:textSize">18sp</item>
     </style>
 </resources>
