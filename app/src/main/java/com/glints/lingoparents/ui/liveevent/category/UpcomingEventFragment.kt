@@ -1,6 +1,7 @@
 package com.glints.lingoparents.ui.liveevent.category
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,7 +37,7 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
         _binding = FragmentUpcomingEventBinding.inflate(inflater)
 
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
-        viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this))[
+        viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this, arguments))[
                 LiveEventListViewModel::class.java
         ]
 
@@ -46,13 +47,6 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
                 layoutManager = LinearLayoutManager(activity)
                 liveEventListAdapter = LiveEventListAdapter(this@UpcomingEventFragment)
                 adapter = liveEventListAdapter
-                liveEventListAdapter.submitList(
-                    listOf(
-                        LiveEventListResponse.LiveEventItemResponse(1, "", "", ""),
-                        LiveEventListResponse.LiveEventItemResponse(1, "", "", ""),
-                        LiveEventListResponse.LiveEventItemResponse(1, "", "", ""),
-                    )
-                )
             }
         }
 
@@ -71,13 +65,14 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
                         showLoading(false)
                     }
                     is LiveEventListViewModel.UpcomingLiveEventListEvent.Error -> {
-
+                        showLoading(false)
                     }
                     is LiveEventListViewModel.UpcomingLiveEventListEvent.NavigateToDetailLiveEventFragment -> {
                         val action =
                             LiveEventListFragmentDirections.actionLiveEventListFragmentToLiveEventDetailFragment(
                                 event.id
                             )
+                        Log.d("IDEvent", event.id.toString())
                         findNavController().navigate(action)
                     }
                 }
@@ -94,6 +89,7 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
 
     override fun onItemClicked(item: LiveEventListResponse.LiveEventItemResponse) {
         viewModel.onUpcomingLiveEventItemClick(item.id)
+        Log.d("IDEvent", item.id.toString())
     }
 
     private fun showLoading(bool: Boolean) {

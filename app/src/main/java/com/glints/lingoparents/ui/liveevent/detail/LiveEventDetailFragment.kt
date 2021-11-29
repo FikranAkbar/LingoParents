@@ -7,11 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
+import coil.load
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentLiveEventDetailBinding
 import com.glints.lingoparents.utils.CustomViewModelFactory
@@ -33,7 +32,10 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
         binding = FragmentLiveEventDetailBinding.inflate(inflater)
 
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
-        viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this))[
+        viewModel = ViewModelProvider(
+            this,
+            CustomViewModelFactory(tokenPreferences, this, eventId = arguments?.get("id") as Int)
+        )[
                 LiveEventDetailViewModel::class.java
         ]
 
@@ -44,7 +46,7 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
         }
 
         viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
-            viewModel.getLiveEventDetailById(viewModel.id!!, accessToken)
+            viewModel.getLiveEventDetailById(viewModel.getCurrentEventId(), accessToken)
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
@@ -54,23 +56,15 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                         showLoading(false)
                         binding.apply {
                             event.result.apply {
-                                Glide.with(requireContext())
-                                    .load(R.drawable.img_no_image)
-                                    .into(ivDetailEventPoster)
-
                                 cover?.let {
-                                    Glide.with(requireContext())
-                                        .load(it)
-                                        .into(ivDetailEventPoster)
+                                    ivDetailEventPoster.load(it)
                                 }
 
                                 tvDetailEventTitle.text = title
                                 tvDateAndTimeContent.text = "$date, $started_at"
                                 tvPriceContentNumber.text = price
 
-                                Glide.with(requireContext())
-                                    .load(speaker_photo)
-                                    .into(ivPhotoContent)
+                                ivPhotoContent.load(speaker_photo)
 
                                 tvSpeakerName.text = speaker
                                 tvSpeakerProfession.text = speaker_profession
@@ -83,7 +77,7 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                         showLoading(true)
                     }
                     is LiveEventDetailViewModel.LiveEventDetailEvent.Error -> {
-
+                        showLoading(false)
                     }
                 }
             }

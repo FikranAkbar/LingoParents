@@ -1,14 +1,17 @@
 package com.glints.lingoparents.ui.liveevent.category
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.savedstate.SavedStateRegistryOwner
 import com.glints.lingoparents.R
 import com.glints.lingoparents.data.model.response.LiveEventListResponse
 import com.glints.lingoparents.databinding.FragmentCompletedEventBinding
@@ -36,7 +39,7 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
         _binding = FragmentCompletedEventBinding.inflate(inflater)
 
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
-        viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this))[
+        viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this, arguments))[
                 LiveEventListViewModel::class.java
         ]
 
@@ -46,13 +49,6 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
                 layoutManager = LinearLayoutManager(activity)
                 liveEventListAdapter = LiveEventListAdapter(this@CompletedEventFragment)
                 adapter = liveEventListAdapter
-                liveEventListAdapter.submitList(
-                    listOf(
-                        LiveEventListResponse.LiveEventItemResponse(1, "", "", ""),
-                        LiveEventListResponse.LiveEventItemResponse(1, "", "", ""),
-                        LiveEventListResponse.LiveEventItemResponse(1, "", "", ""),
-                    )
-                )
             }
         }
 
@@ -71,7 +67,7 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
                         showLoading(false)
                     }
                     is LiveEventListViewModel.CompletedLiveEventListEvent.Error -> {
-
+                        showLoading(false)
                     }
                     is LiveEventListViewModel.CompletedLiveEventListEvent.NavigateToDetailLiveEventFragment -> {
                         val action =
@@ -94,6 +90,7 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
 
     override fun onItemClicked(item: LiveEventListResponse.LiveEventItemResponse) {
         viewModel.onCompletedLiveEventItemClick(item.id)
+        Log.d("IDEvent", item.id.toString())
     }
 
     private fun showLoading(bool: Boolean) {

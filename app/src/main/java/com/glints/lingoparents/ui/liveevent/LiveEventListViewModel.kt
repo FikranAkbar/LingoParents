@@ -75,16 +75,16 @@ class LiveEventListViewModel(private val tokenPref: TokenPreferences) : ViewMode
         }
     }
 
-    private fun onApiCallError(message: String) = viewModelScope.launch {
+    private fun onApiCallError(status: String, message: String) = viewModelScope.launch {
         when {
-            message.contains("live", true) -> {
-                todayLiveEventListEventChannel.send(TodayLiveEventListEvent.Error("error message"))
+            status.contains("live", true) -> {
+                todayLiveEventListEventChannel.send(TodayLiveEventListEvent.Error(message))
             }
-            message.contains("upcoming", true) -> {
-                upcomingLiveEventListChannel.send(UpcomingLiveEventListEvent.Error("error message"))
+            status.contains("upcoming", true) -> {
+                upcomingLiveEventListChannel.send(UpcomingLiveEventListEvent.Error(message))
             }
-            message.contains("completed", true) -> {
-                completedLiveEventListChannel.send(CompletedLiveEventListEvent.Error("error message"))
+            status.contains("completed", true) -> {
+                completedLiveEventListChannel.send(CompletedLiveEventListEvent.Error(message))
             }
         }
     }
@@ -103,12 +103,12 @@ class LiveEventListViewModel(private val tokenPref: TokenPreferences) : ViewMode
                         onApiCallSuccess(status, response.body()?.data!!)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
-                        onApiCallError(apiError.message())
+                        onApiCallError(status, apiError.message())
                     }
                 }
 
                 override fun onFailure(call: Call<LiveEventListResponse>, t: Throwable) {
-                    onApiCallError("Network Failed...")
+                    onApiCallError(status, "Network Failed...")
                 }
             })
     }

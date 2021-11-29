@@ -15,7 +15,8 @@ import com.glints.lingoparents.ui.splash.SplashViewModel
 class CustomViewModelFactory(
     private val tokenPref: TokenPreferences,
     owner: SavedStateRegistryOwner,
-    defaultArgs: Bundle? = null
+    defaultArgs: Bundle? = null,
+    private val eventId: Int? = null,
 ) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
 
     @Suppress("UNCHECKED_CAST")
@@ -41,7 +42,7 @@ class CustomViewModelFactory(
                 LiveEventListViewModel(tokenPref) as T
             }
             modelClass.isAssignableFrom(LiveEventDetailViewModel::class.java) -> {
-                LiveEventDetailViewModel(tokenPref) as T
+                LiveEventDetailViewModel(tokenPref, eventId as Int) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

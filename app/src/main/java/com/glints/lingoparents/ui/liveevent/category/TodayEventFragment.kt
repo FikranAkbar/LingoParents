@@ -38,7 +38,7 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
         _binding = FragmentTodayEventBinding.inflate(inflater)
 
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
-        viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this)) [
+        viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this, arguments)) [
             LiveEventListViewModel::class.java
         ]
 
@@ -48,13 +48,6 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
                 layoutManager = LinearLayoutManager(activity)
                 liveEventListAdapter = LiveEventListAdapter(this@TodayEventFragment)
                 adapter = liveEventListAdapter
-                liveEventListAdapter.submitList(
-                    listOf(
-                        LiveEventListResponse.LiveEventItemResponse(1, "", "", ""),
-                        LiveEventListResponse.LiveEventItemResponse(1, "", "", ""),
-                        LiveEventListResponse.LiveEventItemResponse(1, "", "", ""),
-                    )
-                )
             }
         }
 
@@ -67,19 +60,18 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
                 when (event) {
                     is LiveEventListViewModel.TodayLiveEventListEvent.Loading -> {
                         showLoading(true)
-                        Log.d("TEST", "MULAI LOADING LIVE EVENT TODAY")
                     }
                     is LiveEventListViewModel.TodayLiveEventListEvent.Success -> {
                         liveEventListAdapter.submitList(event.list)
                         showLoading(false)
-                        Log.d("TEST", "SELESAI LOADING LIVE EVENT TODAY")
                     }
                     is LiveEventListViewModel.TodayLiveEventListEvent.Error -> {
-
+                        showLoading(false)
                     }
                     is LiveEventListViewModel.TodayLiveEventListEvent.NavigateToDetailLiveEventFragment -> {
                         val action =
                             LiveEventListFragmentDirections.actionLiveEventListFragmentToLiveEventDetailFragment(event.id)
+                        Log.d("IDEvent", event.id.toString())
                         findNavController().navigate(action)
                     }
                 }
@@ -96,6 +88,7 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
 
     override fun onItemClicked(item: LiveEventListResponse.LiveEventItemResponse) {
         viewModel.onTodayLiveEventItemClick(item.id)
+        Log.d("IDEvent", item.id.toString())
     }
 
     private fun showLoading(bool: Boolean) {

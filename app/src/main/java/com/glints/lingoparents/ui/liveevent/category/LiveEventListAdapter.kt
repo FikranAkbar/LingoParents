@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.glints.lingoparents.data.model.response.LiveEventListResponse
@@ -35,9 +36,7 @@ class LiveEventListAdapter(private val listener: OnItemClickCallback) :
                 tvLiveEventTitle.text = item.title
                 tvLiveEventDate.text = item.date
 
-                Glide.with(holder.itemView.context)
-                    .load("https://thumbs.dreamstime.com/b/girl-avatar-cartoon-stock-vector-image-cute-beautiful-eyes-93364804.jpg")
-                    .into(ivImage)
+                ivImage.load(item.speaker_photo)
             }
         }
     }

@@ -1,6 +1,9 @@
 package com.glints.lingoparents.ui.liveevent.detail
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.model.response.LiveEventDetailResponse
 import com.glints.lingoparents.utils.ErrorUtils
@@ -14,11 +17,8 @@ import retrofit2.Response
 
 class LiveEventDetailViewModel(
     private val tokenPreferences: TokenPreferences,
-    //private val state: SavedStateHandle
+    private val eventId: Int
 ) : ViewModel() {
-
-    val id = 1
-
     private val liveEventDetailEventChannel = Channel<LiveEventDetailEvent>()
     val liveEventDetailEvent = liveEventDetailEventChannel.receiveAsFlow()
 
@@ -37,6 +37,8 @@ class LiveEventDetailViewModel(
 
     fun getAccessToken(): LiveData<String> = tokenPreferences.getAccessToken().asLiveData()
 
+    fun getCurrentEventId(): Int = eventId
+
     fun getLiveEventDetailById(id: Int, accessToken: String) = viewModelScope.launch {
         onApiCallStarted()
         APIClient
@@ -50,8 +52,7 @@ class LiveEventDetailViewModel(
                     if (response.isSuccessful) {
                         val result = response.body()?.data!!
                         onApiCallSuccess(result)
-                    }
-                    else {
+                    } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallError(apiError.message())
                     }
@@ -65,7 +66,9 @@ class LiveEventDetailViewModel(
 
     sealed class LiveEventDetailEvent {
         object Loading : LiveEventDetailEvent()
-        data class Success(val result: LiveEventDetailResponse.LiveEventDetailItemResponse) : LiveEventDetailEvent()
+        data class Success(val result: LiveEventDetailResponse.LiveEventDetailItemResponse) :
+            LiveEventDetailEvent()
+
         data class Error(val message: String) : LiveEventDetailEvent()
     }
 }
