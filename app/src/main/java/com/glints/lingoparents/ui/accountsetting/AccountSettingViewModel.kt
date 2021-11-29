@@ -11,12 +11,21 @@ class AccountSettingViewModel(private val tokenPreferences: TokenPreferences) : 
     private val profileChannel = Channel<ProfileEvent>()
     val profileEvent = profileChannel.receiveAsFlow()
 
+    private val settingPasswordChannel = Channel<SettingPasswordEvent>()
+    val settingPasswordEvent = settingPasswordChannel.receiveAsFlow()
+
     fun onLogOutButtonClick() = viewModelScope.launch {
         profileChannel.send(ProfileEvent.NavigateToAuthScreen)
         tokenPreferences.resetAccessToken()
     }
 
+
+
     sealed class ProfileEvent {
         object NavigateToAuthScreen : ProfileEvent()
+    }
+
+    sealed class SettingPasswordEvent {
+
     }
 }

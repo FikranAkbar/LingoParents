@@ -71,14 +71,16 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         binding.apply {
             View.VISIBLE.apply {
                 tfAddress.visibility = this
-                tfFullName.visibility = this
+                tfFirstName.visibility = this
+                tfLastName.visibility = this
                 tfPhoneNumber.visibility = this
                 mbtnSave.visibility = this
                 mbtnCancel.visibility = this
             }
             View.INVISIBLE.apply {
                 tvAddressContent.visibility = this
-                tvFullNameContent.visibility = this
+                tvFirstNameContent.visibility = this
+                tvLastNameContent.visibility = this
                 tvPhoneNumberContent.visibility = this
                 mbtnLogout.visibility = this
                 mbtnEdit.visibility = this
@@ -90,7 +92,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         binding.apply {
             View.VISIBLE.apply {
                 tvAddressContent.visibility = this
-                tvFullNameContent.visibility = this
+                tvFirstNameContent.visibility = this
+                tvLastNameContent.visibility = this
                 tvPhoneNumberContent.visibility = this
                 mbtnLogout.visibility = this
                 mbtnEdit.visibility = this
@@ -98,8 +101,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             View.INVISIBLE.apply {
                 tfAddress.visibility = this
                 tfAddress.editText?.setText("")
-                tfFullName.visibility = this
-                tfFullName.editText?.setText("")
+                tfFirstName.visibility = this
+                tfFirstName.editText?.setText("")
+                tfLastName.visibility = this
+                tfLastName.editText?.setText("")
                 tfPhoneNumber.visibility = this
                 tfPhoneNumber.editText?.setText("")
                 mbtnSave.visibility = this

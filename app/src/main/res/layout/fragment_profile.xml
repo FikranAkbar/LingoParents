@@ -37,19 +37,19 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/tv_full_name_title"
+                    android:id="@+id/tv_first_name_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="18dp"
                     android:layout_marginTop="32dp"
                     android:fontFamily="@font/poppins_w600"
-                    android:text="@string/full_name"
+                    android:text="@string/first_name"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_profile_header" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tf_full_name"
+                    android:id="@+id/tf_first_name"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
                     app:boxCornerRadiusTopEnd="5dp"
                     app:boxCornerRadiusTopStart="5dp"
                     app:hintEnabled="false"
-                    app:layout_constraintTop_toBottomOf="@id/tv_full_name_title">
+                    app:layout_constraintTop_toBottomOf="@id/tv_first_name_title">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -74,7 +74,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
-                    android:id="@+id/tv_full_name_content"
+                    android:id="@+id/tv_first_name_content"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="18dp"
@@ -86,7 +86,59 @@
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_full_name_title" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_first_name_title" />
+
+                <TextView
+                    android:id="@+id/tv_last_name_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginTop="32dp"
+                    android:fontFamily="@font/poppins_w600"
+                    android:text="@string/last_name"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_first_name_content" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tf_last_name"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="18dp"
+                    android:layout_marginTop="2dp"
+                    android:visibility="gone"
+                    app:boxCornerRadiusBottomEnd="5dp"
+                    app:boxCornerRadiusBottomStart="5dp"
+                    app:boxCornerRadiusTopEnd="5dp"
+                    app:boxCornerRadiusTopStart="5dp"
+                    app:hintEnabled="false"
+                    app:layout_constraintTop_toBottomOf="@id/tv_last_name_title">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:paddingVertical="8dp"
+                        android:textSize="12sp"
+                        tools:ignore="SpeakableTextPresentCheck" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_last_name_content"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="18dp"
+                    android:layout_marginTop="4dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/poppins_w600"
+                    android:text="@string/parent_s_name"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_last_name_title" />
 
                 <TextView
                     android:id="@+id/tv_email_title"
@@ -98,7 +150,7 @@
                     android:text="@string/email"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_full_name_content" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_last_name_content" />
 
                 <TextView
                     android:id="@+id/tv_email_content"
