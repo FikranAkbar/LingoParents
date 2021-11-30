@@ -1,9 +1,6 @@
 package com.glints.lingoparents.data.api
 
-import com.glints.lingoparents.data.model.response.LiveEventDetailResponse
-import com.glints.lingoparents.data.model.response.LiveEventListResponse
-import com.glints.lingoparents.data.model.response.LoginUserResponse
-import com.glints.lingoparents.data.model.response.RegisterUserResponse
+import com.glints.lingoparents.data.model.response.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -39,4 +36,9 @@ interface APIService {
         @Path("id") id: Int,
         @Header("authorization") authorization: String
     ): Call<LiveEventDetailResponse>
+
+    @GET("api/v1/insights")
+    fun getAllInsightList(
+        @Header("authorization") authorization: String
+    ): Call<AllInsightsListResponse>
 }
