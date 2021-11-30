@@ -39,6 +39,7 @@ interface APIService {
 
     @GET("api/v1/insights")
     fun getAllInsightList(
+        @QueryMap options: Map<String, String>,
         @Header("authorization") authorization: String
     ): Call<AllInsightsListResponse>
 }
