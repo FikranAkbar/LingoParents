@@ -37,7 +37,7 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
     ): View {
         _binding = FragmentAccountSettingBinding.inflate(inflater)
 
-        val sectionsPagerAdapter = SectionsPagerAdapter(requireActivity() as AppCompatActivity)
+        val sectionsPagerAdapter = ProgressSectionsPagerAdapter(requireActivity() as AppCompatActivity)
         val viewPager2 = binding.viewPagerAccountSetting
         viewPager2.adapter = sectionsPagerAdapter
         val tabs = binding.tabAccountSetting
