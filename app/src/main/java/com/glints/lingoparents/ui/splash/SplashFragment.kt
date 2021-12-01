@@ -1,6 +1,7 @@
 package com.glints.lingoparents.ui.splash
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -30,27 +31,46 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
                 SplashViewModel::class.java
         ]
 
-        viewModel.isAccessTokenExist().observe(viewLifecycleOwner) {
-            if (it.isEmpty()) {
-                viewModel.sendNavigateToAuthScreenEvent()
-            }
-            else if (it.isNotEmpty()) {
-                viewModel.sendNavigateToHomeScreenEvent()
-            }
-        }
-
         lifecycleScope.launchWhenStarted {
             viewModel.splashEvent.collect { event ->
                 when (event) {
-                    SplashViewModel.SplashEvent.NavigateToAuthScreen -> {
+                    is SplashViewModel.SplashEvent.NavigateToAuthScreen -> {
                         val action = SplashFragmentDirections.actionGlobalLoginFragment()
                         findNavController().navigate(action)
                     }
-                    SplashViewModel.SplashEvent.NavigateToHomeScreen -> {
+                    is SplashViewModel.SplashEvent.NavigateToHomeScreen -> {
                         val intent = Intent(this@SplashFragment.requireContext(), DashboardActivity::class.java)
                         startActivity(intent)
                         requireActivity().finish()
                     }
+                    is SplashViewModel.SplashEvent.NavigateToResetPasswordScreen -> {
+                        val action = SplashFragmentDirections.actionGlobalForgotPasswordFragment()
+                        findNavController().navigate(action)
+                    }
+                }
+            }
+        }
+
+        handleIntent(requireActivity().intent)
+    }
+
+    private fun handleIntent(intent: Intent?) {
+        val appLinkAction: String? = intent?.action
+        val appLinkData: Uri? = intent?.data
+        showDeepLinkOffer(appLinkAction, appLinkData)
+    }
+
+    private fun showDeepLinkOffer(appLinkAction: String?, appLinkData: Uri?) {
+        if (appLinkAction == Intent.ACTION_VIEW && appLinkData != null) {
+            viewModel.sendNavigateToForgotPasswordEvent()
+        }
+        else {
+            viewModel.getAccessToken().observe(viewLifecycleOwner) {
+                if (it.isEmpty()) {
+                    viewModel.sendNavigateToAuthScreenEvent()
+                }
+                else if (it.isNotEmpty()) {
+                    viewModel.sendNavigateToHomeScreenEvent()
                 }
             }
         }
