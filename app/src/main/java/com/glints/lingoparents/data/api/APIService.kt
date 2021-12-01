@@ -32,6 +32,14 @@ interface APIService {
         @Field("frontend_url") url: String = "http://fe-main.ipe-glintsacademy.com/api/v1/reset-password"
     ): Call<ForgotPasswordResponse>
 
+    @FormUrlEncoded
+    @POST("api/v1/reset-password")
+    fun resetPassword(
+        @QueryMap options: Map<String, String>,
+        @Field("password") newPassword: String,
+        @Field("confirmpassword") confirmNewPassword: String,
+    ): Call<ResetPasswordResponse>
+
     @GET("api/v1/events/participants/pages")
     fun getLiveEventsByStatus(
         @QueryMap options: Map<String, String>,
