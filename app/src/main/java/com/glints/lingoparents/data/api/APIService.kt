@@ -1,9 +1,6 @@
 package com.glints.lingoparents.data.api
 
-import com.glints.lingoparents.data.model.response.LiveEventDetailResponse
-import com.glints.lingoparents.data.model.response.LiveEventListResponse
-import com.glints.lingoparents.data.model.response.LoginUserResponse
-import com.glints.lingoparents.data.model.response.RegisterUserResponse
+import com.glints.lingoparents.data.model.response.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -27,6 +24,13 @@ interface APIService {
         @Field("gender") gender: String = "Male",
         @Field("role") role: String = "parent"
     ): Call<RegisterUserResponse>
+
+    @FormUrlEncoded
+    @POST("api/v1/forgot-password")
+    fun sendForgotPasswordRequest(
+        @Field("email") email: String,
+        @Field("frontend_url") url: String = "http://localhost:3000/api/v1/reset-password"
+    ): Call<ForgotPasswordResponse>
 
     @GET("api/v1/events/participants/pages")
     fun getLiveEventsByStatus(
