@@ -1,6 +1,7 @@
 package com.glints.lingoparents.ui.resetpassword
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
@@ -54,6 +55,7 @@ class ResetPasswordFragment : Fragment(R.layout.fragment_reset_password) {
                     }
                     is ResetPasswordViewModel.ResetPasswordEvent.Error -> {
                         showLoading(false)
+                        Snackbar.make(binding.root, event.message, Snackbar.LENGTH_LONG).show()
                     }
                     is ResetPasswordViewModel.ResetPasswordEvent.NavigateToLogin -> {
                         val action = ResetPasswordFragmentDirections.actionGlobalLoginFragment()
@@ -67,17 +69,26 @@ class ResetPasswordFragment : Fragment(R.layout.fragment_reset_password) {
                                 val newPassword = event.newPassword
                                 val confirmNewPassword = event.confirmNewPassword
                                 if (isValidPassword(newPassword) &&
-                                    isValidPassword(confirmNewPassword)) {
+                                    isValidPassword(confirmNewPassword) &&
+                                    newPassword == confirmNewPassword
+                                ) {
                                     val token = arguments?.get("token") as String
                                     val id = arguments?.get("id") as String
-                                    viewModel.resetPassword(token,id,newPassword,confirmNewPassword)
-                                }
-                                else {
+                                    viewModel.resetPassword(
+                                        token,
+                                        id,
+                                        newPassword,
+                                        confirmNewPassword
+                                    )
+                                } else {
                                     if (!isValidPassword(newPassword)) {
                                         showFieldError(tilPassword, PASSWORD_EMPTY_ERROR)
                                     }
                                     if (!isValidPassword(confirmNewPassword)) {
                                         showFieldError(tilConfirmPassword, PASSWORD_EMPTY_ERROR)
+                                    }
+                                    if (newPassword != confirmNewPassword) {
+                                        showFieldError(tilConfirmPassword, PASSWORD_DIFFERENCE_ERROR)
                                     }
                                 }
                             }
@@ -86,6 +97,10 @@ class ResetPasswordFragment : Fragment(R.layout.fragment_reset_password) {
                 }
             }
         }
+
+        val token = arguments?.get("token") as String
+        val id = arguments?.get("id") as String
+        Log.d("TEST", "$token $id")
     }
 
     private fun showLoading(bool: Boolean) {

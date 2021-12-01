@@ -33,7 +33,7 @@ interface APIService {
     ): Call<ForgotPasswordResponse>
 
     @FormUrlEncoded
-    @POST("api/v1/reset-password")
+    @POST("api/v1/password-reset")
     fun resetPassword(
         @QueryMap options: Map<String, String>,
         @Field("password") newPassword: String,

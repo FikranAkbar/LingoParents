@@ -44,7 +44,7 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
                         requireActivity().finish()
                     }
                     is SplashViewModel.SplashEvent.NavigateToResetPasswordScreen -> {
-                        val action = SplashFragmentDirections.actionGlobalForgotPasswordFragment()
+                        val action = SplashFragmentDirections.actionGlobalResetPasswordFragment(event.token, event.id)
                         findNavController().navigate(action)
                     }
                 }
@@ -62,7 +62,9 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
 
     private fun showDeepLinkOffer(appLinkAction: String?, appLinkData: Uri?) {
         if (appLinkAction == Intent.ACTION_VIEW && appLinkData != null) {
-            viewModel.sendNavigateToForgotPasswordEvent()
+            val accessToken = appLinkData.getQueryParameter("token") as String
+            val id = appLinkData.getQueryParameter("id") as String
+            viewModel.sendNavigateToResetPasswordEvent(accessToken, id)
         }
         else {
             viewModel.getAccessToken().observe(viewLifecycleOwner) {
