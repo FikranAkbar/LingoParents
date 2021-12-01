@@ -22,6 +22,7 @@ class ResetPasswordViewModel : ViewModel() {
 
     private fun onApiCallSuccess(message: String) = viewModelScope.launch {
         resetPasswordEventChannel.send(ResetPasswordEvent.Success(message))
+        resetPasswordEventChannel.send(ResetPasswordEvent.NavigateToLogin)
     }
 
     private fun onApiCallError(message: String) = viewModelScope.launch {
@@ -53,7 +54,17 @@ class ResetPasswordViewModel : ViewModel() {
             })
     }
 
+    fun onBackToLoginButtonClick() = viewModelScope.launch {
+        resetPasswordEventChannel.send(ResetPasswordEvent.NavigateToLogin)
+    }
+
+    fun onSubmitButtonClick(newPassword: String, confirmNewPassword: String) = viewModelScope.launch {
+        resetPasswordEventChannel.send(ResetPasswordEvent.TryToSubmitResetPassword(newPassword, confirmNewPassword))
+    }
+
     sealed class ResetPasswordEvent {
+        object NavigateToLogin : ResetPasswordEvent()
+        data class TryToSubmitResetPassword(val newPassword: String, val confirmNewPassword: String) : ResetPasswordEvent()
         object Loading : ResetPasswordEvent()
         data class Success(val message: String) : ResetPasswordEvent()
         data class Error(val message: String) : ResetPasswordEvent()
