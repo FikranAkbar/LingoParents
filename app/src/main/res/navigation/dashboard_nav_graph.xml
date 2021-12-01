@@ -96,7 +96,12 @@
         android:id="@+id/liveEventDetailFragment"
         android:name="com.glints.lingoparents.ui.liveevent.detail.LiveEventDetailFragment"
         android:label="fragment_live_event_detail"
-        tools:layout="@layout/fragment_live_event_detail" />
+        tools:layout="@layout/fragment_live_event_detail" >
+        <argument
+            android:name="id"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
     <fragment
         android:id="@+id/detailInsightFragment"
         android:name="com.glints.lingoparents.ui.insight.detail.DetailInsightFragment"

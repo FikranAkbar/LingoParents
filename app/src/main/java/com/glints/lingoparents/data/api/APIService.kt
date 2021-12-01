@@ -1,11 +1,8 @@
 package com.glints.lingoparents.data.api
 
-import com.glints.lingoparents.data.model.response.LoginUserResponse
-import com.glints.lingoparents.data.model.response.RegisterUserResponse
+import com.glints.lingoparents.data.model.response.*
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface APIService {
     @FormUrlEncoded
@@ -27,4 +24,31 @@ interface APIService {
         @Field("gender") gender: String = "Male",
         @Field("role") role: String = "parent"
     ): Call<RegisterUserResponse>
+
+    @FormUrlEncoded
+    @POST("api/v1/forgot-password")
+    fun sendForgotPasswordRequest(
+        @Field("email") email: String,
+        @Field("frontend_url") url: String = "http://fe-main.ipe-glintsacademy.com/api/v1/reset-password"
+    ): Call<ForgotPasswordResponse>
+
+    @FormUrlEncoded
+    @POST("api/v1/password-reset")
+    fun resetPassword(
+        @QueryMap options: Map<String, String>,
+        @Field("password") newPassword: String,
+        @Field("confirmpassword") confirmNewPassword: String,
+    ): Call<ResetPasswordResponse>
+
+    @GET("api/v1/events/participants/pages")
+    fun getLiveEventsByStatus(
+        @QueryMap options: Map<String, String>,
+        @Header("authorization") authorization: String
+    ): Call<LiveEventListResponse>
+
+    @GET("api/v1/events/participants/{id}")
+    fun getLiveEventById(
+        @Path("id") id: Int,
+        @Header("authorization") authorization: String
+    ): Call<LiveEventDetailResponse>
 }

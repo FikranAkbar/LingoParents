@@ -4,16 +4,19 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.glints.lingoparents.data.model.LiveEventItem
+import coil.load
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.glints.lingoparents.data.model.response.LiveEventListResponse
 import com.glints.lingoparents.databinding.ItemLiveEventBinding
 
 class LiveEventListAdapter(private val listener: OnItemClickCallback) :
     RecyclerView.Adapter<LiveEventListAdapter.CustomViewHolder>() {
 
-    private val liveEventList = ArrayList<LiveEventItem>()
+    private val liveEventList = ArrayList<LiveEventListResponse.LiveEventItemResponse>()
 
     @SuppressLint("NotifyDataSetChanged")
-    fun submitList(list: List<LiveEventItem>) {
+    fun submitList(list: List<LiveEventListResponse.LiveEventItemResponse>) {
         liveEventList.clear()
         liveEventList.addAll(list)
         notifyDataSetChanged()
@@ -21,9 +24,19 @@ class LiveEventListAdapter(private val listener: OnItemClickCallback) :
 
     inner class CustomViewHolder(private val itemLiveEventBinding: ItemLiveEventBinding) :
         RecyclerView.ViewHolder(itemLiveEventBinding.root) {
-        fun bind(holder: CustomViewHolder, item: LiveEventItem) {
+        fun bind(
+            holder: CustomViewHolder,
+            item: LiveEventListResponse.LiveEventItemResponse
+        ) {
             holder.itemView.setOnClickListener {
                 listener.onItemClicked(item)
+            }
+
+            itemLiveEventBinding.apply {
+                tvLiveEventTitle.text = item.title
+                tvLiveEventDate.text = item.date
+
+                ivImage.load(item.speaker_photo)
             }
         }
     }
@@ -42,6 +55,6 @@ class LiveEventListAdapter(private val listener: OnItemClickCallback) :
     override fun getItemCount(): Int = liveEventList.size
 
     interface OnItemClickCallback {
-        fun onItemClicked(item: LiveEventItem)
+        fun onItemClicked(item: LiveEventListResponse.LiveEventItemResponse)
     }
 }

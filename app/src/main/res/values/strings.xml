@@ -228,4 +228,9 @@
     <string name="comments">Comments</string>
     <string name="post">Post</string>
     <string name="student_profile">Student Profile</string>
+    <string name="no_upcoming_events">No Upcoming Events</string>
+    <string name="no_completed_events">No Completed Events</string>
+    <string name="no_live_events">No Live Events</string>
+    <string name="create_new_password">Create New Password</string>
+    <string name="confirm_password">Confirm Password</string>
 </resources>
