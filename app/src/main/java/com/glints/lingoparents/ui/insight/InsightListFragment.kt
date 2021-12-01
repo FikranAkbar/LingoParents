@@ -23,10 +23,7 @@ class InsightListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentInsightListBinding.inflate(inflater, container, false)
-
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
-
-        binding.vpInsight.isUserInputEnabled = false
 
         initViews()
 
@@ -42,12 +39,15 @@ class InsightListFragment : Fragment() {
     }
 
     private fun initViews(){
-        binding.vpInsight.adapter = ViewPagerAdapter(childFragmentManager, lifecycle)
-
-        val tabNames = arrayOf("All Insights", "Parenting", "Lifestyle")
-        TabLayoutMediator(binding.tlInsightCategory, binding.vpInsight){tab,position ->
-            tab.text = tabNames[position]
-        }.attach()
-
+        binding.apply {
+            vpInsight.apply {
+                adapter = ViewPagerAdapter(childFragmentManager, lifecycle)
+                isUserInputEnabled = false
+                val tabNames = arrayOf("All Insights", "Parenting", "Lifestyle")
+                TabLayoutMediator(binding.tlInsightCategory, binding.vpInsight){tab,position ->
+                    tab.text = tabNames[position]
+                }.attach()
+            }
+        }
     }
 }

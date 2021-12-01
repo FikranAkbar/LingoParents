@@ -5,23 +5,30 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.glints.lingoparents.data.model.InsightSliderItem
 import com.glints.lingoparents.databinding.FragmentAllInsightBinding
 import com.glints.lingoparents.ui.insight.InsightListFragmentDirections
+import com.glints.lingoparents.ui.insight.InsightListViewModel
+import com.glints.lingoparents.utils.CustomViewModelFactory
+import com.glints.lingoparents.utils.TokenPreferences
+import com.glints.lingoparents.utils.dataStore
 
 class AllInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
 
-    private lateinit var binding: FragmentAllInsightBinding
-    private val viewModel: CategoriesViewModel by activityViewModels()
+    private var _binding: FragmentAllInsightBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var viewModel: InsightListViewModel
+    private lateinit var tokenPreferences: TokenPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentAllInsightBinding.inflate(inflater, container, false)
+        _binding = FragmentAllInsightBinding.inflate(inflater, container, false)
+        tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
 
         binding.rvAllInsight.apply {
             setHasFixedSize(true)
@@ -44,7 +51,16 @@ class AllInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        viewModel =
+            ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this, arguments))[
+                InsightListViewModel::class.java
+        ]
         // TODO: Use the ViewModel
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
     override fun onItemClicked(insightSliderItem: InsightSliderItem) {
