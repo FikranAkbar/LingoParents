@@ -1,6 +1,8 @@
 package com.glints.lingoparents.ui
 
 import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.NavController

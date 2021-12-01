@@ -24,10 +24,16 @@ class SplashViewModel(private val tokenPreferences: TokenPreferences) : ViewMode
         splashEventChannel.send(SplashEvent.NavigateToAuthScreen)
     }
 
-    fun isAccessTokenExist(): LiveData<String> = tokenPreferences.getAccessToken().asLiveData()
+    fun sendNavigateToResetPasswordEvent(accessToken: String, id: String) = viewModelScope.launch {
+        delay(2000)
+        splashEventChannel.send(SplashEvent.NavigateToResetPasswordScreen(accessToken, id))
+    }
+
+    fun getAccessToken(): LiveData<String> = tokenPreferences.getAccessToken().asLiveData()
 
     sealed class SplashEvent {
         object NavigateToHomeScreen : SplashEvent()
         object NavigateToAuthScreen : SplashEvent()
+        data class NavigateToResetPasswordScreen(val token: String, val id: String) : SplashEvent()
     }
 }

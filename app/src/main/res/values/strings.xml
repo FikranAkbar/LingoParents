@@ -234,4 +234,6 @@
     <string name="no_insight">No Insight At The Moment</string>
     <string name="no_parenting_insight">No Parenting Insight At The Moment</string>
     <string name="no_lifestyle_insight">No Lifestyle Insight At The Moment</string>
+    <string name="create_new_password">Create New Password</string>
+    <string name="confirm_password">Confirm Password</string>
 </resources>
