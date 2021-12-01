@@ -7,16 +7,16 @@ class AllInsightsListResponse{
     data class Message(
         val Trx_insight_tags: List<TrxInsightTag>,
         val content: String,
-        val cover: Any,
+        val cover: String,
         val createdAt: String,
         val id: Int,
         val idUser_create: Int,
-        val idUser_update: Any,
+        val idUser_update: Int,
         val is_active: String,
         val title: String,
         val total_dislike: Int,
         val total_like: Int,
-        val total_report: Any,
+        val total_report: Int,
         val total_views: Int,
         val updatedAt: String
     )
@@ -26,7 +26,7 @@ class AllInsightsListResponse{
         val createdAt: String,
         val id: Int,
         val idUser_create: Int,
-        val idUser_update: Any,
+        val idUser_update: Int,
         val id_insight: Int,
         val id_tag: Int,
         val updatedAt: String
@@ -36,8 +36,8 @@ class AllInsightsListResponse{
         val createdAt: String,
         val id: Int,
         val idUser_create: Int,
-        val idUser_update: Any,
+        val idUser_update: Int,
         val tag_name: String,
-        val updatedAt: Any
+        val updatedAt: Int
     )
 }

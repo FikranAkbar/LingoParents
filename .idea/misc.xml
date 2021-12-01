@@ -9,8 +9,12 @@
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_header.xml" value="0.1" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_insight_list.xml" value="0.264" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_live_event_list.xml" value="0.264" />
+        <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_today_event.xml" value="0.2563405797101449" />
+        <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_upcoming_event.xml" value="0.2563405797101449" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/item_insight.xml" value="0.22685185185185186" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/item_insight_comment.xml" value="0.27447916666666666" />
+        <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/item_live_event.xml" value="0.2563405797101449" />
+        <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/shimmer_item_live_event_list.xml" value="0.2563405797101449" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/menu/dashboard_app_bar_menu.xml" value="0.22592592592592592" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/menu/dashboard_bottom_nav_menu.xml" value="0.22592592592592592" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/ic_badge_captain_america.xml" value="0.19166666666666668" />

@@ -71,6 +71,16 @@
             app:popExitAnim="@anim/slide_to_right" />
     </fragment>
     <fragment
+        android:id="@+id/detailInsightFragment"
+        android:name="com.glints.lingoparents.ui.insight.detail.DetailInsightFragment"
+        android:label="fragment_detail_insight"
+        tools:layout="@layout/fragment_detail_insight" >
+        <argument
+            android:name="id"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
+    <fragment
         android:id="@+id/progressFragment"
         android:name="com.glints.lingoparents.ui.progress.ProgressFragment"
         android:label="fragment_progress"
@@ -102,11 +112,6 @@
             app:argType="integer"
             android:defaultValue="-1" />
     </fragment>
-    <fragment
-        android:id="@+id/detailInsightFragment"
-        android:name="com.glints.lingoparents.ui.insight.detail.DetailInsightFragment"
-        android:label="fragment_detail_insight"
-        tools:layout="@layout/fragment_detail_insight" />
     <fragment
         android:id="@+id/progressProfileFragment"
         android:name="com.glints.lingoparents.ui.progress.ProgressLearningFragment"

@@ -17,9 +17,10 @@ import retrofit2.Response
 
 class InsightListViewModel(private val tokenPref: TokenPreferences) : ViewModel() {
     companion object {
-        const val ALL_TYPE = "all_insight"
-        const val PARENTING_TYPE = "parenting"
-        const val LIFESTYLE_TYPE = "lifestyle"
+        const val STATUS = "Publish"
+        const val ALL_TAG = ""
+        const val PARENTING_TAG = "parenting"
+        const val LIFESTYLE_TAG = "lifestyle"
     }
 
     private val allInsightListChannel = Channel<AllInsightList>()
@@ -43,69 +44,69 @@ class InsightListViewModel(private val tokenPref: TokenPreferences) : ViewModel(
         lifestyleInsightListChannel.send(LifestyleInsightList.NavigateToDetailInsightFragment(id))
     }
 
-    private fun onApiCallStarted(status: String) = viewModelScope.launch {
+    private fun onApiCallStarted(tag: String) = viewModelScope.launch {
         when{
-            status.contains("all_insight", true) -> {
+            tag.contains("", true) -> {
                 allInsightListChannel.send(AllInsightList.Loading)
             }
-            status.contains("parenting", true) -> {
+            tag.contains("parenting", true) -> {
                 parentingInsightListChannel.send(ParentingInsightList.Loading)
             }
-            status.contains("lifestyle", true) -> {
+            tag.contains("lifestyle", true) -> {
                 lifestyleInsightListChannel.send(LifestyleInsightList.Loading)
             }
         }
     }
 
-    private fun onApiCallSuccess(status: String, list: List<AllInsightsListResponse.Message>) =
+    private fun onApiCallSuccess(tag: String, list: List<AllInsightsListResponse.Message>) =
         viewModelScope.launch {
             when{
-                status.contains("all_insight", true) -> {
+                tag.contains("", true) -> {
                     allInsightListChannel.send(AllInsightList.Success(list))
                 }
-                status.contains("parenting", true) -> {
+                tag.contains("parenting", true) -> {
                     parentingInsightListChannel.send(ParentingInsightList.Success(list))
                 }
-                status.contains("lifestyle", true) -> {
+                tag.contains("lifestyle", true) -> {
                     lifestyleInsightListChannel.send(LifestyleInsightList.Success(list))
                 }
             }
         }
 
-    private fun onApiCallError(status: String, message: String) = viewModelScope.launch {
+    private fun onApiCallError(tag: String, message: String) = viewModelScope.launch {
         when{
-            status.contains("all_insight", true) -> {
+            tag.contains("", true) -> {
                 allInsightListChannel.send(AllInsightList.Error(message))
             }
-            status.contains("parenting", true) -> {
+            tag.contains("parenting", true) -> {
                 parentingInsightListChannel.send(ParentingInsightList.Error(message))
             }
-            status.contains("lifestyle", true) -> {
+            tag.contains("lifestyle", true) -> {
                 lifestyleInsightListChannel.send(LifestyleInsightList.Error(message))
             }
         }
     }
 
-    fun loadInsightList(status: String, accessToken: String) = viewModelScope.launch {
-        onApiCallStarted(status)
+    fun loadInsightList(tag: String, accessToken: String) = viewModelScope.launch {
+        onApiCallStarted(tag)
         APIClient
             .service
-            .getAllInsightList(mapOf("status" to status), accessToken)
+            .getAllInsightList(mapOf("tag" to tag), accessToken)
             .enqueue(object: Callback<AllInsightsListResponse> {
                 override fun onResponse(
                     call: Call<AllInsightsListResponse>,
                     response: Response<AllInsightsListResponse>
                 ) {
                     if (response.isSuccessful) {
-                        onApiCallSuccess(status, response.body()?.message!!)
+                        onApiCallSuccess(tag, response.body()?.message!!)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
-                        onApiCallError(status, apiError.message())
+                        onApiCallError(tag, apiError.message())
                     }
                 }
 
                 override fun onFailure(call: Call<AllInsightsListResponse>, t: Throwable) {
-                    onApiCallError(status, "Network Failed...")
+                    onApiCallError(tag, "Network Failed...")
                 }
             })
     }
