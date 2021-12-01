@@ -62,6 +62,7 @@ class AllInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
                     }
                     is InsightListViewModel.AllInsightList.Success -> {
                         insightListAdapter.submitList(insight.list)
+                        showLoading(false)
                         showEmptyWarning(false)
                     }
                     is InsightListViewModel.AllInsightList.Error -> {

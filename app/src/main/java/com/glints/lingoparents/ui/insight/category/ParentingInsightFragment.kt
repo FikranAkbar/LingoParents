@@ -24,6 +24,7 @@ class ParentingInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
     private val binding get() = _binding!!
     private lateinit var viewModel: InsightListViewModel
     private lateinit var tokenPreferences: TokenPreferences
+    private lateinit var insightListAdapter: CategoriesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +36,8 @@ class ParentingInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
         binding.rvParentingInsight.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(activity)
-            adapter = CategoriesAdapter(this@ParentingInsightFragment)
+            insightListAdapter = CategoriesAdapter(this@ParentingInsightFragment)
+            adapter = insightListAdapter
         }
 
         return binding.root
@@ -60,7 +62,8 @@ class ParentingInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
                         showEmptyWarning(false)
                     }
                     is InsightListViewModel.ParentingInsightList.Success -> {
-                        CategoriesAdapter(this@ParentingInsightFragment).submitList(insight.list)
+                        insightListAdapter.submitList(insight.list)
+                        showLoading(false)
                         showEmptyWarning(false)
                     }
                     is InsightListViewModel.ParentingInsightList.Error -> {

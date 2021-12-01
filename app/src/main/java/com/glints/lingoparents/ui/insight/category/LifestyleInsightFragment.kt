@@ -24,6 +24,7 @@ class LifestyleInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
     private val binding get() = _binding!!
     private lateinit var viewModel: InsightListViewModel
     private lateinit var tokenPreferences: TokenPreferences
+    private lateinit var insightListAdapter: CategoriesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +36,8 @@ class LifestyleInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
         binding.rvLifestyleInsight.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(activity)
-            adapter = CategoriesAdapter(this@LifestyleInsightFragment)
+            insightListAdapter = CategoriesAdapter(this@LifestyleInsightFragment)
+            adapter = insightListAdapter
         }
 
         return binding.root
@@ -60,7 +62,8 @@ class LifestyleInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
                         showEmptyWarning(false)
                     }
                     is InsightListViewModel.LifestyleInsightList.Success -> {
-                        CategoriesAdapter(this@LifestyleInsightFragment).submitList(insight.list)
+                        insightListAdapter.submitList(insight.list)
+                        showLoading(false)
                         showEmptyWarning(false)
                     }
                     is InsightListViewModel.LifestyleInsightList.Error -> {
