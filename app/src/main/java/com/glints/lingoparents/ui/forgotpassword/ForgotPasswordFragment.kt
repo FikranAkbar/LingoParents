@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentForgotPasswordBinding
 import com.glints.lingoparents.utils.AuthFormValidator
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 
 class ForgotPasswordFragment : Fragment(R.layout.fragment_forgot_password) {
@@ -50,7 +51,6 @@ class ForgotPasswordFragment : Fragment(R.layout.fragment_forgot_password) {
                                 hideFieldError(tilEmail)
 
                                 val email = event.email
-
                                 if (isValidEmail(email)) {
                                     viewModel.sendForgotPasswordRequest(email)
                                 } else {
@@ -59,6 +59,38 @@ class ForgotPasswordFragment : Fragment(R.layout.fragment_forgot_password) {
                             }
                         }
                     }
+                    is ForgotPasswordViewModel.ForgotPasswordEvent.Error -> {
+                        showLoading(false)
+                        if (event.message.contains("email not found", ignoreCase = true)) {
+                            AuthFormValidator.showFieldError(binding.tilEmail, event.message)
+                        }
+                    }
+                    is ForgotPasswordViewModel.ForgotPasswordEvent.Loading -> {
+                        showLoading(true)
+                    }
+                    is ForgotPasswordViewModel.ForgotPasswordEvent.Success -> {
+                        showLoading(false)
+                        binding.apply {
+                            Snackbar.make(root, event.message, Snackbar.LENGTH_LONG).show()
+                            tilEmail.editText?.setText("")
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showLoading(bool: Boolean) {
+        binding.apply {
+            when (bool) {
+                true -> {
+                    vLoadingBackground.visibility = View.VISIBLE
+                    vLoadingProgress.visibility = View.VISIBLE
+                }
+                else -> {
+                    vLoadingBackground.visibility = View.GONE
+                    vLoadingProgress.visibility = View.GONE
                 }
             }
         }

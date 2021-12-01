@@ -20,8 +20,8 @@ class ForgotPasswordViewModel : ViewModel() {
         forgotPasswordEventChannel.send(ForgotPasswordEvent.Loading)
     }
 
-    private fun onApiCallSuccess() = viewModelScope.launch {
-        forgotPasswordEventChannel.send(ForgotPasswordEvent.Success)
+    private fun onApiCallSuccess(message: String) = viewModelScope.launch {
+        forgotPasswordEventChannel.send(ForgotPasswordEvent.Success(message))
     }
 
     private fun onApiCallError(message: String) = viewModelScope.launch {
@@ -39,7 +39,7 @@ class ForgotPasswordViewModel : ViewModel() {
                     response: Response<ForgotPasswordResponse>
                 ) {
                     if (response.isSuccessful) {
-                        onApiCallSuccess()
+                        onApiCallSuccess(response.body()?.message!!)
                     }
                     else {
                         val apiError = ErrorUtils.parseError(response)
@@ -66,7 +66,7 @@ class ForgotPasswordViewModel : ViewModel() {
         object NavigateBackToLogin : ForgotPasswordEvent()
         data class TryToSubmitForgotPassword(val email: String) : ForgotPasswordEvent()
         object Loading : ForgotPasswordEvent()
-        object Success : ForgotPasswordEvent()
+        data class Success(val message: String) : ForgotPasswordEvent()
         data class Error(val message: String) : ForgotPasswordEvent()
     }
 }
