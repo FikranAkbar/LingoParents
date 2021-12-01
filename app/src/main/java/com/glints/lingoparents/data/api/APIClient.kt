@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object APIClient {
-    private const val BASE_URL = "http://192.168.1.8:3000/"
+    private const val BASE_URL = "http://be-server.ipe-glintsacademy.com:3000/"
 
     private val gson = GsonBuilder().setLenient().create()
 
