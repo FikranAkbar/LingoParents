@@ -58,7 +58,7 @@ class InsightListViewModel(private val tokenPref: TokenPreferences) : ViewModel(
         }
     }
 
-    private fun onApiCallSuccess(tag: String, list: List<AllInsightsListResponse.Message>) =
+    private fun onApiCallSuccess(tag: String, list: List<AllInsightsListResponse.Data>) =
         viewModelScope.launch {
             when{
                 tag.contains("", true) -> {
@@ -98,7 +98,7 @@ class InsightListViewModel(private val tokenPref: TokenPreferences) : ViewModel(
                     response: Response<AllInsightsListResponse>
                 ) {
                     if (response.isSuccessful) {
-                        onApiCallSuccess(tag, response.body()?.message!!)
+                        onApiCallSuccess(tag, response.body()?.data!!)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallError(tag, apiError.message())
@@ -115,21 +115,21 @@ class InsightListViewModel(private val tokenPref: TokenPreferences) : ViewModel(
 
     sealed class AllInsightList{
         object Loading: AllInsightList()
-        data class Success(val list: List<AllInsightsListResponse.Message>): AllInsightList()
+        data class Success(val list: List<AllInsightsListResponse.Data>): AllInsightList()
         data class Error(val message: String): AllInsightList()
         data class NavigateToDetailInsightFragment(val id: Int): AllInsightList()
     }
 
     sealed class ParentingInsightList{
         object Loading: ParentingInsightList()
-        data class Success(val list: List<AllInsightsListResponse.Message>): ParentingInsightList()
+        data class Success(val list: List<AllInsightsListResponse.Data>): ParentingInsightList()
         data class Error(val message: String): ParentingInsightList()
         data class NavigateToDetailInsightFragment(val id: Int): ParentingInsightList()
     }
 
     sealed class LifestyleInsightList{
         object Loading: LifestyleInsightList()
-        data class Success(val list: List<AllInsightsListResponse.Message>): LifestyleInsightList()
+        data class Success(val list: List<AllInsightsListResponse.Data>): LifestyleInsightList()
         data class Error(val message: String): LifestyleInsightList()
         data class NavigateToDetailInsightFragment(val id: Int): LifestyleInsightList()
     }

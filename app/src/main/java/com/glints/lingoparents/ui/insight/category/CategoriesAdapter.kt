@@ -11,7 +11,7 @@ import com.glints.lingoparents.databinding.ItemInsightBinding
 class CategoriesAdapter(private val listener: OnItemClickCallback)
     : RecyclerView.Adapter<CategoriesAdapter.AdapterHolder>(){
 
-    private val dataList = ArrayList<AllInsightsListResponse.Message>()
+    private val dataList = ArrayList<AllInsightsListResponse.Data>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoriesAdapter.AdapterHolder {
         return AdapterHolder(ItemInsightBinding.inflate(
@@ -28,7 +28,7 @@ class CategoriesAdapter(private val listener: OnItemClickCallback)
     override fun getItemCount(): Int = dataList.size
 
     inner class AdapterHolder(private val binding: ItemInsightBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(item: AllInsightsListResponse.Message, holder: AdapterHolder){
+        fun bind(item: AllInsightsListResponse.Data, holder: AdapterHolder){
             holder.itemView.setOnClickListener {
                 listener.onItemClicked(item)
             }
@@ -39,11 +39,11 @@ class CategoriesAdapter(private val listener: OnItemClickCallback)
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(item: AllInsightsListResponse.Message)
+        fun onItemClicked(item: AllInsightsListResponse.Data)
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun submitList(list: List<AllInsightsListResponse.Message>) {
+    fun submitList(list: List<AllInsightsListResponse.Data>) {
         dataList.clear()
         dataList.addAll(list)
         notifyDataSetChanged()

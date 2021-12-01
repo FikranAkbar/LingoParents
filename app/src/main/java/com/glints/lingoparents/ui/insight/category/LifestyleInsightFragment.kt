@@ -106,7 +106,7 @@ class LifestyleInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
         _binding = null
     }
 
-    override fun onItemClicked(item: AllInsightsListResponse.Message) {
+    override fun onItemClicked(item: AllInsightsListResponse.Data) {
         viewModel.onLifestyleInsightItemClick(item.id)
     }
 

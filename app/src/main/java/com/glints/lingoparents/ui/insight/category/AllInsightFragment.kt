@@ -24,6 +24,7 @@ class AllInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
     private val binding get() = _binding!!
     private lateinit var viewModel: InsightListViewModel
     private lateinit var tokenPreferences: TokenPreferences
+    private lateinit var insightListAdapter: CategoriesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +36,8 @@ class AllInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
         binding.rvAllInsight.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(activity)
-            adapter = CategoriesAdapter(this@AllInsightFragment)
+            insightListAdapter = CategoriesAdapter(this@AllInsightFragment)
+            adapter = insightListAdapter
         }
         return binding.root
     }
@@ -59,7 +61,7 @@ class AllInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
                         showEmptyWarning(false)
                     }
                     is InsightListViewModel.AllInsightList.Success -> {
-                        CategoriesAdapter(this@AllInsightFragment).submitList(insight.list)
+                        insightListAdapter.submitList(insight.list)
                         showEmptyWarning(false)
                     }
                     is InsightListViewModel.AllInsightList.Error -> {
@@ -105,7 +107,7 @@ class AllInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
         _binding = null
     }
 
-    override fun onItemClicked(item: AllInsightsListResponse.Message) {
+    override fun onItemClicked(item: AllInsightsListResponse.Data) {
         viewModel.onAllInsightItemClick(item.id)
     }
 
