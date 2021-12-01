@@ -80,14 +80,24 @@ class AllInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
         binding.apply {
             if (b) {
                 rvAllInsight.visibility = View.GONE
+                shimmerLayout.visibility = View.VISIBLE
             } else {
                 rvAllInsight.visibility = View.VISIBLE
+                shimmerLayout.visibility = View.GONE
             }
         }
     }
 
     private fun  showEmptyWarning(b: Boolean){
-
+        binding.apply {
+            if (b) {
+                ivNoInsight.visibility = View.VISIBLE
+                tvNoInsight.visibility = View.VISIBLE
+            } else {
+                ivNoInsight.visibility = View.GONE
+                tvNoInsight.visibility = View.GONE
+            }
+        }
     }
 
     override fun onDestroy() {

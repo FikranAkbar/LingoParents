@@ -81,14 +81,24 @@ class ParentingInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
         binding.apply {
             if (b) {
                 rvParentingInsight.visibility = View.GONE
+                shimmerLayout.visibility = View.VISIBLE
             } else {
                 rvParentingInsight.visibility = View.VISIBLE
+                shimmerLayout.visibility = View.GONE
             }
         }
     }
 
     private fun  showEmptyWarning(b: Boolean){
-
+        binding.apply {
+            if (b) {
+                ivNoParentingInsight.visibility = View.VISIBLE
+                tvNoParentingInsight.visibility = View.VISIBLE
+            } else {
+                ivNoParentingInsight.visibility = View.GONE
+                tvNoParentingInsight.visibility = View.GONE
+            }
+        }
     }
 
     override fun onDestroy() {
@@ -97,8 +107,7 @@ class ParentingInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
     }
 
     override fun onItemClicked(item: AllInsightsListResponse.Message) {
-        val action = InsightListFragmentDirections.actionInsightListFragmentToDetailInsightFragment()
-        findNavController().navigate(action)
+        viewModel.onParentingItemClick(item.id)
     }
 
 }

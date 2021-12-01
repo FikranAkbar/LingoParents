@@ -81,14 +81,24 @@ class LifestyleInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
         binding.apply {
             if (b) {
                 rvLifestyleInsight.visibility = View.GONE
+                shimmerLayout.visibility = View.VISIBLE
             } else {
                 rvLifestyleInsight.visibility = View.VISIBLE
+                shimmerLayout.visibility = View.GONE
             }
         }
     }
 
     private fun  showEmptyWarning(b: Boolean){
-
+        binding.apply {
+            if (b) {
+                ivNoLifestyleInsight.visibility = View.VISIBLE
+                tvNoLifestyleInsight.visibility = View.VISIBLE
+            } else {
+                ivNoLifestyleInsight.visibility = View.GONE
+                tvNoLifestyleInsight.visibility = View.GONE
+            }
+        }
     }
 
     override fun onDestroy() {
@@ -97,7 +107,7 @@ class LifestyleInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
     }
 
     override fun onItemClicked(item: AllInsightsListResponse.Message) {
-        viewModel.onAllInsightItemClick(item.id)
+        viewModel.onLifestyleInsightItemClick(item.id)
     }
 
 }

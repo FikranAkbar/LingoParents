@@ -1,16 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:orientation="vertical"
     tools:context=".ui.insight.category.ParentingInsightFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_parenting_insight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/item_insight" />
+        tools:listitem="@layout/item_insight"
+        android:visibility="gone"/>
 
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <include layout="@layout/shimmer_item_insight_list" />
+            <include layout="@layout/shimmer_item_insight_list" />
+            <include layout="@layout/shimmer_item_insight_list" />
+            <include layout="@layout/shimmer_item_insight_list" />
+            <include layout="@layout/shimmer_item_insight_list" />
+            <include layout="@layout/shimmer_item_insight_list" />
+            <include layout="@layout/shimmer_item_insight_list" />
+            <include layout="@layout/shimmer_item_insight_list" />
+            <include layout="@layout/shimmer_item_insight_list" />
+            <include layout="@layout/shimmer_item_insight_list" />
+            <include layout="@layout/shimmer_item_insight_list" />
+            <include layout="@layout/shimmer_item_insight_list" />
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/iv_no_parenting_insight"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:src="@drawable/ic_insight"
+        app:tint="@color/shimmer_item_inside"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tv_no_parenting_insight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_w600"
+        android:text="@string/no_parenting_insight"
+        android:textSize="12sp" />
+</LinearLayout>
