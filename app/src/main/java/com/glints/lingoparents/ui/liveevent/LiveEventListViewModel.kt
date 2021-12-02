@@ -89,11 +89,11 @@ class LiveEventListViewModel(private val tokenPref: TokenPreferences) : ViewMode
         }
     }
 
-    fun loadTodayLiveEventList(status: String, accessToken: String) = viewModelScope.launch {
+    fun loadTodayLiveEventList(status: String) = viewModelScope.launch {
         onApiCallStarted(status)
         APIClient
             .service
-            .getLiveEventsByStatus(mapOf("status" to status), accessToken)
+            .getLiveEventsByStatus(mapOf("status" to status))
             .enqueue(object : Callback<LiveEventListResponse> {
                 override fun onResponse(
                     call: Call<LiveEventListResponse>,

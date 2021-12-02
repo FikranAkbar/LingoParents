@@ -43,7 +43,6 @@ interface APIService {
     @GET("api/v1/events/participants/pages")
     fun getLiveEventsByStatus(
         @QueryMap options: Map<String, String>,
-        @Header("authorization") authorization: String
     ): Call<LiveEventListResponse>
 
     @GET("api/v1/events/participants/{id}")

@@ -51,9 +51,7 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
             }
         }
 
-        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
-            viewModel.loadTodayLiveEventList(LiveEventListViewModel.TODAY_TYPE, accessToken)
-        }
+        viewModel.loadTodayLiveEventList(LiveEventListViewModel.TODAY_TYPE)
 
         lifecycleScope.launchWhenStarted {
             viewModel.todayLiveEventListEvent.collect { event ->

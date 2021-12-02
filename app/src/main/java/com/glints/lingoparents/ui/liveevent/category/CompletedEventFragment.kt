@@ -51,9 +51,7 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
             }
         }
 
-        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
-            viewModel.loadTodayLiveEventList(LiveEventListViewModel.COMPLETED_TYPE, accessToken)
-        }
+        viewModel.loadTodayLiveEventList(LiveEventListViewModel.COMPLETED_TYPE)
 
         lifecycleScope.launchWhenStarted {
             viewModel.completedLiveEventListEvent.collect { event ->

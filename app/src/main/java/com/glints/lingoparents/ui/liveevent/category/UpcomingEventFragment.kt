@@ -50,9 +50,7 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
             }
         }
 
-        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
-            viewModel.loadTodayLiveEventList(LiveEventListViewModel.UPCOMING_TYPE, accessToken)
-        }
+        viewModel.loadTodayLiveEventList(LiveEventListViewModel.UPCOMING_TYPE)
 
         lifecycleScope.launchWhenStarted {
             viewModel.upcomingLiveEventListEvent.collect { event ->
