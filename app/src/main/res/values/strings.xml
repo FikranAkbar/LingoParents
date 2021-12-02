@@ -236,4 +236,5 @@
     <string name="no_lifestyle_insight">No Lifestyle Insight At The Moment</string>
     <string name="create_new_password">Create New Password</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="reply">Reply</string>
 </resources>
