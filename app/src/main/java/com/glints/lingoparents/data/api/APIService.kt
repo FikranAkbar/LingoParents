@@ -48,6 +48,5 @@ interface APIService {
     @GET("api/v1/events/participants/{id}")
     fun getLiveEventById(
         @Path("id") id: Int,
-        @Header("authorization") authorization: String
     ): Call<LiveEventDetailResponse>
 }

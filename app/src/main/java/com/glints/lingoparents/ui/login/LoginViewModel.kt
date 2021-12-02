@@ -1,8 +1,6 @@
 package com.glints.lingoparents.ui.login
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.model.response.LoginUserResponse
@@ -67,11 +65,10 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
         loginEventChannel.send(LoginEvent.ShowSnackBarMessage(message))
     }
 
-    private fun saveToken(token: String) = viewModelScope.launch {
-        tokenPreferences.saveAccessToken(token)
+    private fun saveToken(accessToken: String, refreshToken: String) = viewModelScope.launch {
+        tokenPreferences.saveAccessToken(accessToken)
+        tokenPreferences.saveRefreshToken(refreshToken)
     }
-
-    fun getToken(): LiveData<String> = tokenPreferences.getAccessToken().asLiveData()
 
     fun loginUserByEmailPassword(email: String, password: String) = viewModelScope.launch {
         onApiCallStarted()
@@ -85,7 +82,10 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
                 ) {
                     if (response.isSuccessful) {
                         onApiCallSuccess("Login Successful")
-                        saveToken(response.body()?.data?.accessToken.toString())
+                        saveToken(
+                            response.body()?.data?.accessToken.toString(),
+                            response.body()?.data?.refreshToken.toString()
+                        )
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallError(apiError.message())

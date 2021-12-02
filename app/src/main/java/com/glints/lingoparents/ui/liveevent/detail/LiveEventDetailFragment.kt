@@ -45,9 +45,7 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
             }
         }
 
-        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
-            viewModel.getLiveEventDetailById(viewModel.getCurrentEventId(), accessToken)
-        }
+        viewModel.getLiveEventDetailById(viewModel.getCurrentEventId())
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.liveEventDetailEvent.collect { event ->
