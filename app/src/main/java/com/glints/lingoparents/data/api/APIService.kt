@@ -40,7 +40,7 @@ interface APIService {
     @GET("api/v1/parents/profile")
     fun getParentProfile(
         @Header("authorization") authorization: String
-    ):  Call<ParentProfileResponse>
+    ): Call<ParentProfileResponse>
 
     @PUT("api/v1/parents/profile")
     fun editParentProfile(
@@ -51,5 +51,13 @@ interface APIService {
         @Field("phone") phone: String
     ): Call<EditParentProfileResponse>
 
+    @FormUrlEncoded
+    @POST("api/v1/password-reset?token={token}&id={id}")
+    fun changePassword(
+        @Path("token") token: String,
+        @Path("id") id: Int,
+        @Field("password") password: String,
+        @Field("confirmPassword") confirmPassword: String,
+    ): Call<ChangePasswordResponse>
 
 }
