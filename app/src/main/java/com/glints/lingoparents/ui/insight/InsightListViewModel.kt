@@ -17,7 +17,6 @@ import retrofit2.Response
 
 class InsightListViewModel(private val tokenPref: TokenPreferences) : ViewModel() {
     companion object {
-        const val STATUS = "Publish"
         const val ALL_TAG = ""
         const val PARENTING_TAG = "parenting"
         const val LIFESTYLE_TAG = "lifestyle"
@@ -45,14 +44,14 @@ class InsightListViewModel(private val tokenPref: TokenPreferences) : ViewModel(
     }
 
     private fun onApiCallStarted(tag: String) = viewModelScope.launch {
-        when{
-            tag.contains("", true) -> {
+        when(tag){
+            ALL_TAG -> {
                 allInsightListChannel.send(AllInsightList.Loading)
             }
-            tag.contains("parenting", true) -> {
+            PARENTING_TAG -> {
                 parentingInsightListChannel.send(ParentingInsightList.Loading)
             }
-            tag.contains("lifestyle", true) -> {
+            LIFESTYLE_TAG -> {
                 lifestyleInsightListChannel.send(LifestyleInsightList.Loading)
             }
         }
@@ -60,28 +59,28 @@ class InsightListViewModel(private val tokenPref: TokenPreferences) : ViewModel(
 
     private fun onApiCallSuccess(tag: String, list: List<AllInsightsListResponse.Message>) =
         viewModelScope.launch {
-            when{
-                tag.contains("", true) -> {
+            when(tag){
+                ALL_TAG -> {
                     allInsightListChannel.send(AllInsightList.Success(list))
                 }
-                tag.contains("parenting", true) -> {
+                PARENTING_TAG -> {
                     parentingInsightListChannel.send(ParentingInsightList.Success(list))
                 }
-                tag.contains("lifestyle", true) -> {
+                LIFESTYLE_TAG -> {
                     lifestyleInsightListChannel.send(LifestyleInsightList.Success(list))
                 }
             }
         }
 
     private fun onApiCallError(tag: String, message: String) = viewModelScope.launch {
-        when{
-            tag.contains("", true) -> {
+        when(tag){
+            ALL_TAG -> {
                 allInsightListChannel.send(AllInsightList.Error(message))
             }
-            tag.contains("parenting", true) -> {
+            PARENTING_TAG -> {
                 parentingInsightListChannel.send(ParentingInsightList.Error(message))
             }
-            tag.contains("lifestyle", true) -> {
+            LIFESTYLE_TAG -> {
                 lifestyleInsightListChannel.send(LifestyleInsightList.Error(message))
             }
         }

@@ -47,16 +47,16 @@ class LifestyleInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
         super.onActivityCreated(savedInstanceState)
         viewModel =
             ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this, arguments))[
-                InsightListViewModel::class.java
-        ]
+                    InsightListViewModel::class.java
+            ]
 
-        viewModel.getAccessToken().observe(viewLifecycleOwner){ accessToken ->
+        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
             viewModel.loadInsightList(InsightListViewModel.LIFESTYLE_TAG, accessToken)
         }
 
         lifecycleScope.launchWhenStarted {
             viewModel.lifestyleInsightList.collect { insight ->
-                when(insight){
+                when (insight) {
                     is InsightListViewModel.LifestyleInsightList.Loading -> {
                         showLoading(true)
                         showEmptyWarning(false)
@@ -64,7 +64,11 @@ class LifestyleInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
                     is InsightListViewModel.LifestyleInsightList.Success -> {
                         insightListAdapter.submitList(insight.list)
                         showLoading(false)
-                        showEmptyWarning(false)
+                        if (insight.list.isEmpty()) {
+                            showEmptyWarning(true)
+                        } else {
+                            showEmptyWarning(false)
+                        }
                     }
                     is InsightListViewModel.LifestyleInsightList.Error -> {
                         showLoading(false)
@@ -92,9 +96,10 @@ class LifestyleInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
         }
     }
 
-    private fun  showEmptyWarning(b: Boolean){
+    private fun showEmptyWarning(b: Boolean) {
         binding.apply {
             if (b) {
+                rvLifestyleInsight.visibility = View.GONE
                 ivNoLifestyleInsight.visibility = View.VISIBLE
                 tvNoLifestyleInsight.visibility = View.VISIBLE
             } else {

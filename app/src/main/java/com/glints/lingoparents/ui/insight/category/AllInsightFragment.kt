@@ -46,16 +46,16 @@ class AllInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
         super.onActivityCreated(savedInstanceState)
         viewModel =
             ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this, arguments))[
-                InsightListViewModel::class.java
-        ]
+                    InsightListViewModel::class.java
+            ]
 
-        viewModel.getAccessToken().observe(viewLifecycleOwner){ accessToken ->
+        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
             viewModel.loadInsightList(InsightListViewModel.ALL_TAG, accessToken)
         }
 
         lifecycleScope.launchWhenStarted {
             viewModel.allInsightList.collect { insight ->
-                when(insight){
+                when (insight) {
                     is InsightListViewModel.AllInsightList.Loading -> {
                         showLoading(true)
                         showEmptyWarning(false)
@@ -63,7 +63,11 @@ class AllInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
                     is InsightListViewModel.AllInsightList.Success -> {
                         insightListAdapter.submitList(insight.list)
                         showLoading(false)
-                        showEmptyWarning(false)
+                        if (insight.list.isEmpty()) {
+                            showEmptyWarning(true)
+                        } else {
+                            showEmptyWarning(false)
+                        }
                     }
                     is InsightListViewModel.AllInsightList.Error -> {
                         showLoading(false)
@@ -91,9 +95,10 @@ class AllInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
         }
     }
 
-    private fun  showEmptyWarning(b: Boolean){
+    private fun showEmptyWarning(b: Boolean) {
         binding.apply {
             if (b) {
+                rvAllInsight.visibility = View.GONE
                 ivNoInsight.visibility = View.VISIBLE
                 tvNoInsight.visibility = View.VISIBLE
             } else {

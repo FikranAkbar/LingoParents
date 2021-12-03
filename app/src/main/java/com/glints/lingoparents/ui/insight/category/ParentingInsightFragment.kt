@@ -50,13 +50,13 @@ class ParentingInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
                     InsightListViewModel::class.java
             ]
 
-        viewModel.getAccessToken().observe(viewLifecycleOwner){ accessToken ->
+        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
             viewModel.loadInsightList(InsightListViewModel.PARENTING_TAG, accessToken)
         }
 
         lifecycleScope.launchWhenStarted {
             viewModel.parentingInsightList.collect { insight ->
-                when(insight){
+                when (insight) {
                     is InsightListViewModel.ParentingInsightList.Loading -> {
                         showLoading(true)
                         showEmptyWarning(false)
@@ -64,7 +64,11 @@ class ParentingInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
                     is InsightListViewModel.ParentingInsightList.Success -> {
                         insightListAdapter.submitList(insight.list)
                         showLoading(false)
-                        showEmptyWarning(false)
+                        if (insight.list.isEmpty()) {
+                            showEmptyWarning(true)
+                        } else {
+                            showEmptyWarning(false)
+                        }
                     }
                     is InsightListViewModel.ParentingInsightList.Error -> {
                         showLoading(false)
@@ -92,9 +96,10 @@ class ParentingInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
         }
     }
 
-    private fun  showEmptyWarning(b: Boolean){
+    private fun showEmptyWarning(b: Boolean) {
         binding.apply {
             if (b) {
+                rvParentingInsight.visibility = View.GONE
                 ivNoParentingInsight.visibility = View.VISIBLE
                 tvNoParentingInsight.visibility = View.VISIBLE
             } else {
