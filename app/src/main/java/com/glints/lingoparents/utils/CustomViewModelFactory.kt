@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import com.glints.lingoparents.ui.accountsetting.AccountSettingViewModel
 import com.glints.lingoparents.ui.insight.InsightListViewModel
+import com.glints.lingoparents.ui.insight.detail.DetailInsightViewModel
 import com.glints.lingoparents.ui.liveevent.LiveEventListViewModel
 import com.glints.lingoparents.ui.liveevent.detail.LiveEventDetailViewModel
 import com.glints.lingoparents.ui.login.LoginViewModel
@@ -18,6 +19,7 @@ class CustomViewModelFactory(
     owner: SavedStateRegistryOwner,
     defaultArgs: Bundle? = null,
     private val eventId: Int? = null,
+    private val insightId: Int? = null
 ) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
 
     @Suppress("UNCHECKED_CAST")
@@ -47,6 +49,9 @@ class CustomViewModelFactory(
             }
             modelClass.isAssignableFrom(InsightListViewModel::class.java) -> {
                 InsightListViewModel(tokenPref) as  T
+            }
+            modelClass.isAssignableFrom(DetailInsightViewModel::class.java) -> {
+                DetailInsightViewModel(tokenPref, insightId as Int) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

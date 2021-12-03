@@ -57,4 +57,10 @@ interface APIService {
         @QueryMap options: Map<String, String>,
         @Header("authorization") authorization: String
     ): Call<AllInsightsListResponse>
+
+    @GET("api/v1/insights/{id}")
+    fun getInsightDetail(
+        @Path("id") id: Int,
+        @Header("authorization") authorization: String
+    ): Call<InsightDetailResponse>
 }
