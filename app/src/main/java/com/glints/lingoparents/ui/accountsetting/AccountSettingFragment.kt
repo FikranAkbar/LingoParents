@@ -1,5 +1,6 @@
 package com.glints.lingoparents.ui.accountsetting
 
+import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,17 +14,21 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
+import com.glints.lingoparents.data.model.response.ParentProfileResponse
 import com.glints.lingoparents.databinding.FragmentAccountSettingBinding
 import com.glints.lingoparents.ui.dashboard.DashboardActivity
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
 
     companion object {
         @StringRes
         private val TAB_TITLES = intArrayOf(
-            R.string.account_setting_tab_text_1,
-            R.string.account_setting_tab_text_2
+                R.string.account_setting_tab_text_1,
+                R.string.account_setting_tab_text_2
         )
     }
 
@@ -31,9 +36,9 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAccountSettingBinding.inflate(inflater)
 
@@ -60,12 +65,12 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
         }
 
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    findNavController().popBackStack()
-                    (activity as DashboardActivity).showBottomNav(true)
-                }
-            })
+                object : OnBackPressedCallback(true) {
+                    override fun handleOnBackPressed() {
+                        findNavController().popBackStack()
+                        (activity as DashboardActivity).showBottomNav(true)
+                    }
+                })
 
         (activity as DashboardActivity).showBottomNav(false)
 
@@ -75,7 +80,6 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
                 (activity as DashboardActivity).showBottomNav(true)
             }
         }
-
         return binding.root
     }
 

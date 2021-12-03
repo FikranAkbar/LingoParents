@@ -2,19 +2,30 @@ package com.glints.lingoparents.ui.accountsetting.profile
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.datastore.dataStore
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
+import com.bumptech.glide.Glide
 import com.glints.lingoparents.R
+import com.glints.lingoparents.data.api.APIClient
+import com.glints.lingoparents.data.model.response.ParentProfileResponse
 import com.glints.lingoparents.databinding.FragmentProfileBinding
 import com.glints.lingoparents.ui.MainActivity
 import com.glints.lingoparents.utils.CustomViewModelFactory
+import com.glints.lingoparents.utils.ErrorUtils
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
@@ -24,9 +35,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private lateinit var viewModel: ProfileViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater)
 
@@ -34,7 +45,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this))[
                 ProfileViewModel::class.java
         ]
-
+        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
+            viewModel.getParentProfile(accessToken)
+        }
         binding.apply {
             mbtnEdit.setOnClickListener {
                 enterEditState()
@@ -49,20 +62,29 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 viewModel.onLogOutButtonClick()
             }
         }
-
+        //amin
         lifecycleScope.launchWhenStarted {
             viewModel.profileEvent.collect { event ->
                 when (event) {
                     ProfileViewModel.ProfileEvent.NavigateToAuthScreen -> {
                         val intent =
-                            Intent(this@ProfileFragment.requireContext(), MainActivity::class.java)
+                                Intent(this@ProfileFragment.requireContext(), MainActivity::class.java)
                         startActivity(intent)
                         requireActivity().finish()
+                    }
+                    is ProfileViewModel.ProfileEvent.Success -> {
+                        binding.apply {
+                            event.parentProfile.apply{
+                                tvFirstNameContent.text = firstname
+                                tvLastNameContent.text = lastname
+                                tvAddressContent.text = address
+                                tvPhoneNumberContent.text = phone
+                            }
+                        }
                     }
                 }
             }
         }
-
         return binding.root
     }
 
