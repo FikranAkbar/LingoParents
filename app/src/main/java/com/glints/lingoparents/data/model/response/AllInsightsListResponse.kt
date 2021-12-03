@@ -2,11 +2,9 @@ package com.glints.lingoparents.data.model.response
 
 class AllInsightsListResponse{
     val status: String? = null
-    val message: String? = null
-    val data: List<Data>? = null
+    val message: List<Message>? = null
 
-
-    data class Data(
+    data class Message(
         val Trx_insight_tags: List<TrxInsightTag>,
         val content: String,
         val cover: String,

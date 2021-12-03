@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_username_comment"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginVertical="4dp"
         android:layout_toEndOf="@+id/iv_insight_comment"
         android:justificationMode="inter_word"
         android:text="A special child needs constant attention and support. They require assistance even for trivial things. It is essential for parents to feel overwhelmed and exhausted at times." />

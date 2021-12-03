@@ -108,7 +108,7 @@ class AllInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
         _binding = null
     }
 
-    override fun onItemClicked(item: AllInsightsListResponse.Data) {
+    override fun onItemClicked(item: AllInsightsListResponse.Message) {
         viewModel.onAllInsightItemClick(item.id)
     }
 
