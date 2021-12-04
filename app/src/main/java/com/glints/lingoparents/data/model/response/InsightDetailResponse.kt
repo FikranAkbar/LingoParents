@@ -12,7 +12,7 @@ class InsightDetailResponse{
         val createdAt: String,
         val id: Int,
         val idUser_create: Int,
-        val idUser_update: Any,
+        val idUser_update: Int,
         val is_active: String,
         val title: String,
         val total_dislike: Int,
@@ -44,18 +44,18 @@ class InsightDetailResponse{
         val createdAt: String,
         val id: Int,
         val idUser_create: Int,
-        val idUser_update: Any,
+        val idUser_update: Int,
         val id_insight: Int,
         val id_tag: Int,
-        val updatedAt: Any
+        val updatedAt: Int
     )
 
     data class MasterTag(
         val createdAt: String,
         val id: Int,
         val idUser_create: Int,
-        val idUser_update: Any,
+        val idUser_update: Int,
         val tag_name: String,
-        val updatedAt: Any
+        val updatedAt: Int
     )
 }
