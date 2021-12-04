@@ -48,7 +48,7 @@ class CustomViewModelFactory(
                 ProfileViewModel(tokenPref) as T
             }
             modelClass.isAssignableFrom(PasswordSettingViewModel::class.java) -> {
-                PasswordSettingViewModel(accountId as Int) as T
+                PasswordSettingViewModel(tokenPref) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

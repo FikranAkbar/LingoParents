@@ -16,7 +16,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class PasswordSettingViewModel(
-    private val accountId: Int
+    private val tokenPref: TokenPreferences
 ) : ViewModel() {
     private val passwordSettingChannel = Channel<PasswordSettingEvent>()
     val passwordSettingEvent = passwordSettingChannel.receiveAsFlow()
@@ -90,9 +90,9 @@ class PasswordSettingViewModel(
             })
     }
 
-    //fun getAccessToken(): LiveData<String> = tokenPreferences.getAccessToken().asLiveData()
+    fun getAccessToken(): LiveData<String> = tokenPref.getAccessToken().asLiveData()
 
-    fun getCurrentAccountId(): Int = accountId
+    //fun getCurrentAccountId(): Int = accountId
 
 
 }

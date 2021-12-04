@@ -64,6 +64,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     tfPhoneNumber.editText?.text.toString()
                 )
                 exitEditState()
+                //binding.fragmentProfile.invalidate()
             }
             mbtnLogout.setOnClickListener {
                 viewModel.onLogOutButtonClick()
