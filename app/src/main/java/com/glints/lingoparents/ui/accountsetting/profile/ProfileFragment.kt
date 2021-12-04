@@ -114,9 +114,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         binding.apply {
             View.VISIBLE.apply {
                 tfAddress.visibility = this
+                tfAddress.editText?.setText(tvAddressContent.text)
                 tfFirstName.visibility = this
+                tfFirstName.editText?.setText(tvFirstNameContent.text)
                 tfLastName.visibility = this
+                tfLastName.editText?.setText(tvLastNameContent.text)
                 tfPhoneNumber.visibility = this
+                tfPhoneNumber.editText?.setText(tvPhoneNumberContent.text)
                 mbtnSave.visibility = this
                 mbtnCancel.visibility = this
             }
