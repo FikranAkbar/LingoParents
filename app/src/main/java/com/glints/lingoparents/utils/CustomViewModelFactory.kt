@@ -19,6 +19,7 @@ class CustomViewModelFactory(
     owner: SavedStateRegistryOwner,
     defaultArgs: Bundle? = null,
     private val eventId: Int? = null,
+    private val accountId: Int? = null,
 ) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
 
     @Suppress("UNCHECKED_CAST")
@@ -47,7 +48,7 @@ class CustomViewModelFactory(
                 ProfileViewModel(tokenPref) as T
             }
             modelClass.isAssignableFrom(PasswordSettingViewModel::class.java) -> {
-                PasswordSettingViewModel(tokenPref) as T
+                PasswordSettingViewModel(accountId as Int) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

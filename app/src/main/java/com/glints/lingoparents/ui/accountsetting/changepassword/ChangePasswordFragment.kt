@@ -29,7 +29,20 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
         viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this))[
                 PasswordSettingViewModel::class.java
         ]
-
+        //amin
+        binding.apply {
+            mbtnSave.setOnClickListener {
+                viewModel.onSubmitButtonClick(
+                    tfCurrentPassword.editText?.text.toString(),
+                    tfNewPassword.editText?.text.toString(),
+                    tfConfirmPassword.editText?.text.toString(),
+                )
+            }
+        }
+//        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
+//            viewModel.changePassword()
+//        }
+        //viewcycle
         return binding.root
     }
 

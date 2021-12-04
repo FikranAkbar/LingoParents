@@ -35,9 +35,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private lateinit var viewModel: ProfileViewModel
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater)
 
@@ -47,6 +47,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         ]
         viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
             viewModel.getParentProfile(accessToken)
+
         }
         binding.apply {
             mbtnEdit.setOnClickListener {
@@ -56,6 +57,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 exitEditState()
             }
             mbtnSave.setOnClickListener {
+                viewModel.onSaveButtonClick(
+                    tfFirstName.editText?.text.toString(),
+                    tfLastName.editText?.text.toString(),
+                    tfAddress.editText?.text.toString(),
+                    tfPhoneNumber.editText?.text.toString()
+                )
                 exitEditState()
             }
             mbtnLogout.setOnClickListener {
@@ -68,19 +75,33 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 when (event) {
                     ProfileViewModel.ProfileEvent.NavigateToAuthScreen -> {
                         val intent =
-                                Intent(this@ProfileFragment.requireContext(), MainActivity::class.java)
+                            Intent(this@ProfileFragment.requireContext(), MainActivity::class.java)
                         startActivity(intent)
                         requireActivity().finish()
                     }
                     is ProfileViewModel.ProfileEvent.Success -> {
                         binding.apply {
-                            event.parentProfile.apply{
+                            event.parentProfile.apply {
                                 tvFirstNameContent.text = firstname
                                 tvLastNameContent.text = lastname
                                 tvAddressContent.text = address
                                 tvPhoneNumberContent.text = phone
                             }
                         }
+                    }
+                    //amin
+                    is ProfileViewModel.ProfileEvent.TryToEditProfile -> {
+                        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
+                            viewModel.editParentProfile(
+                                accessToken,
+                                event.firstname,
+                                event.lastname,
+                                event.address,
+                                event.phone
+
+                            )
+                        }
+
                     }
                 }
             }

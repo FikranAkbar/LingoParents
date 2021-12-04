@@ -37,6 +37,12 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
         profileChannel.send(ProfileEvent.Success(parentProfile))
     }
 
+    //amin
+    private fun onEditApiCallSuccess() =
+        viewModelScope.launch {
+            profileChannel.send(ProfileEvent.editSuccess)
+        }
+
     private fun onApiCallError(message: String) = viewModelScope.launch {
         profileChannel.send(ProfileEvent.Error(message))
     }
@@ -48,11 +54,12 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
         data class Error(val message: String) : ProfileEvent()
 
         //amin
+        object editSuccess : ProfileEvent()
         data class TryToEditProfile(
-            val firstName: String,
-            val lastName: String,
-            val phone: String,
-            val address: String
+            val firstname: String,
+            val lastname: String,
+            val address: String,
+            val phone: String
         ) : ProfileEvent()
 
 
@@ -61,7 +68,6 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
     fun getAccessToken(): LiveData<String> = tokenPreferences.getAccessToken().asLiveData()
 
     //amin get
-
     fun getParentProfile(accessToken: String) = viewModelScope.launch {
         onApiCallStarted()
         APIClient
@@ -87,4 +93,51 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
             })
     }
 
+    //amin put
+    fun editParentProfile(
+        accessToken: String,
+        firstname: String,
+        lastname: String,
+        address: String,
+        phone: String
+    ) = viewModelScope.launch {
+        onApiCallStarted()
+        APIClient
+            .service
+            .editParentProfile(accessToken,firstname, lastname, address, phone)
+            .enqueue(object : Callback<EditParentProfileResponse> {
+                override fun onResponse(
+                    call: Call<EditParentProfileResponse>,
+                    response: Response<EditParentProfileResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        onEditApiCallSuccess()
+                    } else {
+                        val apiError = ErrorUtils.parseError(response)
+                        onApiCallError(apiError.message())
+                    }
+                }
+
+                override fun onFailure(call: Call<EditParentProfileResponse>, t: Throwable) {
+                    onApiCallError("Network Failed...")
+                }
+            })
+    }
+
+    //kebawah amin
+    fun onSaveButtonClick(
+        firstname: String,
+        lastname: String,
+        address: String,
+        phone: String
+    ) = viewModelScope.launch {
+        profileChannel.send(
+            ProfileEvent.TryToEditProfile(
+                firstname,
+                lastname,
+                address,
+                phone
+            )
+        )
+    }
 }

@@ -42,6 +42,7 @@ interface APIService {
         @Header("authorization") authorization: String
     ): Call<ParentProfileResponse>
 
+    @FormUrlEncoded
     @PUT("api/v1/parents/profile")
     fun editParentProfile(
         @Header("authorization") authorization: String,
