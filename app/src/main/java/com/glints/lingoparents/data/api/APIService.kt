@@ -51,11 +51,10 @@ interface APIService {
         @Field("phone") phone: String
     ): Call<EditParentProfileResponse>
 
-    @FormUrlEncoded
-    @POST("api/v1/password-reset?token={token}&id={id}")
+    @PUT("api/v1/settings/{id}")
     fun changePassword(
-        @Path("token") token: String,
         @Path("id") id: Int,
+        @Field("currentPassword") currentPassword: String,
         @Field("password") password: String,
         @Field("confirmPassword") confirmPassword: String,
     ): Call<ChangePasswordResponse>

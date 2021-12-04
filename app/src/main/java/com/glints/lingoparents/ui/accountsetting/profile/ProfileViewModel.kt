@@ -49,10 +49,10 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
 
         //amin
         data class TryToEditProfile(
-                val firstName: String,
-                val lastName: String,
-                val phone: String,
-                val address: String
+            val firstName: String,
+            val lastName: String,
+            val phone: String,
+            val address: String
         ) : ProfileEvent()
 
 
@@ -65,26 +65,26 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
     fun getParentProfile(accessToken: String) = viewModelScope.launch {
         onApiCallStarted()
         APIClient
-                .service
-                .getParentProfile(accessToken)
-                .enqueue(object : Callback<ParentProfileResponse> {
-                    override fun onResponse(
-                            call: Call<ParentProfileResponse>,
-                            response: Response<ParentProfileResponse>
-                    ) {
-                        if (response.isSuccessful) {
-                            val result = response.body()!!
-                            onApiCallSuccess(result)
-                        } else {
-                            val apiError = ErrorUtils.parseError(response)
-                            onApiCallError(apiError.message())
-                        }
+            .service
+            .getParentProfile(accessToken)
+            .enqueue(object : Callback<ParentProfileResponse> {
+                override fun onResponse(
+                    call: Call<ParentProfileResponse>,
+                    response: Response<ParentProfileResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val result = response.body()!!
+                        onApiCallSuccess(result)
+                    } else {
+                        val apiError = ErrorUtils.parseError(response)
+                        onApiCallError(apiError.message())
                     }
+                }
 
-                    override fun onFailure(call: Call<ParentProfileResponse>, t: Throwable) {
-                        onApiCallError("Network Failed...")
-                    }
-                })
+                override fun onFailure(call: Call<ParentProfileResponse>, t: Throwable) {
+                    onApiCallError("Network Failed...")
+                }
+            })
     }
 
 }
