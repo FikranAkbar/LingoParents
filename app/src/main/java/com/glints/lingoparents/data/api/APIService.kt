@@ -51,4 +51,10 @@ interface APIService {
         @Path("id") id: Int,
         @Header("authorization") authorization: String
     ): Call<LiveEventDetailResponse>
+
+    //amin
+    @GET("api/v1/courses")
+    fun getCourseList(
+        @Header("authorization") authorization: String
+    ): Call<AllCoursesResponse>
 }
