@@ -67,12 +67,13 @@ interface APIService {
         @Field("phone") phone: String
     ): Call<EditParentProfileResponse>
 
-    @PUT("api/v1/settings/{id}")
+    @FormUrlEncoded
+    @PUT("api/v1/parents/profile/change-password")
     fun changePassword(
-        @Path("id") id: Int,
-        @Field("currentPassword") currentPassword: String,
-        @Field("password") password: String,
-        @Field("confirmPassword") confirmPassword: String,
+        @Header("authorization") authorization: String,
+        @Field("password") currentPassword: String,
+        @Field("new_password") password: String,
+        @Field("confirmpassword") confirmPassword: String,
     ): Call<ChangePasswordResponse>
 
 }

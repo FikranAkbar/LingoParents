@@ -41,36 +41,36 @@ class PasswordSettingViewModel(
         //amin
         data class TryToChangePassword(
             val currentPassword: String,
-            val password: String,
-            val newPassword: String
-        ) : PasswordSettingViewModel.PasswordSettingEvent()
+            val newPassword: String,
+            val confirmPassword: String
+        ) : PasswordSettingEvent()
     }
 
     //amin
-    fun onSubmitButtonClick(
+    fun onSaveButtonClick(
         currentPassword: String,
-        password: String,
-        newPassword: String
+        newPassword: String,
+        confirmPassword: String
     ) = viewModelScope.launch {
         passwordSettingChannel.send(
             PasswordSettingEvent.TryToChangePassword(
                 currentPassword,
-                password,
-                newPassword
+                newPassword,
+                confirmPassword
             )
         )
     }
 
     fun changePassword(
-        id: Int,
+        accessToken: String,
         currentPassword: String,
-        password: String,
-        newPassword: String
+        newPassword: String,
+        confirmPassword: String
     ) = viewModelScope.launch {
         onApiCallStarted()
         APIClient
             .service
-            .changePassword(id, currentPassword, password, newPassword)
+            .changePassword(accessToken, currentPassword, newPassword, confirmPassword)
             .enqueue(object : Callback<ChangePasswordResponse> {
                 override fun onResponse(
                     call: Call<ChangePasswordResponse>,
@@ -91,8 +91,6 @@ class PasswordSettingViewModel(
     }
 
     fun getAccessToken(): LiveData<String> = tokenPref.getAccessToken().asLiveData()
-
-    //fun getCurrentAccountId(): Int = accountId
 
 
 }
