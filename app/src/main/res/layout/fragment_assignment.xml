@@ -87,7 +87,6 @@
                     android:textColor="#F37323"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/ivFlag"
                     app:layout_constraintEnd_toStartOf="@+id/ivFlag"
                     app:layout_constraintStart_toEndOf="@id/guideline8"
                     app:layout_constraintTop_toBottomOf="@id/tvAssignment" />

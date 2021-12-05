@@ -90,6 +90,7 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
                                                     confirmPassword
                                                 )
                                                 viewModel.savePassword(binding.tfNewPassword.editText?.text.toString())
+                                                //viewModel.savePassword(event.newPassword)
                                             } else {
                                                 Snackbar.make(
                                                     requireView(),
@@ -114,7 +115,7 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
                                     } else {
                                         Snackbar.make(
                                             requireView(),
-                                            "password minimum",
+                                            "minimum character for a password is 8",
                                             Snackbar.LENGTH_SHORT
                                         )
                                             .setBackgroundTint(Color.parseColor("#FF0000"))
@@ -127,7 +128,7 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
                                 } else {
                                     Snackbar.make(
                                         requireView(),
-                                        "Field ga boleh kosong",
+                                        "field(s) must be filled out",
                                         Snackbar.LENGTH_SHORT
                                     )
                                         .setBackgroundTint(Color.parseColor("#FF0000"))
