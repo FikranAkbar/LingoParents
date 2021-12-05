@@ -52,6 +52,12 @@ interface APIService {
         @Header("authorization") authorization: String
     ): Call<LiveEventDetailResponse>
 
+    @GET("api/v1/insights?status=Publish")
+    fun getAllInsightList(
+        @QueryMap options: Map<String, String>,
+        @Header("authorization") authorization: String
+    ): Call<AllInsightsListResponse>
+
     @GET("api/v1/parents/profile")
     fun getParentProfile(
         @Header("authorization") authorization: String

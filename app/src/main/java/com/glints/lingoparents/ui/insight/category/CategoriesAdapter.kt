@@ -1,15 +1,18 @@
 package com.glints.lingoparents.ui.insight.category
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.glints.lingoparents.R
-import com.glints.lingoparents.data.model.InsightSliderItem
+import coil.load
+import com.glints.lingoparents.data.model.response.AllInsightsListResponse
 import com.glints.lingoparents.databinding.ItemInsightBinding
 
-class CategoriesAdapter(private val listener: OnItemClickCallback, private val dataList: MutableList<InsightSliderItem>)
+class CategoriesAdapter(private val listener: OnItemClickCallback)
     : RecyclerView.Adapter<CategoriesAdapter.AdapterHolder>(){
+
+    private val dataList = ArrayList<AllInsightsListResponse.Message>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoriesAdapter.AdapterHolder {
         return AdapterHolder(ItemInsightBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -22,22 +25,27 @@ class CategoriesAdapter(private val listener: OnItemClickCallback, private val d
         holder.bind(dataList[position], holder)
     }
 
-    override fun getItemCount(): Int {
-        return dataList.size
-    }
+    override fun getItemCount(): Int = dataList.size
 
     inner class AdapterHolder(private val binding: ItemInsightBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(insightSliderItem: InsightSliderItem, holder: AdapterHolder){
+        fun bind(item: AllInsightsListResponse.Message, holder: AdapterHolder){
             holder.itemView.setOnClickListener {
-                listener.onItemClicked(insightSliderItem)
+                listener.onItemClicked(item)
             }
             binding.apply {
-                Glide.with(holder.itemView.context).load(R.drawable.img_dummy_insight_card).into(ivInsight)
+                ivInsight.load(item.cover)
             }
         }
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(insightSliderItem: InsightSliderItem)
+        fun onItemClicked(item: AllInsightsListResponse.Message)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun submitList(list: List<AllInsightsListResponse.Message>) {
+        dataList.clear()
+        dataList.addAll(list)
+        notifyDataSetChanged()
     }
 }
