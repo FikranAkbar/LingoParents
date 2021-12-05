@@ -52,7 +52,8 @@
             android:inputType="textEmailAddress"
             android:maxLines="1"
             android:textAppearance="@style/Typography.Body1"
-            android:textColor="#F9663A" />
+            android:textColor="#F9663A"
+            android:textColorHint="#F9663A" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -66,10 +67,10 @@
         app:boxBackgroundMode="filled"
         app:boxStrokeColor="#F9663A"
         app:endIconMode="password_toggle"
+        app:endIconTint="@color/custom_password_toggle_color"
         app:hintTextColor="#F9663A"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:endIconTint="@color/custom_password_toggle_color"
         app:layout_constraintTop_toBottomOf="@id/til_email">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -79,7 +80,8 @@
             android:inputType="textPassword"
             android:maxLines="1"
             android:textAppearance="@style/Typography.Body1"
-            android:textColor="#F9663A" />
+            android:textColor="#F9663A"
+            android:textColorHint="#F9663A" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
