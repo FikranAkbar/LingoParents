@@ -8,6 +8,7 @@ import androidx.savedstate.SavedStateRegistryOwner
 import com.glints.lingoparents.ui.accountsetting.AccountSettingFragment
 import com.glints.lingoparents.ui.accountsetting.changepassword.PasswordSettingViewModel
 import com.glints.lingoparents.ui.accountsetting.profile.ProfileViewModel
+import com.glints.lingoparents.ui.insight.InsightListViewModel
 import com.glints.lingoparents.ui.liveevent.LiveEventListViewModel
 import com.glints.lingoparents.ui.liveevent.detail.LiveEventDetailViewModel
 import com.glints.lingoparents.ui.login.LoginViewModel
@@ -49,6 +50,9 @@ class CustomViewModelFactory(
             }
             modelClass.isAssignableFrom(PasswordSettingViewModel::class.java) -> {
                 PasswordSettingViewModel(tokenPref) as T
+            }
+            modelClass.isAssignableFrom(InsightListViewModel::class.java) -> {
+                InsightListViewModel(tokenPref) as  T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }
