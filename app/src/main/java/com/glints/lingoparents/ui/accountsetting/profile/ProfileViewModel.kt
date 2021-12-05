@@ -12,6 +12,7 @@ import com.glints.lingoparents.data.model.response.RegisterUserResponse
 import com.glints.lingoparents.ui.register.RegisterViewModel
 import com.glints.lingoparents.utils.ErrorUtils
 import com.glints.lingoparents.utils.TokenPreferences
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -26,6 +27,8 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
     fun onLogOutButtonClick() = viewModelScope.launch {
         profileChannel.send(ProfileEvent.NavigateToAuthScreen)
         tokenPreferences.resetAccessToken()
+        //amin
+        tokenPreferences.resetAccessEmail()
     }
 
 
@@ -66,6 +69,7 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
     }
 
     fun getAccessToken(): LiveData<String> = tokenPreferences.getAccessToken().asLiveData()
+    fun getAccessEmail(): LiveData<String> = tokenPreferences.getAccessEmail().asLiveData()
 
     //amin get
     fun getParentProfile(accessToken: String) = viewModelScope.launch {
@@ -104,7 +108,7 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
         onApiCallStarted()
         APIClient
             .service
-            .editParentProfile(accessToken,firstname, lastname, address, phone)
+            .editParentProfile(accessToken, firstname, lastname, address, phone)
             .enqueue(object : Callback<EditParentProfileResponse> {
                 override fun onResponse(
                     call: Call<EditParentProfileResponse>,

@@ -1,5 +1,6 @@
 package com.glints.lingoparents.ui.login
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -55,7 +56,7 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
         loginEventChannel.send(LoginEvent.Loading)
     }
 
-    private fun onApiCallSuccess(   result: String) = viewModelScope.launch {
+    private fun onApiCallSuccess(result: String) = viewModelScope.launch {
         loginEventChannel.send(LoginEvent.Success(result))
     }
 
@@ -69,6 +70,11 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
 
     private fun saveToken(token: String) = viewModelScope.launch {
         tokenPreferences.saveAccessToken(token)
+    }
+
+    //amin
+    fun saveEmail(email: String) = viewModelScope.launch {
+        tokenPreferences.saveAccessEmail(email)
     }
 
     fun getToken(): LiveData<String> = tokenPreferences.getAccessToken().asLiveData()
