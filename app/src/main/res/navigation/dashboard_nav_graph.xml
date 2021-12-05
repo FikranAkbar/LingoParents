@@ -47,7 +47,11 @@
         tools:layout="@layout/fragment_all_courses">
         <action
             android:id="@+id/action_allCoursesFragment_to_detailCourseFragment"
-            app:destination="@id/detailCourseFragment" />
+            app:destination="@id/detailCourseFragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
     <fragment
         android:id="@+id/accountSettingFragment"
@@ -56,7 +60,11 @@
         tools:layout="@layout/fragment_account_setting" />
     <action
         android:id="@+id/action_global_accountSettingFragment"
-        app:destination="@id/accountSettingFragment" />
+        app:destination="@id/accountSettingFragment"
+        app:enterAnim="@anim/splash_in"
+        app:exitAnim="@anim/splash_out"
+        app:popEnterAnim="@anim/splash_in"
+        app:popExitAnim="@anim/splash_out"  />
     <fragment
         android:id="@+id/insightListFragment"
         android:name="com.glints.lingoparents.ui.insight.InsightListFragment"
@@ -71,18 +79,21 @@
             app:popExitAnim="@anim/slide_to_right" />
     </fragment>
     <fragment
+        android:id="@+id/detailInsightFragment"
+        android:name="com.glints.lingoparents.ui.insight.detail.DetailInsightFragment"
+        android:label="fragment_detail_insight"
+        tools:layout="@layout/fragment_detail_insight">
+        <argument
+            android:name="id"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
+    <fragment
         android:id="@+id/progressFragment"
         android:name="com.glints.lingoparents.ui.progress.ProgressFragment"
         android:label="fragment_progress"
         tools:layout="@layout/fragment_progress" />
 
-    <action
-        android:id="@+id/action_insightListFragment_to_detailInsightFragment"
-        app:destination="@id/detailInsightFragment"
-        app:enterAnim="@anim/nav_default_enter_anim"
-        app:exitAnim="@anim/nav_default_exit_anim"
-        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     <fragment
         android:id="@+id/liveEventListFragment"
         android:name="com.glints.lingoparents.ui.liveevent.LiveEventListFragment"
@@ -90,23 +101,22 @@
         tools:layout="@layout/fragment_live_event_list">
         <action
             android:id="@+id/action_liveEventListFragment_to_liveEventDetailFragment"
-            app:destination="@id/liveEventDetailFragment" />
+            app:destination="@id/liveEventDetailFragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
     <fragment
         android:id="@+id/liveEventDetailFragment"
         android:name="com.glints.lingoparents.ui.liveevent.detail.LiveEventDetailFragment"
         android:label="fragment_live_event_detail"
-        tools:layout="@layout/fragment_live_event_detail" >
+        tools:layout="@layout/fragment_live_event_detail">
         <argument
             android:name="id"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:defaultValue="-1"
+            app:argType="integer" />
     </fragment>
-    <fragment
-        android:id="@+id/detailInsightFragment"
-        android:name="com.glints.lingoparents.ui.insight.detail.DetailInsightFragment"
-        android:label="fragment_detail_insight"
-        tools:layout="@layout/fragment_detail_insight" />
     <fragment
         android:id="@+id/progressProfileFragment"
         android:name="com.glints.lingoparents.ui.progress.ProgressLearningFragment"
