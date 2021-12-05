@@ -14,9 +14,10 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "se
 class TokenPreferences private constructor(private val dataStore: DataStore<Preferences>) {
     companion object {
         private val TOKEN_KEY = stringPreferencesKey("access_token")
+
         //amin
         private val EMAIL_KEY = stringPreferencesKey("email")
-//        private val PASSWORD_KEY = stringPreferencesKey("password")
+        private val PASSWORD_KEY = stringPreferencesKey("password")
 
 
         @Volatile
@@ -43,11 +44,13 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
             preferences[EMAIL_KEY] ?: ""
         }
     }
-//    fun getAccessPassword(): Flow<String> {
-//        return dataStore.data.map { preferences ->
-//            preferences[PASSWORD_KEY] ?: ""
-//        }
-//    }
+
+    fun getAccessPassword(): Flow<String> {
+        return dataStore.data.map { preferences ->
+            preferences[PASSWORD_KEY] ?: ""
+        }
+    }
+
     suspend fun saveAccessToken(token: String) {
         dataStore.edit { preferences ->
             preferences[TOKEN_KEY] = token
@@ -61,6 +64,12 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
         }
     }
 
+    suspend fun saveAccessPassword(password: String) {
+        dataStore.edit { preferences ->
+            preferences[PASSWORD_KEY] = password
+        }
+    }
+
     suspend fun resetAccessToken() {
         dataStore.edit { preferences ->
             preferences[TOKEN_KEY] = ""
@@ -70,6 +79,12 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
     suspend fun resetAccessEmail() {
         dataStore.edit { preferences ->
             preferences[EMAIL_KEY] = ""
+        }
+    }
+
+    suspend fun resetAccessPassword() {
+        dataStore.edit { preferences ->
+            preferences[PASSWORD_KEY] = ""
         }
     }
 }

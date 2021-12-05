@@ -3,12 +3,15 @@ package com.glints.lingoparents.ui.accountsetting.changepassword
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
@@ -22,6 +25,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 
 class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
+    var passwordValue: String? = null
     private var _binding: FragmentChangePasswordBinding? = null
     private val binding get() = _binding!!
     private lateinit var tokenPreferences: TokenPreferences
@@ -39,6 +43,9 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
                 PasswordSettingViewModel::class.java
         ]
         //amin
+        viewModel.getAccessPassword().observe(viewLifecycleOwner) { password ->
+            passwordValue = password
+        }
         binding.apply {
             mbtnSave.setOnClickListener {
                 viewModel.onSaveButtonClick(
@@ -59,58 +66,98 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
             viewModel.passwordSettingEvent.collect { event ->
                 when (event) {
                     //amin
+
                     is PasswordSettingViewModel.PasswordSettingEvent.TryToChangePassword -> {
+
                         viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
-//                            binding.apply {
-//                                val currentPassword = event.currentPassword
-//                                val newPassword = event.newPassword
-//                                val confirmPassword = event.confirmPassword
-//                                if (currentPassword.isNotEmpty() && newPassword.isNotEmpty() && confirmPassword.isNotEmpty()) {
-//                                    if (currentPassword.length >= 6 && newPassword.length >= 6 && confirmPassword.length >= 6) {
-//                                        if (newPassword.equals(confirmPassword)) {
-//                                            viewModel.changePassword(
-//                                                accessToken,
-//                                                currentPassword,
-//                                                newPassword,
-//                                                confirmPassword
-//                                            )
-//                                        } else {
-//                                            Toast.makeText(context, "password ga sama", Toast.LENGTH_SHORT).show()
-//
-//                                        }
-//
-//                                    }
-//
-//                                } else {
-//                                    Toast.makeText(context, "d", Toast.LENGTH_SHORT).show()
-//                                }
-//                            }
-                            viewModel.changePassword(
-                                accessToken,
-                                event.currentPassword,
-                                event.newPassword,
-                                event.confirmPassword
-                            )
+
+                            binding.apply {
+                                val currentPassword = event.currentPassword
+                                val newPassword = event.newPassword
+                                val confirmPassword = event.confirmPassword
+
+//                                Log.d("test", "password datastore: ${passwordValue.toString()}")
+//                                Log.d("test", "password current:$currentPassword")
+//                                Log.d("test", "password baru:$newPassword")
+                                if (currentPassword.isNotEmpty() && newPassword.isNotEmpty() && confirmPassword.isNotEmpty()) {
+                                    if (currentPassword.length >= 8 && newPassword.length >= 8 && confirmPassword.length >= 8) {
+                                        if (newPassword.equals(confirmPassword)) {
+                                            if (!(currentPassword == newPassword)) {
+                                                viewModel.changePassword(
+                                                    accessToken,
+                                                    currentPassword,
+                                                    newPassword,
+                                                    confirmPassword
+                                                )
+                                                viewModel.savePassword(binding.tfNewPassword.editText?.text.toString())
+                                            } else {
+                                                Snackbar.make(
+                                                    requireView(),
+                                                    "New password must be different from the old one",
+                                                    Snackbar.LENGTH_SHORT
+                                                )
+                                                    .setBackgroundTint(Color.parseColor("#FF0000"))
+                                                    .setTextColor(Color.parseColor("#FFFFFF"))
+                                                    .show()
+                                            }
+                                        } else {
+                                            Snackbar.make(
+                                                requireView(),
+                                                "New password value must be same with confimation password's",
+                                                Snackbar.LENGTH_SHORT
+                                            )
+                                                .setBackgroundTint(Color.parseColor("#FF0000"))
+                                                .setTextColor(Color.parseColor("#FFFFFF"))
+                                                .show()
+
+                                        }
+                                    } else {
+                                        Snackbar.make(
+                                            requireView(),
+                                            "password minimum",
+                                            Snackbar.LENGTH_SHORT
+                                        )
+                                            .setBackgroundTint(Color.parseColor("#FF0000"))
+                                            .setTextColor(Color.parseColor("#FFFFFF"))
+                                            .show()
+
+                                    }
+
+
+                                } else {
+                                    Snackbar.make(
+                                        requireView(),
+                                        "Field ga boleh kosong",
+                                        Snackbar.LENGTH_SHORT
+                                    )
+                                        .setBackgroundTint(Color.parseColor("#FF0000"))
+                                        .setTextColor(Color.parseColor("#FFFFFF"))
+                                        .show()
+
+                                }
+
+
+                            }
                         }
 
                     }
                     is PasswordSettingViewModel.PasswordSettingEvent.Success -> {
-                        clearPasswordValue()
-                        findNavController().navigate(R.id.accountSettingFragment)
                         Snackbar.make(
                             requireView(),
                             "Change Password Success",
-                            Snackbar.LENGTH_LONG
+                            Snackbar.LENGTH_SHORT
                         )
                             .setBackgroundTint(Color.parseColor("#42ba96"))
                             .setTextColor(Color.parseColor("#FFFFFF"))
                             .show()
+                        //viewModel.savePassword(binding.tfConfirmPassword.editText?.text.toString())
 
+                        //clearPasswordValue()
 
                     }
                     is PasswordSettingViewModel.PasswordSettingEvent.Error -> {
-                        Snackbar.make(requireView(), "Error", Snackbar.LENGTH_LONG)
-                            .setBackgroundTint(Color.parseColor("#FF9494"))
+                        Snackbar.make(requireView(), "Wrong Password", Snackbar.LENGTH_SHORT)
+                            .setBackgroundTint(Color.parseColor("#FF0000"))
                             .setTextColor(Color.parseColor("#FFFFFF"))
                             .show()
                     }

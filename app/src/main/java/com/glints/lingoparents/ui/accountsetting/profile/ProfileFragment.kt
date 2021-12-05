@@ -116,7 +116,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     }
                     is ProfileViewModel.ProfileEvent.Error -> {
                         Snackbar.make(requireView(), "Error", Snackbar.LENGTH_LONG)
-                            .setBackgroundTint(Color.parseColor("#FF9494"))
+                            .setBackgroundTint(Color.parseColor("#FF0000"))
                             .setTextColor(Color.parseColor("#FFFFFF"))
                             .show()
                     }

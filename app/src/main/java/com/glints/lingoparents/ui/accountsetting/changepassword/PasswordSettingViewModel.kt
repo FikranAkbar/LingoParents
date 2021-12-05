@@ -1,5 +1,6 @@
 package com.glints.lingoparents.ui.accountsetting.changepassword
 
+import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -59,6 +60,7 @@ class PasswordSettingViewModel(
                 confirmPassword
             )
         )
+        //tokenPref.resetAccessPassword()
     }
 
     fun changePassword(
@@ -90,7 +92,13 @@ class PasswordSettingViewModel(
             })
     }
 
+    fun savePassword(password: String) = viewModelScope.launch {
+        tokenPref.saveAccessPassword(password)
+    }
+
     fun getAccessToken(): LiveData<String> = tokenPref.getAccessToken().asLiveData()
+    fun getAccessPassword(): LiveData<String> = tokenPref.getAccessPassword().asLiveData()
+    //fun removePassword(): LiveData<String> = tokenPref.resetAccessPassword()
 
 
 }
