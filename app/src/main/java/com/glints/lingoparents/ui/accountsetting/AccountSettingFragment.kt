@@ -36,7 +36,6 @@ import retrofit2.Response
 class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
     //class AccountSettingFragment(private val tokenPreferences: TokenPreferences) : Fragment(R.layout.fragment_account_setting) {
     private lateinit var tokenPreferences: TokenPreferences
-
     companion object {
         @StringRes
         private val TAB_TITLES = intArrayOf(

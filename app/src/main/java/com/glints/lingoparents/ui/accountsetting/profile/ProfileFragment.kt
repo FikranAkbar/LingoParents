@@ -107,7 +107,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                             .setBackgroundTint(Color.parseColor("#42ba96"))
                             .setTextColor(Color.parseColor("#FFFFFF"))
                             .show()
-                        findNavController().navigate(R.id.accountSettingFragment)
+                        //findNavController().navigate(R.id.accountSettingFragment)
+                        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
+                            viewModel.getParentProfile(accessToken)
+                        }
+
 
                     }
                     is ProfileViewModel.ProfileEvent.Error -> {
