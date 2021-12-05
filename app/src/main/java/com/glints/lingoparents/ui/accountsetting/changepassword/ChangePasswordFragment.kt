@@ -115,7 +115,7 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
                                     } else {
                                         Snackbar.make(
                                             requireView(),
-                                            "minimum character for a password is 8",
+                                            "Minimum character for a password is 8",
                                             Snackbar.LENGTH_SHORT
                                         )
                                             .setBackgroundTint(Color.parseColor("#FF0000"))
@@ -128,7 +128,7 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
                                 } else {
                                     Snackbar.make(
                                         requireView(),
-                                        "field(s) must be filled out",
+                                        "Field(s) must be filled out",
                                         Snackbar.LENGTH_SHORT
                                     )
                                         .setBackgroundTint(Color.parseColor("#FF0000"))
