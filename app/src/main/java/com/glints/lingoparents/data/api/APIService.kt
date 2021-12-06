@@ -52,4 +52,10 @@ interface APIService {
     fun getLiveEventById(
         @Path("id") id: Int,
     ): Call<LiveEventDetailResponse>
+
+    @GET("api/v1/insights?status=Publish")
+    fun getAllInsightList(
+        @QueryMap options: Map<String, String>,
+        @Header("authorization") authorization: String
+    ): Call<AllInsightsListResponse>
 }

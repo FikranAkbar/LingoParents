@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp">
+    android:layout_marginBottom="18dp">
 
     <ImageView
         android:id="@+id/iv_insight_comment"
@@ -25,8 +26,46 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_username_comment"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginVertical="4dp"
         android:layout_toEndOf="@+id/iv_insight_comment"
         android:justificationMode="inter_word"
         android:text="A special child needs constant attention and support. They require assistance even for trivial things. It is essential for parents to feel overwhelmed and exhausted at times." />
+
+    <TextView
+        android:id="@+id/tv_insight_like_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_insight_comment_body"
+        android:text="19"
+        app:drawableStartCompat="@drawable/ic_insight_like" />
+
+    <TextView
+        android:id="@+id/tv_insight_dislike_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_insight_comment_body"
+        android:layout_marginHorizontal="4dp"
+        android:layout_toEndOf="@id/tv_insight_like_comment"
+        android:text="19"
+        app:drawableStartCompat="@drawable/ic_insight_dislike" />
+
+
+    <TextView
+        android:id="@+id/tv_insight_reply_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_insight_comment_body"
+        android:layout_marginHorizontal="4dp"
+        android:layout_toStartOf="@id/tv_insight_report_comment"
+        android:text="@string/reply"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_insight_report_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_insight_comment_body"
+        android:layout_alignParentEnd="true"
+        android:text="@string/report"
+        android:textStyle="bold" />
 </RelativeLayout>

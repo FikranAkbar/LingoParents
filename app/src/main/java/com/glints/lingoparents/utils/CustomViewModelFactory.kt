@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import com.glints.lingoparents.ui.accountsetting.AccountSettingViewModel
 import com.glints.lingoparents.ui.dashboard.DashboardViewModel
+import com.glints.lingoparents.ui.insight.InsightListViewModel
 import com.glints.lingoparents.ui.liveevent.LiveEventListViewModel
 import com.glints.lingoparents.ui.liveevent.detail.LiveEventDetailViewModel
 import com.glints.lingoparents.ui.login.LoginViewModel
@@ -47,6 +48,9 @@ class CustomViewModelFactory(
             }
             modelClass.isAssignableFrom(DashboardViewModel::class.java) -> {
                 DashboardViewModel(tokenPref) as T
+            }
+            modelClass.isAssignableFrom(InsightListViewModel::class.java) -> {
+                InsightListViewModel(tokenPref) as  T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }
