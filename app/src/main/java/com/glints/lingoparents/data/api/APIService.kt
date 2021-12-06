@@ -12,6 +12,9 @@ interface APIService {
         @Field("password") password: String
     ): Call<LoginUserResponse>
 
+    @POST("api/v1/logout")
+    fun logoutUser(): Call<LogoutUserResponse>
+
     @FormUrlEncoded
     @POST("api/v1/register")
     fun registerUser(

@@ -2,7 +2,6 @@ package com.glints.lingoparents.ui.login
 
 import android.content.Context
 import android.content.Intent
-import android.content.IntentSender
 import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableString
@@ -10,7 +9,6 @@ import android.text.Spanned
 import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -26,9 +24,6 @@ import com.glints.lingoparents.utils.AuthFormValidator
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
-import com.google.android.gms.auth.api.identity.Identity
-import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -149,10 +144,15 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN)
                     }
                     is LoginViewModel.LoginEvent.LoginWithGoogleSuccess -> {
-                        Snackbar.make(binding.root, event.account.email as CharSequence, Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(
+                            binding.root,
+                            event.account.email as CharSequence,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                     }
                     is LoginViewModel.LoginEvent.LoginWithGoogleFailure -> {
-                        Snackbar.make(binding.root, event.errorMessage, Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(binding.root, event.errorMessage, Snackbar.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }

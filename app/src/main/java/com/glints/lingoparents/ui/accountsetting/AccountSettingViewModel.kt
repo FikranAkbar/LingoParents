@@ -13,7 +13,7 @@ class AccountSettingViewModel(private val tokenPreferences: TokenPreferences) : 
 
     fun onLogOutButtonClick() = viewModelScope.launch {
         profileChannel.send(ProfileEvent.NavigateToAuthScreen)
-        tokenPreferences.resetAccessToken()
+        tokenPreferences.resetToken()
     }
 
     sealed class ProfileEvent {
