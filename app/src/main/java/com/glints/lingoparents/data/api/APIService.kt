@@ -58,6 +58,12 @@ interface APIService {
         @Header("authorization") authorization: String
     ): Call<AllInsightsListResponse>
 
+    //amin
+    @GET("api/v1/courses")
+    fun getCourseList(
+        @Header("authorization") authorization: String
+    ): Call<AllCoursesResponse>
+
     @GET("api/v1/parents/profile")
     fun getParentProfile(
         @Header("authorization") authorization: String

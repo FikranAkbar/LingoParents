@@ -3,22 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/drawable/ic_insight.xml" value="0.290625" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/drawable/shadow_border.xml" value="0.290625" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_all_insight.xml" value="0.23333333333333334" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_detail_insight.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_header.xml" value="0.1" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_insight_list.xml" value="0.264" />
-        <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_lifestyle_insight.xml" value="0.2563405797101449" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_live_event_list.xml" value="0.264" />
-        <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_parenting_insight.xml" value="0.2563405797101449" />
-        <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_today_event.xml" value="0.2563405797101449" />
-        <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_upcoming_event.xml" value="0.2563405797101449" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/item_insight.xml" value="0.22685185185185186" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/item_insight_comment.xml" value="0.27447916666666666" />
-        <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/item_live_event.xml" value="0.2563405797101449" />
-        <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/shimmer_item_insight_list.xml" value="0.2563405797101449" />
-        <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/shimmer_item_live_event_list.xml" value="0.2563405797101449" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/menu/dashboard_app_bar_menu.xml" value="0.22592592592592592" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/menu/dashboard_bottom_nav_menu.xml" value="0.22592592592592592" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/ic_badge_captain_america.xml" value="0.19166666666666668" />
@@ -94,6 +86,7 @@
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_account_setting.xml" value="0.14" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_all_courses.xml" value="0.209375" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_all_insight.xml" value="0.209375" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_change_password.xml" value="0.33" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_assignment.xml" value="0.2" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_change_password.xml" value="0.33" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_children_courses.xml" value="0.209375" />
@@ -104,18 +97,22 @@
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_insight_list.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_lifestyle_insight.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_live_event_list.xml" value="0.33" />
-        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_login.xml" value="0.1" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_login.xml" value="0.22" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_parenting_insight.xml" value="0.1" />
-        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_profile.xml" value="0.1" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_profile.xml" value="0.22" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_progress.xml" value="0.15" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_progress_learning.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_progress_learning_course.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_progress_profile.xml" value="0.25" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_register.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_splash.xml" value="0.1" />
-        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/item_course.xml" value="0.2" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_today_event.xml" value="0.18" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/item_course.xml" value="0.1306532663316583" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/item_dashboard_children.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/item_insight.xml" value="0.1" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/item_live_event.xml" value="0.1" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/shimmer_item_course.xml" value="0.14" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/shimmer_item_live_event_list.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/item_question.xml" value="0.22" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/menu/dashboard_bottom_nav_menu.xml" value="0.209375" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/mobile-lingoparent/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1125" />
@@ -133,7 +130,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
