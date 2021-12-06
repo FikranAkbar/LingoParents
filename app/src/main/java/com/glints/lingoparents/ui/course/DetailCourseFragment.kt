@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -17,46 +18,11 @@ import com.glints.lingoparents.databinding.FragmentAllCoursesBinding
 import com.glints.lingoparents.databinding.FragmentDetailCourseBinding
 import com.glints.lingoparents.ui.course.adapter.CourseAdapter
 import com.glints.lingoparents.ui.course.adapter.DetailCourseAdapter
+import com.glints.lingoparents.ui.liveevent.detail.LiveEventDetailViewModel
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import kotlinx.coroutines.flow.collect
-
-//class DetailCourseFragment : Fragment(R.layout.fragment_detail_course) {
-//
-//    private var _binding: FragmentDetailCourseBinding? = null
-//    private val binding get() = _binding!!
-//
-//
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//        _binding = FragmentDetailCourseBinding.bind(view)
-//        val courseId = DetailCourseFragmentArgs.fromBundle(arguments as Bundle).id
-//        binding.tvCourse.text = courseId.toString()
-////        val dataCourse = DetailCourseFragmentArgs.fromBundle(arguments as Bundle).course
-////        binding.tvCourse.text = dataCourse.name
-////        binding.tvCourse1.text = dataCourse.desc1
-////        binding.tvCourse2.text = dataCourse.desc2
-////        binding.tvCourse3.text = dataCourse.desc3
-////        binding.ivCourseCard1.setImageResource(dataCourse.card1)
-////        binding.ivCourseCard2.setImageResource(dataCourse.card2)
-////        binding.ivCourseCard3.setImageResource(dataCourse.card3)
-//        binding.cvBackButton.setOnClickListener {
-//            findNavController().popBackStack()
-//            //findNavController().navigate(DetailCourseFragmentDirections.actionDetailCourseFragmentToAllCoursesFragment())
-//        }
-//        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner,
-//            object: OnBackPressedCallback(true) {
-//                override fun handleOnBackPressed() {
-//                    findNavController().popBackStack()
-//                }
-//            })
-//    }
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        _binding = null
-//    }
-//}
 
 class DetailCourseFragment : Fragment(R.layout.fragment_detail_course),
     DetailCourseAdapter.OnItemClickCallback {
@@ -73,24 +39,27 @@ class DetailCourseFragment : Fragment(R.layout.fragment_detail_course),
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDetailCourseBinding.inflate(inflater)
+        binding.cvBackButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    findNavController().popBackStack()
+                }
+            })
+
 
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
-//        viewModel =
-//            ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this, arguments))[
-//                    AllCoursesViewModel::class.java
-//            ]
+        viewModel = ViewModelProvider(
+            this,
+            CustomViewModelFactory(tokenPreferences, this, eventId = arguments?.get("id") as Int)
+        )[
+                DetailCourseViewModel::class.java
+        ]
         viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
             viewModel.getCourseDetailById(viewModel.getCurrentCourseId(), accessToken)
         }
-//        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
-//            viewModel.getCourseDetailById(//idyangdioper,accessToken)
-//        }
-
-        //amin
-//        viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences))[
-//                AllCoursesViewModel::class.java
-//
-//        ]
 
         binding.apply {
             rvDetailCourse.apply {
@@ -106,25 +75,20 @@ class DetailCourseFragment : Fragment(R.layout.fragment_detail_course),
             viewModel.courseDetail.collect { event ->
                 when (event) {
                     is DetailCourseViewModel.CourseDetail.Loading -> {
-                        //showLoading(true)
-                        //showEmptyWarning(false)
+                        showLoading(true)
+                        showEmptyWarning(false)
                     }
                     is DetailCourseViewModel.CourseDetail.Success -> {
                         detailCourseAdapter.submitList(event.result)
-                        //showLoading(false)
+                        binding.apply {
+                            tvCourse.text = event.courseTitle
+                        }
+                        showLoading(false)
                     }
                     is DetailCourseViewModel.CourseDetail.Error -> {
-//                        showLoading(false)
-//                        showEmptyWarning(true)
+                        showLoading(false)
+                        showEmptyWarning(true)
                     }
-//                    is AllCoursesViewModel.AllCoursesEvent.NavigateToDetailCourseFragment -> {
-//                        val action =
-//                            AllCoursesFragmentDirections.actionAllCoursesFragmentToDetailCourseFragment(
-//                                event.id
-//                            )
-//                        Log.d("IDEvent", event.id.toString())
-//                        findNavController().navigate(action)
-//                    }
                 }
             }
         }
@@ -137,39 +101,32 @@ class DetailCourseFragment : Fragment(R.layout.fragment_detail_course),
         _binding = null
     }
 
-    //    override fun onItemClicked(item: AllCoursesResponse.CourseItemResponse) {
-//        //navigation
-//        //tanda stashhhhhhhhhh
-//        viewModel.courseItemClick(item.id)
-//        //Toast.makeText(context, "id: ${item.id}, course: ${item.title}", Toast.LENGTH_SHORT).show()
-//    }
     override fun onItemClicked(item: TrxCourseCardsItem) {
-        //navigation
-        //tanda stashhhhhhhhhh
-        //Toast.makeText(context, "id: ${item.id}, course: ${item.title}", Toast.LENGTH_SHORT).show()
     }
 
-//    private fun showLoading(bool: Boolean) {
-//        binding.apply {
-//            if (bool) {
-//                rvCourse.visibility = View.GONE
-//                shimmerLayout.visibility = View.VISIBLE
-//            } else {
-//                rvCourse.visibility = View.VISIBLE
-//                shimmerLayout.visibility = View.GONE
-//            }
-//        }
-//    }
+    private fun showLoading(bool: Boolean) {
+        binding.apply {
+            if (bool) {
+                tvCourse.visibility = View.GONE
+                rvDetailCourse.visibility = View.GONE
+                shimmerLayout.visibility = View.VISIBLE
+            } else {
+                tvCourse.visibility = View.VISIBLE
+                rvDetailCourse.visibility = View.VISIBLE
+                shimmerLayout.visibility = View.GONE
+            }
+        }
+    }
 
-//    private fun showEmptyWarning(bool: Boolean) {
-//        binding.apply {
-//            if (bool) {
-//                ivNoCourse.visibility = View.VISIBLE
-//                tvNoCourse.visibility = View.VISIBLE
-//            } else {
-//                ivNoCourse.visibility = View.GONE
-//                tvNoCourse.visibility = View.GONE
-//            }
-//        }
-//    }
+    private fun showEmptyWarning(bool: Boolean) {
+        binding.apply {
+            if (bool) {
+                ivNoDetailCourse.visibility = View.VISIBLE
+                tvNoDetailCourse.visibility = View.VISIBLE
+            } else {
+                ivNoDetailCourse.visibility = View.GONE
+                tvNoDetailCourse.visibility = View.GONE
+            }
+        }
+    }
 }
