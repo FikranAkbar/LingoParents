@@ -94,7 +94,7 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
                                             } else {
                                                 Snackbar.make(
                                                     requireView(),
-                                                    "New password must be different from the old one",
+                                                    "New password value must be different with current password value",
                                                     Snackbar.LENGTH_SHORT
                                                 )
                                                     .setBackgroundTint(Color.parseColor("#FF0000"))
