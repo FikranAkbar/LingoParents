@@ -10,6 +10,7 @@ import com.glints.lingoparents.data.model.CourseItem
 import com.glints.lingoparents.data.model.response.AllCoursesResponse
 import com.glints.lingoparents.databinding.ItemCourseBinding
 
+//original
 //class CourseAdapter(private val listCourse: ArrayList<CourseItem>) :
 //    RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
 //    private lateinit var onItemClickCallback: OnItemClickCallback
@@ -51,15 +52,16 @@ import com.glints.lingoparents.databinding.ItemCourseBinding
 //
 //}
 
+//ini kalo udah nyambung api
 class CourseAdapter(private val listener: OnItemClickCallback) :
     RecyclerView.Adapter<CourseAdapter.CustomViewHolder>() {
 
-    private val liveCourseList = ArrayList<AllCoursesResponse.CourseItemResponse>()
+    private val courseList = ArrayList<AllCoursesResponse.CourseItemResponse>()
 
     @SuppressLint("NotifyDataSetChanged")
     fun submitList(list: List<AllCoursesResponse.CourseItemResponse>) {
-        liveCourseList.clear()
-        liveCourseList.addAll(list)
+        courseList.clear()
+        courseList.addAll(list)
         notifyDataSetChanged()
     }
 
@@ -92,11 +94,11 @@ class CourseAdapter(private val listener: OnItemClickCallback) :
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-        val courseItem = liveCourseList[position]
+        val courseItem = courseList[position]
         holder.bind(holder, courseItem)
     }
 
-    override fun getItemCount(): Int = liveCourseList.size
+    override fun getItemCount(): Int = courseList.size
 
     interface OnItemClickCallback {
         fun onItemClicked(item: AllCoursesResponse.CourseItemResponse)

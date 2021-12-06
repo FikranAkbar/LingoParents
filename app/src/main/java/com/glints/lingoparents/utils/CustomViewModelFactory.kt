@@ -47,7 +47,7 @@ class CustomViewModelFactory(
                 LiveEventDetailViewModel(tokenPref, eventId as Int) as T
             }
             modelClass.isAssignableFrom(InsightListViewModel::class.java) -> {
-                InsightListViewModel(tokenPref) as  T
+                InsightListViewModel(tokenPref) as T
             }
             modelClass.isAssignableFrom(AllCoursesViewModel::class.java) -> {
                 AllCoursesViewModel(tokenPref) as T

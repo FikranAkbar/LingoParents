@@ -6,6 +6,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.model.response.AllCoursesResponse
+import com.glints.lingoparents.ui.liveevent.LiveEventListViewModel
 import com.glints.lingoparents.utils.ErrorUtils
 import com.glints.lingoparents.utils.TokenPreferences
 import kotlinx.coroutines.channels.Channel
@@ -19,15 +20,22 @@ class AllCoursesViewModel(private val tokenPreferences: TokenPreferences) : View
     private val allCoursesChannel = Channel<AllCoursesEvent>()
     val allCoursesEvent = allCoursesChannel.receiveAsFlow()
 
+    ////////////tambahin navigate ke detail
+    ///fun courseclick (untuk ke detail)
     private fun onApiCallStarted() = viewModelScope.launch {
         allCoursesChannel.send(AllCoursesEvent.Loading)
     }
 
-        private fun onApiCallSuccess(list: List<AllCoursesResponse.CourseItemResponse>) = viewModelScope.launch {
-        allCoursesChannel.send(AllCoursesEvent.Success(list))
-    }
+    private fun onApiCallSuccess(list: List<AllCoursesResponse.CourseItemResponse>) =
+        viewModelScope.launch {
+            allCoursesChannel.send(AllCoursesEvent.Success(list))
+        }
+
     private fun onApiCallError(message: String) = viewModelScope.launch {
         allCoursesChannel.send(AllCoursesEvent.Error(message))
+    }
+    fun courseItemClick(id: Int) = viewModelScope.launch {
+        allCoursesChannel.send(AllCoursesEvent.NavigateToDetailCourseFragment(id))
     }
     fun getAccessToken(): LiveData<String> = tokenPreferences.getAccessToken().asLiveData()
     fun getAllCourses(accessToken: String) = viewModelScope.launch {
@@ -54,11 +62,16 @@ class AllCoursesViewModel(private val tokenPreferences: TokenPreferences) : View
             })
 
     }
+
     //kode
     sealed class AllCoursesEvent {
         object Loading : AllCoursesEvent()
         data class Error(val message: String) : AllCoursesEvent()
         data class Success(val list: List<AllCoursesResponse.CourseItemResponse>) :
+            AllCoursesViewModel.AllCoursesEvent()
+
+        //navigate to detail
+        data class NavigateToDetailCourseFragment(val id: Int) :
             AllCoursesViewModel.AllCoursesEvent()
 
     }
