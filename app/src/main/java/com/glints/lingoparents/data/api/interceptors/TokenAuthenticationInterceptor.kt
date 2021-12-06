@@ -2,10 +2,8 @@ package com.glints.lingoparents.data.api.interceptors
 
 import android.util.Log
 import com.glints.lingoparents.utils.TokenPreferences
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
 import org.greenrobot.eventbus.EventBus
@@ -18,9 +16,8 @@ class TokenAuthenticationInterceptor : Interceptor {
     private var accessToken = ""
     private var refreshToken = ""
 
-    @DelicateCoroutinesApi
     override fun intercept(chain: Interceptor.Chain): Response {
-        GlobalScope.launch {
+        runBlocking {
             if (accessToken.isBlank()) {
                 accessToken = tokenPreferences.getAccessToken().first()
                 Log.d("AccessToken", accessToken)
@@ -35,9 +32,8 @@ class TokenAuthenticationInterceptor : Interceptor {
         var response = chain.proceed(requestWithAccessToken)
 
         if (response.code == HttpURLConnection.HTTP_UNAUTHORIZED) {
-            val jObjError = JSONObject(response.peekBody(2048).string())
-            val message = jObjError["message"] as String
-            Log.d("TAG1", "$message $accessToken $refreshToken")
+            var jObjError = JSONObject(response.peekBody(2048).string())
+            var message = jObjError["message"] as String
 
             if (message.contains("'refreshToken' not found", true)) {
                 val requestWithAccessRefreshToken =
@@ -45,17 +41,25 @@ class TokenAuthenticationInterceptor : Interceptor {
                         .addHeader("authorization", accessToken)
                         .addHeader("refreshToken", refreshToken).build()
                 response = chain.proceed(requestWithAccessRefreshToken)
+            }
 
-                GlobalScope.launch {
-                    val newAccessToken = response.headers["accessToken"]
-                    Log.d("NewAccessToken", newAccessToken ?: "")
-                    if (newAccessToken != null) {
-                        accessToken = newAccessToken
+            if (response.isSuccessful) {
+                val newAccessToken = response.headers["accessToken"]
+                if (newAccessToken != null) {
+                    Log.d("NewAccessToken", newAccessToken)
+                    accessToken = newAccessToken
+                    runBlocking {
                         tokenPreferences.saveAccessToken(newAccessToken)
                     }
                 }
-            } else if (message.contains("Refreshing access token failed", true)) {
-                EventBus.getDefault().post(TokenAuthenticationEvent.RefreshTokenExpiredEvent)
+            } else {
+                jObjError = JSONObject(response.peekBody(2048).string())
+                message = jObjError["message"] as String
+            }
+
+            if (message.contains("Refreshing access token failed", true)) {
+                EventBus.getDefault()
+                    .post(TokenAuthenticationEvent.RefreshTokenExpiredEvent)
             }
         }
 
