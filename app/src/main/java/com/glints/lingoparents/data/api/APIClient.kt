@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit
 
 object APIClient {
     private const val BASE_URL = "http://be-server.ipe-glintsacademy.com:3000"
-    //private const val BASE_URL = "http://ipaddress:3000"
 
     private val gson = GsonBuilder().setLenient().create()
 
