@@ -69,7 +69,9 @@ class AllCoursesViewModel(private val tokenPreferences: TokenPreferences) : View
     sealed class AllCoursesEvent {
         object Loading : AllCoursesEvent()
         data class Error(val message: String) : AllCoursesEvent()
-        data class Success(val list: List<AllCoursesResponse.CourseItemResponse>) :
+        data class Success(
+            val list: List<AllCoursesResponse.CourseItemResponse>
+        ) :
             AllCoursesViewModel.AllCoursesEvent()
 
         //navigate to detail

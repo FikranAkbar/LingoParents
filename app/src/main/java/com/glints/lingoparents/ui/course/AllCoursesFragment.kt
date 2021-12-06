@@ -78,12 +78,14 @@ class AllCoursesFragment : Fragment(R.layout.fragment_all_courses),
                         showLoading(false)
                         showEmptyWarning(true)
                     }
-//                    is AllCoursesViewModel.AllCoursesEvent.NavigateToDetailLiveEventFragment -> {
-//                        val action =
-//                            LiveEventListFragmentDirections.actionLiveEventListFragmentToLiveEventDetailFragment(event.id)
-//                        Log.d("IDEvent", event.id.toString())
-//                        findNavController().navigate(action)
-//                    }
+                    is AllCoursesViewModel.AllCoursesEvent.NavigateToDetailCourseFragment -> {
+                        val action =
+                            AllCoursesFragmentDirections.actionAllCoursesFragmentToDetailCourseFragment(
+                                event.id
+                            )
+                        Log.d("IDEvent", event.id.toString())
+                        findNavController().navigate(action)
+                    }
                 }
             }
         }
@@ -98,7 +100,9 @@ class AllCoursesFragment : Fragment(R.layout.fragment_all_courses),
 
     override fun onItemClicked(item: AllCoursesResponse.CourseItemResponse) {
         //navigation
-        Toast.makeText(context, "id: ${item.id}, course: ${item.title}", Toast.LENGTH_SHORT).show()
+        //tanda stashhhhhhhhhh
+        viewModel.courseItemClick(item.id)
+        //Toast.makeText(context, "id: ${item.id}, course: ${item.title}", Toast.LENGTH_SHORT).show()
     }
 
     private fun showLoading(bool: Boolean) {
