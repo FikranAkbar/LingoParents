@@ -37,7 +37,7 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
         _binding = FragmentUpcomingEventBinding.inflate(inflater)
 
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
-        viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this, arguments))[
+        viewModel = ViewModelProvider(requireActivity(), CustomViewModelFactory(tokenPreferences, requireActivity(), arguments))[
                 LiveEventListViewModel::class.java
         ]
 
@@ -49,8 +49,6 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
                 adapter = liveEventListAdapter
             }
         }
-
-        viewModel.loadTodayLiveEventList(LiveEventListViewModel.UPCOMING_TYPE)
 
         lifecycleScope.launchWhenStarted {
             viewModel.upcomingLiveEventListEvent.collect { event ->

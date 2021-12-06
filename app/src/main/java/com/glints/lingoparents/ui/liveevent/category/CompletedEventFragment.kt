@@ -38,7 +38,7 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
 
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
         viewModel =
-            ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this, arguments))[
+            ViewModelProvider(requireActivity(), CustomViewModelFactory(tokenPreferences, requireActivity(), arguments))[
                     LiveEventListViewModel::class.java
             ]
 
@@ -50,8 +50,6 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
                 adapter = liveEventListAdapter
             }
         }
-
-        viewModel.loadTodayLiveEventList(LiveEventListViewModel.COMPLETED_TYPE)
 
         lifecycleScope.launchWhenStarted {
             viewModel.completedLiveEventListEvent.collect { event ->

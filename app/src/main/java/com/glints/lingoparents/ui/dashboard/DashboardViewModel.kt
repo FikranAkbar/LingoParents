@@ -1,24 +1,13 @@
 package com.glints.lingoparents.ui.dashboard
 
-import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.glints.lingoparents.data.api.APIClient
-import com.glints.lingoparents.data.model.response.LogoutUserResponse
 import com.glints.lingoparents.utils.TokenPreferences
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class DashboardViewModel(private val tokenPreferences: TokenPreferences) : ViewModel() {
-
-    companion object {
-        const val TOKEN_EXPIRED_FLAG = Activity.RESULT_FIRST_USER + 10
-    }
-
     private val dashboardChannel = Channel<DashboardEvent>()
     val dashboardEvent = dashboardChannel.receiveAsFlow()
 
@@ -66,8 +55,8 @@ class DashboardViewModel(private val tokenPreferences: TokenPreferences) : ViewM
 
     sealed class DashboardEvent {
         object HandleRefreshTokenExpired : DashboardEvent()
-        object Loading: DashboardEvent()
-        object Success: DashboardEvent()
-        data class Failed(val message: String): DashboardEvent()
+        object Loading : DashboardEvent()
+        object Success : DashboardEvent()
+        data class Failed(val message: String) : DashboardEvent()
     }
 }

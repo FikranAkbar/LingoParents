@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -38,7 +37,7 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
         _binding = FragmentTodayEventBinding.inflate(inflater)
 
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
-        viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this, arguments)) [
+        viewModel = ViewModelProvider(requireActivity(), CustomViewModelFactory(tokenPreferences, requireActivity(), arguments)) [
             LiveEventListViewModel::class.java
         ]
 
@@ -51,7 +50,7 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
             }
         }
 
-        viewModel.loadTodayLiveEventList(LiveEventListViewModel.TODAY_TYPE)
+        viewModel.loadLiveEventList(LiveEventListViewModel.TODAY_TYPE)
 
         lifecycleScope.launchWhenStarted {
             viewModel.todayLiveEventListEvent.collect { event ->
@@ -65,6 +64,7 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
                         showLoading(false)
                     }
                     is LiveEventListViewModel.TodayLiveEventListEvent.Error -> {
+                        liveEventListAdapter.submitList(listOf())
                         showLoading(false)
                         showEmptyWarning(true)
                     }

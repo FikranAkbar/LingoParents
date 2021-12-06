@@ -1,12 +1,12 @@
 package com.glints.lingoparents.ui.dashboard
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.BundleCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -19,7 +19,6 @@ import com.glints.lingoparents.ui.MainActivity
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -73,7 +72,7 @@ class DashboardActivity : AppCompatActivity(), Toolbar.OnMenuItemClickListener {
                         viewModel.resetToken()
 
                         val intent = Intent(this@DashboardActivity, MainActivity::class.java)
-                        intent.putExtra("flag", DashboardViewModel.TOKEN_EXPIRED_FLAG)
+                        intent.putExtra("flag", TOKEN_EXPIRED_FLAG)
                         startActivity(intent)
                         finish()
                     }
@@ -130,3 +129,5 @@ class DashboardActivity : AppCompatActivity(), Toolbar.OnMenuItemClickListener {
         }
     }
 }
+
+const val TOKEN_EXPIRED_FLAG = Activity.RESULT_FIRST_USER + 10

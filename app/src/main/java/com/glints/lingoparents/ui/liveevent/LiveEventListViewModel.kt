@@ -1,11 +1,13 @@
 package com.glints.lingoparents.ui.liveevent
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.model.response.LiveEventListResponse
+import com.glints.lingoparents.data.model.response.LiveEventSearchListResponse
 import com.glints.lingoparents.utils.ErrorUtils
 import com.glints.lingoparents.utils.TokenPreferences
 import kotlinx.coroutines.channels.Channel
@@ -46,13 +48,14 @@ class LiveEventListViewModel(private val tokenPref: TokenPreferences) : ViewMode
 
     private fun onApiCallStarted(status: String) = viewModelScope.launch {
         when {
-            status.contains("live", true) -> {
+            status.contains(TODAY_TYPE, true) -> {
                 todayLiveEventListEventChannel.send(TodayLiveEventListEvent.Loading)
+                Log.d("TEST", "Loading started")
             }
-            status.contains("upcoming", true) -> {
+            status.contains(UPCOMING_TYPE, true) -> {
                 upcomingLiveEventListChannel.send(UpcomingLiveEventListEvent.Loading)
             }
-            status.contains("completed", true) -> {
+            status.contains(COMPLETED_TYPE, true) -> {
                 completedLiveEventListChannel.send(CompletedLiveEventListEvent.Loading)
             }
         }
@@ -63,13 +66,13 @@ class LiveEventListViewModel(private val tokenPref: TokenPreferences) : ViewMode
         list: List<LiveEventListResponse.LiveEventItemResponse>
     ) = viewModelScope.launch {
         when {
-            status.contains("live", true) -> {
+            status.contains(TODAY_TYPE, true) -> {
                 todayLiveEventListEventChannel.send(TodayLiveEventListEvent.Success(list))
             }
-            status.contains("upcoming", true) -> {
+            status.contains(UPCOMING_TYPE, true) -> {
                 upcomingLiveEventListChannel.send(UpcomingLiveEventListEvent.Success(list))
             }
-            status.contains("completed", true) -> {
+            status.contains(COMPLETED_TYPE, true) -> {
                 completedLiveEventListChannel.send(CompletedLiveEventListEvent.Success(list))
             }
         }
@@ -77,19 +80,19 @@ class LiveEventListViewModel(private val tokenPref: TokenPreferences) : ViewMode
 
     private fun onApiCallError(status: String, message: String) = viewModelScope.launch {
         when {
-            status.contains("live", true) -> {
+            status.contains(TODAY_TYPE, true) -> {
                 todayLiveEventListEventChannel.send(TodayLiveEventListEvent.Error(message))
             }
-            status.contains("upcoming", true) -> {
+            status.contains(UPCOMING_TYPE, true) -> {
                 upcomingLiveEventListChannel.send(UpcomingLiveEventListEvent.Error(message))
             }
-            status.contains("completed", true) -> {
+            status.contains(COMPLETED_TYPE, true) -> {
                 completedLiveEventListChannel.send(CompletedLiveEventListEvent.Error(message))
             }
         }
     }
 
-    fun loadTodayLiveEventList(status: String) = viewModelScope.launch {
+    fun loadLiveEventList(status: String) = viewModelScope.launch {
         onApiCallStarted(status)
         APIClient
             .service
@@ -113,7 +116,83 @@ class LiveEventListViewModel(private val tokenPref: TokenPreferences) : ViewMode
             })
     }
 
+    fun searchTodayLiveEventList(title: String) = viewModelScope.launch {
+        onApiCallStarted(TODAY_TYPE)
+        APIClient
+            .service
+            .getTodayLiveEventByStatusAndTitle(title)
+            .enqueue(object : Callback<LiveEventSearchListResponse> {
+                override fun onResponse(
+                    call: Call<LiveEventSearchListResponse>,
+                    response: Response<LiveEventSearchListResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        onApiCallSuccess(TODAY_TYPE, response.body()?.data?.rows!!)
+                    } else {
+                        val apiError = ErrorUtils.parseError(response)
+                        onApiCallError(TODAY_TYPE, apiError.message())
+                    }
+                }
+
+                override fun onFailure(call: Call<LiveEventSearchListResponse>, t: Throwable) {
+                    onApiCallError(TODAY_TYPE, "Network Failed...")
+                }
+            })
+    }
+
+    fun searchUpcomingLiveEventList(title: String) = viewModelScope.launch {
+        onApiCallStarted(UPCOMING_TYPE)
+        APIClient
+            .service
+            .getTodayLiveEventByStatusAndTitle(title)
+            .enqueue(object : Callback<LiveEventSearchListResponse> {
+                override fun onResponse(
+                    call: Call<LiveEventSearchListResponse>,
+                    response: Response<LiveEventSearchListResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        onApiCallSuccess(UPCOMING_TYPE, response.body()?.data?.rows!!)
+                    } else {
+                        val apiError = ErrorUtils.parseError(response)
+                        onApiCallError(UPCOMING_TYPE, apiError.message())
+                    }
+                }
+
+                override fun onFailure(call: Call<LiveEventSearchListResponse>, t: Throwable) {
+                    onApiCallError(UPCOMING_TYPE, "Network Failed...")
+                }
+            })
+    }
+
+    fun searchCompletedLiveEventList(title: String) = viewModelScope.launch {
+        onApiCallStarted(COMPLETED_TYPE)
+        APIClient
+            .service
+            .getTodayLiveEventByStatusAndTitle(title)
+            .enqueue(object : Callback<LiveEventSearchListResponse> {
+                override fun onResponse(
+                    call: Call<LiveEventSearchListResponse>,
+                    response: Response<LiveEventSearchListResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        onApiCallSuccess(COMPLETED_TYPE, response.body()?.data?.rows!!)
+                    } else {
+                        val apiError = ErrorUtils.parseError(response)
+                        onApiCallError(COMPLETED_TYPE, apiError.message())
+                    }
+                }
+
+                override fun onFailure(call: Call<LiveEventSearchListResponse>, t: Throwable) {
+                    onApiCallError(TODAY_TYPE, "Network Failed...")
+                }
+            })
+    }
+
     fun getAccessToken(): LiveData<String> = tokenPref.getAccessToken().asLiveData()
+
+    sealed class LiveEventListEvent {
+        data class Loading(val title: String, val status: String) : LiveEventListEvent()
+    }
 
     sealed class TodayLiveEventListEvent {
         object Loading : TodayLiveEventListEvent()
