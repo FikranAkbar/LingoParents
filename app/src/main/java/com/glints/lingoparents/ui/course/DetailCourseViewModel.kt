@@ -5,7 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
-import com.glints.lingoparents.data.model.response.LiveEventDetailResponse
+import com.glints.lingoparents.data.model.response.DetailCourseResponse
+import com.glints.lingoparents.data.model.response.TrxCourseCardsItem
 import com.glints.lingoparents.utils.ErrorUtils
 import com.glints.lingoparents.utils.TokenPreferences
 import kotlinx.coroutines.channels.Channel
@@ -27,9 +28,9 @@ class DetailCourseViewModel(
     }
 
     //tambahin 1 var nama course
-    private fun onApiCallSuccess(result: LiveEventDetailResponse.LiveEventDetailItemResponse) =
+    private fun onApiCallSuccess(courseTitle: String, result: List<TrxCourseCardsItem>) =
         viewModelScope.launch {
-            courseDetailEventChannel.send(CourseDetail.Success(result))
+            courseDetailEventChannel.send(CourseDetail.Success(courseTitle, result))
         }
 
     private fun onApiCallError(message: String) = viewModelScope.launch {
@@ -44,23 +45,23 @@ class DetailCourseViewModel(
         onApiCallStarted()
         APIClient
             .service
-                //nama endpoint
-            .getLiveEventById(id, accessToken)
-            .enqueue(object : Callback<LiveEventDetailResponse> {
+            .getCourseDetail(id, accessToken)
+            .enqueue(object : Callback<DetailCourseResponse> {
                 override fun onResponse(
-                    call: Call<LiveEventDetailResponse>,
-                    response: Response<LiveEventDetailResponse>
+                    call: Call<DetailCourseResponse>,
+                    response: Response<DetailCourseResponse>
                 ) {
                     if (response.isSuccessful) {
-                        val result = response.body()?.data!!
-                        onApiCallSuccess(result)
+                        val result = response.body()?.data!!.trxCourseCards
+                        val courseTitle = response.body()?.data!!.title
+                        onApiCallSuccess(courseTitle, result)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallError(apiError.message())
                     }
                 }
 
-                override fun onFailure(call: Call<LiveEventDetailResponse>, t: Throwable) {
+                override fun onFailure(call: Call<DetailCourseResponse>, t: Throwable) {
                     onApiCallError("Network Failed...")
                 }
             })
@@ -68,7 +69,7 @@ class DetailCourseViewModel(
 
     sealed class CourseDetail {
         object Loading : CourseDetail()
-        data class Success(val result: LiveEventDetailResponse.LiveEventDetailItemResponse) :
+        data class Success(val courseTitle: String, val result: List<TrxCourseCardsItem>) :
             CourseDetail()
 
         data class Error(val message: String) : CourseDetail()

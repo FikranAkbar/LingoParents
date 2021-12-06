@@ -68,5 +68,5 @@ interface APIService {
     fun getCourseDetail(
         @Path("id") id: Int,
         @Header("authorization") authorization: String
-    )
+    ): Call<DetailCourseResponse>
 }
