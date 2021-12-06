@@ -63,6 +63,7 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
                         showLoading(false)
                     }
                     is LiveEventListViewModel.CompletedLiveEventListEvent.Error -> {
+                        liveEventListAdapter.submitList(listOf())
                         showLoading(false)
                         showEmptyWarning(true)
                     }

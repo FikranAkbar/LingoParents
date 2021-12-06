@@ -62,6 +62,7 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
                         showLoading(false)
                     }
                     is LiveEventListViewModel.UpcomingLiveEventListEvent.Error -> {
+                        liveEventListAdapter.submitList(listOf())
                         showLoading(false)
                         showEmptyWarning(true)
                     }
