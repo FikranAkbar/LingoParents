@@ -97,8 +97,7 @@ class AllCoursesFragment : Fragment(R.layout.fragment_all_courses),
     }
 
     override fun onItemClicked(item: AllCoursesResponse.CourseItemResponse) {
-//        viewModel.onTodayLiveEventItemClick(item.id)
-//        Log.d("IDEvent", item.id.toString())
+        //navigation
         Toast.makeText(context, "id: ${item.id}, course: ${item.title}", Toast.LENGTH_SHORT).show()
     }
 

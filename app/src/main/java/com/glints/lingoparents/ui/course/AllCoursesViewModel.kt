@@ -20,8 +20,8 @@ class AllCoursesViewModel(private val tokenPreferences: TokenPreferences) : View
     private val allCoursesChannel = Channel<AllCoursesEvent>()
     val allCoursesEvent = allCoursesChannel.receiveAsFlow()
 
-    ////////////tambahin navigate ke detail
-    ///fun courseclick (untuk ke detail)
+    //////////// navigate ke detail
+    ///fun courseclick (to detail)
     private fun onApiCallStarted() = viewModelScope.launch {
         allCoursesChannel.send(AllCoursesEvent.Loading)
     }
@@ -34,9 +34,11 @@ class AllCoursesViewModel(private val tokenPreferences: TokenPreferences) : View
     private fun onApiCallError(message: String) = viewModelScope.launch {
         allCoursesChannel.send(AllCoursesEvent.Error(message))
     }
+
     fun courseItemClick(id: Int) = viewModelScope.launch {
         allCoursesChannel.send(AllCoursesEvent.NavigateToDetailCourseFragment(id))
     }
+
     fun getAccessToken(): LiveData<String> = tokenPreferences.getAccessToken().asLiveData()
     fun getAllCourses(accessToken: String) = viewModelScope.launch {
         onApiCallStarted()
