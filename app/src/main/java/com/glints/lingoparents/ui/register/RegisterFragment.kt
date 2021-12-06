@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentRegisterBinding
+import com.glints.lingoparents.ui.accountsetting.profile.ProfileFragment
 import com.glints.lingoparents.utils.AuthFormValidator
 import kotlinx.coroutines.flow.collect
 

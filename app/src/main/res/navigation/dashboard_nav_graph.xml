@@ -136,8 +136,17 @@
         android:name="com.glints.lingoparents.ui.progress.AssignmentFragment"
         android:label="fragment_assignment"
         tools:layout="@layout/fragment_assignment" />
-    <fragment
-        android:id="@+id/progressProfileFragment2"
-        android:name="com.glints.lingoparents.ui.progress.ProgressProfileFragment"
-        android:label="ProgressProfileFragment" />
+<!--    <fragment-->
+<!--        android:id="@+id/profileFragment"-->
+<!--        android:name="com.glints.lingoparents.ui.accountsetting.profile.ProfileFragment"-->
+<!--        android:label="ProfileFragment" >-->
+<!--        <argument-->
+<!--            android:name="email"-->
+<!--            app:argType="string"-->
+<!--            android:defaultValue="parent@email.com" />-->
+<!--    </fragment>-->
+<!--    <fragment-->
+<!--        android:id="@+id/profileFragment"-->
+<!--        android:name="com.glints.lingoparents.ui.accountsetting.profile.ProfileFragment"-->
+<!--        android:label="ProfileFragment" />-->
 </navigation>

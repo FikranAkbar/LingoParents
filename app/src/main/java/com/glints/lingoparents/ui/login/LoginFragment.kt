@@ -21,6 +21,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentLoginBinding
+import com.glints.lingoparents.ui.accountsetting.profile.ProfileFragment
 import com.glints.lingoparents.ui.dashboard.DashboardActivity
 import com.glints.lingoparents.utils.AuthFormValidator
 import com.glints.lingoparents.utils.CustomViewModelFactory
@@ -80,8 +81,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             mbtnLoginWithGoogle.setOnClickListener {
                 viewModel.onLoginWithGoogleClick()
             }
-            tilEmail.editText?.setText("calvinsan123@gmail.com")
-            tilPassword.editText?.setText("calvin123")
+            tilEmail.editText?.setText("amin1@gmail.com")
+            tilPassword.editText?.setText("aminamin")
         }
 
         lifecycleScope.launchWhenStarted {
@@ -115,6 +116,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     }
                     is LoginViewModel.LoginEvent.Success -> {
                         showLoading(false)
+                        viewModel.saveEmail(
+                            binding.tilEmail.editText?.text.toString()
+                        )
+                        viewModel.savePassword(
+                            binding.tilPassword.editText?.text.toString()
+                        )
                         val intent = Intent(
                             this@LoginFragment.requireContext(),
                             DashboardActivity::class.java
@@ -149,10 +156,15 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN)
                     }
                     is LoginViewModel.LoginEvent.LoginWithGoogleSuccess -> {
-                        Snackbar.make(binding.root, event.account.email as CharSequence, Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(
+                            binding.root,
+                            event.account.email as CharSequence,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                     }
                     is LoginViewModel.LoginEvent.LoginWithGoogleFailure -> {
-                        Snackbar.make(binding.root, event.errorMessage, Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(binding.root, event.errorMessage, Snackbar.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }

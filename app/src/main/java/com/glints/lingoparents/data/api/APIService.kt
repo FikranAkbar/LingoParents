@@ -57,4 +57,29 @@ interface APIService {
         @QueryMap options: Map<String, String>,
         @Header("authorization") authorization: String
     ): Call<AllInsightsListResponse>
+
+    @GET("api/v1/parents/profile")
+    fun getParentProfile(
+        @Header("authorization") authorization: String
+    ): Call<ParentProfileResponse>
+
+    @FormUrlEncoded
+    @PUT("api/v1/parents/profile")
+    fun editParentProfile(
+        @Header("authorization") authorization: String,
+        @Field("firstname") firstname: String,
+        @Field("lastname") lastname: String,
+        @Field("address") address: String,
+        @Field("phone") phone: String
+    ): Call<EditParentProfileResponse>
+
+    @FormUrlEncoded
+    @PUT("api/v1/parents/profile/change-password")
+    fun changePassword(
+        @Header("authorization") authorization: String,
+        @Field("password") currentPassword: String,
+        @Field("new_password") password: String,
+        @Field("confirmpassword") confirmPassword: String,
+    ): Call<ChangePasswordResponse>
+
 }
