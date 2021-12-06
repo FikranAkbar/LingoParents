@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import com.glints.lingoparents.ui.accountsetting.AccountSettingViewModel
+import com.glints.lingoparents.ui.insight.InsightListViewModel
 import com.glints.lingoparents.ui.course.AllCoursesViewModel
 import com.glints.lingoparents.ui.liveevent.LiveEventListViewModel
 import com.glints.lingoparents.ui.liveevent.detail.LiveEventDetailViewModel
@@ -44,6 +45,9 @@ class CustomViewModelFactory(
             }
             modelClass.isAssignableFrom(LiveEventDetailViewModel::class.java) -> {
                 LiveEventDetailViewModel(tokenPref, eventId as Int) as T
+            }
+            modelClass.isAssignableFrom(InsightListViewModel::class.java) -> {
+                InsightListViewModel(tokenPref) as  T
             }
             modelClass.isAssignableFrom(AllCoursesViewModel::class.java) -> {
                 AllCoursesViewModel(tokenPref) as T
