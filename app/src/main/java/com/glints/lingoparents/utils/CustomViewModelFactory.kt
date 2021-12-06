@@ -8,6 +8,7 @@ import androidx.savedstate.SavedStateRegistryOwner
 import com.glints.lingoparents.ui.accountsetting.AccountSettingViewModel
 import com.glints.lingoparents.ui.insight.InsightListViewModel
 import com.glints.lingoparents.ui.course.AllCoursesViewModel
+import com.glints.lingoparents.ui.course.DetailCourseViewModel
 import com.glints.lingoparents.ui.liveevent.LiveEventListViewModel
 import com.glints.lingoparents.ui.liveevent.detail.LiveEventDetailViewModel
 import com.glints.lingoparents.ui.login.LoginViewModel
@@ -51,6 +52,9 @@ class CustomViewModelFactory(
             }
             modelClass.isAssignableFrom(AllCoursesViewModel::class.java) -> {
                 AllCoursesViewModel(tokenPref) as T
+            }
+            modelClass.isAssignableFrom(DetailCourseViewModel::class.java) -> {
+                DetailCourseViewModel(tokenPref, eventId as Int) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }
