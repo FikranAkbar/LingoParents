@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentLoginBinding
+import com.glints.lingoparents.ui.accountsetting.profile.ProfileFragment
 import com.glints.lingoparents.ui.dashboard.DashboardActivity
 import com.glints.lingoparents.utils.AuthFormValidator
 import com.glints.lingoparents.utils.CustomViewModelFactory
@@ -75,8 +76,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             mbtnLoginWithGoogle.setOnClickListener {
                 viewModel.onLoginWithGoogleClick()
             }
-            tilEmail.editText?.setText("fikrantest123@gmail.com")
-            tilPassword.editText?.setText("fikran123")
+            tilEmail.editText?.setText("amin1@gmail.com")
+            tilPassword.editText?.setText("aminamin")
         }
 
         lifecycleScope.launchWhenStarted {
@@ -110,6 +111,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     }
                     is LoginViewModel.LoginEvent.Success -> {
                         showLoading(false)
+                        viewModel.saveEmail(
+                            binding.tilEmail.editText?.text.toString()
+                        )
+                        viewModel.savePassword(
+                            binding.tilPassword.editText?.text.toString()
+                        )
                         val intent = Intent(
                             this@LoginFragment.requireContext(),
                             DashboardActivity::class.java

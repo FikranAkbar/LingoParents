@@ -232,6 +232,7 @@
     <string name="no_completed_events">No Completed Events</string>
     <string name="no_live_events">No Live Events</string>
     <string name="no_insight">No Insight At The Moment</string>
+    <string name="no_course_list">No Course Information Available At The Moment</string>
     <string name="no_parenting_insight">No Parenting Insight At The Moment</string>
     <string name="no_lifestyle_insight">No Lifestyle Insight At The Moment</string>
     <string name="create_new_password">Create New Password</string>

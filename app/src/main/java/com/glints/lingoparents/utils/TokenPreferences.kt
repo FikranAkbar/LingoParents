@@ -16,6 +16,11 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
         private val TOKEN_KEY = stringPreferencesKey("access_token")
         private val REFRESH_TOKEN_KEY = stringPreferencesKey("refresh_token")
 
+        //amin
+        private val EMAIL_KEY = stringPreferencesKey("email")
+        private val PASSWORD_KEY = stringPreferencesKey("password")
+
+
         @Volatile
         private var INSTANCE: TokenPreferences? = null
 
@@ -38,6 +43,19 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
         }
     }
 
+    //amin
+    fun getAccessEmail(): Flow<String> {
+        return dataStore.data.map { preferences ->
+            preferences[EMAIL_KEY] ?: ""
+        }
+    }
+
+    fun getAccessPassword(): Flow<String> {
+        return dataStore.data.map { preferences ->
+            preferences[PASSWORD_KEY] ?: ""
+        }
+    }
+
     fun getRefreshToken(): Flow<String> {
         return dataStore.data.map { preferences ->
             preferences[REFRESH_TOKEN_KEY] ?: ""
@@ -51,6 +69,20 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
     }
 
     suspend fun saveRefreshToken(token: String) {
+    //amin
+    suspend fun saveAccessEmail(email: String) {
+        dataStore.edit { preferences ->
+            preferences[EMAIL_KEY] = email
+        }
+    }
+
+    suspend fun saveAccessPassword(password: String) {
+        dataStore.edit { preferences ->
+            preferences[PASSWORD_KEY] = password
+        }
+    }
+
+    suspend fun resetAccessToken() {
         dataStore.edit { preferences ->
             preferences[REFRESH_TOKEN_KEY] = token
         }
@@ -59,6 +91,18 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
     suspend fun resetToken() {
         dataStore.edit { preferences ->
             preferences.clear()
+        }
+    }
+
+    suspend fun resetAccessEmail() {
+        dataStore.edit { preferences ->
+            preferences[EMAIL_KEY] = ""
+        }
+    }
+
+    suspend fun resetAccessPassword() {
+        dataStore.edit { preferences ->
+            preferences[PASSWORD_KEY] = ""
         }
     }
 }

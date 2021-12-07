@@ -7,7 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import com.glints.lingoparents.ui.accountsetting.AccountSettingViewModel
 import com.glints.lingoparents.ui.dashboard.DashboardViewModel
+import com.glints.lingoparents.ui.accountsetting.AccountSettingFragment
+import com.glints.lingoparents.ui.accountsetting.changepassword.PasswordSettingViewModel
+import com.glints.lingoparents.ui.accountsetting.profile.ProfileViewModel
 import com.glints.lingoparents.ui.insight.InsightListViewModel
+import com.glints.lingoparents.ui.course.AllCoursesViewModel
 import com.glints.lingoparents.ui.liveevent.LiveEventListViewModel
 import com.glints.lingoparents.ui.liveevent.category.CompletedLiveEventViewModel
 import com.glints.lingoparents.ui.liveevent.category.TodayLiveEventViewModel
@@ -22,6 +26,7 @@ class CustomViewModelFactory(
     owner: SavedStateRegistryOwner,
     defaultArgs: Bundle? = null,
     private val eventId: Int? = null,
+    private val accountId: Int? = null,
 ) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
 
     @Suppress("UNCHECKED_CAST")
@@ -40,9 +45,6 @@ class CustomViewModelFactory(
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
                 RegisterViewModel() as T
             }
-            modelClass.isAssignableFrom(AccountSettingViewModel::class.java) -> {
-                AccountSettingViewModel(tokenPref) as T
-            }
             modelClass.isAssignableFrom(LiveEventListViewModel::class.java) -> {
                 LiveEventListViewModel() as T
             }
@@ -58,11 +60,20 @@ class CustomViewModelFactory(
             modelClass.isAssignableFrom(LiveEventDetailViewModel::class.java) -> {
                 LiveEventDetailViewModel(tokenPref, eventId as Int) as T
             }
+            modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
+                ProfileViewModel(tokenPref) as T
+            }
+            modelClass.isAssignableFrom(PasswordSettingViewModel::class.java) -> {
+                PasswordSettingViewModel(tokenPref) as T
+            }
             modelClass.isAssignableFrom(DashboardViewModel::class.java) -> {
                 DashboardViewModel(tokenPref) as T
             }
             modelClass.isAssignableFrom(InsightListViewModel::class.java) -> {
                 InsightListViewModel(tokenPref) as T
+            }
+            modelClass.isAssignableFrom(AllCoursesViewModel::class.java) -> {
+                AllCoursesViewModel(tokenPref) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }
