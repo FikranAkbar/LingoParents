@@ -27,7 +27,6 @@ class DetailCourseViewModel(
         courseDetailEventChannel.send(CourseDetail.Loading)
     }
 
-    //tambahin 1 var nama course
     private fun onApiCallSuccess(courseTitle: String, result: List<TrxCourseCardsItem>) =
         viewModelScope.launch {
             courseDetailEventChannel.send(CourseDetail.Success(courseTitle, result))

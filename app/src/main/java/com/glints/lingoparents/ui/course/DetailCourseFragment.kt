@@ -1,7 +1,6 @@
 package com.glints.lingoparents.ui.course
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import android.view.View
@@ -12,13 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.glints.lingoparents.R
-import com.glints.lingoparents.data.model.response.AllCoursesResponse
 import com.glints.lingoparents.data.model.response.TrxCourseCardsItem
-import com.glints.lingoparents.databinding.FragmentAllCoursesBinding
 import com.glints.lingoparents.databinding.FragmentDetailCourseBinding
-import com.glints.lingoparents.ui.course.adapter.CourseAdapter
 import com.glints.lingoparents.ui.course.adapter.DetailCourseAdapter
-import com.glints.lingoparents.ui.liveevent.detail.LiveEventDetailViewModel
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore

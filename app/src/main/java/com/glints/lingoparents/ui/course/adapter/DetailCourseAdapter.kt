@@ -33,10 +33,8 @@ class DetailCourseAdapter(private val listener: OnItemClickCallback) :
     val rightView: Int = 2
     override fun getItemViewType(position: Int): Int {
         if (position % 2 == 0) {
-            //postView
             return leftView
         } else {
-            //commentView
             return rightView
         }
     }
