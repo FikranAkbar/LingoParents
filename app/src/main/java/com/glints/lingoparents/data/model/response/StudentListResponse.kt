@@ -17,13 +17,13 @@ data class StudentListResponse(
 data class DataItem(
 
 	@field:SerializedName("level")
-	val level: Any,
+	val level: String,
 
 	@field:SerializedName("name")
 	val name: String,
 
 	@field:SerializedName("sublevel")
-	val sublevel: Any,
+	val sublevel: String,
 
 	@field:SerializedName("student_id")
 	val studentId: Int,
@@ -37,3 +37,17 @@ data class DataItem(
 	@field:SerializedName("age")
 	val age: Int
 )
+
+//class StudentListResponse {
+//	val status: String? = null
+//	val message: String? = null
+//	val data: List<StudentListResponse.StudentListItemResponse>? = null
+//
+//	data class StudentListItemResponse(
+//		val level: String,
+//		val id: Int,
+//		val title: String,
+//		val cover_flag: String
+//	)
+//
+//}

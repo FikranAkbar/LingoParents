@@ -1,11 +1,11 @@
 package com.glints.lingoparents.ui.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
-import com.glints.lingoparents.data.model.response.AllCoursesResponse
 import com.glints.lingoparents.data.model.response.DataItem
 import com.glints.lingoparents.data.model.response.StudentListResponse
 import com.glints.lingoparents.utils.ErrorUtils
@@ -26,20 +26,20 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
     //code here
 
     private fun onApiCallStarted() = viewModelScope.launch {
-        studentlistChannel.send(HomeViewModel.StudentList.Loading)
+        studentlistChannel.send(StudentList.Loading)
     }
 
     private fun onApiCallSuccess(list: List<DataItem>) =
         viewModelScope.launch {
-            studentlistChannel.send(HomeViewModel.StudentList.Success(list))
+            studentlistChannel.send(StudentList.Success(list))
         }
 
     private fun onApiCallError(message: String) = viewModelScope.launch {
-        studentlistChannel.send(HomeViewModel.StudentList.Error(message))
+        studentlistChannel.send(StudentList.Error(message))
     }
 
     fun courseItemClick(id: Int) = viewModelScope.launch {
-        studentlistChannel.send(HomeViewModel.StudentList.NavigateToDetailCourseFragment(id))
+        studentlistChannel.send(StudentList.NavigateToDetailCourseFragment(id))
     }
 
     fun getAccessToken(): LiveData<String> = tokenPreferences.getAccessToken().asLiveData()
@@ -54,10 +54,14 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
                     response: Response<StudentListResponse>
                 ) {
                     if (response.isSuccessful) {
-                        onApiCallSuccess(response.body()?.data!!)
+//                        onApiCallSuccess(response.body()?.data!!)
+                        response.body()?.data?.let{
+                            onApiCallSuccess(it)
+                        }
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallError(apiError.message())
+                        //onApiCallError("error")
                     }
                 }
 
