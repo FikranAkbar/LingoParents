@@ -85,7 +85,11 @@
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/carousel_item_live_event.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_account_setting.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_all_courses.xml" value="0.15" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_account_setting.xml" value="0.14" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_all_courses.xml" value="0.209375" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_all_insight.xml" value="0.209375" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_change_password.xml" value="0.33" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_assignment.xml" value="0.2" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_change_password.xml" value="0.33" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_children_courses.xml" value="0.209375" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_course.xml" value="0.209375" />
@@ -101,6 +105,8 @@
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_profile.xml" value="0.22" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_progress.xml" value="0.15" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_progress_learning.xml" value="0.1" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_progress_learning_course.xml" value="0.1" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_progress_profile.xml" value="0.25" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_register.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_splash.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_today_event.xml" value="0.18" />
@@ -115,6 +121,7 @@
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/shimmer_item_insight_list.xml" value="0.1453804347826087" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/shimmer_item_live_event_detail.xml" value="0.22" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/shimmer_item_live_event_list.xml" value="0.1" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/item_question.xml" value="0.22" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/menu/dashboard_bottom_nav_menu.xml" value="0.209375" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/mobile-lingoparent/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1125" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/mobile-lingoparent/app/src/main/res/drawable/ic_badge_captain_america.xml" value="0.1125" />
