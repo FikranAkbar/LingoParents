@@ -1,36 +1,33 @@
 package com.glints.lingoparents.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.glints.lingoparents.R
-import com.glints.lingoparents.data.model.ChildrenItem
 import com.glints.lingoparents.data.model.InsightSliderItem
 import com.glints.lingoparents.data.model.LiveEventSliderItem
 import com.glints.lingoparents.data.model.response.DataItem
 import com.glints.lingoparents.databinding.FragmentHomeBinding
-import com.glints.lingoparents.ui.course.AllCoursesViewModel
 import com.glints.lingoparents.ui.home.adapter.ChildrenAdapter
 import com.glints.lingoparents.ui.home.adapter.InsightSliderAdapter
 import com.glints.lingoparents.ui.home.adapter.LiveEventSliderAdapter
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
-import com.google.android.material.snackbar.Snackbar
 import com.opensooq.pluto.base.PlutoAdapter
 import com.opensooq.pluto.listeners.OnItemClickListener
 import com.opensooq.pluto.listeners.OnSlideChangeListener
 import kotlinx.coroutines.flow.collect
 
 class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemClickCallback {
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var viewModel: HomeViewModel
@@ -45,7 +42,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
         savedInstanceState: Bundle?
     ): View {
 
-        val binding: FragmentHomeBinding = FragmentHomeBinding.inflate(inflater)
+        _binding = FragmentHomeBinding.inflate(inflater)
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
         viewModel =
             ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this, arguments))[
@@ -140,8 +137,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
         }
 
         //MULAI AMIN
+        val x = "46"
         viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
-            viewModel.getStudentList(46, accessToken)
+            viewModel.getStudentList(x.toInt(), accessToken)
         }
 
         binding.apply {
@@ -166,18 +164,18 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
             viewModel.studentList.collect { event ->
                 when (event) {
                     is HomeViewModel.StudentList.Loading -> {
-//                        showLoading(true)
+                        showEmptyStudentList(true)
 //                        showEmptyWarning(false)
                     }
                     is HomeViewModel.StudentList.Success -> {
                         childrenAdapter.submitList(event.list)
-//                        showLoading(false)
+                        showEmptyStudentList(false)
                     }
                     is HomeViewModel.StudentList.Error -> {
 //                        Toast.makeText(context,"ERROR",Toast.LENGTH_LONG).show()
 //                        Log.d("HAHAHA","error")
 
-//                        showLoading(false)
+                        showEmptyStudentList(false)
 //                        showEmptyWarning(true)
                     }
 //                    is AllCoursesViewModel.AllCoursesEvent.NavigateToDetailLiveEventFragment -> {
@@ -191,10 +189,29 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
         }
         return binding.root
     }
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+    private fun showEmptyStudentList(bool: Boolean) {
+        binding.apply {
+            if (bool) {
+                rvChildren.visibility = View.GONE
+                ivNoStudentList.visibility = View.VISIBLE
+                tvNoStudentList.visibility = View.VISIBLE
+            } else {
+                rvChildren.visibility = View.VISIBLE
+                ivNoStudentList.visibility = View.GONE
+                tvNoStudentList.visibility = View.GONE
+            }
+        }
+    }
 
     override fun onItemClicked(children: DataItem) {
         Toast.makeText(context, children.studentId.toString(), Toast.LENGTH_SHORT).show()
     }
+
+
 }
 
 //class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemClickCallback {

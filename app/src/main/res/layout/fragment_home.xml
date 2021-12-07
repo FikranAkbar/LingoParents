@@ -133,62 +133,89 @@
             android:id="@+id/rv_children"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_children_header" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_enroll_course_information"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/ivNoStudentList"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="12dp"
-            android:layout_marginVertical="32dp"
-            app:cardElevation="10dp"
+            android:src="@drawable/ic_baseline_person"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_children_header"
+            app:tint="@color/shimmer_item_inside" />
+
+        <TextView
+            android:id="@+id/tvNoStudentList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:fontFamily="@font/poppins_w700"
+            android:text="There is No Data Available"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv_children">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivNoStudentList" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/tv_learn_language"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/poppins_w500"
-                    android:text="@string/learn_a_language_now"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="22sp"
-                    app:layout_constraintTop_toTopOf="parent" />
+        <!--        <androidx.cardview.widget.CardView-->
+        <!--            android:id="@+id/cv_enroll_course_information"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginHorizontal="12dp"-->
+        <!--            android:layout_marginVertical="32dp"-->
+        <!--            app:cardElevation="10dp"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/rv_children">-->
 
-                <TextView
-                    android:id="@+id/tv_persuasive_paragraph"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/poppins_w400"
-                    android:text="@string/learn_the_language_that_your_children_fancy_on_the_time_you_wish_and_the_place_you_like_lingotalk_offer_all_the_flexibility_at_your_fingertip_lets_start_learning_now"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    app:layout_constraintTop_toBottomOf="@id/tv_learn_language" />
+        <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content">-->
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/mbtn_enroll_course"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="12dp"
-                    android:fontFamily="@font/poppins_w700"
-                    android:letterSpacing="0.01"
-                    android:text="@string/enroll_course"
-                    android:textAllCaps="false"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@id/tv_persuasive_paragraph"
-                    app:layout_constraintStart_toStartOf="@id/tv_persuasive_paragraph"
-                    app:layout_constraintTop_toBottomOf="@id/tv_persuasive_paragraph" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+        <!--                <TextView-->
+        <!--                    android:id="@+id/tv_learn_language"-->
+        <!--                    android:layout_width="match_parent"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_marginTop="10dp"-->
+        <!--                    android:fontFamily="@font/poppins_w500"-->
+        <!--                    android:text="@string/learn_a_language_now"-->
+        <!--                    android:textAlignment="center"-->
+        <!--                    android:textColor="@color/black"-->
+        <!--                    android:textSize="22sp"-->
+        <!--                    app:layout_constraintTop_toTopOf="parent" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/tv_persuasive_paragraph"-->
+        <!--                    android:layout_width="match_parent"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_marginHorizontal="8dp"-->
+        <!--                    android:layout_marginTop="10dp"-->
+        <!--                    android:fontFamily="@font/poppins_w400"-->
+        <!--                    android:text="@string/learn_the_language_that_your_children_fancy_on_the_time_you_wish_and_the_place_you_like_lingotalk_offer_all_the_flexibility_at_your_fingertip_lets_start_learning_now"-->
+        <!--                    android:textAlignment="center"-->
+        <!--                    android:textColor="@color/black"-->
+        <!--                    android:textSize="14sp"-->
+        <!--                    app:layout_constraintTop_toBottomOf="@id/tv_learn_language" />-->
+
+        <!--                <com.google.android.material.button.MaterialButton-->
+        <!--                    android:id="@+id/mbtn_enroll_course"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_marginTop="10dp"-->
+        <!--                    android:layout_marginBottom="12dp"-->
+        <!--                    android:fontFamily="@font/poppins_w700"-->
+        <!--                    android:letterSpacing="0.01"-->
+        <!--                    android:text="@string/enroll_course"-->
+        <!--                    android:textAllCaps="false"-->
+        <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--                    app:layout_constraintEnd_toEndOf="@id/tv_persuasive_paragraph"-->
+        <!--                    app:layout_constraintStart_toStartOf="@id/tv_persuasive_paragraph"-->
+        <!--                    app:layout_constraintTop_toBottomOf="@id/tv_persuasive_paragraph" />-->
+        <!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
+        <!--        </androidx.cardview.widget.CardView>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
