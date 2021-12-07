@@ -9,6 +9,9 @@ import com.glints.lingoparents.ui.accountsetting.AccountSettingViewModel
 import com.glints.lingoparents.ui.dashboard.DashboardViewModel
 import com.glints.lingoparents.ui.insight.InsightListViewModel
 import com.glints.lingoparents.ui.liveevent.LiveEventListViewModel
+import com.glints.lingoparents.ui.liveevent.category.CompletedLiveEventViewModel
+import com.glints.lingoparents.ui.liveevent.category.TodayLiveEventViewModel
+import com.glints.lingoparents.ui.liveevent.category.UpcomingLiveEventViewModel
 import com.glints.lingoparents.ui.liveevent.detail.LiveEventDetailViewModel
 import com.glints.lingoparents.ui.login.LoginViewModel
 import com.glints.lingoparents.ui.register.RegisterViewModel
@@ -41,7 +44,16 @@ class CustomViewModelFactory(
                 AccountSettingViewModel(tokenPref) as T
             }
             modelClass.isAssignableFrom(LiveEventListViewModel::class.java) -> {
-                LiveEventListViewModel(tokenPref) as T
+                LiveEventListViewModel() as T
+            }
+            modelClass.isAssignableFrom(TodayLiveEventViewModel::class.java) -> {
+                TodayLiveEventViewModel(tokenPref) as T
+            }
+            modelClass.isAssignableFrom(UpcomingLiveEventViewModel::class.java) -> {
+                UpcomingLiveEventViewModel(tokenPref) as T
+            }
+            modelClass.isAssignableFrom(CompletedLiveEventViewModel::class.java) -> {
+                CompletedLiveEventViewModel(tokenPref) as T
             }
             modelClass.isAssignableFrom(LiveEventDetailViewModel::class.java) -> {
                 LiveEventDetailViewModel(tokenPref, eventId as Int) as T
@@ -50,7 +62,7 @@ class CustomViewModelFactory(
                 DashboardViewModel(tokenPref) as T
             }
             modelClass.isAssignableFrom(InsightListViewModel::class.java) -> {
-                InsightListViewModel(tokenPref) as  T
+                InsightListViewModel(tokenPref) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

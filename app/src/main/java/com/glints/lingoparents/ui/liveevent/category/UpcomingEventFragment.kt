@@ -19,6 +19,8 @@ import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import kotlinx.coroutines.flow.collect
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 
 class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
     LiveEventListAdapter.OnItemClickCallback {
@@ -26,7 +28,7 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
     private val binding get() = _binding!!
 
     private lateinit var liveEventListAdapter: LiveEventListAdapter
-    private lateinit var viewModel: LiveEventListViewModel
+    private lateinit var viewModel: UpcomingLiveEventViewModel
     private lateinit var tokenPreferences: TokenPreferences
 
     override fun onCreateView(
@@ -37,8 +39,8 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
         _binding = FragmentUpcomingEventBinding.inflate(inflater)
 
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
-        viewModel = ViewModelProvider(requireActivity(), CustomViewModelFactory(tokenPreferences, requireActivity(), arguments))[
-                LiveEventListViewModel::class.java
+        viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this, arguments))[
+                UpcomingLiveEventViewModel::class.java
         ]
 
         binding.apply {
@@ -50,23 +52,25 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
             }
         }
 
+        viewModel.loadUpcomingLiveEventList()
+
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.upcomingLiveEventListEvent.collect { event ->
                 when (event) {
-                    is LiveEventListViewModel.UpcomingLiveEventListEvent.Loading -> {
+                    is UpcomingLiveEventViewModel.UpcomingLiveEventListEvent.Loading -> {
                         showLoading(true)
                         showEmptyWarning(false)
                     }
-                    is LiveEventListViewModel.UpcomingLiveEventListEvent.Success -> {
+                    is UpcomingLiveEventViewModel.UpcomingLiveEventListEvent.Success -> {
                         liveEventListAdapter.submitList(event.list)
                         showLoading(false)
                     }
-                    is LiveEventListViewModel.UpcomingLiveEventListEvent.Error -> {
+                    is UpcomingLiveEventViewModel.UpcomingLiveEventListEvent.Error -> {
                         liveEventListAdapter.submitList(listOf())
                         showLoading(false)
                         showEmptyWarning(true)
                     }
-                    is LiveEventListViewModel.UpcomingLiveEventListEvent.NavigateToDetailLiveEventFragment -> {
+                    is UpcomingLiveEventViewModel.UpcomingLiveEventListEvent.NavigateToDetailLiveEventFragment -> {
                         val action =
                             LiveEventListFragmentDirections.actionLiveEventListFragmentToLiveEventDetailFragment(
                                 event.id
@@ -81,6 +85,16 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
         return binding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
@@ -89,6 +103,11 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
     override fun onItemClicked(item: LiveEventListResponse.LiveEventItemResponse) {
         viewModel.onUpcomingLiveEventItemClick(item.id)
         Log.d("IDEvent", item.id.toString())
+    }
+
+    @Subscribe
+    fun onSearchViewDoneEditing(event: LiveEventListViewModel.LiveEventListEvent.SendQueryToEventListFragment) {
+        viewModel.searchUpcomingLiveEventList(event.query)
     }
 
     private fun showLoading(bool: Boolean) {
