@@ -1,6 +1,5 @@
 package com.glints.lingoparents.ui.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -23,7 +22,6 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
     //student list
     private val studentlistChannel = Channel<StudentList>()
     val studentList = studentlistChannel.receiveAsFlow()
-    //code here
 
     private fun onApiCallStarted() = viewModelScope.launch {
         studentlistChannel.send(StudentList.Loading)
@@ -38,11 +36,12 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
         studentlistChannel.send(StudentList.Error(message))
     }
 
-    fun courseItemClick(id: Int) = viewModelScope.launch {
-        studentlistChannel.send(StudentList.NavigateToDetailCourseFragment(id))
+    fun studentItemClick(id: Int) = viewModelScope.launch {
+        studentlistChannel.send(StudentList.NavigateToProgressProfileFragment(id))
     }
 
     fun getAccessToken(): LiveData<String> = tokenPreferences.getAccessToken().asLiveData()
+    fun getAccessParentId(): LiveData<Int> = tokenPreferences.getAccessParentId().asLiveData()
     fun getStudentList(id: Int, accessToken: String) = viewModelScope.launch {
         onApiCallStarted()
         APIClient
@@ -55,7 +54,7 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
                 ) {
                     if (response.isSuccessful) {
 //                        onApiCallSuccess(response.body()?.data!!)
-                        response.body()?.data?.let{
+                        response.body()?.data?.let {
                             onApiCallSuccess(it)
                         }
                     } else {
@@ -78,8 +77,9 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
         data class Error(val message: String) : HomeViewModel.StudentList()
         data class Success(val list: List<DataItem>) :
             HomeViewModel.StudentList()
-        //navigate to detail
-        data class NavigateToDetailCourseFragment(val id: Int) :
+
+        //navigate to progress
+        data class NavigateToProgressProfileFragment(val id: Int) :
             HomeViewModel.StudentList()
 
     }

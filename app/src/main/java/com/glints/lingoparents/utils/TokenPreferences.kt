@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
@@ -18,6 +19,7 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
         //amin
         private val EMAIL_KEY = stringPreferencesKey("email")
         private val PASSWORD_KEY = stringPreferencesKey("password")
+        private val PARENTID_KEY = intPreferencesKey("parentid")
 
 
         @Volatile
@@ -51,6 +53,12 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
         }
     }
 
+    fun getAccessParentId(): Flow<Int> {
+        return dataStore.data.map { preferences ->
+            preferences[PARENTID_KEY] ?: -1
+        }
+    }
+
     suspend fun saveAccessToken(token: String) {
         dataStore.edit { preferences ->
             preferences[TOKEN_KEY] = token
@@ -70,6 +78,12 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
         }
     }
 
+    suspend fun saveAccessParentId(parentId: Int) {
+        dataStore.edit { preferences ->
+            preferences[PARENTID_KEY] = parentId
+        }
+    }
+
     suspend fun resetAccessToken() {
         dataStore.edit { preferences ->
             preferences[TOKEN_KEY] = ""
@@ -85,6 +99,12 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
     suspend fun resetAccessPassword() {
         dataStore.edit { preferences ->
             preferences[PASSWORD_KEY] = ""
+        }
+    }
+
+    suspend fun resetAccessParentId() {
+        dataStore.edit { preferences ->
+            preferences[PARENTID_KEY] = -1
         }
     }
 }

@@ -26,6 +26,7 @@ import com.opensooq.pluto.listeners.OnSlideChangeListener
 import kotlinx.coroutines.flow.collect
 
 class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemClickCallback {
+    var parentIdValue = -1
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
@@ -136,10 +137,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
             })
         }
 
-        //MULAI AMIN
-        val x = "46"
+        viewModel.getAccessParentId().observe(viewLifecycleOwner) { parentId ->
+            parentIdValue = parentId
+        }
+
         viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
-            viewModel.getStudentList(x.toInt(), accessToken)
+            viewModel.getStudentList(parentIdValue, accessToken)
         }
 
         binding.apply {
@@ -148,15 +151,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
                 layoutManager = LinearLayoutManager(activity)
                 childrenAdapter = ChildrenAdapter(this@HomeFragment)
                 adapter = childrenAdapter
-
-//                childrenAdapter.submitList(
-//                    listOf(
-//                        ChildrenItem("", "", "", "", ""),
-//                        ChildrenItem("", "", "", "", ""),
-//                        ChildrenItem("", "", "", "", ""),
-//                        ChildrenItem("", "", "", "", ""),
-//                    )
-//                )
                 isVerticalScrollBarEnabled = false
             }
         }
@@ -165,18 +159,13 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
                 when (event) {
                     is HomeViewModel.StudentList.Loading -> {
                         showEmptyStudentList(true)
-//                        showEmptyWarning(false)
                     }
                     is HomeViewModel.StudentList.Success -> {
                         childrenAdapter.submitList(event.list)
                         showEmptyStudentList(false)
                     }
                     is HomeViewModel.StudentList.Error -> {
-//                        Toast.makeText(context,"ERROR",Toast.LENGTH_LONG).show()
-//                        Log.d("HAHAHA","error")
-
                         showEmptyStudentList(false)
-//                        showEmptyWarning(true)
                     }
 //                    is AllCoursesViewModel.AllCoursesEvent.NavigateToDetailLiveEventFragment -> {
 //                        val action =
@@ -189,10 +178,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
         }
         return binding.root
     }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
+
     private fun showEmptyStudentList(bool: Boolean) {
         binding.apply {
             if (bool) {
@@ -210,97 +201,4 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
     override fun onItemClicked(children: DataItem) {
         Toast.makeText(context, children.studentId.toString(), Toast.LENGTH_SHORT).show()
     }
-
-
 }
-
-//class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemClickCallback {
-//
-//    private val viewModel: HomeViewModel by viewModels()
-//    private lateinit var insightSliderAdapter: InsightSliderAdapter
-//    private lateinit var liveEventSliderAdapter: LiveEventSliderAdapter
-//    private lateinit var childrenAdapter: ChildrenAdapter
-//
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View {
-//
-//        val binding: FragmentHomeBinding = FragmentHomeBinding.inflate(inflater)
-//
-//        insightSliderAdapter = InsightSliderAdapter(
-//            mutableListOf(
-//                InsightSliderItem("7 Challenges of Parenting a Special Kid", "@drawable/img_dummy_insight"),
-//                InsightSliderItem("7 Challenges of Parenting a Special Kid", "@drawable/img_dummy_insight"),
-//                InsightSliderItem("7 Challenges of Parenting a Special Kid", "@drawable/img_dummy_insight"),
-//                InsightSliderItem("7 Challenges of Parenting a Special Kid", "@drawable/img_dummy_insight"),
-//                InsightSliderItem("7 Challenges of Parenting a Special Kid", "@drawable/img_dummy_insight"),
-//            ),
-//            object : OnItemClickListener<InsightSliderItem> {
-//                override fun onItemClicked(item: InsightSliderItem?, position: Int) {
-//
-//                }
-//            }
-//        )
-//
-//        binding.sliderInsight.apply {
-//            create(insightSliderAdapter, lifecycle = lifecycle)
-//            setOnSlideChangeListener(object : OnSlideChangeListener {
-//                override fun onSlideChange(adapter: PlutoAdapter<*, *>, position: Int) {
-//
-//                }
-//            })
-//        }
-//
-//        liveEventSliderAdapter = LiveEventSliderAdapter(
-//            mutableListOf(
-//                LiveEventSliderItem("Build Career for Gen Z", "@drawable/img_dummy_live_event", "999.000,00-", "08 Oct 2021, 19:00"),
-//                LiveEventSliderItem("Build Career for Gen Z", "@drawable/img_dummy_live_event", "999.000,00-", "08 Oct 2021, 19:00"),
-//                LiveEventSliderItem("Build Career for Gen Z", "@drawable/img_dummy_live_event", "999.000,00-", "08 Oct 2021, 19:00"),
-//                LiveEventSliderItem("Build Career for Gen Z", "@drawable/img_dummy_live_event", "999.000,00-", "08 Oct 2021, 19:00"),
-//                LiveEventSliderItem("Build Career for Gen Z", "@drawable/img_dummy_live_event", "999.000,00-", "08 Oct 2021, 19:00"),
-//            ),
-//            object : OnItemClickListener<LiveEventSliderItem> {
-//                override fun onItemClicked(item: LiveEventSliderItem?, position: Int) {
-//
-//                }
-//            }
-//        )
-//
-//        binding.sliderLiveEvent.apply {
-//            create(liveEventSliderAdapter, lifecycle = lifecycle)
-//            setOnSlideChangeListener(object : OnSlideChangeListener {
-//                override fun onSlideChange(adapter: PlutoAdapter<*, *>, position: Int) {
-//
-//                }
-//            })
-//        }
-//
-//
-//        binding.apply {
-//            rvChildren.apply {
-//                setHasFixedSize(true)
-//                layoutManager = LinearLayoutManager(activity)
-//                childrenAdapter = ChildrenAdapter(this@HomeFragment)
-//                adapter = childrenAdapter
-//
-//                childrenAdapter.submitList(
-//                    listOf(
-//                        ChildrenItem("", "", "", "", ""),
-//                        ChildrenItem("", "", "", "", ""),
-//                        ChildrenItem("", "", "", "", ""),
-//                        ChildrenItem("", "", "", "", ""),
-//                    )
-//                )
-//                isVerticalScrollBarEnabled = false
-//            }
-//        }
-//
-//        return binding.root
-//    }
-//
-//    override fun onItemClicked(children: ChildrenItem) {
-//
-//    }
-//}

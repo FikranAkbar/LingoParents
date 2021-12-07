@@ -30,6 +30,7 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
         //amin
         tokenPreferences.resetAccessEmail()
         tokenPreferences.resetAccessPassword()
+        tokenPreferences.resetAccessParentId()
     }
 
 
