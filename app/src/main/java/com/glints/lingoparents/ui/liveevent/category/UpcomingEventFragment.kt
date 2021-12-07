@@ -106,6 +106,11 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
     }
 
     @Subscribe
+    fun onBlankQuerySent(event: LiveEventListViewModel.LiveEventListEvent.SendBlankQueryToEventListFragment) {
+        viewModel.loadUpcomingLiveEventList()
+    }
+
+    @Subscribe
     fun onSearchViewDoneEditing(event: LiveEventListViewModel.LiveEventListEvent.SendQueryToEventListFragment) {
         viewModel.searchUpcomingLiveEventList(event.query)
     }

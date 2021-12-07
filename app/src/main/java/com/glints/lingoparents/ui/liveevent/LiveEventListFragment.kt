@@ -52,8 +52,11 @@ class LiveEventListFragment : Fragment(R.layout.fragment_live_event_list) {
                 editText?.setOnEditorActionListener { textView, actionId, _ ->
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                         val query = textView.text.toString()
-
-                        viewModel.sendQueryToLiveEventListFragment(query)
+                        if (query.isBlank()) {
+                            viewModel.sendBlackQueryToLiveEventListFragment()
+                        } else {
+                            viewModel.sendQueryToLiveEventListFragment(query)
+                        }
 
                         val imm =
                             requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

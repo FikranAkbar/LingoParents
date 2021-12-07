@@ -19,7 +19,13 @@ class LiveEventListViewModel() : ViewModel() {
             .post(LiveEventListEvent.SendQueryToEventListFragment(query))
     }
 
+    fun sendBlackQueryToLiveEventListFragment() = viewModelScope.launch {
+        EventBus.getDefault()
+            .post(LiveEventListEvent.SendBlankQueryToEventListFragment)
+    }
+
     sealed class LiveEventListEvent {
         data class SendQueryToEventListFragment(val query: String) : LiveEventListEvent()
+        object SendBlankQueryToEventListFragment : LiveEventListEvent()
     }
 }

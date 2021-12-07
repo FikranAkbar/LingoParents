@@ -106,7 +106,12 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
     }
 
     @Subscribe
-    fun onSearchViewDoneEditing(event: LiveEventListViewModel.LiveEventListEvent.SendQueryToEventListFragment) {
+    fun onBlankQuerySent(event: LiveEventListViewModel.LiveEventListEvent.SendBlankQueryToEventListFragment) {
+        viewModel.loadCompletedLiveEventList()
+    }
+
+    @Subscribe
+    fun onQuerySent(event: LiveEventListViewModel.LiveEventListEvent.SendQueryToEventListFragment) {
         viewModel.searchCompletedLiveEventList(event.query)
     }
 
