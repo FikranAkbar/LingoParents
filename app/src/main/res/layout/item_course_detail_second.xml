@@ -10,7 +10,7 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/french_card1" />
 
@@ -18,15 +18,14 @@
         android:id="@+id/tvCourse"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:ellipsize="end"
         android:fontFamily="@font/poppins_w600"
-        android:gravity="start"
+        android:gravity="end"
         android:maxLines="7"
         app:layout_constraintBottom_toBottomOf="@+id/ivCourseCard"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/ivCourseCard"
+        app:layout_constraintEnd_toStartOf="@id/ivCourseCard"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/ivCourseCard"
         tools:text="suchIndulge the beauty of French artistic refinements, such as fine arts, music, dance, and architecture through language." />
 

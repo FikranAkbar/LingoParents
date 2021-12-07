@@ -8,9 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.glints.lingoparents.data.model.response.TrxCourseCardsItem
 import com.glints.lingoparents.databinding.ItemCourseDetailBinding
+import com.glints.lingoparents.databinding.ItemCourseDetailSecondBinding
+
 
 class DetailCourseAdapter(private val listener: OnItemClickCallback) :
-    RecyclerView.Adapter<DetailCourseAdapter.CustomViewHolder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val courseDetailList = ArrayList<TrxCourseCardsItem>()
 
@@ -21,39 +23,86 @@ class DetailCourseAdapter(private val listener: OnItemClickCallback) :
         notifyDataSetChanged()
     }
 
-    inner class CustomViewHolder(private val itemCourseDetailBinding: ItemCourseDetailBinding) :
-        RecyclerView.ViewHolder(itemCourseDetailBinding.root) {
+    override fun getItemCount(): Int = courseDetailList.size
+
+    interface OnItemClickCallback {
+        fun onItemClicked(item: TrxCourseCardsItem)
+    }
+
+    val leftView: Int = 1
+    val rightView: Int = 2
+    override fun getItemViewType(position: Int): Int {
+        if (position % 2 == 0) {
+            //postView
+            return leftView
+        } else {
+            //commentView
+            return rightView
+        }
+    }
+
+    inner class LeftViewType(
+        private val itemCourseDetailBinding: ItemCourseDetailBinding,
+    ) : RecyclerView.ViewHolder(itemCourseDetailBinding.root) {
         fun bind(
-            holder: CustomViewHolder,
+            holder: LeftViewType,
             item: TrxCourseCardsItem
         ) {
             holder.itemView.setOnClickListener {
                 listener.onItemClicked(item)
             }
-
             itemCourseDetailBinding.apply {
-//                courseTitle.text = item.title
-//                courseImage.load(item.cover_flag)
                 tvCourse.text = item.description
                 ivCourseCard.load(item.cardPhoto)
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
-        val itemCourseDetailBinding =
-            ItemCourseDetailBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CustomViewHolder(itemCourseDetailBinding)
+    inner class RightViewType(
+        private val itemCourseDetailSecondBinding: ItemCourseDetailSecondBinding,
+    ) : RecyclerView.ViewHolder(itemCourseDetailSecondBinding.root) {
+        fun bind(
+            holder: RightViewType,
+            item: TrxCourseCardsItem
+        ) {
+            holder.itemView.setOnClickListener {
+                listener.onItemClicked(item)
+            }
+            itemCourseDetailSecondBinding.apply {
+                tvCourse.text = item.description
+                ivCourseCard.load(item.cardPhoto)
+            }
+        }
     }
 
-    override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        if (viewType == leftView) {
+            return LeftViewType(
+                ItemCourseDetailBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            )
+        } else {
+            return RightViewType(
+                ItemCourseDetailSecondBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            )
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val courseDetailItem = courseDetailList[position]
-        holder.bind(holder, courseDetailItem)
+        if (holder is LeftViewType) {
+            holder.bind(holder, courseDetailItem)
+        } else {
+            (holder as RightViewType).bind(holder, courseDetailItem)
+        }
     }
 
-    override fun getItemCount(): Int = courseDetailList.size
 
-    interface OnItemClickCallback {
-        fun onItemClicked(item: TrxCourseCardsItem)
-    }
 }
