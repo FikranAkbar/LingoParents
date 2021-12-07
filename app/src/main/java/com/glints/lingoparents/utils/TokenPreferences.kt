@@ -69,7 +69,11 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
     }
 
     suspend fun saveRefreshToken(token: String) {
-    //amin
+        dataStore.edit { preferences ->
+            preferences[REFRESH_TOKEN_KEY] = token
+        }
+    }
+
     suspend fun saveAccessEmail(email: String) {
         dataStore.edit { preferences ->
             preferences[EMAIL_KEY] = email
@@ -79,12 +83,6 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
     suspend fun saveAccessPassword(password: String) {
         dataStore.edit { preferences ->
             preferences[PASSWORD_KEY] = password
-        }
-    }
-
-    suspend fun resetAccessToken() {
-        dataStore.edit { preferences ->
-            preferences[REFRESH_TOKEN_KEY] = token
         }
     }
 
