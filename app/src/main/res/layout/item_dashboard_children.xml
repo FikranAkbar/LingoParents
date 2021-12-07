@@ -74,17 +74,6 @@
             app:layout_constraintTop_toBottomOf="@id/tv_children_name" />
 
         <TextView
-            android:id="@+id/tv_children_language_course"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_w400"
-            android:textColor="@color/black"
-            android:textSize="11sp"
-            app:layout_constraintStart_toStartOf="@id/tv_children_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_children_relationship"
-            tools:text="Arabian" />
-
-        <TextView
             android:id="@+id/tv_children_level_sublevel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -93,7 +82,7 @@
             android:textColor="@color/black"
             android:textSize="11sp"
             app:layout_constraintStart_toStartOf="@id/tv_children_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_children_language_course" />
+            app:layout_constraintTop_toBottomOf="@id/tv_children_relationship" />
 
         <TextView
             android:layout_width="wrap_content"

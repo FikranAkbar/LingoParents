@@ -10,6 +10,7 @@ import com.glints.lingoparents.ui.accountsetting.changepassword.PasswordSettingV
 import com.glints.lingoparents.ui.accountsetting.profile.ProfileViewModel
 import com.glints.lingoparents.ui.insight.InsightListViewModel
 import com.glints.lingoparents.ui.course.AllCoursesViewModel
+import com.glints.lingoparents.ui.home.HomeViewModel
 import com.glints.lingoparents.ui.liveevent.LiveEventListViewModel
 import com.glints.lingoparents.ui.liveevent.detail.LiveEventDetailViewModel
 import com.glints.lingoparents.ui.login.LoginViewModel
@@ -57,6 +58,9 @@ class CustomViewModelFactory(
             }
             modelClass.isAssignableFrom(AllCoursesViewModel::class.java) -> {
                 AllCoursesViewModel(tokenPref) as T
+            }
+            modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
+                HomeViewModel(tokenPref) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

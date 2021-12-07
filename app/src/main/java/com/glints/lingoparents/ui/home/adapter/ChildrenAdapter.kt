@@ -20,7 +20,6 @@ class ChildrenAdapter(private val listener: OnItemClickCallback) : RecyclerView.
                     tvChildrenName.text = "Jane Doe"
                     tvChildrenAge.text = "(16 years old)"
                     tvChildrenRelationship.text = "Relationship : Guardian"
-                    tvChildrenLanguageCourse.text = "Arabian"
                     tvChildrenLevelSublevel.text = "Beginner - Sublevel 2"
                 }
             }
