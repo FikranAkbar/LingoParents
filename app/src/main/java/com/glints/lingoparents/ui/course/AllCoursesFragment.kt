@@ -99,10 +99,7 @@ class AllCoursesFragment : Fragment(R.layout.fragment_all_courses),
     }
 
     override fun onItemClicked(item: AllCoursesResponse.CourseItemResponse) {
-        //navigation
-        //tanda stashhhhhhhhhh
         viewModel.courseItemClick(item.id)
-        //Toast.makeText(context, "id: ${item.id}, course: ${item.title}", Toast.LENGTH_SHORT).show()
     }
 
     private fun showLoading(bool: Boolean) {
