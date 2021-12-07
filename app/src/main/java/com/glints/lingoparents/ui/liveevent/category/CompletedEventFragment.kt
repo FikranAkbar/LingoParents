@@ -51,7 +51,7 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
             }
         }
 
-        lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.completedLiveEventListEvent.collect { event ->
                 when (event) {
                     is LiveEventListViewModel.CompletedLiveEventListEvent.Loading -> {

@@ -50,7 +50,7 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
             }
         }
 
-        lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.upcomingLiveEventListEvent.collect { event ->
                 when (event) {
                     is LiveEventListViewModel.UpcomingLiveEventListEvent.Loading -> {

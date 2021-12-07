@@ -52,7 +52,7 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
 
         viewModel.loadLiveEventList(LiveEventListViewModel.TODAY_TYPE)
 
-        lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.todayLiveEventListEvent.collect { event ->
                 when (event) {
                     is LiveEventListViewModel.TodayLiveEventListEvent.Loading -> {
