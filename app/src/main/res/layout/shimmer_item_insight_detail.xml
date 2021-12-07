@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+        android:id="@+id/shimmer_cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/iv_back_button"
+            android:id="@+id/shimmer_iv_back_button"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_gravity="center_vertical"
@@ -35,19 +35,19 @@
     </androidx.cardview.widget.CardView>
 
     <ImageView
-        android:id="@+id/iv_insight_detail"
+        android:id="@+id/shimmer_iv_insight_detail"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:background="@color/shimmer_placeholder"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_insight_title"
+        app:layout_constraintBottom_toBottomOf="@+id/shimmer_tv_insight_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.209"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_insight_title"
+        app:layout_constraintTop_toTopOf="@+id/shimmer_tv_insight_title"
         tools:ignore="ContentDescription" />
 
     <TextView
-        android:id="@+id/tv_insight_title"
+        android:id="@+id/shimmer_tv_insight_title"
         style="@style/Typography.Subtitle2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -57,11 +57,11 @@
         android:padding="10dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/iv_insight_detail"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+        app:layout_constraintStart_toEndOf="@+id/shimmer_iv_insight_detail"
+        app:layout_constraintTop_toBottomOf="@+id/shimmer_cardView" />
 
     <TextView
-        android:id="@+id/tv_insight_date"
+        android:id="@+id/shimmer_tv_insight_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -69,10 +69,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.175"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_insight_detail" />
+        app:layout_constraintTop_toBottomOf="@+id/shimmer_iv_insight_detail" />
 
     <TextView
-        android:id="@+id/tv_insight_body"
+        android:id="@+id/shimmer_tv_insight_body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="9dp"
@@ -83,62 +83,62 @@
         android:translationY="-4.5sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_insight_date" />
+        app:layout_constraintTop_toBottomOf="@id/shimmer_tv_insight_date" />
 
     <TextView
-        android:id="@+id/tv_insight_like"
+        android:id="@+id/shimmer_tv_insight_like"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:background="@color/shimmer_placeholder"
-        app:layout_constraintBottom_toBottomOf="@id/tv_insight_dislike"
+        app:layout_constraintBottom_toBottomOf="@id/shimmer_tv_insight_dislike"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_insight_dislike" />
+        app:layout_constraintTop_toTopOf="@id/shimmer_tv_insight_dislike" />
 
     <TextView
-        android:id="@+id/tv_insight_dislike"
+        android:id="@+id/shimmer_tv_insight_dislike"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:background="@color/shimmer_placeholder"
-        app:layout_constraintStart_toEndOf="@id/tv_insight_like"
-        app:layout_constraintTop_toBottomOf="@id/tv_insight_body" />
+        app:layout_constraintStart_toEndOf="@id/shimmer_tv_insight_like"
+        app:layout_constraintTop_toBottomOf="@id/shimmer_tv_insight_body" />
 
     <TextView
-        android:id="@+id/tv_insight_report"
+        android:id="@+id/shimmer_tv_insight_report"
         android:layout_width="44sp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
         android:background="@color/shimmer_placeholder"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/tv_insight_add_comment"
-        app:layout_constraintEnd_toStartOf="@id/tv_insight_add_comment"
-        app:layout_constraintTop_toTopOf="@id/tv_insight_add_comment" />
+        app:layout_constraintBottom_toBottomOf="@id/shimmer_tv_insight_add_comment"
+        app:layout_constraintEnd_toStartOf="@id/shimmer_tv_insight_add_comment"
+        app:layout_constraintTop_toTopOf="@id/shimmer_tv_insight_add_comment" />
 
     <TextView
-        android:id="@+id/tv_insight_add_comment"
+        android:id="@+id/shimmer_tv_insight_add_comment"
         android:layout_width="44sp"
         android:layout_height="wrap_content"
         android:background="@color/shimmer_placeholder"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_insight_body" />
+        app:layout_constraintTop_toBottomOf="@id/shimmer_tv_insight_body" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/materialTextView"
+        android:id="@+id/shimmer_materialTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
         android:background="@color/shimmer_placeholder"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_insight_like" />
+        app:layout_constraintTop_toBottomOf="@id/shimmer_tv_insight_like" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_insight_comment"
+        android:id="@+id/shimmer_rv_insight_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/materialTextView"
+        app:layout_constraintTop_toBottomOf="@id/shimmer_materialTextView"
         tools:listitem="@layout/shimmer_item_insight_comment" />
 </androidx.constraintlayout.widget.ConstraintLayout>
