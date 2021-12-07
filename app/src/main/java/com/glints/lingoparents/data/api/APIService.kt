@@ -88,4 +88,9 @@ interface APIService {
         @Field("confirmpassword") confirmPassword: String,
     ): Call<ChangePasswordResponse>
 
+    @GET("api/v1/students/list/{id}")
+    fun getStudentList(
+        @Path("id") id: Int,
+        @Header("authorization") authorization: String
+    ): Call<StudentListResponse>
 }
