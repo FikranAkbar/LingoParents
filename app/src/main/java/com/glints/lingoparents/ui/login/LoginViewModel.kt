@@ -76,9 +76,7 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
     fun saveEmail(email: String) = viewModelScope.launch {
         tokenPreferences.saveAccessEmail(email)
     }
-    fun savePassword(password: String) = viewModelScope.launch {
-        tokenPreferences.saveAccessPassword(password)
-    }
+
     fun getToken(): LiveData<String> = tokenPreferences.getAccessToken().asLiveData()
 
     fun loginUserByEmailPassword(email: String, password: String) = viewModelScope.launch {

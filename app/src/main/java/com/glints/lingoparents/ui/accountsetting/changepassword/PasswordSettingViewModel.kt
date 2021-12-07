@@ -92,13 +92,8 @@ class PasswordSettingViewModel(
             })
     }
 
-    fun savePassword(password: String) = viewModelScope.launch {
-        tokenPref.saveAccessPassword(password)
-    }
 
     fun getAccessToken(): LiveData<String> = tokenPref.getAccessToken().asLiveData()
-    fun getAccessPassword(): LiveData<String> = tokenPref.getAccessPassword().asLiveData()
-    //fun removePassword(): LiveData<String> = tokenPref.resetAccessPassword()
 
 
 }

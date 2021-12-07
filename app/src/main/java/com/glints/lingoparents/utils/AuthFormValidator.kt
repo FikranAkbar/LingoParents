@@ -46,7 +46,4 @@ object AuthFormValidator {
     }
 
     fun isValidField(text: String?): Boolean = text?.length!! > 0
-
-    //amin
-
 }
