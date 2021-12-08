@@ -28,7 +28,7 @@ class CustomViewModelFactory(
     owner: SavedStateRegistryOwner,
     defaultArgs: Bundle? = null,
     private val eventId: Int? = null,
-    private val insightId: Int? = null
+    private val insightId: Int? = null,
     private val accountId: Int? = null,
 ) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
 

@@ -73,11 +73,11 @@ class DetailInsightViewModel(
         }
     }
 
-    fun loadInsightDetail(id: Int, accessToken: String) = viewModelScope.launch {
+    fun loadInsightDetail(id: Int) = viewModelScope.launch {
         onApiCallStarted()
         APIClient
             .service
-            .getInsightDetail(id, accessToken)
+            .getInsightDetail(id)
             .enqueue(object : Callback<InsightDetailResponse> {
                 override fun onResponse(
                     call: Call<InsightDetailResponse>,
@@ -98,11 +98,11 @@ class DetailInsightViewModel(
             })
     }
 
-    fun sendLikeRequest(id: Int, type: String, accessToken: String) = viewModelScope.launch {
+    fun sendLikeRequest(id: Int, type: String) = viewModelScope.launch {
         onApiCallStartedLikeDislike(type)
         APIClient
             .service
-            .likeInsightDetail(id, type, accessToken)
+            .likeInsightDetail(id, type)
             .enqueue(object : Callback<InsightLikeDislikeResponse> {
                 override fun onResponse(
                     call: Call<InsightLikeDislikeResponse>,
@@ -122,11 +122,11 @@ class DetailInsightViewModel(
             })
     }
 
-    fun sendDislikeRequest(id: Int, type: String, accessToken: String) = viewModelScope.launch {
+    fun sendDislikeRequest(id: Int, type: String) = viewModelScope.launch {
         onApiCallStartedLikeDislike(type)
         APIClient
             .service
-            .dislikeInsightDetail(id, type, accessToken)
+            .dislikeInsightDetail(id, type)
             .enqueue(object : Callback<InsightLikeDislikeResponse> {
                 override fun onResponse(
                     call: Call<InsightLikeDislikeResponse>,

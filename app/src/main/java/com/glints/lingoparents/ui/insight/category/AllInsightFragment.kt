@@ -1,10 +1,10 @@
 package com.glints.lingoparents.ui.insight.category
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -49,9 +49,7 @@ class AllInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
                     InsightListViewModel::class.java
             ]
 
-        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
-            viewModel.loadInsightList(InsightListViewModel.ALL_TAG, accessToken)
-        }
+        viewModel.loadInsightList(InsightListViewModel.ALL_TAG)
 
         lifecycleScope.launchWhenStarted {
             viewModel.allInsightList.collect { insight ->

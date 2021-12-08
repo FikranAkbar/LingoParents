@@ -68,32 +68,26 @@ interface APIService {
         @Path("id") id: Int,
     ): Call<LiveEventDetailResponse>
 
-
-
     @GET("api/v1/insights?status=Publish")
     fun getAllInsightList(
         @QueryMap options: Map<String, String>,
-        @Header("authorization") authorization: String
     ): Call<AllInsightsListResponse>
 
     @GET("api/v1/insights/{id}")
     fun getInsightDetail(
         @Path("id") id: Int,
-        @Header("authorization") authorization: String
     ): Call<InsightDetailResponse>
 
     @POST("api/v1/insights/like/{id}/{type}")
     fun likeInsightDetail(
         @Path("id") id: Int,
         @Path("type") type: String,
-        @Header("authorization") authorization: String
     ): Call<InsightLikeDislikeResponse>
 
     @POST("api/v1/insights/dislike/{id}/{type}")
     fun dislikeInsightDetail(
         @Path("id") id: Int,
         @Path("type") type: String,
-        @Header("authorization") authorization: String
     ): Call<InsightLikeDislikeResponse>
   
     //amin

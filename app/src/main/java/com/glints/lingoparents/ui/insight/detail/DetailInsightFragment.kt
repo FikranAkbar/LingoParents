@@ -56,10 +56,8 @@ class DetailInsightFragment : Fragment() {
                 )
             )[DetailInsightViewModel::class.java]
 
-        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
-            viewModel.loadInsightDetail(viewModel.getCurrentInsightId(), accessToken)
-        }
 
+        viewModel.loadInsightDetail(viewModel.getCurrentInsightId())
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.insightDetail.collect { insight ->
                 when (insight) {
@@ -76,11 +74,6 @@ class DetailInsightFragment : Fragment() {
                                 tvInsightLike.text = total_like.toString()
                                 tvInsightDislike.text = total_dislike.toString()
                             }
-                            Snackbar.make(
-                                binding.root,
-                                "Successfully fetch detail insight",
-                                Snackbar.LENGTH_SHORT
-                            ).show()
                         }
                     }
                     is DetailInsightViewModel.InsightDetail.SuccessGetComment -> {
@@ -106,10 +99,8 @@ class DetailInsightFragment : Fragment() {
                             insight.result.message,
                             Snackbar.LENGTH_SHORT
                         ).show()
-                        Log.d("LikeInsightFragment", "Success")
                     }
                     is DetailInsightViewModel.LikeDislikeInsight.Loading -> {
-                        Log.d("LikeInsightFragment", "Loading")
                     }
                     is DetailInsightViewModel.LikeDislikeInsight.Error -> {
                         Snackbar.make(
@@ -145,23 +136,16 @@ class DetailInsightFragment : Fragment() {
                 binding.btnComment.visibility = View.VISIBLE
             }
             tvInsightLike.setOnClickListener {
-                viewModel.getAccessToken().observe(viewLifecycleOwner) {
-                    viewModel.sendLikeRequest(
-                        viewModel.getCurrentInsightId(),
-                        DetailInsightViewModel.INSIGHT_TYPE,
-                        it
-                    )
-                }
+                viewModel.sendLikeRequest(
+                    viewModel.getCurrentInsightId(),
+                    DetailInsightViewModel.INSIGHT_TYPE
+                )
             }
             tvInsightDislike.setOnClickListener {
-                Log.d("TEST", "prepare to send event")
-                viewModel.getAccessToken().observe(viewLifecycleOwner) {
-                    viewModel.sendDislikeRequest(
-                        viewModel.getCurrentInsightId(),
-                        DetailInsightViewModel.INSIGHT_TYPE,
-                        it
-                    )
-                }
+                viewModel.sendDislikeRequest(
+                    viewModel.getCurrentInsightId(),
+                    DetailInsightViewModel.INSIGHT_TYPE
+                )
             }
         }
 
