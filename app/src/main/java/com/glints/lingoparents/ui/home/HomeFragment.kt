@@ -11,10 +11,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.glints.lingoparents.R
-import com.glints.lingoparents.data.model.InsightSliderItem
 import com.glints.lingoparents.data.model.LiveEventSliderItem
+import com.glints.lingoparents.data.model.response.AllEventItem
 import com.glints.lingoparents.data.model.response.DataItem
-import com.glints.lingoparents.data.model.response.MessageItem
+import com.glints.lingoparents.data.model.response.RecentInsightItem
 import com.glints.lingoparents.databinding.FragmentHomeBinding
 import com.glints.lingoparents.ui.home.adapter.ChildrenAdapter
 import com.glints.lingoparents.ui.home.adapter.InsightSliderAdapter
@@ -53,61 +53,31 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
                     HomeViewModel::class.java
             ]
 
-        val x = mutableListOf(
-            MessageItem(
-                1,
-                "s",
-                2,
-                3,
-                4,
-                "HAHAHA",
-                "huhuhuh",
+        val recentInsightPlaceholder = mutableListOf(
+            RecentInsightItem(
+                "title",
+                "content",
                 "cover",
-                "d",
-                3,
-                2,
-                5,
-                "d"
+                1,
 
-            ),
 
-            )
+                ),
+        )
+        insightSliderAdapter = InsightSliderAdapter(
+            recentInsightPlaceholder,
+            object : OnItemClickListener<RecentInsightItem> {
+                override fun onItemClicked(item: RecentInsightItem?, position: Int) {
 
+                }
+            }
+        )
+        val allEventPlaceholder = mutableListOf(
+            AllEventItem("date", "title", "cover","speaker photo", 50000, -1)
+        )
         liveEventSliderAdapter = LiveEventSliderAdapter(
-            mutableListOf(
-                LiveEventSliderItem(
-                    "Build Career for Gen Z",
-                    "@drawable/img_dummy_live_event",
-                    "999.000,00-",
-                    "08 Oct 2021, 19:00"
-                ),
-                LiveEventSliderItem(
-                    "Build Career for Gen Z",
-                    "@drawable/img_dummy_live_event",
-                    "999.000,00-",
-                    "08 Oct 2021, 19:00"
-                ),
-                LiveEventSliderItem(
-                    "Build Career for Gen Z",
-                    "@drawable/img_dummy_live_event",
-                    "999.000,00-",
-                    "08 Oct 2021, 19:00"
-                ),
-                LiveEventSliderItem(
-                    "Build Career for Gen Z",
-                    "@drawable/img_dummy_live_event",
-                    "999.000,00-",
-                    "08 Oct 2021, 19:00"
-                ),
-                LiveEventSliderItem(
-                    "Build Career for Gen Z",
-                    "@drawable/img_dummy_live_event",
-                    "999.000,00-",
-                    "08 Oct 2021, 19:00"
-                ),
-            ),
-            object : OnItemClickListener<LiveEventSliderItem> {
-                override fun onItemClicked(item: LiveEventSliderItem?, position: Int) {
+            allEventPlaceholder,
+            object : OnItemClickListener<AllEventItem> {
+                override fun onItemClicked(item: AllEventItem?, position: Int) {
 
                 }
             }
@@ -128,8 +98,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
 
         viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
             viewModel.getRecentInsight(HomeViewModel.INSIGHT_TYPE)
+            viewModel.getAllEvent(HomeViewModel.EVENT_TYPE)
 //            viewModel.getStudentList("he", 4)
-            viewModel.getStudentList(HomeViewModel.STUDENTLIST_TYPE, 4)
+            viewModel.getStudentList(HomeViewModel.STUDENTLIST_TYPE, 3)
         }
 
 
@@ -142,14 +113,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
                 isVerticalScrollBarEnabled = false
             }
         }
-        insightSliderAdapter = InsightSliderAdapter(
-            x,
-            object : OnItemClickListener<MessageItem> {
-                override fun onItemClicked(item: MessageItem?, position: Int) {
 
-                }
-            }
-        )
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.studentList.collect { event ->
@@ -176,6 +140,50 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
             }
         }
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.allEvent.collect { event ->
+                when (event) {
+                    is HomeViewModel.AllEvent.Loading -> {
+                        //showEmptyStudentList(true)
+                        showEmptyInsight(true)
+                    }
+                    is HomeViewModel.AllEvent.Success -> {
+                        //Log.d("dfdf", event.list.toString())
+                        Toast.makeText(context, "INI BISA NIHHHHHH", Toast.LENGTH_SHORT).show()
+                        //childrenAdapter.submitList(event.list)
+                        //showEmptyInsight(false)
+                        liveEventSliderAdapter.submitList(event.list)
+                        liveEventSliderAdapter = LiveEventSliderAdapter(
+                            event.list,
+                            object : OnItemClickListener<AllEventItem> {
+                                override fun onItemClicked(item: AllEventItem?, position: Int) {
+
+                                }
+                            }
+                        )
+                        binding.sliderLiveEvent.apply {
+                            create(liveEventSliderAdapter, lifecycle = lifecycle)
+                            setOnSlideChangeListener(object : OnSlideChangeListener {
+                                override fun onSlideChange(
+                                    adapter: PlutoAdapter<*, *>,
+                                    position: Int
+                                ) {
+
+                                }
+                            })
+                        }
+                        //showEmptyStudentList(false)
+                    }
+                    is HomeViewModel.AllEvent.Error -> {
+                        //showEmptyStudentList(false)
+                    }
+
+                }
+
+            }
+
+        }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.recentInsight.collect { event ->
                 when (event) {
                     is HomeViewModel.RecentInsight.Loading -> {
@@ -184,14 +192,17 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
                     }
                     is HomeViewModel.RecentInsight.Success -> {
                         Log.d("dfdf", event.list.toString())
-                        Toast.makeText(context, "INI BISA NIHHHHHH", Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(context, "INI BISA NIHHHHHH", Toast.LENGTH_SHORT).show()
                         //childrenAdapter.submitList(event.list)
                         showEmptyInsight(false)
                         insightSliderAdapter.submitList(event.list)
                         insightSliderAdapter = InsightSliderAdapter(
                             event.list,
-                            object : OnItemClickListener<MessageItem> {
-                                override fun onItemClicked(item: MessageItem?, position: Int) {
+                            object : OnItemClickListener<RecentInsightItem> {
+                                override fun onItemClicked(
+                                    item: RecentInsightItem?,
+                                    position: Int
+                                ) {
 
                                 }
                             }

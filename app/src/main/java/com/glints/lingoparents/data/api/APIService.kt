@@ -69,7 +69,6 @@ interface APIService {
     ): Call<LiveEventDetailResponse>
 
 
-
     @GET("api/v1/insights?status=Publish")
     fun getAllInsightList(
         @QueryMap options: Map<String, String>,
@@ -115,8 +114,7 @@ interface APIService {
     fun getRecentInsight(
     ): Call<RecentInsightResponse>
 
-//    @GET("api/v1/events/parent")
-//    fun getAllEvent(
-//        @Header("authorization") authorization: String
-//    ): Call<StudentListResponse>
+    @GET("api/v1/events/parent")
+    fun getAllEvent(
+    ): Call<AllEventResponse>
 }
