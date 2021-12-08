@@ -30,4 +30,25 @@
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/dashboard_bottom_nav_menu" />
+
+    <View
+        android:id="@+id/v_loading_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#66000000"
+        android:elevation="200dp"
+        android:visibility="gone" />
+
+    <com.tuyenmonkey.mkloader.MKLoader
+        android:id="@+id/v_loading_progress"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:elevation="200dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:mk_color="#F9663A"
+        app:mk_type="FishSpinner" />
 </androidx.constraintlayout.widget.ConstraintLayout>

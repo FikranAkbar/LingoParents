@@ -6,13 +6,9 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.model.response.EditParentProfileResponse
-import com.glints.lingoparents.data.model.response.LiveEventDetailResponse
 import com.glints.lingoparents.data.model.response.ParentProfileResponse
-import com.glints.lingoparents.data.model.response.RegisterUserResponse
-import com.glints.lingoparents.ui.register.RegisterViewModel
 import com.glints.lingoparents.utils.ErrorUtils
 import com.glints.lingoparents.utils.TokenPreferences
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -26,8 +22,7 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
 
     fun onLogOutButtonClick() = viewModelScope.launch {
         profileChannel.send(ProfileEvent.NavigateToAuthScreen)
-        tokenPreferences.resetAccessToken()
-        //amin
+        tokenPreferences.resetToken()
         tokenPreferences.resetAccessEmail()
         tokenPreferences.resetAccessPassword()
     }
@@ -44,7 +39,7 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
     //amin
     private fun onEditApiCallSuccess() =
         viewModelScope.launch {
-            profileChannel.send(ProfileEvent.editSuccess)
+            profileChannel.send(ProfileEvent.EditSuccess)
         }
 
     private fun onApiCallError(message: String) = viewModelScope.launch {
@@ -56,9 +51,7 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
         object Loading : ProfileEvent()
         data class Success(val parentProfile: ParentProfileResponse) : ProfileEvent()
         data class Error(val message: String) : ProfileEvent()
-
-        //amin
-        object editSuccess : ProfileEvent()
+        object EditSuccess : ProfileEvent()
         data class TryToEditProfile(
             val firstname: String,
             val lastname: String,
@@ -129,7 +122,7 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
             })
     }
 
-    //kebawah amin
+
     fun onSaveButtonClick(
         firstname: String,
         lastname: String,
