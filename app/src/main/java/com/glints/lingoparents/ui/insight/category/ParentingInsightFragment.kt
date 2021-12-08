@@ -50,9 +50,7 @@ class ParentingInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
                     InsightListViewModel::class.java
             ]
 
-        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
-            viewModel.loadInsightList(InsightListViewModel.PARENTING_TAG, accessToken)
-        }
+            viewModel.loadInsightList(InsightListViewModel.PARENTING_TAG)
 
         lifecycleScope.launchWhenStarted {
             viewModel.parentingInsightList.collect { insight ->
