@@ -37,11 +37,10 @@ class LiveEventSliderAdapter(
         private val liveEventDate: TextView = getView(R.id.tv_live_event_date)
 
         override fun set(item: AllEventItem, position: Int) {
-//            if (item.cover == null) {
-//                //Glide.with(context).load(R.drawable.img_dummy_live_event).into(liveEventPoster)
-//                Glide.with(context).load(item.speaker_photo).into(liveEventPoster)
-//            }
-            Glide.with(context).load(item.speaker_photo).into(liveEventPoster)
+            if (item.cover == null) {
+                //Glide.with(context).load(R.drawable.img_dummy_live_event).into(liveEventPoster)
+            }
+            Glide.with(context).load(item.cover).into(liveEventPoster)
             //Glide.with(context).load(item.cover).into(liveEventPoster)
             liveEventTitle.text = item.title
             liveEventPrice.text = item.price.toString()

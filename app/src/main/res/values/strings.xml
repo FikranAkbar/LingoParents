@@ -248,4 +248,6 @@
     <string name="payment_method">Payment Method</string>
     <string name="bank_transfer">Bank Transfer</string>
     <string name="dashboard_no_children_data">There is No Data Available</string>
+    <string name="dashboard_no_recent_insight">There is No Recent Insight Available</string>
+    <string name="dashboard_no_live_event">There is No Event Available</string>
 </resources>
