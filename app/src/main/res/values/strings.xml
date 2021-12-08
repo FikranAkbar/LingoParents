@@ -238,4 +238,5 @@
     <string name="create_new_password">Create New Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="reply">Reply</string>
+    <string name="dashboard_no_children_data">There is No Data Available</string>
 </resources>
