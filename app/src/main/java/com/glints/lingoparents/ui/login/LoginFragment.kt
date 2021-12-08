@@ -114,9 +114,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         viewModel.saveEmail(
                             binding.tilEmail.editText?.text.toString()
                         )
-                        viewModel.savePassword(
-                            binding.tilPassword.editText?.text.toString()
-                        )
                         val intent = Intent(
                             this@LoginFragment.requireContext(),
                             DashboardActivity::class.java

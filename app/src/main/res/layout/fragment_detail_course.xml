@@ -1,127 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".ui.course.DetailCourseFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_back_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/tvCourse"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvCourse">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_baseline_arrow_back_ios_24"
+            tools:ignore="ContentDescription" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tvCourse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_w700"
+        android:textSize="30dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvDetailCourse"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvCourse"
+        tools:listitem="@layout/item_course_detail" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_back_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground"
-            app:cardElevation="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/guideline4">
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_baseline_arrow_back_ios_24"
-                tools:ignore="ContentDescription" />
-        </androidx.cardview.widget.CardView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvCourse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_w700"
-            android:text="French"
-            android:textSize="30dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <include layout="@layout/shimmer_item_detail_course" />
 
-        <ImageView
-            android:id="@+id/ivCourseCard1"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:src="@drawable/french_card1"
-            app:layout_constraintEnd_toStartOf="@+id/tvCourse1"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvCourse" />
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
-        <TextView
-            android:id="@+id/tvCourse1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:ellipsize="end"
-            android:fontFamily="@font/poppins_w600"
-            android:gravity="start"
-            android:maxLines="7"
-            android:text="Indulge the beauty of French artistic refinements, such as fine arts, music, dance, and architecture through language."
-            app:layout_constraintBottom_toBottomOf="@+id/ivCourseCard1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/ivCourseCard1"
-            app:layout_constraintTop_toBottomOf="@+id/tvCourse" />
+    <ImageView
+        android:id="@+id/iv_no_detail_course"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:src="@drawable/ic_course"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/shimmer_item_inside"
+        tools:ignore="ContentDescription" />
 
-        <ImageView
-            android:id="@+id/ivCourseCard2"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:src="@drawable/french_card2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivCourseCard1" />
+    <TextView
+        android:id="@+id/tv_no_detail_course"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/poppins_w600"
+        android:text="@string/no_course_list"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@id/iv_no_detail_course"
+        app:layout_constraintStart_toStartOf="@id/iv_no_detail_course"
+        app:layout_constraintTop_toBottomOf="@id/iv_no_detail_course" />
 
-        <TextView
-            android:id="@+id/tvCourse2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:ellipsize="end"
-            android:fontFamily="@font/poppins_w600"
-            android:gravity="end"
-            android:maxLines="7"
-            app:layout_constraintBottom_toBottomOf="@+id/ivCourseCard2"
-            app:layout_constraintEnd_toStartOf="@+id/ivCourseCard2"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivCourseCard1"
-            tools:text="Spoken across the globe with various pronounciation and used as an official language in 29 countries." />
-
-        <ImageView
-            android:id="@+id/ivCourseCard3"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:src="@drawable/french_card3"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivCourseCard2" />
-
-        <TextView
-            android:id="@+id/tvCourse3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:ellipsize="end"
-            android:fontFamily="@font/poppins_w600"
-            android:gravity="start"
-            android:maxLines="7"
-            android:text="French pronounciation is surprisingly simple and more consistent than the other language."
-            app:layout_constraintBottom_toBottomOf="@+id/ivCourseCard3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/ivCourseCard3"
-            app:layout_constraintTop_toBottomOf="@+id/ivCourseCard2" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_end="612dp" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
