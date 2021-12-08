@@ -71,8 +71,9 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
         loginEventChannel.send(LoginEvent.ShowSnackBarMessage(message))
     }
 
-    private fun saveToken(token: String) = viewModelScope.launch {
-        tokenPreferences.saveAccessToken(token)
+    private fun saveToken(accessToken: String, refreshToken: String) = viewModelScope.launch {
+        tokenPreferences.saveAccessToken(accessToken)
+        tokenPreferences.saveRefreshToken(refreshToken)
     }
 
     //amin
@@ -116,10 +117,14 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
                 ) {
                     if (response.isSuccessful) {
                         onApiCallSuccess("Login Successful")
-                        saveToken(response.body()?.data?.accessToken.toString())
+                        saveToken(
+                            response.body()?.data?.accessToken.toString(),
+                            response.body()?.data?.refreshToken.toString()
+                        )
                         val mDecode = decodeToken(response.body()?.data?.accessToken.toString())
                         val test = (JSONObject(mDecode).getString("data"))
                         saveParentId(JSONObject(test).getString("id").toInt())
+
 
                     } else {
                         val apiError = ErrorUtils.parseError(response)

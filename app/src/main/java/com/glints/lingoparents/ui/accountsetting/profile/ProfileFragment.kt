@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentProfileBinding
 import com.glints.lingoparents.ui.MainActivity
@@ -21,7 +20,7 @@ import kotlinx.coroutines.flow.collect
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
     //amin
-    var emailValue: String? = null
+    private var emailValue: String? = null
 
 
     private var _binding: FragmentProfileBinding? = null
@@ -102,7 +101,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                             )
                         }
                     }
-                    is ProfileViewModel.ProfileEvent.editSuccess -> {
+                    is ProfileViewModel.ProfileEvent.EditSuccess -> {
                         Snackbar.make(requireView(), "Edit Profile Success", Snackbar.LENGTH_LONG)
                             .setBackgroundTint(Color.parseColor("#42ba96"))
                             .setTextColor(Color.parseColor("#FFFFFF"))
@@ -119,6 +118,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                             .setBackgroundTint(Color.parseColor("#FF0000"))
                             .setTextColor(Color.parseColor("#FFFFFF"))
                             .show()
+                    }
+                    is ProfileViewModel.ProfileEvent.Loading -> {
+
                     }
                 }
             }

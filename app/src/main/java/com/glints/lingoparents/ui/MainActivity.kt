@@ -1,20 +1,27 @@
 package com.glints.lingoparents.ui
 
 import android.app.Activity
-import android.content.Intent
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
-import com.glints.lingoparents.R
+import androidx.appcompat.app.AppCompatActivity
 import com.glints.lingoparents.databinding.ActivityMainBinding
+import com.glints.lingoparents.ui.dashboard.TOKEN_EXPIRED_FLAG
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+
+        val flag = intent.getIntExtra("flag", -1)
+        if (flag == TOKEN_EXPIRED_FLAG) {
+            Snackbar.make(binding.root, "Token expired. Please re-login...", Snackbar.LENGTH_LONG)
+                .show()
+        }
     }
 }
 

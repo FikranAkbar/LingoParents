@@ -90,7 +90,7 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
         (activity as DashboardActivity).showBottomNav(false)
 
         binding.apply {
-            cvBackButton.setOnClickListener {
+            ivBackButton.setOnClickListener {
                 findNavController().popBackStack()
                 (activity as DashboardActivity).showBottomNav(true)
             }

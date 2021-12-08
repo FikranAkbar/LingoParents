@@ -6,26 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".ui.accountsetting.AccountSettingFragment">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_back_button"
-        android:layout_width="18dp"
-        android:layout_height="30dp"
+    <ImageView
+        android:id="@+id/iv_back_button"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="?attr/selectableItemBackground"
-        app:cardCornerRadius="40dp"
-        app:cardElevation="0dp"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:padding="8dp"
+        android:src="@drawable/ic_back_account_setting"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_back_account_setting"
-            tools:ignore="ContentDescription" />
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription,UnusedAttribute" />
 
     <TextView
         android:id="@+id/tv_title_account_setting"
@@ -35,10 +29,10 @@
         android:text="@string/account_setting"
         android:textColor="#182E7C"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@id/cv_back_button"
+        app:layout_constraintBottom_toBottomOf="@id/iv_back_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/cv_back_button" />
+        app:layout_constraintTop_toTopOf="@id/iv_back_button" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_profile_picture"
@@ -50,7 +44,7 @@
         android:foreground="?attr/selectableItemBackground"
         app:cardCornerRadius="40dp"
         app:cardElevation="0dp"
-        app:layout_constraintStart_toStartOf="@id/cv_back_button"
+        app:layout_constraintStart_toStartOf="@id/iv_back_button"
         app:layout_constraintTop_toBottomOf="@id/tv_title_account_setting">
 
         <ImageView
