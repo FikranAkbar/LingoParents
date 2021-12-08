@@ -10,6 +10,7 @@ import com.glints.lingoparents.data.model.response.InsightDetailResponse
 import com.glints.lingoparents.data.model.response.InsightLikeDislikeResponse
 import com.glints.lingoparents.utils.ErrorUtils
 import com.glints.lingoparents.utils.TokenPreferences
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -37,6 +38,7 @@ class DetailInsightViewModel(
 
     fun onLikeDislikeOnClick(action: String, id: Int, type: String) = viewModelScope.launch {
         likeDislikeInsightChannel.send(LikeDislikeInsight.TryToLikeDislikeInsight(action, id, type))
+        Log.d("TEST", "send try to like dislike insight")
     }
 
     private fun onApiCallStarted() = viewModelScope.launch {
@@ -44,19 +46,25 @@ class DetailInsightViewModel(
     }
 
     private fun onApiCallStartedLikeDislike(type: String) = viewModelScope.launch {
-        Log.d("Like Insight", "Loading")
         when (type) {
-            INSIGHT_TYPE -> likeDislikeInsightChannel.send(LikeDislikeInsight.Loading)
+            INSIGHT_TYPE -> {
+                Log.d("LikeInsight", "Loading")
+                likeDislikeInsightChannel.send(LikeDislikeInsight.Loading)
+            }
         }
     }
 
-    private fun onApiCallSuccess(result: InsightDetailResponse.Message, list: List<InsightDetailResponse.MasterComment>) = viewModelScope.launch {
+    private fun onApiCallSuccess(
+        result: InsightDetailResponse.Message,
+        list: List<InsightDetailResponse.MasterComment>
+    ) = viewModelScope.launch {
         insightDetailChannel.send(InsightDetail.Success(result))
         insightDetailChannel.send(InsightDetail.SuccessGetComment(list))
     }
 
     private fun onApiCallSuccessLikeDislike(result: InsightLikeDislikeResponse) =
         viewModelScope.launch {
+            Log.d("LikeInsight", "Success")
             likeDislikeInsightChannel.send(LikeDislikeInsight.Success(result))
         }
 
@@ -66,7 +74,10 @@ class DetailInsightViewModel(
 
     private fun onApiCallErrorLikeDislike(type: String, message: String) = viewModelScope.launch {
         when (type) {
-            INSIGHT_TYPE -> likeDislikeInsightChannel.send(LikeDislikeInsight.Error(message))
+            INSIGHT_TYPE -> {
+                Log.d("LikeInsight", "Error")
+                likeDislikeInsightChannel.send(LikeDislikeInsight.Error(message))
+            }
         }
     }
 
@@ -95,11 +106,63 @@ class DetailInsightViewModel(
             })
     }
 
+    /*
+    fun sendLikeRequest(id: Int, type: String, accessToken: String) = viewModelScope.launch {
+        onApiCallStartedLikeDislike(type)
+        APIClient
+            .service
+            .likeInsightDetail(id, type, accessToken)
+            .enqueue(object : Callback<InsightLikeDislikeResponse> {
+                override fun onResponse(
+                    call: Call<InsightLikeDislikeResponse>,
+                    response: Response<InsightLikeDislikeResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        onApiCallSuccessLikeDislike(response.body()!!)
+                    } else {
+                        val apiError = ErrorUtils.parseError(response)
+                        onApiCallError(apiError.message())
+                    }
+                }
+
+                override fun onFailure(call: Call<InsightLikeDislikeResponse>, t: Throwable) {
+                    onApiCallErrorLikeDislike(type, "Network Failed...")
+                }
+            })
+    }
+     */
+
+    /*
+    fun sendDislikeRequest(id: Int, type: String, accessToken: String) = viewModelScope.launch {
+        onApiCallStartedLikeDislike(type)
+        APIClient
+            .service
+            .dislikeInsightDetail(id, type, accessToken)
+            .enqueue(object : Callback<InsightLikeDislikeResponse> {
+                override fun onResponse(
+                    call: Call<InsightLikeDislikeResponse>,
+                    response: Response<InsightLikeDislikeResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        onApiCallSuccessLikeDislike(response.body()!!)
+                    } else {
+                        val apiError = ErrorUtils.parseError(response)
+                        onApiCallError(apiError.message())
+                    }
+                }
+
+                override fun onFailure(call: Call<InsightLikeDislikeResponse>, t: Throwable) {
+                    onApiCallError("Network Failed...")
+                }
+            })
+    }
+     */
+
     fun insightDetailLike(id: Int, type: String, accessToken: String) = viewModelScope.launch {
         onApiCallStartedLikeDislike(type)
         APIClient
             .service
-            .likeInsightDetail(id, mapOf("type" to type), accessToken)
+            .likeInsightDetail(id, type, accessToken)
             .enqueue(object : Callback<InsightLikeDislikeResponse> {
                 override fun onResponse(
                     call: Call<InsightLikeDislikeResponse>,
@@ -119,10 +182,11 @@ class DetailInsightViewModel(
             })
     }
 
+
     fun insightDetailDislike(id: Int, type: String, accessToken: String) = viewModelScope.launch {
         APIClient
             .service
-            .dislikeInsightDetail(id, mapOf("type" to type), accessToken)
+            .dislikeInsightDetail(id, type, accessToken)
             .enqueue(object : Callback<InsightLikeDislikeResponse> {
                 override fun onResponse(
                     call: Call<InsightLikeDislikeResponse>,
