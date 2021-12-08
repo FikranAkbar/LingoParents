@@ -146,7 +146,6 @@ class DetailInsightViewModel(
             })
     }
 
-    fun getAccessToken(): LiveData<String> = tokenPref.getAccessToken().asLiveData()
     fun getCurrentInsightId(): Int = insightId
 
     sealed class InsightDetail {

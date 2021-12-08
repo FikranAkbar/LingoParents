@@ -110,8 +110,6 @@ class InsightListViewModel(private val tokenPref: TokenPreferences) : ViewModel(
             })
     }
 
-    fun getAccessToken(): LiveData<String> = tokenPref.getAccessToken().asLiveData()
-
     sealed class AllInsightList{
         object Loading: AllInsightList()
         data class Success(val list: List<AllInsightsListResponse.Message>): AllInsightList()
