@@ -1,10 +1,12 @@
 package com.glints.lingoparents.ui.liveevent.detail
 
 import android.annotation.SuppressLint
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.DisplayMetrics
+import android.view.*
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
 import com.glints.lingoparents.R
+import com.glints.lingoparents.databinding.FormRegisterEventBinding
 import com.glints.lingoparents.databinding.FragmentLiveEventDetailBinding
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
@@ -43,11 +46,12 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
             ivBackButton.setOnClickListener {
                 findNavController().popBackStack()
             }
+            mbtnRegister.setOnClickListener {
+                showDialog(inflater)
+            }
         }
 
-        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
-            viewModel.getLiveEventDetailById(viewModel.getCurrentEventId(), accessToken)
-        }
+        viewModel.getLiveEventDetailById(viewModel.getCurrentEventId())
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.liveEventDetailEvent.collect { event ->
@@ -101,6 +105,38 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
             } else {
                 shimmerLayout.visibility = View.GONE
                 mainContent.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun showDialog(inflater: LayoutInflater) {
+        val formRegisterEventBinding: FormRegisterEventBinding = FormRegisterEventBinding.inflate(inflater)
+
+
+
+        val formRegister = Dialog(requireActivity())
+        formRegister.apply {
+            formRegisterEventBinding.apply {
+                ivBackButton.setOnClickListener {
+                    dismiss()
+                }
+            }
+
+            setCancelable(false)
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            setContentView(formRegisterEventBinding.root)
+            show()
+
+            val layoutParams = WindowManager.LayoutParams()
+            layoutParams.apply {
+                copyFrom(window?.attributes)
+                width = WindowManager.LayoutParams.MATCH_PARENT
+                height = WindowManager.LayoutParams.MATCH_PARENT
+                window?.attributes = this
+            }
+
+            formRegisterEventBinding.root.apply {
+                setPadding(30, 80, 30, 80)
             }
         }
     }

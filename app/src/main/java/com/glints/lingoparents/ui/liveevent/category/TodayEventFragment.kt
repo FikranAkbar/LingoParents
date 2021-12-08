@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -20,6 +19,8 @@ import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import kotlinx.coroutines.flow.collect
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 
 class TodayEventFragment : Fragment(R.layout.fragment_today_event),
     LiveEventListAdapter.OnItemClickCallback {
@@ -28,7 +29,7 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
 
     private lateinit var liveEventListAdapter: LiveEventListAdapter
     private lateinit var tokenPreferences: TokenPreferences
-    private lateinit var viewModel: LiveEventListViewModel
+    private lateinit var viewModel: TodayLiveEventViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,8 +39,11 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
         _binding = FragmentTodayEventBinding.inflate(inflater)
 
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
-        viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this, arguments)) [
-            LiveEventListViewModel::class.java
+        viewModel = ViewModelProvider(
+            this,
+            CustomViewModelFactory(tokenPreferences, this, arguments)
+        )[
+                TodayLiveEventViewModel::class.java
         ]
 
         binding.apply {
@@ -51,28 +55,29 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
             }
         }
 
-        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
-            viewModel.loadTodayLiveEventList(LiveEventListViewModel.TODAY_TYPE, accessToken)
-        }
+        viewModel.loadTodayLiveEventList()
 
-        lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.todayLiveEventListEvent.collect { event ->
                 when (event) {
-                    is LiveEventListViewModel.TodayLiveEventListEvent.Loading -> {
+                    is TodayLiveEventViewModel.TodayLiveEventListEvent.Loading -> {
                         showLoading(true)
                         showEmptyWarning(false)
                     }
-                    is LiveEventListViewModel.TodayLiveEventListEvent.Success -> {
+                    is TodayLiveEventViewModel.TodayLiveEventListEvent.Success -> {
                         liveEventListAdapter.submitList(event.list)
                         showLoading(false)
                     }
-                    is LiveEventListViewModel.TodayLiveEventListEvent.Error -> {
+                    is TodayLiveEventViewModel.TodayLiveEventListEvent.Error -> {
+                        liveEventListAdapter.submitList(listOf())
                         showLoading(false)
                         showEmptyWarning(true)
                     }
-                    is LiveEventListViewModel.TodayLiveEventListEvent.NavigateToDetailLiveEventFragment -> {
+                    is TodayLiveEventViewModel.TodayLiveEventListEvent.NavigateToDetailLiveEventFragment -> {
                         val action =
-                            LiveEventListFragmentDirections.actionLiveEventListFragmentToLiveEventDetailFragment(event.id)
+                            LiveEventListFragmentDirections.actionLiveEventListFragmentToLiveEventDetailFragment(
+                                event.id
+                            )
                         Log.d("IDEvent", event.id.toString())
                         findNavController().navigate(action)
                     }
@@ -83,6 +88,16 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
         return binding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
@@ -91,6 +106,16 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
     override fun onItemClicked(item: LiveEventListResponse.LiveEventItemResponse) {
         viewModel.onTodayLiveEventItemClick(item.id)
         Log.d("IDEvent", item.id.toString())
+    }
+
+    @Subscribe
+    fun onBlankQuerySent(event: LiveEventListViewModel.LiveEventListEvent.SendBlankQueryToEventListFragment) {
+        viewModel.loadTodayLiveEventList()
+    }
+
+    @Subscribe
+    fun onSearchViewDoneEditing(event: LiveEventListViewModel.LiveEventListEvent.SendQueryToEventListFragment) {
+        viewModel.searchTodayLiveEventList(event.query)
     }
 
     private fun showLoading(bool: Boolean) {

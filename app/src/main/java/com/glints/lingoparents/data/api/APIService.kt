@@ -12,6 +12,9 @@ interface APIService {
         @Field("password") password: String
     ): Call<LoginUserResponse>
 
+    @POST("api/v1/logout")
+    fun logoutUser(): Call<LogoutUserResponse>
+
     @FormUrlEncoded
     @POST("api/v1/register")
     fun registerUser(
@@ -43,14 +46,29 @@ interface APIService {
     @GET("api/v1/events/participants/pages")
     fun getLiveEventsByStatus(
         @QueryMap options: Map<String, String>,
-        @Header("authorization") authorization: String
     ): Call<LiveEventListResponse>
+
+    @GET("api/v1/events/parent/live/{title}")
+    fun getTodayLiveEventByStatusAndTitle(
+        @Path("title") title: String
+    ): Call<LiveEventSearchListResponse>
+
+    @GET("api/v1/events/parent/upcoming/{title}")
+    fun getUpcomingLiveEventByStatusAndTitle(
+        @Path("title") title: String
+    ): Call<LiveEventSearchListResponse>
+
+    @GET("api/v1/events/parent/completed/{title}")
+    fun getCompletedLiveEventByStatusAndTitle(
+        @Path("title") title: String
+    ): Call<LiveEventSearchListResponse>
 
     @GET("api/v1/events/participants/{id}")
     fun getLiveEventById(
         @Path("id") id: Int,
-        @Header("authorization") authorization: String
     ): Call<LiveEventDetailResponse>
+
+
 
     @GET("api/v1/insights?status=Publish")
     fun getAllInsightList(

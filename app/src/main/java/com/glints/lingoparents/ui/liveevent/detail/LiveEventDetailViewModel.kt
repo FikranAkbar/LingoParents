@@ -39,11 +39,11 @@ class LiveEventDetailViewModel(
 
     fun getCurrentEventId(): Int = eventId
 
-    fun getLiveEventDetailById(id: Int, accessToken: String) = viewModelScope.launch {
+    fun getLiveEventDetailById(id: Int) = viewModelScope.launch {
         onApiCallStarted()
         APIClient
             .service
-            .getLiveEventById(id, accessToken)
+            .getLiveEventById(id)
             .enqueue(object : Callback<LiveEventDetailResponse> {
                 override fun onResponse(
                     call: Call<LiveEventDetailResponse>,

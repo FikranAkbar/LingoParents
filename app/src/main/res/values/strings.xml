@@ -238,4 +238,13 @@
     <string name="create_new_password">Create New Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="reply">Reply</string>
+    <string name="please_fill_the_form">Please Fill The Form</string>
+    <string name="email_should_be_fill">Email*</string>
+    <string name="enter_full_name">Enter Full Name</string>
+    <string name="enter_email">Enter Email</string>
+    <string name="enter_phone_number">Enter Phone Number</string>
+    <string name="voucher_code">Voucher Code</string>
+    <string name="enter_voucher_code">Enter Voucher Code</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="bank_transfer">Bank Transfer</string>
 </resources>

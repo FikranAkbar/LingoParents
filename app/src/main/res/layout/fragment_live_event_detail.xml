@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="12dp"
         android:layout_marginTop="12dp"
-        android:layout_marginBottom="24dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="8dp">
 
@@ -285,11 +284,10 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="20dp"
                 android:layout_marginBottom="24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_description_content"
-                app:layout_constraintVertical_bias="0" />
+                app:layout_constraintTop_toBottomOf="@id/tv_description_content" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </ScrollView>
