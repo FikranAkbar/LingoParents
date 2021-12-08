@@ -247,4 +247,9 @@
     <string name="enter_voucher_code">Enter Voucher Code</string>
     <string name="payment_method">Payment Method</string>
     <string name="bank_transfer">Bank Transfer</string>
+    <string name="dummy_beginner_sublevel_2">Beginner - Sublevel 2</string>
+    <string name="dummy_010_987">010-987</string>
+    <string name="dummy_janedoe_gmail_com">janedoe@gmail.com</string>
+    <string name="dummy_sesame_street_no_76_east_jakarta_13782">Sesame Street No. 76 East Jakarta, 13782</string>
+    <string name="dummy_john_doe">John Doe</string>
 </resources>
