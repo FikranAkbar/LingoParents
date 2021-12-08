@@ -6,6 +6,8 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.model.response.DataItem
+import com.glints.lingoparents.data.model.response.MessageItem
+import com.glints.lingoparents.data.model.response.RecentInsightResponse
 import com.glints.lingoparents.data.model.response.StudentListResponse
 import com.glints.lingoparents.utils.ErrorUtils
 import com.glints.lingoparents.utils.TokenPreferences
@@ -17,24 +19,82 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel() {
+    companion object {
+        const val INSIGHT_TYPE = "recentInsight"
+        const val EVENT_TYPE = "allEvent"
+        const val STUDENTLIST_TYPE = "studentList"
+    }
+
     //insight
     //live event
     //student list
+    private val recentInsightChannel = Channel<RecentInsight>()
+    val recentInsight = recentInsightChannel.receiveAsFlow()
+
+//    private val allEventChannel = Channel<AllEvent>()
+//    val allEvent = allEventChannel.receiveAsFlow()
+
     private val studentlistChannel = Channel<StudentList>()
     val studentList = studentlistChannel.receiveAsFlow()
 
-    private fun onApiCallStarted() = viewModelScope.launch {
-        studentlistChannel.send(StudentList.Loading)
+    //    private fun onApiCallStarted() = viewModelScope.launch {
+//        studentlistChannel.send(StudentList.Loading)
+//    }
+    private fun onApiCallStarted(status: String) = viewModelScope.launch {
+        when {
+            status.contains(INSIGHT_TYPE, true) -> {
+                recentInsightChannel.send(RecentInsight.Loading)
+            }
+            //event
+//        status.contains("upcoming", true) -> {
+//            upcomingLiveEventListChannel.send(UpcomingLiveEventListEvent.Loading)
+//        }
+            status.contains(STUDENTLIST_TYPE, true) -> {
+                studentlistChannel.send(StudentList.Loading)
+            }
+        }
     }
 
-    private fun onApiCallSuccess(list: List<DataItem>) =
+    //    private fun onApiCallSuccess(list: List<DataItem>) =
+//        viewModelScope.launch {
+//            studentlistChannel.send(StudentList.Success(list))
+//        } original
+    private fun onRecentInsightApiCallSuccess(list: List<MessageItem>) =
+        viewModelScope.launch {
+            recentInsightChannel.send(RecentInsight.Success(list))
+        }
+    //ini event
+//    private fun onStudentListApiCallSuccess(list: List<DataItem>) =
+//        viewModelScope.launch {
+//            studentlistChannel.send(StudentList.Success(list))
+//        }
+
+    private fun onStudentListApiCallSuccess(list: List<DataItem>) =
         viewModelScope.launch {
             studentlistChannel.send(StudentList.Success(list))
         }
 
-    private fun onApiCallError(message: String) = viewModelScope.launch {
-        studentlistChannel.send(StudentList.Error(message))
+    //original
+//    private fun onApiCallError(message: String) = viewModelScope.launch {
+//        studentlistChannel.send(StudentList.Error(message))
+//    }
+
+    private fun onApiCallError(status: String, message: String) = viewModelScope.launch {
+        //studentlistChannel.send(StudentList.Error(message))
+        when {
+            status.contains(INSIGHT_TYPE, true) -> {
+                recentInsightChannel.send(RecentInsight.Error(message))
+            }
+            //event
+//        status.contains("upcoming", true) -> {
+//            upcomingLiveEventListChannel.send(UpcomingLiveEventListEvent.Loading)
+//        }
+            status.contains(STUDENTLIST_TYPE, true) -> {
+                studentlistChannel.send(StudentList.Error(message))
+            }
+        }
     }
+
 
     fun studentItemClick(id: Int) = viewModelScope.launch {
         studentlistChannel.send(StudentList.NavigateToProgressProfileFragment(id))
@@ -42,8 +102,40 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
 
     fun getAccessToken(): LiveData<String> = tokenPreferences.getAccessToken().asLiveData()
     fun getAccessParentId(): LiveData<Int> = tokenPreferences.getAccessParentId().asLiveData()
-    fun getStudentList(id: Int, accessToken: String) = viewModelScope.launch {
-        onApiCallStarted()
+
+    fun getRecentInsight(status: String) = viewModelScope.launch {
+        onApiCallStarted(status)
+        APIClient
+            .service
+            .getRecentInsight()
+            .enqueue(object : Callback<RecentInsightResponse> {
+                override fun onResponse(
+                    call: Call<RecentInsightResponse>,
+                    response: Response<RecentInsightResponse>
+                ) {
+                    if (response.isSuccessful) {
+//                        onApiCallSuccess(response.body()?.data!!)
+//                        response.body()?.data?.let {
+//                            onStudentListApiCallSuccess(it)
+//                        }
+                    } else {
+                        val apiError = ErrorUtils.parseError(response)
+                        onApiCallError(status, apiError.message())
+                        //onApiCallError("error")
+                    }
+                }
+
+                override fun onFailure(call: Call<RecentInsightResponse>, t: Throwable) {
+                    onApiCallError(status, "Network Failed...")
+                }
+            })
+
+    }
+
+    //event
+
+    fun getStudentList(status: String, id: Int, accessToken: String) = viewModelScope.launch {
+        onApiCallStarted(status)
         APIClient
             .service
             .getStudentList(id, accessToken)
@@ -55,22 +147,44 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
                     if (response.isSuccessful) {
 //                        onApiCallSuccess(response.body()?.data!!)
                         response.body()?.data?.let {
-                            onApiCallSuccess(it)
+                            onStudentListApiCallSuccess(it)
                         }
                     } else {
                         val apiError = ErrorUtils.parseError(response)
-                        onApiCallError(apiError.message())
+                        onApiCallError(status, apiError.message())
                         //onApiCallError("error")
                     }
                 }
 
                 override fun onFailure(call: Call<StudentListResponse>, t: Throwable) {
-                    onApiCallError("Network Failed...")
+                    onApiCallError(status, "Network Failed...")
                 }
             })
 
     }
 
+    sealed class RecentInsight {
+        object Loading : HomeViewModel.RecentInsight()
+        data class Error(val message: String) : HomeViewModel.RecentInsight()
+        data class Success(val list: List<MessageItem>) :
+            HomeViewModel.RecentInsight()
+
+        //navigate to progress
+//        data class NavigateToProgressProfileFragment(val id: Int) :
+//            HomeViewModel.RecentInsight()
+
+    }
+//    sealed class AllEvent {
+//        object Loading : HomeViewModel.AllEvent()
+//        data class Error(val message: String) : HomeViewModel.AllEvent()
+//        data class Success(val list: List<DataItem>) :
+//            HomeViewModel.AllEvent()
+//
+//        //navigate to progress
+//        data class NavigateToProgressProfileFragment(val id: Int) :
+//            HomeViewModel.AllEvent()
+//
+//    }
 
     sealed class StudentList {
         object Loading : HomeViewModel.StudentList()

@@ -111,4 +111,13 @@ interface APIService {
         @Path("id") id: Int,
         @Header("authorization") authorization: String
     ): Call<StudentListResponse>
+
+    @GET("api/v1/insights/recent")
+    fun getRecentInsight(
+    ): Call<RecentInsightResponse>
+
+//    @GET("api/v1/events/parent")
+//    fun getAllEvent(
+//        @Header("authorization") authorization: String
+//    ): Call<StudentListResponse>
 }
