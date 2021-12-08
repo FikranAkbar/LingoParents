@@ -2,6 +2,7 @@ package com.glints.lingoparents.ui.insight.detail
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,11 +12,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
-import com.glints.lingoparents.data.model.InsightCommentItem
 import com.glints.lingoparents.databinding.FragmentDetailInsightBinding
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 
 class DetailInsightFragment : Fragment() {
@@ -38,13 +39,6 @@ class DetailInsightFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             commentsAdapter = CommentsAdapter()
             adapter = commentsAdapter
-            commentsAdapter.submitList(
-                listOf(
-                    InsightCommentItem("Camile Berger", "It's a good stuff", "@drawable/ic_user_avatar_female"),
-                    InsightCommentItem("Luke Grandin", "It's a good stuff", "@drawable/ic_user_avatar_female"),
-                    InsightCommentItem("Ethan Souffer", "It's a not bad stuff", "@drawable/ic_user_avatar_female")
-                )
-            )
         }
 
         return binding.root
@@ -80,11 +74,49 @@ class DetailInsightFragment : Fragment() {
                             }
                         }
                     }
+                    is DetailInsightViewModel.InsightDetail.SuccessGetComment -> {
+                        commentsAdapter.submitList(insight.list)
+                    }
                     is DetailInsightViewModel.InsightDetail.Loading -> {
                         showLoading(true)
                     }
                     is DetailInsightViewModel.InsightDetail.Error -> {
                         showLoading(false)
+                    }
+                }
+            }
+
+            viewModel.likeDislikeInsight.collect { insight ->
+                when(insight){
+                    is DetailInsightViewModel.LikeDislikeInsight.TryToLikeDislikeInsight -> {
+                        viewModel.insightDetailLike(
+                            viewModel.getCurrentInsightId(),
+                            DetailInsightViewModel.INSIGHT_TYPE,
+                            viewModel.getAccessToken().toString()
+                        )
+
+                        viewModel.insightDetailDislike(
+                            viewModel.getCurrentInsightId(),
+                            DetailInsightViewModel.INSIGHT_TYPE,
+                            viewModel.getAccessToken().toString()
+                        )
+                    }
+                    is DetailInsightViewModel.LikeDislikeInsight.Success -> {
+                        Snackbar.make(
+                            requireView(),
+                            insight.result.message,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                    is DetailInsightViewModel.LikeDislikeInsight.Loading -> {
+                        Log.d("Like Insight", "Loading")
+                    }
+                    is DetailInsightViewModel.LikeDislikeInsight.Error -> {
+                        Snackbar.make(
+                            requireView(),
+                            insight.message,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
@@ -104,8 +136,20 @@ class DetailInsightFragment : Fragment() {
     }
 
     private fun initViews(){
-        binding.ivBackButton.setOnClickListener {
-            findNavController().popBackStack()
+        binding.apply{
+            ivBackButton.setOnClickListener {
+                findNavController().popBackStack()
+            }
+            tvInsightAddComment.setOnClickListener {
+                binding.tfInsightComment.visibility = View.VISIBLE
+                binding.btnComment.visibility = View.VISIBLE
+            }
+            tvInsightLike.setOnClickListener {
+                viewModel.onLikeDislikeOnClick(DetailInsightViewModel.LIKE_ACTION, viewModel.getCurrentInsightId(), DetailInsightViewModel.INSIGHT_TYPE)
+            }
+            tvInsightDislike.setOnClickListener {
+                viewModel.onLikeDislikeOnClick(DetailInsightViewModel.DISLIKE_ACTION, viewModel.getCurrentInsightId(), DetailInsightViewModel.INSIGHT_TYPE)
+            }
         }
 
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner,
@@ -114,10 +158,5 @@ class DetailInsightFragment : Fragment() {
                     findNavController().popBackStack()
                 }
             })
-
-        binding.tvInsightAddComment.setOnClickListener {
-            binding.tfInsightComment.visibility = View.VISIBLE
-            binding.btnComment.visibility = View.VISIBLE
-        }
     }
 }
