@@ -93,6 +93,9 @@ dependencies {
     // Auth Google
     implementation 'com.google.android.gms:play-services-auth:19.2.0'
 
+    // Event Bus
+    implementation 'org.greenrobot:eventbus:3.2.0'
+
     // Coil
     implementation "io.coil-kt:coil:1.4.0"
 }

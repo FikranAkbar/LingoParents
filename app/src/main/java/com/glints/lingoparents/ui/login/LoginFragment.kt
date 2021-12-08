@@ -2,7 +2,6 @@ package com.glints.lingoparents.ui.login
 
 import android.content.Context
 import android.content.Intent
-import android.content.IntentSender
 import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableString
@@ -10,7 +9,6 @@ import android.text.Spanned
 import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -21,14 +19,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentLoginBinding
+import com.glints.lingoparents.ui.accountsetting.profile.ProfileFragment
 import com.glints.lingoparents.ui.dashboard.DashboardActivity
 import com.glints.lingoparents.utils.AuthFormValidator
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
-import com.google.android.gms.auth.api.identity.Identity
-import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -80,8 +76,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             mbtnLoginWithGoogle.setOnClickListener {
                 viewModel.onLoginWithGoogleClick()
             }
-            tilEmail.editText?.setText("calvinsan123@gmail.com")
-            tilPassword.editText?.setText("calvin123")
+            tilEmail.editText?.setText("amin1@gmail.com")
+            tilPassword.editText?.setText("aminamin")
         }
 
         lifecycleScope.launchWhenStarted {
@@ -115,6 +111,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     }
                     is LoginViewModel.LoginEvent.Success -> {
                         showLoading(false)
+                        viewModel.saveEmail(
+                            binding.tilEmail.editText?.text.toString()
+                        )
                         val intent = Intent(
                             this@LoginFragment.requireContext(),
                             DashboardActivity::class.java
@@ -149,10 +148,15 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN)
                     }
                     is LoginViewModel.LoginEvent.LoginWithGoogleSuccess -> {
-                        Snackbar.make(binding.root, event.account.email as CharSequence, Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(
+                            binding.root,
+                            event.account.email as CharSequence,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                     }
                     is LoginViewModel.LoginEvent.LoginWithGoogleFailure -> {
-                        Snackbar.make(binding.root, event.errorMessage, Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(binding.root, event.errorMessage, Snackbar.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }

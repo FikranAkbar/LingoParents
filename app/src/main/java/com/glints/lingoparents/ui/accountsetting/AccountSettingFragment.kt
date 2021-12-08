@@ -1,7 +1,9 @@
 package com.glints.lingoparents.ui.accountsetting
 
+import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,14 +13,29 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
+import com.glints.lingoparents.data.api.APIClient
+import com.glints.lingoparents.data.model.response.ParentProfileResponse
 import com.glints.lingoparents.databinding.FragmentAccountSettingBinding
 import com.glints.lingoparents.ui.dashboard.DashboardActivity
+import com.glints.lingoparents.utils.ErrorUtils
+import com.glints.lingoparents.utils.TokenPreferences
+import com.glints.lingoparents.utils.dataStore
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
-
+    //class AccountSettingFragment(private val tokenPreferences: TokenPreferences) : Fragment(R.layout.fragment_account_setting) {
+    private lateinit var tokenPreferences: TokenPreferences
     companion object {
         @StringRes
         private val TAB_TITLES = intArrayOf(
@@ -35,9 +52,12 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        //amin
+        tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
         _binding = FragmentAccountSettingBinding.inflate(inflater)
 
-        val sectionsPagerAdapter = SectionsPagerAdapter(requireActivity() as AppCompatActivity)
+        val sectionsPagerAdapter =
+            ProgressSectionsPagerAdapter(requireActivity() as AppCompatActivity)
         val viewPager2 = binding.viewPagerAccountSetting
         viewPager2.adapter = sectionsPagerAdapter
         val tabs = binding.tabAccountSetting
@@ -70,7 +90,7 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
         (activity as DashboardActivity).showBottomNav(false)
 
         binding.apply {
-            cvBackButton.setOnClickListener {
+            ivBackButton.setOnClickListener {
                 findNavController().popBackStack()
                 (activity as DashboardActivity).showBottomNav(true)
             }

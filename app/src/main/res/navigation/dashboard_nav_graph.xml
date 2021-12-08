@@ -31,14 +31,23 @@
         android:name="com.glints.lingoparents.ui.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
+    <!--    <fragment-->
+    <!--        android:id="@+id/detailCourseFragment"-->
+    <!--        android:name="com.glints.lingoparents.ui.course.DetailCourseFragment"-->
+    <!--        android:label="fragment_detail_course"-->
+    <!--        tools:layout="@layout/fragment_detail_course">-->
+    <!--        <argument-->
+    <!--            android:name="course"-->
+    <!--            app:argType="com.glints.lingoparents.data.model.CourseItem" />-->
     <fragment
         android:id="@+id/detailCourseFragment"
         android:name="com.glints.lingoparents.ui.course.DetailCourseFragment"
         android:label="fragment_detail_course"
         tools:layout="@layout/fragment_detail_course">
         <argument
-            android:name="course"
-            app:argType="com.glints.lingoparents.data.model.CourseItem" />
+            android:name="id"
+            android:defaultValue="-1"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/allCoursesFragment"
@@ -64,7 +73,7 @@
         app:enterAnim="@anim/splash_in"
         app:exitAnim="@anim/splash_out"
         app:popEnterAnim="@anim/splash_in"
-        app:popExitAnim="@anim/splash_out"  />
+        app:popExitAnim="@anim/splash_out" />
     <fragment
         android:id="@+id/insightListFragment"
         android:name="com.glints.lingoparents.ui.insight.InsightListFragment"
@@ -136,8 +145,17 @@
         android:name="com.glints.lingoparents.ui.progress.AssignmentFragment"
         android:label="fragment_assignment"
         tools:layout="@layout/fragment_assignment" />
-    <fragment
-        android:id="@+id/progressProfileFragment2"
-        android:name="com.glints.lingoparents.ui.progress.ProgressProfileFragment"
-        android:label="ProgressProfileFragment" />
+<!--    <fragment-->
+<!--        android:id="@+id/profileFragment"-->
+<!--        android:name="com.glints.lingoparents.ui.accountsetting.profile.ProfileFragment"-->
+<!--        android:label="ProfileFragment" >-->
+<!--        <argument-->
+<!--            android:name="email"-->
+<!--            app:argType="string"-->
+<!--            android:defaultValue="parent@email.com" />-->
+<!--    </fragment>-->
+<!--    <fragment-->
+<!--        android:id="@+id/profileFragment"-->
+<!--        android:name="com.glints.lingoparents.ui.accountsetting.profile.ProfileFragment"-->
+<!--        android:label="ProfileFragment" />-->
 </navigation>
