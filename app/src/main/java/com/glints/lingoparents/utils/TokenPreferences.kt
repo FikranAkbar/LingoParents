@@ -100,29 +100,28 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
         }
     }
 
-    suspend fun resetAccessToken() {
-        suspend fun resetToken() {
-            dataStore.edit { preferences ->
-                preferences.clear()
-            }
-        }
-
-        suspend fun resetAccessEmail() {
-            dataStore.edit { preferences ->
-                preferences[EMAIL_KEY] = ""
-            }
-        }
-
-        suspend fun resetAccessPassword() {
-            dataStore.edit { preferences ->
-                preferences[PASSWORD_KEY] = ""
-            }
-        }
-
-        suspend fun resetAccessParentId() {
-            dataStore.edit { preferences ->
-                preferences[PARENTID_KEY] = -1
-            }
+    suspend fun resetToken() {
+        dataStore.edit { preferences ->
+            preferences.clear()
         }
     }
+
+    suspend fun resetAccessEmail() {
+        dataStore.edit { preferences ->
+            preferences[EMAIL_KEY] = ""
+        }
+    }
+
+    suspend fun resetAccessPassword() {
+        dataStore.edit { preferences ->
+            preferences[PASSWORD_KEY] = ""
+        }
+    }
+
+    suspend fun resetAccessParentId() {
+        dataStore.edit { preferences ->
+            preferences[PARENTID_KEY] = -1
+        }
+    }
+
 }
