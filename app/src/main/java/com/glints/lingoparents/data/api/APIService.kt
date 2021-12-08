@@ -63,4 +63,18 @@ interface APIService {
         @Path("id") id: Int,
         @Header("authorization") authorization: String
     ): Call<InsightDetailResponse>
+
+    @POST("api/v1/insights/like/{id}/{type}")
+    fun likeInsightDetail(
+        @Path("id") id: Int,
+        @QueryMap options: Map<String, String>,
+        @Header("authorization") authorization: String
+    ): Call<InsightLikeDislikeResponse>
+
+    @POST("api/v1/insights/dislike/{id}/{type}")
+    fun dislikeInsightDetail(
+        @Path("id") id: Int,
+        @QueryMap options: Map<String, String>,
+        @Header("authorization") authorization: String
+    ): Call<InsightLikeDislikeResponse>
 }
