@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class RecentInsightResponse(
 
 	@field:SerializedName("message")
-	val message: List<MessageItem>,
+	val message: MutableList<MessageItem>,
 
 	@field:SerializedName("status")
 	val status: String

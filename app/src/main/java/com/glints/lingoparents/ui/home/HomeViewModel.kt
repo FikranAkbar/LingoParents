@@ -59,7 +59,7 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
 //        viewModelScope.launch {
 //            studentlistChannel.send(StudentList.Success(list))
 //        } original
-    private fun onRecentInsightApiCallSuccess(list: List<MessageItem>) =
+    private fun onRecentInsightApiCallSuccess(list: MutableList<MessageItem>) =
         viewModelScope.launch {
             recentInsightChannel.send(RecentInsight.Success(list))
         }
@@ -114,10 +114,10 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
                     response: Response<RecentInsightResponse>
                 ) {
                     if (response.isSuccessful) {
-//                        onApiCallSuccess(response.body()?.data!!)
-//                        response.body()?.data?.let {
-//                            onStudentListApiCallSuccess(it)
-//                        }
+//                        onRecentInsightApiCallSuccess(response.body()?.)
+                        response.body()?.message?.let {
+                            onRecentInsightApiCallSuccess(it)
+                        }
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallError(status, apiError.message())
@@ -134,11 +134,11 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
 
     //event
 
-    fun getStudentList(status: String, id: Int, accessToken: String) = viewModelScope.launch {
+    fun getStudentList(status: String, id: Int) = viewModelScope.launch {
         onApiCallStarted(status)
         APIClient
             .service
-            .getStudentList(id, accessToken)
+            .getStudentList(id)
             .enqueue(object : Callback<StudentListResponse> {
                 override fun onResponse(
                     call: Call<StudentListResponse>,
@@ -152,7 +152,6 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallError(status, apiError.message())
-                        //onApiCallError("error")
                     }
                 }
 
@@ -166,25 +165,9 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
     sealed class RecentInsight {
         object Loading : HomeViewModel.RecentInsight()
         data class Error(val message: String) : HomeViewModel.RecentInsight()
-        data class Success(val list: List<MessageItem>) :
+        data class Success(val list: MutableList<MessageItem>) :
             HomeViewModel.RecentInsight()
-
-        //navigate to progress
-//        data class NavigateToProgressProfileFragment(val id: Int) :
-//            HomeViewModel.RecentInsight()
-
     }
-//    sealed class AllEvent {
-//        object Loading : HomeViewModel.AllEvent()
-//        data class Error(val message: String) : HomeViewModel.AllEvent()
-//        data class Success(val list: List<DataItem>) :
-//            HomeViewModel.AllEvent()
-//
-//        //navigate to progress
-//        data class NavigateToProgressProfileFragment(val id: Int) :
-//            HomeViewModel.AllEvent()
-//
-//    }
 
     sealed class StudentList {
         object Loading : HomeViewModel.StudentList()
@@ -197,5 +180,19 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
             HomeViewModel.StudentList()
 
     }
+
+
+//    sealed class AllEvent {
+//        object Loading : HomeViewModel.AllEvent()
+//        data class Error(val message: String) : HomeViewModel.AllEvent()
+//        data class Success(val list: List<DataItem>) :
+//            HomeViewModel.AllEvent()
+//
+//        //navigate to progress
+//        data class NavigateToProgressProfileFragment(val id: Int) :
+//            HomeViewModel.AllEvent()
+//
+//    }
+
 
 }

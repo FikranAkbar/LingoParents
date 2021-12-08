@@ -38,6 +38,7 @@
         <com.opensooq.pluto.PlutoView
             android:id="@+id/slider_insight"
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_insight_header" />

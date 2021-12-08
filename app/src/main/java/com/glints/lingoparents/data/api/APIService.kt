@@ -109,7 +109,6 @@ interface APIService {
     @GET("api/v1/students/list/{id}")
     fun getStudentList(
         @Path("id") id: Int,
-        @Header("authorization") authorization: String
     ): Call<StudentListResponse>
 
     @GET("api/v1/insights/recent")
