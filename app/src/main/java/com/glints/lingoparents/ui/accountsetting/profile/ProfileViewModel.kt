@@ -23,8 +23,7 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
     fun onLogOutButtonClick() = viewModelScope.launch {
         profileChannel.send(ProfileEvent.NavigateToAuthScreen)
         tokenPreferences.resetToken()
-        tokenPreferences.resetAccessEmail()
-        tokenPreferences.resetAccessPassword()
+//        tokenPreferences.resetAccessEmail()
     }
 
 

@@ -106,4 +106,10 @@ interface APIService {
         @Field("confirmpassword") confirmPassword: String,
     ): Call<ChangePasswordResponse>
 
+
+    @GET("api/v1/courses/{id}")
+    fun getCourseDetail(
+        @Path("id") id: Int,
+        @Header("authorization") authorization: String
+    ): Call<DetailCourseResponse>
 }
