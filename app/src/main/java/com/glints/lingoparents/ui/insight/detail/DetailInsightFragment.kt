@@ -1,13 +1,13 @@
 package com.glints.lingoparents.ui.insight.detail
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -49,16 +49,20 @@ class DetailInsightFragment : Fragment() {
         viewModel =
             ViewModelProvider(
                 this,
-                CustomViewModelFactory(tokenPreferences, this, insightId = arguments?.get("id") as Int)
+                CustomViewModelFactory(
+                    tokenPreferences,
+                    this,
+                    insightId = arguments?.get("id") as Int
+                )
             )[DetailInsightViewModel::class.java]
 
-        viewModel.getAccessToken().observe(viewLifecycleOwner){ accessToken ->
+        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
             viewModel.loadInsightDetail(viewModel.getCurrentInsightId(), accessToken)
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.insightDetail.collect { insight ->
-                when(insight){
+                when (insight) {
                     is DetailInsightViewModel.InsightDetail.Success -> {
                         showLoading(false)
                         binding.apply {
@@ -72,7 +76,11 @@ class DetailInsightFragment : Fragment() {
                                 tvInsightLike.text = total_like.toString()
                                 tvInsightDislike.text = total_dislike.toString()
                             }
-                            Snackbar.make(binding.root, "Successfully fetch detail insight", Snackbar.LENGTH_SHORT).show()
+                            Snackbar.make(
+                                binding.root,
+                                "Successfully fetch detail insight",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
                         }
                     }
                     is DetailInsightViewModel.InsightDetail.SuccessGetComment -> {
@@ -86,37 +94,12 @@ class DetailInsightFragment : Fragment() {
                     }
                 }
             }
+        }
 
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.likeDislikeInsight.collect { insight ->
                 Snackbar.make(binding.root, "insight event collected", Snackbar.LENGTH_SHORT).show()
-                when(insight){
-                    is DetailInsightViewModel.LikeDislikeInsight.TryToLikeDislikeInsight -> {
-                        Snackbar.make(binding.root, "Button clicked", Snackbar.LENGTH_SHORT).show()
-                        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
-                            when(insight.type) {
-                                DetailInsightViewModel.INSIGHT_TYPE -> {
-                                    when(insight.action) {
-                                        DetailInsightViewModel.LIKE_ACTION -> {
-                                            viewModel.insightDetailLike(insight.id, insight.type, accessToken)
-                                        }
-                                        DetailInsightViewModel.DISLIKE_ACTION -> {
-                                            viewModel.insightDetailDislike(insight.id, insight.type, accessToken)
-                                        }
-                                    }
-                                }
-                                DetailInsightViewModel.COMMENT_TYPE -> {
-                                    when(insight.action) {
-                                        DetailInsightViewModel.LIKE_ACTION -> {
-
-                                        }
-                                        DetailInsightViewModel.DISLIKE_ACTION -> {
-
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                when (insight) {
                     is DetailInsightViewModel.LikeDislikeInsight.Success -> {
                         Snackbar.make(
                             binding.root,
@@ -152,8 +135,8 @@ class DetailInsightFragment : Fragment() {
         }
     }
 
-    private fun initViews(){
-        binding.apply{
+    private fun initViews() {
+        binding.apply {
             ivBackButton.setOnClickListener {
                 findNavController().popBackStack()
             }
@@ -162,29 +145,28 @@ class DetailInsightFragment : Fragment() {
                 binding.btnComment.visibility = View.VISIBLE
             }
             tvInsightLike.setOnClickListener {
-                DetailInsightViewModel.apply {
-                    viewModel.onLikeDislikeOnClick(LIKE_ACTION, viewModel.getCurrentInsightId(), INSIGHT_TYPE)
+                viewModel.getAccessToken().observe(viewLifecycleOwner) {
+                    viewModel.sendLikeRequest(
+                        viewModel.getCurrentInsightId(),
+                        DetailInsightViewModel.INSIGHT_TYPE,
+                        it
+                    )
                 }
-                //viewModel.onLikeDislikeOnClick(DetailInsightViewModel.LIKE_ACTION, viewModel.getCurrentInsightId(), DetailInsightViewModel.INSIGHT_TYPE)
-                //viewModel.getAccessToken().observe(viewLifecycleOwner) {
-                //   viewModel.sendLikeRequest(viewModel.getCurrentInsightId(), DetailInsightViewModel.INSIGHT_TYPE, it)
-                //}
             }
             tvInsightDislike.setOnClickListener {
-                viewModel.onLikeDislikeOnClick(
-                    DetailInsightViewModel.DISLIKE_ACTION, viewModel.getCurrentInsightId(),
-                    DetailInsightViewModel.INSIGHT_TYPE
-                )
                 Log.d("TEST", "prepare to send event")
-                //viewModel.onLikeDislikeOnClick(DetailInsightViewModel.DISLIKE_ACTION, viewModel.getCurrentInsightId(), DetailInsightViewModel.INSIGHT_TYPE)
-                //viewModel.getAccessToken().observe(viewLifecycleOwner) {
-                //    viewModel.sendDislikeRequest(viewModel.getCurrentInsightId(), DetailInsightViewModel.INSIGHT_TYPE, it)
-                //}
+                viewModel.getAccessToken().observe(viewLifecycleOwner) {
+                    viewModel.sendDislikeRequest(
+                        viewModel.getCurrentInsightId(),
+                        DetailInsightViewModel.INSIGHT_TYPE,
+                        it
+                    )
+                }
             }
         }
 
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner,
-            object: OnBackPressedCallback(true) {
+            object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     findNavController().popBackStack()
                 }

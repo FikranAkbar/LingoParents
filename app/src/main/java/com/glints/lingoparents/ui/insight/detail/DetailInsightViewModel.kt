@@ -10,7 +10,6 @@ import com.glints.lingoparents.data.model.response.InsightDetailResponse
 import com.glints.lingoparents.data.model.response.InsightLikeDislikeResponse
 import com.glints.lingoparents.utils.ErrorUtils
 import com.glints.lingoparents.utils.TokenPreferences
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -26,8 +25,6 @@ class DetailInsightViewModel(
     companion object {
         const val INSIGHT_TYPE = "insight"
         const val COMMENT_TYPE = "comment"
-        const val LIKE_ACTION = "like"
-        const val DISLIKE_ACTION = "dislike"
     }
 
     private val insightDetailChannel = Channel<InsightDetail>()
@@ -35,11 +32,6 @@ class DetailInsightViewModel(
 
     private val likeDislikeInsightChannel = Channel<LikeDislikeInsight>()
     val likeDislikeInsight = likeDislikeInsightChannel.receiveAsFlow()
-
-    fun onLikeDislikeOnClick(action: String, id: Int, type: String) = viewModelScope.launch {
-        likeDislikeInsightChannel.send(LikeDislikeInsight.TryToLikeDislikeInsight(action, id, type))
-        Log.d("TEST", "send try to like dislike insight")
-    }
 
     private fun onApiCallStarted() = viewModelScope.launch {
         insightDetailChannel.send(InsightDetail.Loading)
@@ -106,7 +98,6 @@ class DetailInsightViewModel(
             })
     }
 
-    /*
     fun sendLikeRequest(id: Int, type: String, accessToken: String) = viewModelScope.launch {
         onApiCallStartedLikeDislike(type)
         APIClient
@@ -130,60 +121,9 @@ class DetailInsightViewModel(
                 }
             })
     }
-     */
 
-    /*
     fun sendDislikeRequest(id: Int, type: String, accessToken: String) = viewModelScope.launch {
         onApiCallStartedLikeDislike(type)
-        APIClient
-            .service
-            .dislikeInsightDetail(id, type, accessToken)
-            .enqueue(object : Callback<InsightLikeDislikeResponse> {
-                override fun onResponse(
-                    call: Call<InsightLikeDislikeResponse>,
-                    response: Response<InsightLikeDislikeResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        onApiCallSuccessLikeDislike(response.body()!!)
-                    } else {
-                        val apiError = ErrorUtils.parseError(response)
-                        onApiCallError(apiError.message())
-                    }
-                }
-
-                override fun onFailure(call: Call<InsightLikeDislikeResponse>, t: Throwable) {
-                    onApiCallError("Network Failed...")
-                }
-            })
-    }
-     */
-
-    fun insightDetailLike(id: Int, type: String, accessToken: String) = viewModelScope.launch {
-        onApiCallStartedLikeDislike(type)
-        APIClient
-            .service
-            .likeInsightDetail(id, type, accessToken)
-            .enqueue(object : Callback<InsightLikeDislikeResponse> {
-                override fun onResponse(
-                    call: Call<InsightLikeDislikeResponse>,
-                    response: Response<InsightLikeDislikeResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        onApiCallSuccessLikeDislike(response.body()!!)
-                    } else {
-                        val apiError = ErrorUtils.parseError(response)
-                        onApiCallError(apiError.message())
-                    }
-                }
-
-                override fun onFailure(call: Call<InsightLikeDislikeResponse>, t: Throwable) {
-                    onApiCallErrorLikeDislike(type, "Network Failed...")
-                }
-            })
-    }
-
-
-    fun insightDetailDislike(id: Int, type: String, accessToken: String) = viewModelScope.launch {
         APIClient
             .service
             .dislikeInsightDetail(id, type, accessToken)
@@ -219,9 +159,6 @@ class DetailInsightViewModel(
     }
 
     sealed class LikeDislikeInsight {
-        data class TryToLikeDislikeInsight(val action: String, val id: Int, val type: String) :
-            LikeDislikeInsight()
-
         object Loading : LikeDislikeInsight()
         data class Success(val result: InsightLikeDislikeResponse) : LikeDislikeInsight()
         data class Error(val message: String) : LikeDislikeInsight()
