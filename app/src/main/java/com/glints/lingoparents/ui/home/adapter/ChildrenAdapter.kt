@@ -24,7 +24,11 @@ class ChildrenAdapter(private val listener: OnItemClickCallback) :
                 tvChildrenName.text = children.name
                 tvChildrenAge.text = children.age.toString()
                 tvChildrenRelationship.text = children.relationship
-                tvChildrenLevel.text = "${children.level} - ${children.sublevel}"
+                if (children.level == null || children.sublevel == null) {
+                    tvChildrenLevel.text = "not taking any courses"
+                } else {
+                    tvChildrenLevel.text = "${children.level} - ${children.sublevel}"
+                }
             }
         }
     }
