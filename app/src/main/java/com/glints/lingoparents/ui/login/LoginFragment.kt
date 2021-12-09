@@ -110,7 +110,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         showLoading(true)
                     }
                     is LoginViewModel.LoginEvent.Success -> {
-                        showLoading(false)
                         val intent = Intent(
                             this@LoginFragment.requireContext(),
                             DashboardActivity::class.java
