@@ -1,5 +1,6 @@
 package com.glints.lingoparents.ui.progress
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
@@ -31,9 +32,9 @@ class ProgressViewModel(private val tokenPreferences: TokenPreferences) : ViewMo
         progressEventChannel.send(ProgressEvent.Error(message))
     }
 
-    fun getParentId() = tokenPreferences.getAccessEmail().asLiveData()
+    fun getParentId() = tokenPreferences.getUserId().asLiveData()
 
-    fun getStudentListByParentId(id: Int) = viewModelScope.launch {
+    fun getStudentListByParentId(id: String) = viewModelScope.launch {
         onApiCallStarted()
         APIClient
             .service
@@ -44,9 +45,15 @@ class ProgressViewModel(private val tokenPreferences: TokenPreferences) : ViewMo
                     response: Response<StudentListResponse>
                 ) {
                     if (response.isSuccessful) {
-                        val list = response.body()?.data!!
-                        onApiCallSuccess(list)
-                    } else {
+                        if (response.body()?.data != null) {
+                            val list = response.body()?.data!!
+                            onApiCallSuccess(list)
+                        }
+                        else {
+                            onApiCallError(response.body()?.message!!)
+                        }
+                    }
+                    else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallError(apiError.message())
                     }
@@ -60,9 +67,10 @@ class ProgressViewModel(private val tokenPreferences: TokenPreferences) : ViewMo
 
     fun makeMapFromStudentList(list: List<StudentListResponse.DataItem>) =
         viewModelScope.launch {
+            Log.d("studentList", list.toString())
             val nameList = mutableMapOf<String, Int>()
             for (item in list) {
-                nameList[item.name as String] = item.studentId as Int
+                nameList[item.name as String] = item.student_id as Int
             }
 
             progressEventChannel.send(ProgressEvent.NameListGenerated(nameList))

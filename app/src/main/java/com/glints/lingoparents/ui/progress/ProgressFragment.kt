@@ -54,11 +54,9 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
 
         initViewPager()
 
-        /*
         viewModel.getParentId().observe(viewLifecycleOwner) { parentId ->
-            viewModel.getStudentListByParentId(parentId as Int)
+            viewModel.getStudentListByParentId(parentId)
         }
-         */
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.progressEvent.collect { event ->
@@ -67,7 +65,7 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
 
                     }
                     is ProgressViewModel.ProgressEvent.Success -> {
-
+                        viewModel.makeMapFromStudentList(event.result)
                     }
                     is ProgressViewModel.ProgressEvent.Error -> {
 
@@ -78,12 +76,6 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
                 }
             }
         }
-
-        viewModel.makeMapFromStudentList(listOf(
-            StudentListResponse.DataItem(name = "Molly", studentId = 1),
-            StudentListResponse.DataItem(name = "Molly2", studentId = 2),
-            StudentListResponse.DataItem(name = "Molly3", studentId = 3)
-        ))
     }
 
     private fun initViewPager() {

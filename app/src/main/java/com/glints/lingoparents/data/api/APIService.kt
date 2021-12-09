@@ -129,7 +129,7 @@ interface APIService {
 
     @GET("api/v1/students/list/{id}")
     fun getStudentListByParentId(
-        @Path("id") id: Int,
+        @Path("id") id: String,
     ): Call<StudentListResponse>
 
     @GET("api/v1/students/{id}")

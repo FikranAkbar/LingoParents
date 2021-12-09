@@ -9,7 +9,7 @@ data class StudentListResponse(
         val level: String? = null,
         val name: String? = null,
         val sublevel: String? = null,
-        val studentId: Int? = null,
+        val student_id: Int? = null,
         val photo: String? = null,
         val relationship: String? = null,
         val age: Int? = null
