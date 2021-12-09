@@ -272,7 +272,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
                     shimmerLayoutChildren.visibility = View.VISIBLE
                 } else {
                     rvChildren.visibility = View.VISIBLE
-                    shimmerLayoutChildren.visibility = View.INVISIBLE
+                    shimmerLayoutChildren.visibility = View.GONE
                 }
             }
         }
