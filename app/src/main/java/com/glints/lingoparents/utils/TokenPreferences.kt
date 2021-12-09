@@ -15,9 +15,8 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
     companion object {
         private val TOKEN_KEY = stringPreferencesKey("access_token")
         private val REFRESH_TOKEN_KEY = stringPreferencesKey("refresh_token")
-
-        //amin
         private val EMAIL_KEY = stringPreferencesKey("email")
+        private val USER_ID_KEY = stringPreferencesKey("user_id")
 
 
         @Volatile
@@ -42,18 +41,21 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
         }
     }
 
-    //amin
+    fun getRefreshToken(): Flow<String> {
+        return dataStore.data.map { preferences ->
+            preferences[REFRESH_TOKEN_KEY] ?: ""
+        }
+    }
+
     fun getAccessEmail(): Flow<String> {
         return dataStore.data.map { preferences ->
             preferences[EMAIL_KEY] ?: ""
         }
     }
 
-
-
-    fun getRefreshToken(): Flow<String> {
+    fun getUserId(): Flow<String> {
         return dataStore.data.map { preferences ->
-            preferences[REFRESH_TOKEN_KEY] ?: ""
+            preferences[USER_ID_KEY] ?: ""
         }
     }
 
@@ -75,6 +77,11 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
         }
     }
 
+    suspend fun saveUserId(id: String) {
+        dataStore.edit { preferences ->
+            preferences[USER_ID_KEY] = id
+        }
+    }
 
 
     suspend fun resetToken() {

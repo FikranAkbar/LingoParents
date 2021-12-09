@@ -247,4 +247,5 @@
     <string name="enter_voucher_code">Enter Voucher Code</string>
     <string name="payment_method">Payment Method</string>
     <string name="bank_transfer">Bank Transfer</string>
+    <string name="gender">Gender</string>
 </resources>
