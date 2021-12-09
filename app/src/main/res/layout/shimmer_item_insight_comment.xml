@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="18dp">
+
+    <ImageView
+        android:id="@+id/iv_insight_comment"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@color/shimmer_placeholder"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tv_username_comment"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_toEndOf="@+id/iv_insight_comment"
+        android:background="@color/shimmer_placeholder"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_insight_comment_body"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@color/shimmer_placeholder"
+        android:layout_below="@+id/tv_username_comment"
+        android:layout_marginStart="12dp"
+        android:layout_marginVertical="4dp"
+        android:layout_toEndOf="@+id/iv_insight_comment"
+        android:justificationMode="inter_word" />
+
+    <TextView
+        android:id="@+id/tv_insight_like_comment"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@color/shimmer_placeholder"
+        android:layout_below="@id/tv_insight_comment_body" />
+
+    <TextView
+        android:id="@+id/tv_insight_dislike_comment"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@color/shimmer_placeholder"
+        android:layout_below="@id/tv_insight_comment_body"
+        android:layout_marginHorizontal="4dp"
+        android:layout_toEndOf="@id/tv_insight_like_comment" />
+
+    <TextView
+        android:id="@+id/tv_insight_reply_comment"
+        android:layout_width="44sp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_insight_comment_body"
+        android:layout_marginHorizontal="4dp"
+        android:layout_toStartOf="@id/tv_insight_report_comment"
+        android:background="@color/shimmer_placeholder"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_insight_report_comment"
+        android:layout_width="44sp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_insight_comment_body"
+        android:layout_alignParentEnd="true"
+        android:background="@color/shimmer_placeholder"
+        android:textStyle="bold" />
+</RelativeLayout>
