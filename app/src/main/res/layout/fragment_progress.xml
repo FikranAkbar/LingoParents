@@ -6,14 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.progress.ProgressFragment">
 
-    <!--    <com.google.android.material.tabs.TabLayout-->
-    <!--        android:id="@+id/tabs"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:background="@drawable/shadow_border"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.5"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"/>-->
     <ImageView
         android:id="@+id/iv_spinnericon"
         android:layout_width="wrap_content"
@@ -21,17 +13,19 @@
         android:layout_marginStart="12dp"
         android:src="@drawable/ic_baseline_person_24"
         app:layout_constraintBottom_toTopOf="@id/view_pager"
-        app:layout_constraintStart_toStartOf="@id/sp_students"
-        app:layout_constraintTop_toTopOf="@+id/cv_profile_container" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cv_profile_container"
+        app:layout_constraintBottom_toBottomOf="@id/cv_profile_container"/>
 
     <Spinner
         android:id="@+id/sp_students"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="12dp"
-        app:layout_constraintBottom_toTopOf="@id/view_pager"
+        android:textAlignment="textStart"
+        app:layout_constraintBottom_toBottomOf="@id/iv_spinnericon"
+        app:layout_constraintTop_toTopOf="@id/iv_spinnericon"
         app:layout_constraintEnd_toStartOf="@+id/cv_profile_container"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@id/iv_spinnericon" />
 
     <com.google.android.material.card.MaterialCardView
@@ -46,7 +40,7 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tl_live_event_category"
             style="@style/CustomProgressTabLayout"
-            android:layout_width="200dp"
+            android:layout_width="160dp"
             android:layout_height="30dp"
             android:focusable="false"
             app:layout_constraintEnd_toEndOf="parent"
