@@ -3,7 +3,6 @@ package com.glints.lingoparents.ui.register
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
-import com.glints.lingoparents.data.api.APIService
 import com.glints.lingoparents.data.model.response.RegisterUserResponse
 import com.glints.lingoparents.ui.REGISTER_USER_RESULT_OK
 import com.glints.lingoparents.utils.ErrorUtils
@@ -19,20 +18,24 @@ class RegisterViewModel : ViewModel() {
     val registerEvent = registerEventChannel.receiveAsFlow()
 
     fun onSubmitButtonClick(
-            firstName: String,
-            lastName: String,
-            email: String,
-            password: String,
-            phone: String
+        firstName: String,
+        lastName: String,
+        email: String,
+        password: String,
+        phone: String,
+        gender: String,
+        address: String,
     ) = viewModelScope.launch {
         registerEventChannel.send(
-                RegisterEvent.TryToRegisterUser(
-                        firstName,
-                        lastName,
-                        email,
-                        password,
-                        phone
-                )
+            RegisterEvent.TryToRegisterUser(
+                firstName= firstName,
+                lastName= lastName,
+                email= email,
+                password= password,
+                phone= phone,
+                gender= gender,
+                address= address
+            )
         )
     }
 
@@ -57,47 +60,49 @@ class RegisterViewModel : ViewModel() {
     }
 
     fun registerUser(
-            email: String,
-            password: String,
-            firstName: String,
-            lastName: String,
-            phone: String
+        email: String,
+        password: String,
+        firstName: String,
+        lastName: String,
+        phone: String,
+        gender: String,
+        address: String
     ) = viewModelScope.launch {
         onApiCallStarted()
         APIClient
-                .service
-                .registerUser(email, firstName, lastName, password, phone)
-                .enqueue(object : Callback<RegisterUserResponse> {
-                    override fun onResponse(
-                            call: Call<RegisterUserResponse>,
-                            response: Response<RegisterUserResponse>
-                    ) {
-                        if (response.isSuccessful) {
-                            onApiCallSuccess()
-                        } else {
-                            val apiError = ErrorUtils.parseError(response)
-                            onApiCallError(apiError.message())
-                        }
+            .service
+            .registerUser(email, firstName, lastName, password, phone, gender, address)
+            .enqueue(object : Callback<RegisterUserResponse> {
+                override fun onResponse(
+                    call: Call<RegisterUserResponse>,
+                    response: Response<RegisterUserResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        onApiCallSuccess()
+                    } else {
+                        val apiError = ErrorUtils.parseError(response)
+                        onApiCallError(apiError.message())
                     }
+                }
 
-                    override fun onFailure(call: Call<RegisterUserResponse>, t: Throwable) {
-                        onApiCallError("Network Failed...")
-                    }
-                })
+                override fun onFailure(call: Call<RegisterUserResponse>, t: Throwable) {
+                    onApiCallError("Network Failed...")
+                }
+            })
     }
 
     sealed class RegisterEvent {
         object NavigateBackToLogin : RegisterEvent()
         data class NavigateBackWithResult(val result: Int) : RegisterEvent()
         data class TryToRegisterUser(
-                val firstName: String,
-                val lastName: String,
-                val email: String,
-                val password: String,
-                val phone: String,
-                val address: String = "_",
-                val gender: String = "Male",
-                val role: String = "parent"
+            val firstName: String,
+            val lastName: String,
+            val email: String,
+            val password: String,
+            val phone: String,
+            val address: String,
+            val gender: String,
+            val role: String = "parent"
         ) : RegisterEvent()
 
         object Loading : RegisterEvent()

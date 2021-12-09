@@ -1,14 +1,13 @@
 package com.glints.lingoparents.ui.login
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.model.response.LoginUserResponse
 import com.glints.lingoparents.ui.REGISTER_USER_RESULT_OK
 import com.glints.lingoparents.utils.ErrorUtils
+import com.glints.lingoparents.utils.JWTUtils
 import com.glints.lingoparents.utils.TokenPreferences
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import kotlinx.coroutines.channels.Channel
@@ -73,12 +72,14 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
         tokenPreferences.saveRefreshToken(refreshToken)
     }
 
-    //amin
+
     fun saveEmail(email: String) = viewModelScope.launch {
         tokenPreferences.saveAccessEmail(email)
     }
 
-    fun getToken(): LiveData<String> = tokenPreferences.getAccessToken().asLiveData()
+    fun saveUserId(id: String) = viewModelScope.launch {
+        tokenPreferences.saveUserId(id)
+    }
 
     fun loginUserByEmailPassword(email: String, password: String) = viewModelScope.launch {
         onApiCallStarted()
@@ -92,10 +93,13 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
                 ) {
                     if (response.isSuccessful) {
                         onApiCallSuccess("Login Successful")
-                        saveToken(
-                            response.body()?.data?.accessToken.toString(),
-                            response.body()?.data?.refreshToken.toString()
-                        )
+                        val accessToken = response.body()?.data?.accessToken.toString()
+                        val refreshToken = response.body()?.data?.refreshToken.toString()
+                        val userId = JWTUtils.getIdFromAccessToken(accessToken)
+                        saveToken(accessToken, refreshToken)
+                        saveEmail(email)
+                        saveUserId(userId)
+
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallError(apiError.message())
