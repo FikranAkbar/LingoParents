@@ -110,13 +110,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         showLoading(true)
                     }
                     is LoginViewModel.LoginEvent.Success -> {
-                        showLoading(false)
-                        viewModel.saveEmail(
-                            binding.tilEmail.editText?.text.toString()
-                        )
-                        viewModel.savePassword(
-                            binding.tilPassword.editText?.text.toString()
-                        )
                         val intent = Intent(
                             this@LoginFragment.requireContext(),
                             DashboardActivity::class.java

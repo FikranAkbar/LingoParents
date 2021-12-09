@@ -6,20 +6,20 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.glints.lingoparents.R
-import com.glints.lingoparents.data.model.InsightCommentItem
+import com.glints.lingoparents.data.model.response.InsightDetailResponse
 import com.glints.lingoparents.databinding.ItemInsightCommentBinding
 import java.util.ArrayList
 
 class CommentsAdapter : RecyclerView.Adapter<CommentsAdapter.AdapterHolder>() {
-    private val dataList = ArrayList<InsightCommentItem>()
+    private val dataList = ArrayList<InsightDetailResponse.MasterComment>()
 
     inner class AdapterHolder(private val binding: ItemInsightCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: InsightCommentItem, holder: AdapterHolder) {
+        fun bind(item: InsightDetailResponse.MasterComment, holder: AdapterHolder) {
             binding.apply {
                 Glide.with(holder.itemView.context).load(R.drawable.ic_user_avatar_female).into(ivInsightComment)
-                tvUsernameComment.text = item.name
-                tvInsightCommentBody.text = item.comments
+                tvUsernameComment.text = item.commentable_type
+                tvInsightCommentBody.text = item.comment
             }
         }
     }
@@ -43,7 +43,7 @@ class CommentsAdapter : RecyclerView.Adapter<CommentsAdapter.AdapterHolder>() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun submitList(list: List<InsightCommentItem>) {
+    fun submitList(list: List<InsightDetailResponse.MasterComment>) {
         dataList.clear()
         dataList.addAll(list)
         notifyDataSetChanged()

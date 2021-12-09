@@ -25,7 +25,6 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 
 class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
-    var passwordValue: String? = null
     private var _binding: FragmentChangePasswordBinding? = null
     private val binding get() = _binding!!
     private lateinit var tokenPreferences: TokenPreferences
@@ -42,10 +41,6 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
         viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this))[
                 PasswordSettingViewModel::class.java
         ]
-        //amin
-        viewModel.getAccessPassword().observe(viewLifecycleOwner) { password ->
-            passwordValue = password
-        }
         binding.apply {
             mbtnSave.setOnClickListener {
                 viewModel.onSaveButtonClick(
@@ -65,7 +60,6 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
         lifecycleScope.launchWhenStarted {
             viewModel.passwordSettingEvent.collect { event ->
                 when (event) {
-                    //amin
 
                     is PasswordSettingViewModel.PasswordSettingEvent.TryToChangePassword -> {
 
@@ -76,9 +70,6 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
                                 val newPassword = event.newPassword
                                 val confirmPassword = event.confirmPassword
 
-//                                Log.d("test", "password datastore: ${passwordValue.toString()}")
-//                                Log.d("test", "password current:$currentPassword")
-//                                Log.d("test", "password baru:$newPassword")
                                 if (currentPassword.isNotEmpty() && newPassword.isNotEmpty() && confirmPassword.isNotEmpty()) {
                                     if (currentPassword.length >= 8 && newPassword.length >= 8 && confirmPassword.length >= 8) {
                                         if (newPassword.equals(confirmPassword)) {
@@ -146,14 +137,13 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
                         Snackbar.make(
                             requireView(),
                             "Change Password Success",
-                            Snackbar.LENGTH_SHORT
+                            Snackbar.LENGTH_LONG
                         )
                             .setBackgroundTint(Color.parseColor("#42ba96"))
                             .setTextColor(Color.parseColor("#FFFFFF"))
                             .show()
-                        //viewModel.savePassword(binding.tfConfirmPassword.editText?.text.toString())
 
-                        //clearPasswordValue()
+                        clearPasswordValue()
 
                     }
                     is PasswordSettingViewModel.PasswordSettingEvent.Error -> {

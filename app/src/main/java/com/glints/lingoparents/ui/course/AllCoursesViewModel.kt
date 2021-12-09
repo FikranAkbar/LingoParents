@@ -6,7 +6,6 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.model.response.AllCoursesResponse
-import com.glints.lingoparents.ui.liveevent.LiveEventListViewModel
 import com.glints.lingoparents.utils.ErrorUtils
 import com.glints.lingoparents.utils.TokenPreferences
 import kotlinx.coroutines.channels.Channel
@@ -20,8 +19,6 @@ class AllCoursesViewModel(private val tokenPreferences: TokenPreferences) : View
     private val allCoursesChannel = Channel<AllCoursesEvent>()
     val allCoursesEvent = allCoursesChannel.receiveAsFlow()
 
-    //////////// navigate ke detail
-    ///fun courseclick (to detail)
     private fun onApiCallStarted() = viewModelScope.launch {
         allCoursesChannel.send(AllCoursesEvent.Loading)
     }
@@ -65,14 +62,14 @@ class AllCoursesViewModel(private val tokenPreferences: TokenPreferences) : View
 
     }
 
-    //kode
     sealed class AllCoursesEvent {
         object Loading : AllCoursesEvent()
         data class Error(val message: String) : AllCoursesEvent()
-        data class Success(val list: List<AllCoursesResponse.CourseItemResponse>) :
+        data class Success(
+            val list: List<AllCoursesResponse.CourseItemResponse>
+        ) :
             AllCoursesViewModel.AllCoursesEvent()
 
-        //navigate to detail
         data class NavigateToDetailCourseFragment(val id: Int) :
             AllCoursesViewModel.AllCoursesEvent()
 

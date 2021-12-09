@@ -16,9 +16,8 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
     companion object {
         private val TOKEN_KEY = stringPreferencesKey("access_token")
         private val REFRESH_TOKEN_KEY = stringPreferencesKey("refresh_token")
-
-        //amin
         private val EMAIL_KEY = stringPreferencesKey("email")
+        private val USER_ID_KEY = stringPreferencesKey("user_id")
         private val PASSWORD_KEY = stringPreferencesKey("password")
         private val PARENTID_KEY = intPreferencesKey("parentid")
 
@@ -45,28 +44,21 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
         }
     }
 
-    //amin
+    fun getRefreshToken(): Flow<String> {
+        return dataStore.data.map { preferences ->
+            preferences[REFRESH_TOKEN_KEY] ?: ""
+        }
+    }
+
     fun getAccessEmail(): Flow<String> {
         return dataStore.data.map { preferences ->
             preferences[EMAIL_KEY] ?: ""
         }
     }
 
-    fun getAccessPassword(): Flow<String> {
+    fun getUserId(): Flow<String> {
         return dataStore.data.map { preferences ->
-            preferences[PASSWORD_KEY] ?: ""
-        }
-    }
-
-    fun getAccessParentId(): Flow<Int> {
-        return dataStore.data.map { preferences ->
-            preferences[PARENTID_KEY] ?: -1
-        }
-    }
-
-    fun getRefreshToken(): Flow<String> {
-        return dataStore.data.map { preferences ->
-            preferences[REFRESH_TOKEN_KEY] ?: ""
+            preferences[USER_ID_KEY] ?: ""
         }
     }
 
@@ -88,11 +80,12 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
         }
     }
 
-    suspend fun saveAccessPassword(password: String) {
+    suspend fun saveUserId(id: String) {
         dataStore.edit { preferences ->
-            preferences[PASSWORD_KEY] = password
+            preferences[USER_ID_KEY] = id
         }
     }
+
 
     suspend fun saveAccessParentId(parentId: Int) {
         dataStore.edit { preferences ->
@@ -112,15 +105,9 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
         }
     }
 
-    suspend fun resetAccessPassword() {
-        dataStore.edit { preferences ->
-            preferences[PASSWORD_KEY] = ""
-        }
-    }
-
-    suspend fun resetAccessParentId() {
-        dataStore.edit { preferences ->
-            preferences[PARENTID_KEY] = -1
+    fun getAccessParentId(): Flow<Int> {
+        return dataStore.data.map { preferences ->
+            preferences[PARENTID_KEY] ?: -1
         }
     }
 

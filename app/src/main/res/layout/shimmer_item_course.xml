@@ -17,7 +17,7 @@
         <ImageView
             android:id="@+id/courseImage"
             android:layout_width="100dp"
-            app:cardBackgroundColor="@color/shimmer_item_inside"
+            android:background="@color/shimmer_item_inside"
             android:layout_height="100dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
