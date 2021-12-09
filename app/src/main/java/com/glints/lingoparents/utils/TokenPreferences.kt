@@ -89,5 +89,4 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
         }
     }
 
-
 }

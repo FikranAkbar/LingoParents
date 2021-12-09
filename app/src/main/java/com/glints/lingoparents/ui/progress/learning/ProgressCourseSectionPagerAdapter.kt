@@ -1,9 +1,9 @@
-package com.glints.lingoparents.ui.progress
+package com.glints.lingoparents.ui.progress.learning
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.glints.lingoparents.ui.accountsetting.changepassword.ChangePasswordFragment
+import com.glints.lingoparents.ui.progress.learning.ProgressLearningCourseFragment
 
 class ProgressCourseSectionPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
     override fun getItemCount(): Int {

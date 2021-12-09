@@ -1,4 +1,4 @@
-package com.glints.lingoparents.ui.progress
+package com.glints.lingoparents.ui.progress.profile
 
 import android.app.Dialog
 import android.graphics.Color

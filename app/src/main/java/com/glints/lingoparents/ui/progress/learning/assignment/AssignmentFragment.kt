@@ -1,10 +1,9 @@
-package com.glints.lingoparents.ui.progress
+package com.glints.lingoparents.ui.progress.learning.assignment
 
 import android.os.Bundle
 import android.text.Html
 import androidx.fragment.app.Fragment
 import android.view.View
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager

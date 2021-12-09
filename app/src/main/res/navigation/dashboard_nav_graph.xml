@@ -128,12 +128,12 @@
     </fragment>
     <fragment
         android:id="@+id/progressProfileFragment"
-        android:name="com.glints.lingoparents.ui.progress.ProgressLearningFragment"
+        android:name="com.glints.lingoparents.ui.progress.learning.ProgressLearningFragment"
         android:label="fragment_progress_profile"
         tools:layout="@layout/fragment_progress_profile" />
     <fragment
         android:id="@+id/progressLearningCourseFragment"
-        android:name="com.glints.lingoparents.ui.progress.ProgressLearningCourseFragment"
+        android:name="com.glints.lingoparents.ui.progress.learning.ProgressLearningCourseFragment"
         android:label="fragment_progress_learning_course"
         tools:layout="@layout/fragment_progress_learning_course" />
 
@@ -142,7 +142,7 @@
         app:destination="@id/assignmentFragment" />
     <fragment
         android:id="@+id/assignmentFragment"
-        android:name="com.glints.lingoparents.ui.progress.AssignmentFragment"
+        android:name="com.glints.lingoparents.ui.progress.learning.assignment.AssignmentFragment"
         android:label="fragment_assignment"
         tools:layout="@layout/fragment_assignment" />
 <!--    <fragment-->

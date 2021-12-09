@@ -1,9 +1,8 @@
-package com.glints.lingoparents.ui.progress
+package com.glints.lingoparents.ui.progress.learning
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
