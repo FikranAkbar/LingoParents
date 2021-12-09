@@ -98,4 +98,7 @@ dependencies {
 
     // Coil
     implementation "io.coil-kt:coil:1.4.0"
+
+    //JWT Decode
+    implementation 'com.auth0.android:jwtdecode:2.0.1'
 }
