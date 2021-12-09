@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import android.view.View
@@ -17,30 +18,28 @@ import com.glints.lingoparents.databinding.FragmentProgressProfileBinding
 import com.glints.lingoparents.databinding.ItemDashboardChildrenBinding
 import com.glints.lingoparents.databinding.ItemInsightBinding
 import com.glints.lingoparents.databinding.ItemPopupCharacterBinding
+import com.glints.lingoparents.ui.progress.ProgressViewModel
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 
 class ProgressProfileFragment : Fragment(R.layout.fragment_progress_profile) {
-    private lateinit var badgeCharacterDialog: Dialog
     private var _binding: FragmentProgressProfileBinding? = null
     private val binding get() = _binding!!
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentProgressProfileBinding.bind(view)
         binding.ivCharacterBadge.setOnClickListener {
             showDialog()
         }
-
-        showLoading(true)
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 
     private fun showDialog() {
-        val bind: ItemPopupCharacterBinding = ItemPopupCharacterBinding.inflate(layoutInflater)
-
         val dialog = Dialog(activity as AppCompatActivity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(false)
@@ -51,7 +50,11 @@ class ProgressProfileFragment : Fragment(R.layout.fragment_progress_profile) {
             dialog.dismiss()
         }
         dialog.show()
+    }
 
+    @Subscribe
+    fun collectStudentIdEvent(event: ProgressViewModel.EventBusAction.SendStudentId) {
+        Log.d("EventCollected", event.studentId.toString())
     }
 
     private fun showLoading(b: Boolean) {
@@ -67,5 +70,15 @@ class ProgressProfileFragment : Fragment(R.layout.fragment_progress_profile) {
                 }
             }
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

@@ -2,24 +2,17 @@ package com.glints.lingoparents.ui.progress
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.SpinnerAdapter
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.glints.lingoparents.R
-import com.glints.lingoparents.data.model.CourseItem
-import com.glints.lingoparents.data.model.response.StudentListResponse
 import com.glints.lingoparents.databinding.FragmentProgressBinding
-import com.glints.lingoparents.ui.course.AllCoursesFragmentDirections
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
@@ -60,12 +53,16 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.progressEvent.collect { event ->
-                when(event) {
+                when (event) {
                     is ProgressViewModel.ProgressEvent.Loading -> {
 
                     }
                     is ProgressViewModel.ProgressEvent.Success -> {
                         viewModel.makeMapFromStudentList(event.result)
+                        val firstStudentId = event.result[0].student_id!!
+                        val eventBusAction =
+                            ProgressViewModel.EventBusAction.SendStudentId(firstStudentId)
+                        viewModel.sendEventToProfileAndProgressFragment(eventBusAction)
                     }
                     is ProgressViewModel.ProgressEvent.Error -> {
 
@@ -95,9 +92,16 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
         val arrayAdapter = ArrayAdapter(requireContext(), R.layout.item_student, nameList)
         spinner.adapter = arrayAdapter
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 val selectedItem = parent?.getItemAtPosition(position) as String
-                Log.d("SELECTED", map[selectedItem].toString())
+                val studentId = map[selectedItem]!!
+                val eventBusAction = ProgressViewModel.EventBusAction.SendStudentId(studentId)
+                viewModel.sendEventToProfileAndProgressFragment(eventBusAction)
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {

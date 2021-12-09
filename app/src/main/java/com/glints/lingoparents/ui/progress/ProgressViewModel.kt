@@ -11,6 +11,7 @@ import com.glints.lingoparents.utils.TokenPreferences
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,6 +31,10 @@ class ProgressViewModel(private val tokenPreferences: TokenPreferences) : ViewMo
 
     private fun onApiCallError(message: String) = viewModelScope.launch {
         progressEventChannel.send(ProgressEvent.Error(message))
+    }
+
+    fun sendEventToProfileAndProgressFragment(event: ProgressViewModel.EventBusAction) = viewModelScope.launch {
+        EventBus.getDefault().post(event)
     }
 
     fun getParentId() = tokenPreferences.getUserId().asLiveData()
@@ -81,5 +86,9 @@ class ProgressViewModel(private val tokenPreferences: TokenPreferences) : ViewMo
         data class Success(val result: List<StudentListResponse.DataItem>) : ProgressEvent()
         data class Error(val message: String) : ProgressEvent()
         data class NameListGenerated(val result: Map<String, Int>) : ProgressEvent()
+    }
+
+    sealed class EventBusAction {
+        data class SendStudentId(val studentId: Int) : EventBusAction()
     }
 }
