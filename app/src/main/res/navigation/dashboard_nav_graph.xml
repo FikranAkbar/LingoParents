@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_homeFragment_to_insightListFragment"
             app:destination="@id/insightListFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_detailInsightFragment"
+            app:destination="@id/detailInsightFragment" />
     </fragment>
     <fragment
         android:id="@+id/splashFragment"

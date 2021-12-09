@@ -83,24 +83,6 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
     fun saveUserId(id: String) = viewModelScope.launch {
         tokenPreferences.saveUserId(id)
     }
-    fun saveParentId(parentId: Int) = viewModelScope.launch {
-        tokenPreferences.saveAccessParentId(parentId)
-    }
-    fun decodeToken(jwt: String): String {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return "Requires SDK 26"
-        val parts = jwt.split(".")
-        return try {
-            val charset = charset("UTF-8")
-            val header =
-                String(Base64.getUrlDecoder().decode(parts[0].toByteArray(charset)), charset)
-            val payload =
-                String(Base64.getUrlDecoder().decode(parts[1].toByteArray(charset)), charset)
-            "$header"
-            "$payload"
-        } catch (e: Exception) {
-            "Error parsing JWT: $e"
-        }
-    }
 
 
     fun loginUserByEmailPassword(email: String, password: String) = viewModelScope.launch {
@@ -115,14 +97,6 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
                 ) {
                     if (response.isSuccessful) {
                         onApiCallSuccess("Login Successful")
-//                        saveToken(
-//                            response.body()?.data?.accessToken.toString(),
-//                            response.body()?.data?.refreshToken.toString()
-//                        )
-//                        val mDecode = decodeToken(response.body()?.data?.accessToken.toString())
-//                        val test = (JSONObject(mDecode).getString("data"))
-//                        saveParentId(JSONObject(test).getString("id").toInt())
-
 
                         val accessToken = response.body()?.data?.accessToken.toString()
                         val refreshToken = response.body()?.data?.refreshToken.toString()

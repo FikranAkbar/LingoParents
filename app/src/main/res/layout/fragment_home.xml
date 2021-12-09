@@ -43,15 +43,37 @@
             android:visibility="invisible"
             app:layout_constraintTop_toBottomOf="@id/tv_insight_header" />
 
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_layout_insight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@id/tv_insight_header">
+            <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <include layout="@layout/shimmer_dashboard_insight" />
+
+                <include layout="@layout/shimmer_dashboard_insight" />
+
+
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
         <ImageView
             android:id="@+id/ivNoRecentInsight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:src="@drawable/ic_insight"
             android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/shimmer_layout_insight"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_insight_header"
+            app:layout_constraintTop_toTopOf="@id/shimmer_layout_insight"
             app:tint="@color/shimmer_item_inside"
             tools:visibility="visible" />
 
@@ -62,9 +84,10 @@
             android:fontFamily="@font/poppins_w500"
             android:text="@string/dashboard_no_recent_insight"
             android:visibility="invisible"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivNoRecentInsight"
+            app:layout_constraintTop_toBottomOf="@+id/ivNoRecentInsight"
             tools:visibility="visible" />
 
         <com.opensooq.pluto.PlutoIndicator
@@ -99,7 +122,7 @@
             android:textColor="@color/black"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/slider_insight" />
+            app:layout_constraintTop_toBottomOf="@id/shimmer_layout_insight" />
 
         <TextView
             android:id="@+id/tv_view_all_live_event"
@@ -122,16 +145,38 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_live_event_header" />
 
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_layout_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@id/tv_live_event_header">
+            <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <include layout="@layout/shimmer_dashboard_live_event" />
+
+                <include layout="@layout/shimmer_dashboard_live_event" />
+
+
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
 
         <ImageView
             android:id="@+id/ivNoLiveEvent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:src="@drawable/ic_event"
             android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_live_event_header"
+            app:layout_constraintTop_toTopOf="@id/shimmer_layout_event"
+            app:layout_constraintBottom_toBottomOf="@id/shimmer_layout_event"
             app:tint="@color/shimmer_item_inside"
             tools:visibility="visible" />
 
@@ -142,6 +187,7 @@
             android:fontFamily="@font/poppins_w500"
             android:text="@string/dashboard_no_live_event"
             android:visibility="invisible"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ivNoLiveEvent"
@@ -179,7 +225,7 @@
             android:textColor="@color/black"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/slider_live_event" />
+            app:layout_constraintTop_toBottomOf="@id/shimmer_layout_event" />
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -191,16 +237,40 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_children_header" />
 
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_layout_children"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_children_header">
+            <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <include layout="@layout/shimmer_dashboard_children" />
+
+                <include layout="@layout/shimmer_dashboard_children" />
+
+
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
 
         <ImageView
             android:id="@+id/ivNoStudentList"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:src="@drawable/ic_baseline_person"
             android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_children_header"
+            app:layout_constraintTop_toTopOf="@id/shimmer_layout_children"
+            app:layout_constraintBottom_toBottomOf="@id/shimmer_layout_children"
             app:tint="@color/shimmer_item_inside"
             tools:visibility="visible" />
 
@@ -209,6 +279,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
+            android:textSize="20sp"
             android:fontFamily="@font/poppins_w500"
             android:text="@string/dashboard_no_children_data"
             android:visibility="invisible"
@@ -217,33 +288,7 @@
             app:layout_constraintTop_toBottomOf="@id/ivNoStudentList"
             tools:visibility="visible" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/glBottomInsight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="56dp" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/glTopEvent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="282dp" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/glBottomEvent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="128dp" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/glTopChildren"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="160dp" />
 
 
         <!--        <androidx.cardview.widget.CardView-->

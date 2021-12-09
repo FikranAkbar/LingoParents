@@ -78,7 +78,7 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
 //        allEventChannel.send(AllEvent.NavigateToAllEventFragment)
 //    }
 
-    fun goToMainPage(destination: String) = viewModelScope.launch{
+    fun goToMainPage(destination: String) = viewModelScope.launch {
         when {
             destination.contains(INSIGHT_TYPE, true) -> {
                 recentInsightChannel.send(RecentInsight.NavigateToInsightFragment)
@@ -89,7 +89,7 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
         }
     }
 
-    fun goToDetailPage(destination: String, id: Int) = viewModelScope.launch{
+    fun goToDetailPage(destination: String, id: Int) = viewModelScope.launch {
         when {
             destination.contains(INSIGHT_TYPE, true) -> {
                 recentInsightChannel.send(RecentInsight.NavigateToDetailInsightFragment(id))
@@ -100,20 +100,9 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
         }
     }
 
-    fun insightItemClick(id: Int) = viewModelScope.launch {
-        recentInsightChannel.send(RecentInsight.NavigateToDetailInsightFragment(id))
-    }
-
-    fun eventItemClick(id: Int) = viewModelScope.launch {
-        allEventChannel.send(AllEvent.NavigateToDetailEventFragment(id))
-    }
-
-    fun studentItemClick(id: Int) = viewModelScope.launch {
-        studentlistChannel.send(StudentList.NavigateToProgressProfileFragment(id))
-    }
 
     fun getAccessToken(): LiveData<String> = tokenPreferences.getAccessToken().asLiveData()
-    fun getAccessParentId(): LiveData<Int> = tokenPreferences.getAccessParentId().asLiveData()
+    fun getAccessUserId(): LiveData<String> = tokenPreferences.getUserId().asLiveData()
 
     fun getRecentInsight(status: String) = viewModelScope.launch {
         onApiCallStarted(status)
@@ -207,7 +196,8 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
         data class Error(val message: String) : HomeViewModel.RecentInsight()
         data class Success(val list: MutableList<RecentInsightItem>) :
             HomeViewModel.RecentInsight()
-        object NavigateToInsightFragment: HomeViewModel.RecentInsight()
+
+        object NavigateToInsightFragment : HomeViewModel.RecentInsight()
 
         data class NavigateToDetailInsightFragment(val id: Int) :
             HomeViewModel.RecentInsight()
@@ -221,7 +211,8 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
 
         data class NavigateToDetailEventFragment(val id: Int) :
             HomeViewModel.AllEvent()
-        object NavigateToAllEventFragment: HomeViewModel.AllEvent()
+
+        object NavigateToAllEventFragment : HomeViewModel.AllEvent()
     }
 
     sealed class StudentList {
@@ -231,8 +222,8 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
             HomeViewModel.StudentList()
 
         //navigate to progress
-        data class NavigateToProgressProfileFragment(val id: Int) :
-            HomeViewModel.StudentList()
+//        data class NavigateToProgressProfileFragment(val id: Int) :
+//            HomeViewModel.StudentList()
 
     }
 
