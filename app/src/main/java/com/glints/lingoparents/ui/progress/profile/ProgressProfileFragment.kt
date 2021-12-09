@@ -29,6 +29,7 @@ class ProgressProfileFragment : Fragment(R.layout.fragment_progress_profile) {
             showDialog()
         }
 
+        showLoading(true)
 
     }
 
@@ -44,18 +45,27 @@ class ProgressProfileFragment : Fragment(R.layout.fragment_progress_profile) {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(false)
         dialog.setContentView(R.layout.item_popup_character)
-//        dialog.setContentView(bind.root)
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        //dialog.window!!.setLayout(1000,1500)
         val closeIcon = dialog.findViewById(R.id.ivClose) as ImageView
         closeIcon.setOnClickListener {
             dialog.dismiss()
         }
-
-//        bind.ivCharacter.setOnClickListener {
-//            Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show()
-//        }
         dialog.show()
 
+    }
+
+    private fun showLoading(b: Boolean) {
+        binding.apply {
+            when(b) {
+                true -> {
+                    shimmerLayout.visibility = View.VISIBLE
+                    mainContent.visibility = View.GONE
+                }
+                false -> {
+                    shimmerLayout.visibility = View.GONE
+                    mainContent.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 }

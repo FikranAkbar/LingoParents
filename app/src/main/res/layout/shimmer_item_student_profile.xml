@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_profile_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_w700"
+        android:text="@string/student_profile"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/line_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginVertical="8dp"
+        android:background="#33182E7C"
+        app:layout_constraintTop_toBottomOf="@id/tv_profile_title" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/shimmer_cv_imageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_user_avatar_male"
+        app:cardCornerRadius="60dp"
+        app:cardBackgroundColor="@color/shimmer_placeholder"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintEnd_toStartOf="@id/guideline5"
+        app:layout_constraintStart_toStartOf="@id/line_divider"
+        app:layout_constraintTop_toBottomOf="@+id/line_divider" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.41" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/shimmer_tv_profile_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_w700"
+        android:maxLines="1"
+        android:background="@color/shimmer_placeholder"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline5"
+        app:layout_constraintTop_toBottomOf="@id/line_divider" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/shimmer_tv_profile_level"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_w400"
+        android:maxLines="1"
+        android:layout_marginTop="4dp"
+        android:background="@color/shimmer_placeholder"
+        android:textColor="#FF7900"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline5"
+        app:layout_constraintTop_toBottomOf="@id/shimmer_tv_profile_name" />
+
+    <ImageView
+        android:id="@+id/shimmer_iv_character_badge"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/shimmer_placeholder"
+        app:layout_constraintStart_toEndOf="@id/guideline5"
+        app:layout_constraintTop_toBottomOf="@id/shimmer_tv_profile_level"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/shimmer_iv_icon_phone"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/shimmer_placeholder"
+        android:padding="4dp"
+        app:layout_constraintStart_toEndOf="@id/guideline5"
+        app:layout_constraintTop_toBottomOf="@id/shimmer_iv_character_badge"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/shimmer_iv_icon_message"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginVertical="8dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/shimmer_placeholder"
+        android:padding="4dp"
+        app:layout_constraintStart_toEndOf="@id/guideline5"
+        app:layout_constraintTop_toBottomOf="@id/shimmer_tvPhoneNumberValue"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/shimmer_iv_icon_location"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginVertical="8dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/shimmer_placeholder"
+        android:padding="4dp"
+        app:layout_constraintStart_toEndOf="@id/guideline5"
+        app:layout_constraintTop_toBottomOf="@id/shimmer_tvEmailValue"
+        tools:ignore="ContentDescription" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.53" />
+
+    <TextView
+        android:id="@+id/shimmer_tvPhoneNumberValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_w400"
+        android:maxLines="1"
+        android:background="@color/shimmer_placeholder"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/shimmer_iv_icon_phone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toTopOf="@+id/shimmer_iv_icon_phone" />
+
+    <TextView
+        android:id="@+id/shimmer_tvEmailValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_w400"
+        android:maxLines="1"
+        android:background="@color/shimmer_placeholder"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/shimmer_iv_icon_message"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toTopOf="@+id/shimmer_iv_icon_message" />
+
+    <TextView
+        android:id="@+id/shimmer_tvAddressValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_w400"
+        android:maxLines="2"
+        android:textSize="12sp"
+        android:background="@color/shimmer_placeholder"
+        app:layout_constraintBottom_toBottomOf="@+id/shimmer_iv_icon_location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toTopOf="@+id/shimmer_iv_icon_location" />
+</androidx.constraintlayout.widget.ConstraintLayout>
