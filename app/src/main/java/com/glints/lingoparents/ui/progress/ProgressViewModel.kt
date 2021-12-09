@@ -1,12 +1,18 @@
 package com.glints.lingoparents.ui.progress
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.model.response.StudentListResponse
+import com.glints.lingoparents.utils.ErrorUtils
 import com.glints.lingoparents.utils.TokenPreferences
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ProgressViewModel(private val tokenPreferences: TokenPreferences) : ViewModel() {
     private val progressEventChannel = Channel<ProgressEvent>()
@@ -16,17 +22,56 @@ class ProgressViewModel(private val tokenPreferences: TokenPreferences) : ViewMo
         progressEventChannel.send(ProgressEvent.Loading)
     }
 
-    private fun onApiCallSuccess(result: List<StudentListResponse.DataItem>) = viewModelScope.launch {
-        progressEventChannel.send(ProgressEvent.Success(result))
-    }
+    private fun onApiCallSuccess(result: List<StudentListResponse.DataItem>) =
+        viewModelScope.launch {
+            progressEventChannel.send(ProgressEvent.Success(result))
+        }
 
     private fun onApiCallError(message: String) = viewModelScope.launch {
         progressEventChannel.send(ProgressEvent.Error(message))
     }
 
+    fun getParentId() = tokenPreferences.getAccessEmail().asLiveData()
+
+    fun getStudentListByParentId(id: Int) = viewModelScope.launch {
+        onApiCallStarted()
+        APIClient
+            .service
+            .getStudentListByParentId(id)
+            .enqueue(object : Callback<StudentListResponse> {
+                override fun onResponse(
+                    call: Call<StudentListResponse>,
+                    response: Response<StudentListResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val list = response.body()?.data!!
+                        onApiCallSuccess(list)
+                    } else {
+                        val apiError = ErrorUtils.parseError(response)
+                        onApiCallError(apiError.message())
+                    }
+                }
+
+                override fun onFailure(call: Call<StudentListResponse>, t: Throwable) {
+                    onApiCallError("Network failed...")
+                }
+            })
+    }
+
+    fun makeMapFromStudentList(list: List<StudentListResponse.DataItem>) =
+        viewModelScope.launch {
+            val nameList = mutableMapOf<String, Int>()
+            for (item in list) {
+                nameList[item.name as String] = item.studentId as Int
+            }
+
+            progressEventChannel.send(ProgressEvent.NameListGenerated(nameList))
+        }
+
     sealed class ProgressEvent {
         object Loading : ProgressEvent()
         data class Success(val result: List<StudentListResponse.DataItem>) : ProgressEvent()
         data class Error(val message: String) : ProgressEvent()
+        data class NameListGenerated(val result: Map<String, Int>) : ProgressEvent()
     }
 }
