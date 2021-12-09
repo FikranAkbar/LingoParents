@@ -1,28 +1,36 @@
 package com.glints.lingoparents.ui.insight.detail
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.glints.lingoparents.data.model.InsightCommentItem
+import coil.load
 import com.glints.lingoparents.databinding.FragmentDetailInsightBinding
+import com.glints.lingoparents.utils.CustomViewModelFactory
+import com.glints.lingoparents.utils.TokenPreferences
+import com.glints.lingoparents.utils.dataStore
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.collect
 
 class DetailInsightFragment : Fragment() {
-
     private lateinit var binding: FragmentDetailInsightBinding
     private lateinit var viewModel: DetailInsightViewModel
     private lateinit var commentsAdapter: CommentsAdapter
+    private lateinit var tokenPreferences: TokenPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentDetailInsightBinding.inflate(inflater, container, false)
+        tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
 
         initViews()
 
@@ -31,39 +39,121 @@ class DetailInsightFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             commentsAdapter = CommentsAdapter()
             adapter = commentsAdapter
-            commentsAdapter.submitList(
-                listOf(
-                    InsightCommentItem("Camile Berger", "It's a good stuff", "@drawable/ic_user_avatar_female"),
-                    InsightCommentItem("Luke Grandin", "It's a good stuff", "@drawable/ic_user_avatar_female"),
-                    InsightCommentItem("Ethan Souffer", "It's a not bad stuff", "@drawable/ic_user_avatar_female")
-                )
-            )
         }
-
-        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner,
-            object: OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    findNavController().popBackStack()
-                }
-            })
 
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this)[DetailInsightViewModel::class.java]
-        // TODO: Use the ViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel =
+            ViewModelProvider(
+                this,
+                CustomViewModelFactory(
+                    tokenPreferences,
+                    this,
+                    insightId = arguments?.get("id") as Int
+                )
+            )[DetailInsightViewModel::class.java]
+
+
+        viewModel.loadInsightDetail(viewModel.getCurrentInsightId())
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.insightDetail.collect { insight ->
+                when (insight) {
+                    is DetailInsightViewModel.InsightDetail.Success -> {
+                        showLoading(false)
+                        binding.apply {
+                            insight.result.apply {
+                                cover.let {
+                                    ivInsightDetail.load(it)
+                                }
+                                tvInsightTitle.text = title
+                                tvInsightDate.text = createdAt
+                                tvInsightBody.text = content
+                                tvInsightLike.text = total_like.toString()
+                                tvInsightDislike.text = total_dislike.toString()
+                            }
+                        }
+                    }
+                    is DetailInsightViewModel.InsightDetail.SuccessGetComment -> {
+                        commentsAdapter.submitList(insight.list)
+                    }
+                    is DetailInsightViewModel.InsightDetail.Loading -> {
+                        showLoading(true)
+                    }
+                    is DetailInsightViewModel.InsightDetail.Error -> {
+                        showLoading(false)
+                    }
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.likeDislikeInsight.collect { insight ->
+                Snackbar.make(binding.root, "insight event collected", Snackbar.LENGTH_SHORT).show()
+                when (insight) {
+                    is DetailInsightViewModel.LikeDislikeInsight.Success -> {
+                        Snackbar.make(
+                            binding.root,
+                            insight.result.message,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                    is DetailInsightViewModel.LikeDislikeInsight.Loading -> {
+                    }
+                    is DetailInsightViewModel.LikeDislikeInsight.Error -> {
+                        Snackbar.make(
+                            requireView(),
+                            insight.message,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        }
     }
 
-    private fun initViews(){
-        binding.ivBackButton.setOnClickListener {
-            findNavController().popBackStack()
+    private fun showLoading(b: Boolean) {
+        binding.apply {
+            if (b) {
+                shimmerLayout.visibility = View.VISIBLE
+                mainContent.visibility = View.GONE
+            } else {
+                shimmerLayout.visibility = View.GONE
+                mainContent.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun initViews() {
+        binding.apply {
+            ivBackButton.setOnClickListener {
+                findNavController().popBackStack()
+            }
+            tvInsightAddComment.setOnClickListener {
+                binding.tfInsightComment.visibility = View.VISIBLE
+                binding.btnComment.visibility = View.VISIBLE
+            }
+            tvInsightLike.setOnClickListener {
+                viewModel.sendLikeRequest(
+                    viewModel.getCurrentInsightId(),
+                    DetailInsightViewModel.INSIGHT_TYPE
+                )
+            }
+            tvInsightDislike.setOnClickListener {
+                viewModel.sendDislikeRequest(
+                    viewModel.getCurrentInsightId(),
+                    DetailInsightViewModel.INSIGHT_TYPE
+                )
+            }
         }
 
-        binding.tvInsightAddComment.setOnClickListener {
-            binding.tfInsightComment.visibility = View.VISIBLE
-            binding.btnComment.visibility = View.VISIBLE
-        }
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    findNavController().popBackStack()
+                }
+            })
     }
 }

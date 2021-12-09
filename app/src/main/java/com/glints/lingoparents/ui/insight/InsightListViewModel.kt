@@ -86,11 +86,11 @@ class InsightListViewModel(private val tokenPref: TokenPreferences) : ViewModel(
         }
     }
 
-    fun loadInsightList(tag: String, accessToken: String) = viewModelScope.launch {
+    fun loadInsightList(tag: String) = viewModelScope.launch {
         onApiCallStarted(tag)
         APIClient
             .service
-            .getAllInsightList(mapOf("tag" to tag), accessToken)
+            .getAllInsightList(mapOf("tag" to tag))
             .enqueue(object: Callback<AllInsightsListResponse> {
                 override fun onResponse(
                     call: Call<AllInsightsListResponse>,
@@ -109,8 +109,6 @@ class InsightListViewModel(private val tokenPref: TokenPreferences) : ViewModel(
                 }
             })
     }
-
-    fun getAccessToken(): LiveData<String> = tokenPref.getAccessToken().asLiveData()
 
     sealed class AllInsightList{
         object Loading: AllInsightList()
