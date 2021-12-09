@@ -39,9 +39,11 @@ class LiveEventSliderAdapter(
         override fun set(item: AllEventItem, position: Int) {
             if (item.cover == null) {
                 //Glide.with(context).load(R.drawable.img_dummy_live_event).into(liveEventPoster)
+                liveEventPoster.load(R.drawable.img_dummy_live_event)
             }
-            Glide.with(context).load(item.cover).into(liveEventPoster)
             //Glide.with(context).load(item.cover).into(liveEventPoster)
+            //Glide.with(context).load(item.cover).into(liveEventPoster)
+            liveEventPoster.load(item.cover)
             liveEventTitle.text = item.title
             liveEventPrice.text = item.price.toString()
             liveEventDate.text = item.date

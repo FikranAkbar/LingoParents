@@ -35,35 +35,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_insight_header" />
 
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmer_layout_insight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_insight_header">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <include layout="@layout/shimmer_dashboard_insight" />
-
-                <include layout="@layout/shimmer_dashboard_insight" />
-
-                <include layout="@layout/shimmer_dashboard_insight" />
-
-
-            </LinearLayout>
-        </com.facebook.shimmer.ShimmerFrameLayout>
 
         <com.opensooq.pluto.PlutoView
             android:id="@+id/slider_insight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="invisible"
             app:layout_constraintTop_toBottomOf="@id/tv_insight_header" />
 
         <ImageView
@@ -71,10 +48,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_insight"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_insight_header"
-            app:tint="@color/shimmer_item_inside" />
+            app:tint="@color/shimmer_item_inside"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/tvNoRecentInsight"
@@ -82,9 +61,11 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_w500"
             android:text="@string/dashboard_no_recent_insight"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivNoRecentInsight" />
+            app:layout_constraintTop_toBottomOf="@id/ivNoRecentInsight"
+            tools:visibility="visible" />
 
         <com.opensooq.pluto.PlutoIndicator
             android:id="@+id/slider_insight_indicator"
@@ -132,59 +113,39 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_live_event_header" />
 
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmer_layout_event"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_live_event_header">
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-
-                <include layout="@layout/shimmer_dashboard_live_event" />
-
-                <include layout="@layout/shimmer_dashboard_live_event" />
-
-                <include layout="@layout/shimmer_dashboard_live_event" />
-
-
-            </LinearLayout>
-        </com.facebook.shimmer.ShimmerFrameLayout>
 
         <com.opensooq.pluto.PlutoView
             android:id="@+id/slider_live_event"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_live_event_header" />
+
 
         <ImageView
             android:id="@+id/ivNoLiveEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_insight"
+            android:src="@drawable/ic_event"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_live_event_header"
-            app:tint="@color/shimmer_item_inside" />
+            app:tint="@color/shimmer_item_inside"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/tvNoLiveEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
             android:fontFamily="@font/poppins_w500"
-            android:text="@string/dashboard_no_recent_insight"
+            android:text="@string/dashboard_no_live_event"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivNoLiveEvent" />
+            app:layout_constraintTop_toBottomOf="@id/ivNoLiveEvent"
+            tools:visibility="visible" />
 
         <com.opensooq.pluto.PlutoIndicator
             android:id="@+id/slider_live_event_indicator"
@@ -220,45 +181,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/slider_live_event" />
 
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmer_layout_children"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_marginBottom="24dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_children_header">
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-
-                <include layout="@layout/shimmer_dashboard_children" />
-
-            </LinearLayout>
-        </com.facebook.shimmer.ShimmerFrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_children"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:visibility="gone"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_children_header" />
+
 
         <ImageView
             android:id="@+id/ivNoStudentList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_baseline_person"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_children_header"
-            app:tint="@color/shimmer_item_inside" />
+            app:tint="@color/shimmer_item_inside"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/tvNoStudentList"
@@ -267,10 +211,39 @@
             android:layout_marginBottom="24dp"
             android:fontFamily="@font/poppins_w500"
             android:text="@string/dashboard_no_children_data"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivNoStudentList" />
+            app:layout_constraintTop_toBottomOf="@id/ivNoStudentList"
+            tools:visibility="visible" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/glBottomInsight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="56dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/glTopEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="282dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/glBottomEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="128dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/glTopChildren"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="160dp" />
 
 
         <!--        <androidx.cardview.widget.CardView-->

@@ -10,7 +10,18 @@
         android:id="@+id/homeFragment"
         android:name="com.glints.lingoparents.ui.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_homeFragment_to_liveEventListFragment"
+            app:destination="@id/liveEventListFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_liveEventDetailFragment"
+            app:destination="@id/liveEventDetailFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_insightListFragment"
+            app:destination="@id/insightListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.glints.lingoparents.ui.splash.SplashFragment"

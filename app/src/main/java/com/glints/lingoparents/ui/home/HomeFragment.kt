@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.glints.lingoparents.R
 import com.glints.lingoparents.data.model.LiveEventSliderItem
@@ -28,9 +29,9 @@ import com.opensooq.pluto.listeners.OnSlideChangeListener
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.runBlocking
 
-
+/////STASH
 class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemClickCallback {
-    var parentIdValue = -1
+    private var tokenValue = ""
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
@@ -68,7 +69,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
             recentInsightPlaceholder,
             object : OnItemClickListener<RecentInsightItem> {
                 override fun onItemClicked(item: RecentInsightItem?, position: Int) {
-
+//                    viewModel.goToDetailPage(HomeViewModel.INSIGHT_TYPE,item!!.id)
                 }
             }
         )
@@ -79,31 +80,32 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
             allEventPlaceholder,
             object : OnItemClickListener<AllEventItem> {
                 override fun onItemClicked(item: AllEventItem?, position: Int) {
-
+                    //viewModel.goToDetailPage(HomeViewModel.EVENT_TYPE,item!!.id)
                 }
             }
         )
 
-        binding.sliderLiveEvent.apply {
-            create(liveEventSliderAdapter, lifecycle = lifecycle)
-            setOnSlideChangeListener(object : OnSlideChangeListener {
-                override fun onSlideChange(adapter: PlutoAdapter<*, *>, position: Int) {
-
-                }
-            })
-        }
-
         viewModel.getAccessParentId().observe(viewLifecycleOwner) { parentId ->
-            parentIdValue = parentId
+            if (parentId != -1) {
+                viewModel.getStudentList(HomeViewModel.STUDENTLIST_TYPE, parentId)
+            }
         }
 
+//        viewModel.getStudentList(HomeViewModel.STUDENTLIST_TYPE, parentIdValue)
+//        viewModel.getRecentInsight(HomeViewModel.INSIGHT_TYPE)
+//        viewModel.getAllEvent(HomeViewModel.EVENT_TYPE)
 
-        //ini original
         viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
-            viewModel.getRecentInsight(HomeViewModel.INSIGHT_TYPE)
-            viewModel.getAllEvent(HomeViewModel.EVENT_TYPE)
-//            viewModel.getStudentList("he", 4)
-            viewModel.getStudentList(HomeViewModel.STUDENTLIST_TYPE, parentIdValue)
+//            if (parentIdValue != -13) {
+//                viewModel.getStudentList(HomeViewModel.STUDENTLIST_TYPE, parentIdValue)
+//            }
+            tokenValue = accessToken
+            if (tokenValue != "") {
+                viewModel.getRecentInsight(HomeViewModel.INSIGHT_TYPE)
+                viewModel.getAllEvent(HomeViewModel.EVENT_TYPE)
+
+            }
+
         }
 
 
@@ -115,31 +117,37 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
                 adapter = childrenAdapter
                 isVerticalScrollBarEnabled = false
             }
+            tvViewAllLiveEvent.setOnClickListener {
+                viewModel.goToMainPage(HomeViewModel.EVENT_TYPE)
+            }
+            tvViewAllInsight.setOnClickListener {
+                viewModel.goToMainPage(HomeViewModel.INSIGHT_TYPE)
+            }
         }
 
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.studentList.collect { event ->
-                when (event) {
+            viewModel.studentList.collect { student ->
+                when (student) {
                     is HomeViewModel.StudentList.Loading -> {
                         showLoading(HomeViewModel.STUDENTLIST_TYPE, true)
                         showEmptyData(HomeViewModel.STUDENTLIST_TYPE, false)
                     }
                     is HomeViewModel.StudentList.Success -> {
-                        Log.d("studn", event.list.toString())
-                        childrenAdapter.submitList(event.list)
                         showLoading(HomeViewModel.STUDENTLIST_TYPE, false)
+                        Log.d("studn", student.list.toString())
+                        Toast.makeText(context, "STUDENT LIST SUCCESS", Toast.LENGTH_LONG)
+                            .show()
+                        childrenAdapter.submitList(student.list)
+
                     }
                     is HomeViewModel.StudentList.Error -> {
                         showLoading(HomeViewModel.STUDENTLIST_TYPE, false)
                         showEmptyData(HomeViewModel.STUDENTLIST_TYPE, true)
+                        Log.d("STUDENTERROR", "errrrorrr")
+                        Toast.makeText(context, "STUDENT LIST ERROR", Toast.LENGTH_LONG).show()
                     }
-//                    is AllCoursesViewModel.AllCoursesEvent.NavigateToDetailLiveEventFragment -> {
-//                        val action =
-//                            LiveEventListFragmentDirections.actionLiveEventListFragmentToLiveEventDetailFragment(event.id)
-//                        Log.d("IDEvent", event.id.toString())
-//                        findNavController().navigate(action)
-//                    }
+
                 }
             }
         }
@@ -151,14 +159,13 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
                         showEmptyData(HomeViewModel.EVENT_TYPE, false)
                     }
                     is HomeViewModel.AllEvent.Success -> {
-                        Toast.makeText(context, "INI BISA NIHHHHHH", Toast.LENGTH_SHORT).show()
                         showLoading(HomeViewModel.EVENT_TYPE, false)
                         liveEventSliderAdapter.submitList(event.list)
                         liveEventSliderAdapter = LiveEventSliderAdapter(
                             event.list,
                             object : OnItemClickListener<AllEventItem> {
                                 override fun onItemClicked(item: AllEventItem?, position: Int) {
-
+                                    viewModel.goToDetailPage(HomeViewModel.EVENT_TYPE,item!!.id)
                                 }
                             }
                         )
@@ -173,11 +180,20 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
                                 }
                             })
                         }
+                        showEmptyData(HomeViewModel.EVENT_TYPE, false)
+                    }
+                    is HomeViewModel.AllEvent.NavigateToAllEventFragment -> {
+                        val action = R.id.action_homeFragment_to_liveEventListFragment
+                        findNavController().navigate(action)
+                    }
+                    is HomeViewModel.AllEvent.NavigateToDetailEventFragment -> {
+                        //val action = R.id.action_homeFragment_to_liveEventDetailFragment
+                        val action = HomeFragmentDirections.actionHomeFragmentToLiveEventDetailFragment(event.id)
+                        findNavController().navigate(action)
                     }
                     is HomeViewModel.AllEvent.Error -> {
                         showLoading(HomeViewModel.EVENT_TYPE, false)
                         showEmptyData(HomeViewModel.EVENT_TYPE, true)
-                        //showEmptyStudentList(false)
                     }
 
                 }
@@ -187,19 +203,18 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.recentInsight.collect { event ->
-                when (event) {
+            viewModel.recentInsight.collect { insight ->
+                when (insight) {
                     is HomeViewModel.RecentInsight.Loading -> {
                         showLoading(HomeViewModel.INSIGHT_TYPE, true)
                         showEmptyData(HomeViewModel.INSIGHT_TYPE, false)
                     }
                     is HomeViewModel.RecentInsight.Success -> {
-                        Log.d("dfdf", event.list.toString())
-                        //Toast.makeText(context, "INI BISA NIHHHHHH", Toast.LENGTH_SHORT).show()
-                        //childrenAdapter.submitList(event.list)
-                        insightSliderAdapter.submitList(event.list)
+                        showLoading(HomeViewModel.INSIGHT_TYPE, false)
+                        Log.d("dfdf", insight.list.toString())
+                        insightSliderAdapter.submitList(insight.list)
                         insightSliderAdapter = InsightSliderAdapter(
-                            event.list,
+                            insight.list,
                             object : OnItemClickListener<RecentInsightItem> {
                                 override fun onItemClicked(
                                     item: RecentInsightItem?,
@@ -220,11 +235,13 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
                                 }
                             })
                         }
-                        showLoading(HomeViewModel.INSIGHT_TYPE, false)
-                        //showEmptyStudentList(false)
+                        showEmptyData(HomeViewModel.INSIGHT_TYPE, false)
+                    }
+                    is HomeViewModel.RecentInsight.NavigateToInsightFragment -> {
+                        val action = R.id.action_homeFragment_to_insightListFragment
+                        findNavController().navigate(action)
                     }
                     is HomeViewModel.RecentInsight.Error -> {
-                        //showEmptyStudentList(false)
                         showLoading(HomeViewModel.INSIGHT_TYPE, false)
                         showEmptyData(HomeViewModel.INSIGHT_TYPE, true)
                     }
@@ -247,29 +264,28 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
             if (context == HomeViewModel.INSIGHT_TYPE) {
                 if (bool) {
                     sliderInsight.visibility = View.GONE
-                    shimmerLayoutInsight.visibility = View.VISIBLE
+                    //shimmerLayoutInsight.visibility = View.VISIBLE
                 } else {
                     sliderInsight.visibility = View.VISIBLE
-                    shimmerLayoutInsight.visibility = View.GONE
+                    //shimmerLayoutInsight.visibility = View.GONE
                 }
             } else if (context == HomeViewModel.EVENT_TYPE) {
                 if (bool) {
                     sliderLiveEvent.visibility = View.GONE
-                    shimmerLayoutEvent.visibility = View.VISIBLE
+                    //shimmerLayoutEvent.visibility = View.VISIBLE
                 } else {
                     sliderLiveEvent.visibility = View.VISIBLE
-                    shimmerLayoutEvent.visibility = View.GONE
+                    //shimmerLayoutEvent.visibility = View.GONE
                 }
             } else if (context == HomeViewModel.STUDENTLIST_TYPE) {
                 if (bool) {
                     rvChildren.visibility = View.GONE
-                    shimmerLayoutChildren.visibility = View.VISIBLE
+                    //shimmerLayoutChildren.visibility = View.VISIBLE
                 } else {
                     rvChildren.visibility = View.VISIBLE
-                    shimmerLayoutChildren.visibility = View.GONE
+                    //shimmerLayoutChildren.visibility = View.GONE
                 }
             }
-
         }
     }
 
@@ -277,7 +293,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
         binding.apply {
             if (context == HomeViewModel.INSIGHT_TYPE) {
                 if (bool) {
-                    sliderInsight.visibility = View.GONE
+//                    sliderInsight.visibility = View.GONE
+                    sliderInsight.visibility = View.INVISIBLE
                     ivNoRecentInsight.visibility = View.VISIBLE
                     tvNoRecentInsight.visibility = View.VISIBLE
                 } else {
@@ -285,25 +302,27 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
                     ivNoRecentInsight.visibility = View.GONE
                     tvNoRecentInsight.visibility = View.GONE
                 }
-            } else if (context == HomeViewModel.EVENT_TYPE) {
-                if (bool) {
-                    sliderLiveEvent.visibility = View.GONE
-                    ivNoLiveEvent.visibility = View.VISIBLE
-                    tvNoLiveEvent.visibility = View.VISIBLE
-                } else {
-                    sliderLiveEvent.visibility = View.VISIBLE
-                    ivNoLiveEvent.visibility = View.GONE
-                    tvNoLiveEvent.visibility = View.GONE
-                }
             } else if (context == HomeViewModel.STUDENTLIST_TYPE) {
                 if (bool) {
-                    rvChildren.visibility = View.GONE
+//                    rvChildren.visibility = View.GONE
+                    rvChildren.visibility = View.INVISIBLE
                     ivNoStudentList.visibility = View.VISIBLE
                     tvNoStudentList.visibility = View.VISIBLE
                 } else {
                     rvChildren.visibility = View.VISIBLE
                     ivNoStudentList.visibility = View.GONE
                     tvNoStudentList.visibility = View.GONE
+                }
+            } else if (context == HomeViewModel.EVENT_TYPE) {
+                if (bool) {
+//                    sliderLiveEvent.visibility = View.GONE
+                    sliderLiveEvent.visibility = View.INVISIBLE
+                    ivNoLiveEvent.visibility = View.VISIBLE
+                    tvNoLiveEvent.visibility = View.VISIBLE
+                } else {
+                    sliderLiveEvent.visibility = View.VISIBLE
+                    ivNoLiveEvent.visibility = View.GONE
+                    tvNoLiveEvent.visibility = View.GONE
                 }
             }
 

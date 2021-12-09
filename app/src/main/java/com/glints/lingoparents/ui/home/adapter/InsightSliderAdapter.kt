@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import coil.load
 import com.bumptech.glide.Glide
 import com.glints.lingoparents.R
 import com.glints.lingoparents.data.model.InsightSliderItem
@@ -77,10 +78,12 @@ class InsightSliderAdapter(
 
         override fun set(item: RecentInsightItem, position: Int) {
             if (item.cover == null) {
-                Glide.with(context).load(R.drawable.img_dummy_insight).into(ivInsight)
+                //Glide.with(context).load(R.drawable.img_dummy_insight).into(ivInsight)
+                ivInsight.load(R.drawable.img_dummy_insight)
 
             }
-            Glide.with(context).load(item.cover).into(ivInsight)
+//            Glide.with(context).load(item.cover).into(ivInsight)
+            ivInsight.load(item.cover)
             tvInsight.text = item.title
         }
 

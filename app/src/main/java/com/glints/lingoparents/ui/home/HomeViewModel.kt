@@ -22,9 +22,6 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
         const val STUDENTLIST_TYPE = "studentList"
     }
 
-    //insight
-    //live event
-    //student list
     private val recentInsightChannel = Channel<RecentInsight>()
     val recentInsight = recentInsightChannel.receiveAsFlow()
 
@@ -34,15 +31,11 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
     private val studentlistChannel = Channel<StudentList>()
     val studentList = studentlistChannel.receiveAsFlow()
 
-    //    private fun onApiCallStarted() = viewModelScope.launch {
-//        studentlistChannel.send(StudentList.Loading)
-//    }
     private fun onApiCallStarted(status: String) = viewModelScope.launch {
         when {
             status.contains(INSIGHT_TYPE, true) -> {
                 recentInsightChannel.send(RecentInsight.Loading)
             }
-            //event
             status.contains(EVENT_TYPE, true) -> {
                 allEventChannel.send(AllEvent.Loading)
             }
@@ -52,16 +45,11 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
         }
     }
 
-    //    private fun onApiCallSuccess(list: List<DataItem>) =
-//        viewModelScope.launch {
-//            studentlistChannel.send(StudentList.Success(list))
-//        } original
     private fun onRecentInsightApiCallSuccess(list: MutableList<RecentInsightItem>) =
         viewModelScope.launch {
             recentInsightChannel.send(RecentInsight.Success(list))
         }
 
-    //ini event
     private fun onAllEventApiCallSuccess(list: MutableList<AllEventItem>) =
         viewModelScope.launch {
             allEventChannel.send(AllEvent.Success(list))
@@ -72,20 +60,13 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
             studentlistChannel.send(StudentList.Success(list))
         }
 
-    //original
-//    private fun onApiCallError(message: String) = viewModelScope.launch {
-//        studentlistChannel.send(StudentList.Error(message))
-//    }
-
     private fun onApiCallError(status: String, message: String) = viewModelScope.launch {
-        //studentlistChannel.send(StudentList.Error(message))
         when {
             status.contains(INSIGHT_TYPE, true) -> {
                 recentInsightChannel.send(RecentInsight.Error(message))
             }
-            //event
             status.contains(EVENT_TYPE, true) -> {
-                allEventChannel.send(AllEvent.Loading)
+                allEventChannel.send(AllEvent.Error(message))
             }
             status.contains(STUDENTLIST_TYPE, true) -> {
                 studentlistChannel.send(StudentList.Error(message))
@@ -93,8 +74,40 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
         }
     }
 
-    //insight itemclick
-    //event itemclick
+//    fun goToLiveEventPage() = viewModelScope.launch{
+//        allEventChannel.send(AllEvent.NavigateToAllEventFragment)
+//    }
+
+    fun goToMainPage(destination: String) = viewModelScope.launch{
+        when {
+            destination.contains(INSIGHT_TYPE, true) -> {
+                recentInsightChannel.send(RecentInsight.NavigateToInsightFragment)
+            }
+            destination.contains(EVENT_TYPE, true) -> {
+                allEventChannel.send(AllEvent.NavigateToAllEventFragment)
+            }
+        }
+    }
+
+    fun goToDetailPage(destination: String, id: Int) = viewModelScope.launch{
+        when {
+            destination.contains(INSIGHT_TYPE, true) -> {
+                recentInsightChannel.send(RecentInsight.NavigateToDetailInsightFragment(id))
+            }
+            destination.contains(EVENT_TYPE, true) -> {
+                allEventChannel.send(AllEvent.NavigateToDetailEventFragment(id))
+            }
+        }
+    }
+
+    fun insightItemClick(id: Int) = viewModelScope.launch {
+        recentInsightChannel.send(RecentInsight.NavigateToDetailInsightFragment(id))
+    }
+
+    fun eventItemClick(id: Int) = viewModelScope.launch {
+        allEventChannel.send(AllEvent.NavigateToDetailEventFragment(id))
+    }
+
     fun studentItemClick(id: Int) = viewModelScope.launch {
         studentlistChannel.send(StudentList.NavigateToProgressProfileFragment(id))
     }
@@ -113,14 +126,13 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
                     response: Response<RecentInsightResponse>
                 ) {
                     if (response.isSuccessful) {
-//                        onRecentInsightApiCallSuccess(response.body()?.)
                         response.body()?.message?.let {
                             onRecentInsightApiCallSuccess(it)
                         }
+
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallError(status, apiError.message())
-                        //onApiCallError("error")
                     }
                 }
 
@@ -131,7 +143,6 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
 
     }
 
-    //event
     fun getAllEvent(status: String) = viewModelScope.launch {
         onApiCallStarted(status)
         APIClient
@@ -170,9 +181,13 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
                     response: Response<StudentListResponse>
                 ) {
                     if (response.isSuccessful) {
-//                        onApiCallSuccess(response.body()?.data!!)
                         response.body()?.data?.let {
                             onStudentListApiCallSuccess(it)
+                        }
+                        response.body()?.status?.let {
+                            if (it == "failed") {
+                                onApiCallError(status, it)
+                            }
                         }
                     } else {
                         val apiError = ErrorUtils.parseError(response)
@@ -192,6 +207,10 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
         data class Error(val message: String) : HomeViewModel.RecentInsight()
         data class Success(val list: MutableList<RecentInsightItem>) :
             HomeViewModel.RecentInsight()
+        object NavigateToInsightFragment: HomeViewModel.RecentInsight()
+
+        data class NavigateToDetailInsightFragment(val id: Int) :
+            HomeViewModel.RecentInsight()
     }
 
     sealed class AllEvent {
@@ -199,6 +218,10 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
         data class Error(val message: String) : HomeViewModel.AllEvent()
         data class Success(val list: MutableList<AllEventItem>) :
             HomeViewModel.AllEvent()
+
+        data class NavigateToDetailEventFragment(val id: Int) :
+            HomeViewModel.AllEvent()
+        object NavigateToAllEventFragment: HomeViewModel.AllEvent()
     }
 
     sealed class StudentList {

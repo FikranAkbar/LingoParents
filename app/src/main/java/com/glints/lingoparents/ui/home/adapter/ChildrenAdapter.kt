@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.bumptech.glide.Glide
 import com.glints.lingoparents.data.model.response.DataItem
 import com.glints.lingoparents.databinding.ItemDashboardChildrenBinding
 
@@ -19,7 +20,8 @@ class ChildrenAdapter(private val listener: OnItemClickCallback) :
                 listener.onItemClicked(children)
             }
             itemDashboardChildrenBinding.apply {
-//                    Glide.with(holder.itemView.context).load(R.drawable.ic_user_avatar_female_square).into(ivChildren)
+                //Glide.with(holder.itemView.context).load(R.drawable.ic_user_avatar_female_square).into(ivChildren)
+                //Glide.with(holder.itemView.context).load(children.photo).into(ivChildren)
                 ivChildren.load(children.photo)
                 tvChildrenName.text = children.name
                 tvChildrenAge.text = children.age.toString()
