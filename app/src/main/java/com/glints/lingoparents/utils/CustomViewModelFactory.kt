@@ -32,6 +32,8 @@ class CustomViewModelFactory(
     private val eventId: Int? = null,
     private val insightId: Int? = null,
     private val accountId: Int? = null,
+    private val studentId: Int? = null,
+    private val courseId: Int? = null
 ) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
 
     @Suppress("UNCHECKED_CAST")
@@ -96,7 +98,7 @@ class CustomViewModelFactory(
                 ProgressLearningViewModel() as T
             }
             modelClass.isAssignableFrom(ProgressLearningCourseViewModel::class.java) -> {
-                ProgressLearningCourseViewModel() as T
+                ProgressLearningCourseViewModel(studentId = studentId!!, courseId = courseId!!) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

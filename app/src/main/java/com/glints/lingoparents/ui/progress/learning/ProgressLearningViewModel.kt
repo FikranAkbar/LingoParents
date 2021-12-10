@@ -20,9 +20,9 @@ class ProgressLearningViewModel : ViewModel() {
         progressLearningEventChannel.send(ProgressLearningEvent.Loading)
     }
 
-    private fun onApiCallSuccess(result: List<CourseListByStudentIdResponse.DataItem>) =
+    private fun onApiCallSuccess(result: List<CourseListByStudentIdResponse.DataItem>, studentId: Int) =
         viewModelScope.launch {
-            progressLearningEventChannel.send(ProgressLearningEvent.Success(result))
+            progressLearningEventChannel.send(ProgressLearningEvent.Success(result, studentId))
         }
 
     private fun onApiCallError(message: String) = viewModelScope.launch {
@@ -41,7 +41,7 @@ class ProgressLearningViewModel : ViewModel() {
                 ) {
                     if (response.isSuccessful) {
                         val result = response.body()?.data!!
-                        onApiCallSuccess(result)
+                        onApiCallSuccess(result, id)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallError(apiError.message())
@@ -56,7 +56,7 @@ class ProgressLearningViewModel : ViewModel() {
 
     sealed class ProgressLearningEvent {
         object Loading : ProgressLearningEvent()
-        data class Success(val result: List<CourseListByStudentIdResponse.DataItem>) :
+        data class Success(val result: List<CourseListByStudentIdResponse.DataItem>, val studentId: Int) :
             ProgressLearningEvent()
 
         data class Error(val message: String) : ProgressLearningEvent()

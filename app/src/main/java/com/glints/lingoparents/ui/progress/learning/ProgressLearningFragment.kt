@@ -66,7 +66,7 @@ class ProgressLearningFragment : Fragment(R.layout.fragment_progress_learning) {
 
                     }
                     is ProgressLearningViewModel.ProgressLearningEvent.Success -> {
-                        initViewPager(event.result)
+                        initViewPager(event.result, event.studentId)
                     }
                     is ProgressLearningViewModel.ProgressLearningEvent.Error -> {
 
@@ -76,8 +76,8 @@ class ProgressLearningFragment : Fragment(R.layout.fragment_progress_learning) {
         }
     }
 
-    private fun initViewPager(courseList: List<CourseListByStudentIdResponse.DataItem>) {
-        val sectionsPagerAdapter = ProgressCourseSectionPagerAdapter(activity as AppCompatActivity)
+    private fun initViewPager(courseList: List<CourseListByStudentIdResponse.DataItem>, studentId: Int) {
+        val sectionsPagerAdapter = ProgressCourseSectionPagerAdapter(activity as AppCompatActivity, courseList, studentId)
         val viewPager: ViewPager2 = binding.viewPager
         viewPager.isUserInputEnabled = false
         viewPager.adapter = sectionsPagerAdapter

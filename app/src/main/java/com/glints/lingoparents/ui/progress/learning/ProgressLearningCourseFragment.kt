@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.*
 import android.view.Gravity
 import android.graphics.Color
+import android.util.Log
 import android.util.TypedValue
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
@@ -23,6 +24,7 @@ import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.snackbar.Snackbar
 
 class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learning_course) {
     companion object {
@@ -50,7 +52,11 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
         _binding = FragmentProgressLearningCourseBinding.bind(view)
 
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
-        viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this))[
+        viewModel = ViewModelProvider(this, CustomViewModelFactory(
+            tokenPreferences, this,
+            studentId = arguments?.getInt(ProgressLearningCourseViewModel.STUDENT_ID_KEY),
+            courseId = arguments?.getInt(ProgressLearningCourseViewModel.COURSE_ID_KEY)
+        ))[
                 ProgressLearningCourseViewModel::class.java
         ]
 
@@ -74,10 +80,10 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
                 parentLayout.setOnClickListener {
                     if (!isExpanded) {
                         expand()
-                        arrowImage.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_keyboard_arrow_up_24))
+                        arrowImage.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_keyboard_arrow_up_24, requireContext().theme))
                     } else {
                         collapse()
-                        arrowImage.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_keyboard_arrow_down_24))
+                        arrowImage.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_keyboard_arrow_down_24, requireContext().theme))
                     }
                 }
             }
