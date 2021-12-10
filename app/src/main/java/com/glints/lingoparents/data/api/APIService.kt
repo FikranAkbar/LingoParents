@@ -139,4 +139,14 @@ interface APIService {
         @Path("id") id: Int,
         @Header("authorization") authorization: String
     ): Call<DetailCourseResponse>
+
+    @GET("api/v1/students/list/{id}")
+    fun getStudentListByParentId(
+        @Path("id") id: String,
+    ): Call<StudentListResponse>
+
+    @GET("api/v1/students/{id}")
+    fun getStudentProfileById(
+        @Path("id") id: Int,
+    ): Call<StudentProfileResponse>
 }

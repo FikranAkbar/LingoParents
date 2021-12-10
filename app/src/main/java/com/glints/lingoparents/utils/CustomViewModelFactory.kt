@@ -21,6 +21,8 @@ import com.glints.lingoparents.ui.liveevent.category.TodayLiveEventViewModel
 import com.glints.lingoparents.ui.liveevent.category.UpcomingLiveEventViewModel
 import com.glints.lingoparents.ui.liveevent.detail.LiveEventDetailViewModel
 import com.glints.lingoparents.ui.login.LoginViewModel
+import com.glints.lingoparents.ui.progress.ProgressViewModel
+import com.glints.lingoparents.ui.progress.profile.ProgressProfileViewModel
 import com.glints.lingoparents.ui.register.RegisterViewModel
 import com.glints.lingoparents.ui.splash.SplashViewModel
 
@@ -62,7 +64,7 @@ class CustomViewModelFactory(
                 CompletedLiveEventViewModel(tokenPref) as T
             }
             modelClass.isAssignableFrom(LiveEventDetailViewModel::class.java) -> {
-                LiveEventDetailViewModel(tokenPref, eventId as Int) as T
+                LiveEventDetailViewModel(tokenPref, eventId!!) as T
             }
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
                 ProfileViewModel(tokenPref) as T
@@ -83,10 +85,16 @@ class CustomViewModelFactory(
                 HomeViewModel(tokenPref) as T
             }
             modelClass.isAssignableFrom(DetailCourseViewModel::class.java) -> {
-                DetailCourseViewModel(tokenPref, eventId as Int) as T
+                DetailCourseViewModel(tokenPref, eventId!!) as T
             }
             modelClass.isAssignableFrom(DetailInsightViewModel::class.java) -> {
-                DetailInsightViewModel(tokenPref, insightId as Int) as T
+                DetailInsightViewModel(tokenPref, insightId!!) as T
+            }
+            modelClass.isAssignableFrom(ProgressViewModel::class.java) -> {
+                ProgressViewModel(tokenPref) as T
+            }
+            modelClass.isAssignableFrom(ProgressProfileViewModel::class.java) -> {
+                ProgressProfileViewModel() as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

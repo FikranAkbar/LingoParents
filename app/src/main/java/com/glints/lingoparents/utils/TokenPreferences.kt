@@ -91,4 +91,10 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
     }
 
 
+    suspend fun resetAccessEmail() {
+        dataStore.edit { preferences ->
+            preferences[EMAIL_KEY] = ""
+        }
+    }
+
 }
