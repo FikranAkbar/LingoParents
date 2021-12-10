@@ -176,7 +176,7 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
 //                Toast.makeText(context, "Kamu memilih " + session.session, Toast.LENGTH_SHORT)
 //                    .show()
                 //Navigation.createNavigateOnClickListener(R.id.action_progressLearningCourseFragment_to_assignmentFragment)
-                findNavController().navigate(R.id.action_progressLearningCourseFragment_to_assignmentFragment)
+                findNavController().navigate(R.id.action_progressLearningCourseFragment_to_progressAssignmentFragment)
             }
         })
 

@@ -152,4 +152,5 @@
     <string name="dummy_john_doe">John Doe</string>
     <string name="gender">Gender</string>
     <string name="level_divider">-</string>
+    <string name="shimmer_course_placeholder">Placeholder</string>
 </resources>
