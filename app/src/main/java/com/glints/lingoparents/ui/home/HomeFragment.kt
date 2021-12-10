@@ -317,6 +317,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
         }
     }
 
+    //belum selesai
     override fun onItemClicked(children: StudentListResponse.DataItem) {
 //        Toast.makeText(context, "student id: ${children.student_id}", Toast.LENGTH_SHORT)
 //            .show()
