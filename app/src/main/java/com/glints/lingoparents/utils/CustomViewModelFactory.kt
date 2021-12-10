@@ -21,6 +21,7 @@ import com.glints.lingoparents.ui.liveevent.category.UpcomingLiveEventViewModel
 import com.glints.lingoparents.ui.liveevent.detail.LiveEventDetailViewModel
 import com.glints.lingoparents.ui.login.LoginViewModel
 import com.glints.lingoparents.ui.progress.ProgressViewModel
+import com.glints.lingoparents.ui.progress.learning.ProgressLearningViewModel
 import com.glints.lingoparents.ui.progress.profile.ProgressProfileViewModel
 import com.glints.lingoparents.ui.register.RegisterViewModel
 import com.glints.lingoparents.ui.splash.SplashViewModel
@@ -91,6 +92,9 @@ class CustomViewModelFactory(
             }
             modelClass.isAssignableFrom(ProgressProfileViewModel::class.java) -> {
                 ProgressProfileViewModel() as T
+            }
+            modelClass.isAssignableFrom(ProgressLearningViewModel::class.java) -> {
+                ProgressLearningViewModel() as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

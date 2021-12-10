@@ -59,9 +59,21 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
                     is ProgressViewModel.ProgressEvent.Success -> {
                         viewModel.makeMapFromStudentList(event.result)
                         val firstStudentId = event.result[0].student_id!!
-                        val eventBusAction =
-                            ProgressViewModel.EventBusAction.SendStudentId(firstStudentId)
-                        viewModel.sendEventToProfileAndProgressFragment(eventBusAction)
+                        viewModel.saveSelectedStudentId(firstStudentId)
+
+                        val eventBusActionToStudentProfile =
+                            ProgressViewModel.EventBusActionToStudentProfile.SendStudentId(
+                                firstStudentId
+                            )
+                        viewModel.sendEventToProfileFragment(eventBusActionToStudentProfile)
+
+                        val eventBusActionToStudentLearningProgress =
+                            ProgressViewModel.EventBusActionToStudentLearningProgress.SendStudentId(
+                                firstStudentId
+                            )
+                        viewModel.sendStickyEventToLearningProgressFragment(
+                            eventBusActionToStudentLearningProgress
+                        )
                     }
                     is ProgressViewModel.ProgressEvent.Error -> {
 
@@ -99,8 +111,19 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
             ) {
                 val selectedItem = parent?.getItemAtPosition(position) as String
                 val studentId = map[selectedItem]!!
-                val eventBusAction = ProgressViewModel.EventBusAction.SendStudentId(studentId)
-                viewModel.sendEventToProfileAndProgressFragment(eventBusAction)
+                viewModel.saveSelectedStudentId(studentId)
+
+                val eventBusActionToProfileFragment =
+                    ProgressViewModel.EventBusActionToStudentProfile.SendStudentId(studentId)
+                viewModel.sendEventToProfileFragment(eventBusActionToProfileFragment)
+                val eventBusActionToLearningProgressFragment =
+                    ProgressViewModel.EventBusActionToStudentLearningProgress.SendStudentId(
+                        studentId
+                    )
+                viewModel.sendEventToLearningProgressFragment(
+                    eventBusActionToLearningProgressFragment
+                )
+
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {

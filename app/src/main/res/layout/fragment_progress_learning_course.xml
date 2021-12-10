@@ -53,6 +53,8 @@
             android:layout_height="wrap_content"
             app:expandable_duration="300"
             app:expandable_isExpanded="false"
+            app:expandable_spinner_color="@null"
+            app:expandable_showSpinner="false"
             app:expandable_parentLayout="@layout/expand_title"
             app:expandable_secondLayout="@layout/expand_content"
             app:layout_constraintEnd_toEndOf="parent"

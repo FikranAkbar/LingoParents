@@ -101,7 +101,7 @@ class ProgressProfileFragment : Fragment(R.layout.fragment_progress_profile) {
     }
 
     @Subscribe
-    fun collectStudentIdEvent(event: ProgressViewModel.EventBusAction.SendStudentId) {
+    fun collectStudentIdEvent(event: ProgressViewModel.EventBusActionToStudentProfile.SendStudentId) {
         val studentId = event.studentId
         viewModel.getStudentProfileByStudentId(studentId)
     }
