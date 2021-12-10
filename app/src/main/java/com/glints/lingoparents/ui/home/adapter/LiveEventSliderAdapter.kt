@@ -5,10 +5,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import coil.load
-import com.bumptech.glide.Glide
 import com.glints.lingoparents.R
 import com.glints.lingoparents.data.model.response.AllEventItem
-import com.glints.lingoparents.data.model.response.RecentInsightItem
 import com.opensooq.pluto.base.PlutoAdapter
 import com.opensooq.pluto.base.PlutoViewHolder
 import com.opensooq.pluto.listeners.OnItemClickListener

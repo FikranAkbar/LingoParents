@@ -154,6 +154,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
                         )
                         binding.sliderLiveEvent.apply {
                             create(liveEventSliderAdapter, lifecycle = lifecycle)
+                            setCustomIndicator(binding.sliderLiveEventIndicator)
                             setOnSlideChangeListener(object : OnSlideChangeListener {
                                 override fun onSlideChange(
                                     adapter: PlutoAdapter<*, *>,
@@ -209,6 +210,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
                         )
                         binding.sliderInsight.apply {
                             create(insightSliderAdapter, lifecycle = lifecycle)
+                            setCustomIndicator(binding.sliderInsightIndicator)
                             setOnSlideChangeListener(object : OnSlideChangeListener {
                                 override fun onSlideChange(
                                     adapter: PlutoAdapter<*, *>,

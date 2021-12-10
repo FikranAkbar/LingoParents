@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.bumptech.glide.Glide
 import com.glints.lingoparents.data.model.response.DataItem
 import com.glints.lingoparents.databinding.ItemDashboardChildrenBinding
 
@@ -15,6 +14,7 @@ class ChildrenAdapter(private val listener: OnItemClickCallback) :
 
     inner class CustomViewHolder(private val itemDashboardChildrenBinding: ItemDashboardChildrenBinding) :
         RecyclerView.ViewHolder(itemDashboardChildrenBinding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(holder: CustomViewHolder, children: DataItem) {
             holder.itemView.setOnClickListener {
                 listener.onItemClicked(children)
@@ -22,7 +22,7 @@ class ChildrenAdapter(private val listener: OnItemClickCallback) :
             itemDashboardChildrenBinding.apply {
                 ivChildren.load(children.photo)
                 tvChildrenName.text = children.name
-                tvChildrenAge.text = children.age.toString()
+                tvChildrenAge.text = "(${children.age} years old)"
                 tvChildrenRelationship.text = children.relationship
                 if (children.level == null || children.sublevel == null) {
                     tvChildrenLevel.text = "not taking any courses"

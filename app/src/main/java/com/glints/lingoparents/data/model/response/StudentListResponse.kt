@@ -17,13 +17,13 @@ data class StudentListResponse(
 data class DataItem(
 
 	@field:SerializedName("level")
-	val level: String,
+	val level: String?,
 
 	@field:SerializedName("name")
 	val name: String,
 
 	@field:SerializedName("sublevel")
-	val sublevel: String,
+	val sublevel: String?,
 
 	@field:SerializedName("student_id")
 	val studentId: Int,
