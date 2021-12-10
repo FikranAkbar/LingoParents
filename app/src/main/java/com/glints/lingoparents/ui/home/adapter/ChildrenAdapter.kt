@@ -5,17 +5,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.glints.lingoparents.data.model.response.DataItem
+import com.glints.lingoparents.data.model.response.StudentListResponse
 import com.glints.lingoparents.databinding.ItemDashboardChildrenBinding
 
 class ChildrenAdapter(private val listener: OnItemClickCallback) :
     RecyclerView.Adapter<ChildrenAdapter.CustomViewHolder>() {
-    private val children = ArrayList<DataItem>()
+    private val children = ArrayList<StudentListResponse.DataItem>()
 
     inner class CustomViewHolder(private val itemDashboardChildrenBinding: ItemDashboardChildrenBinding) :
         RecyclerView.ViewHolder(itemDashboardChildrenBinding.root) {
         @SuppressLint("SetTextI18n")
-        fun bind(holder: CustomViewHolder, children: DataItem) {
+        fun bind(holder: CustomViewHolder, children: StudentListResponse.DataItem) {
             holder.itemView.setOnClickListener {
                 listener.onItemClicked(children)
             }
@@ -42,7 +42,7 @@ class ChildrenAdapter(private val listener: OnItemClickCallback) :
 
 
     interface OnItemClickCallback {
-        fun onItemClicked(children: DataItem)
+        fun onItemClicked(children: StudentListResponse.DataItem)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
@@ -59,7 +59,7 @@ class ChildrenAdapter(private val listener: OnItemClickCallback) :
     override fun getItemCount(): Int = children.size
 
     @SuppressLint("NotifyDataSetChanged")
-    fun submitList(list: List<DataItem>) {
+    fun submitList(list: List<StudentListResponse.DataItem>) {
         children.clear()
         children.addAll(list)
         notifyDataSetChanged()

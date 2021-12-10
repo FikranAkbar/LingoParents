@@ -55,7 +55,7 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
             allEventChannel.send(AllEvent.Success(list))
         }
 
-    private fun onStudentListApiCallSuccess(list: List<DataItem>) =
+    private fun onStudentListApiCallSuccess(list: List<StudentListResponse.DataItem>) =
         viewModelScope.launch {
             studentlistChannel.send(StudentList.Success(list))
         }
@@ -215,7 +215,7 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
     sealed class StudentList {
         object Loading : HomeViewModel.StudentList()
         data class Error(val message: String) : HomeViewModel.StudentList()
-        data class Success(val list: List<DataItem>) :
+        data class Success(val list: List<StudentListResponse.DataItem>) :
             HomeViewModel.StudentList()
 
         //navigate to progress

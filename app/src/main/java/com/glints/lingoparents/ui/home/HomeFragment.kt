@@ -12,8 +12,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.glints.lingoparents.R
 import com.glints.lingoparents.data.model.response.AllEventItem
-import com.glints.lingoparents.data.model.response.DataItem
 import com.glints.lingoparents.data.model.response.RecentInsightItem
+import com.glints.lingoparents.data.model.response.StudentListResponse
 import com.glints.lingoparents.databinding.FragmentHomeBinding
 import com.glints.lingoparents.ui.home.adapter.ChildrenAdapter
 import com.glints.lingoparents.ui.home.adapter.InsightSliderAdapter
@@ -317,8 +317,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
         }
     }
 
-    override fun onItemClicked(children: DataItem) {
-        Toast.makeText(context, "student id: ${children.studentId}", Toast.LENGTH_SHORT)
+    override fun onItemClicked(children: StudentListResponse.DataItem) {
+        Toast.makeText(context, "student id: ${children.student_id}", Toast.LENGTH_SHORT)
             .show()
     }
 }
