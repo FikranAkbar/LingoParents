@@ -136,4 +136,15 @@ interface APIService {
     fun getStudentProfileById(
         @Path("id") id: Int,
     ): Call<StudentProfileResponse>
+
+    @GET("api/v1/students/{id}/courses")
+    fun getCourseListByStudentId(
+        @Path("id") studentId: Int
+    ): Call<CourseListByStudentIdResponse>
+
+    @GET("api/v1/students/{{studentId}}/courses/{{courseId}}")
+    fun getCourseDetailByStudentId(
+        @Path("studentId") studentId: Int,
+        @Path("courseId") courseId: Int
+    ): Call<CourseDetailByStudentIdResponse>
 }

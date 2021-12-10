@@ -47,9 +47,11 @@ class ProgressLearningFragment : Fragment(R.layout.fragment_progress_learning) {
         viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this))[
                 ProgressLearningViewModel::class.java
         ]
+
+        initViewPager()
     }
 
-    fun initViewPager() {
+    private fun initViewPager() {
         val tabIcons = arrayOf(R.drawable.ic_small_korea_flag, R.drawable.ic_small_germany_flag)
         val sectionsPagerAdapter = ProgressCourseSectionPagerAdapter(activity as AppCompatActivity)
         val viewPager: ViewPager2 = binding.viewPager
@@ -65,7 +67,7 @@ class ProgressLearningFragment : Fragment(R.layout.fragment_progress_learning) {
 
     @Subscribe(sticky = true)
     fun collectedEventStudentId(event: ProgressViewModel.EventBusActionToStudentLearningProgress.SendStudentId) {
-        Snackbar.make(binding.root, "Student id has been received!", Snackbar.LENGTH_SHORT).show()
+
     }
 
     override fun onStop() {

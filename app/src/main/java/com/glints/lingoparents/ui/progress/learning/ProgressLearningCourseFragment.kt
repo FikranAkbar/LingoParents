@@ -1,6 +1,7 @@
 package com.glints.lingoparents.ui.progress.learning
 
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
@@ -10,6 +11,7 @@ import android.graphics.Color
 import android.util.TypedValue
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,16 +19,12 @@ import com.glints.lingoparents.R
 import com.glints.lingoparents.data.model.SessionItem
 import com.glints.lingoparents.databinding.FragmentProgressLearningCourseBinding
 import com.glints.lingoparents.ui.progress.adapter.SessionAdapter
+import com.glints.lingoparents.utils.CustomViewModelFactory
+import com.glints.lingoparents.utils.TokenPreferences
+import com.glints.lingoparents.utils.dataStore
 import com.google.android.material.card.MaterialCardView
 
 class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learning_course) {
-    private lateinit var rvSession: RecyclerView
-    private val list = ArrayList<SessionItem>()
-
-
-    private var _binding: FragmentProgressLearningCourseBinding? = null
-    private val binding get() = _binding!!
-
     companion object {
         private val DUMMY_SESSION_ATTENDANCE = listOf(
             true,
@@ -37,9 +35,25 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
         )
     }
 
+    private lateinit var rvSession: RecyclerView
+    private val list = ArrayList<SessionItem>()
+
+    private var _binding: FragmentProgressLearningCourseBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var tokenPreferences: TokenPreferences
+    private lateinit var viewModel: ProgressLearningCourseViewModel
+
+    @SuppressLint("UseCompatLoadingForDrawables")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentProgressLearningCourseBinding.bind(view)
+
+        tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
+        viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this))[
+                ProgressLearningCourseViewModel::class.java
+        ]
+
         binding.apply {
             sessionNumber.apply {
                 for (i: Int in 1..10) {
@@ -55,29 +69,20 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
                     }
                 }
             }
-        }
-        var g = 0
-        var arrowImage =
-            binding.expandable.parentLayout.findViewById<ImageView>(R.id.iv_coursearrow)
-        binding.expandable.parentLayout.setOnClickListener {
-            if (g == 0) {
-                g = 1
-                binding.expandable.expand()
-                arrowImage.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_keyboard_arrow_up_24))
-            } else {
-                g = 0
-                binding.expandable.collapse()
-                arrowImage.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_keyboard_arrow_down_24))
+            expandable.apply {
+                val arrowImage = parentLayout.findViewById<ImageView>(R.id.iv_coursearrow)
+                parentLayout.setOnClickListener {
+                    if (!isExpanded) {
+                        expand()
+                        arrowImage.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_keyboard_arrow_up_24))
+                    } else {
+                        collapse()
+                        arrowImage.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_keyboard_arrow_down_24))
+                    }
+                }
             }
         }
-        //binding.progressBar.max = 100
-        val pb = binding.expandable.secondLayout.findViewById<ProgressBar>(R.id.progressBar)
-        pb.max = 100
-        val currentProgress = 70
-        ObjectAnimator.ofInt(pb, "progress", currentProgress)
-            //.setDuration(1500)
-            .start()
-        //rv
+
         rvSession = binding.rvSession
         rvSession.setHasFixedSize(true)
         showRecyclerList()
@@ -173,15 +178,11 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
         rvSession.adapter = listSessionAdapter
         listSessionAdapter.setOnItemClickCallback(object : SessionAdapter.OnItemClickCallback {
             override fun onItemClicked(session: SessionItem) {
-//                Toast.makeText(context, "Kamu memilih " + session.session, Toast.LENGTH_SHORT)
-//                    .show()
-                //Navigation.createNavigateOnClickListener(R.id.action_progressLearningCourseFragment_to_assignmentFragment)
                 findNavController().navigate(R.id.action_progressLearningCourseFragment_to_assignmentFragment)
             }
         })
 
         list.clear()
         list.addAll(listSession)
-        listSessionAdapter.notifyDataSetChanged()
     }
 }

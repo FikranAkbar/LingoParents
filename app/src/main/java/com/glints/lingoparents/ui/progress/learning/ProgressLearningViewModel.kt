@@ -7,5 +7,7 @@ import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 
 class ProgressLearningViewModel : ViewModel() {
-
+    sealed class ProgressLearningEvent {
+        object Loading: ProgressLearningEvent()
+    }
 }
