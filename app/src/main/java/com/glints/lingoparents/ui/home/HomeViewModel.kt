@@ -74,9 +74,6 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
         }
     }
 
-//    fun goToLiveEventPage() = viewModelScope.launch{
-//        allEventChannel.send(AllEvent.NavigateToAllEventFragment)
-//    }
 
     fun goToMainPage(destination: String) = viewModelScope.launch {
         when {
