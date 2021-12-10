@@ -1,4 +1,4 @@
-package com.glints.lingoparents.ui.progress
+package com.glints.lingoparents.ui.progress.learning
 
 import android.animation.ObjectAnimator
 import android.os.Bundle
@@ -10,22 +10,14 @@ import android.graphics.Color
 import android.util.TypedValue
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import com.glints.lingoparents.R
-import com.glints.lingoparents.data.model.CourseItem
 import com.glints.lingoparents.data.model.SessionItem
 import com.glints.lingoparents.databinding.FragmentProgressLearningCourseBinding
-import com.glints.lingoparents.ui.course.adapter.CourseAdapter
 import com.glints.lingoparents.ui.progress.adapter.SessionAdapter
 import com.google.android.material.card.MaterialCardView
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 
 class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learning_course) {
     private lateinit var rvSession: RecyclerView
