@@ -22,7 +22,7 @@
             android:id="@+id/shimmer_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <include
                 layout="@layout/shimmer_item_student_profile" />
@@ -32,6 +32,7 @@
             android:id="@+id/main_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="gone"
             android:padding="16dp">
 
             <com.google.android.material.textview.MaterialTextView
@@ -70,7 +71,6 @@
                     android:id="@+id/imageView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_user_avatar_male_square"
                     app:layout_constraintHorizontal_bias="0.1"
                     app:layout_constraintEnd_toStartOf="@id/guideline5"
                     app:layout_constraintStart_toStartOf="@id/line_divider"
@@ -93,7 +93,6 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/poppins_w700"
                 android:maxLines="1"
-                android:text="@string/dummy_john_doe"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -107,7 +106,6 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/poppins_w400"
                 android:maxLines="1"
-                android:text="@string/dummy_beginner_sublevel_2"
                 android:textColor="#FF7900"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -119,7 +117,6 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="8dp"
-                android:src="@drawable/ic_badge_captain_america"
                 app:layout_constraintStart_toEndOf="@id/guideline5"
                 app:layout_constraintTop_toBottomOf="@id/tv_profile_level"
                 tools:ignore="ContentDescription" />
@@ -141,8 +138,7 @@
                 android:id="@+id/iv_icon_message"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginVertical="8dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/ic_rectangle_4"
                 android:padding="4dp"
                 android:src="@drawable/ic_email"
@@ -154,8 +150,7 @@
                 android:id="@+id/iv_icon_location"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginVertical="8dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/ic_rectangle_4"
                 android:padding="4dp"
                 android:src="@drawable/ic_baseline_location_on_24"
@@ -168,7 +163,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.53" />
+                app:layout_constraintGuide_percent="0.54" />
 
             <TextView
                 android:id="@+id/tvPhoneNumberValue"
@@ -177,7 +172,6 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/poppins_w400"
                 android:maxLines="1"
-                android:text="@string/dummy_010_987"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_icon_phone"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -191,7 +185,6 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/poppins_w400"
                 android:maxLines="1"
-                android:text="@string/dummy_janedoe_gmail_com"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_icon_message"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -205,7 +198,6 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/poppins_w400"
                 android:maxLines="2"
-                android:text="@string/dummy_sesame_street_no_76_east_jakarta_13782"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_icon_location"
                 app:layout_constraintEnd_toEndOf="parent"

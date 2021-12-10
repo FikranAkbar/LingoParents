@@ -1,4 +1,5 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:width="23dp"
     android:height="15dp"
     android:viewportWidth="23"
@@ -15,24 +16,24 @@
       android:fillAlpha="0.3"/>
   <group>
     <clip-path
-        android:pathData="M2,0L21,0A2,2 0,0 1,23 2L23,13A2,2 0,0 1,21 15L2,15A2,2 0,0 1,0 13L0,2A2,2 0,0 1,2 0z"/>
+        android:pathData="M2,0L21,0A2,2 0,0 1,23 2L23,13A2,2 0,0 1,21 15L2,15A2,2 0,0 1,0 13L0,2A2,2 0,0 1,2 0z"
+        tools:ignore="VectorRaster" />
     <path
         android:pathData="M0,5H23V0H0V5Z"
         android:strokeAlpha="0.3"
         android:fillColor="#262626"
         android:fillType="evenOdd"
-        android:fillAlpha="0.3"/>
+        />
     <path
         android:pathData="M0,10H23V5H0V10Z"
         android:strokeAlpha="0.3"
         android:fillColor="#F01515"
-        android:fillType="evenOdd"
-        android:fillAlpha="0.3"/>
+        android:fillType="evenOdd" />
     <path
         android:pathData="M0,15H23V10H0V15Z"
         android:strokeAlpha="0.3"
         android:fillColor="#FFD521"
         android:fillType="evenOdd"
-        android:fillAlpha="0.3"/>
+        />
   </group>
 </vector>

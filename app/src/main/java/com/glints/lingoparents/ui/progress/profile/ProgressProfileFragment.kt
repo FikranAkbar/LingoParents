@@ -1,24 +1,25 @@
 package com.glints.lingoparents.ui.progress.profile
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.Window
 import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import coil.load
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentProgressProfileBinding
-import com.glints.lingoparents.databinding.ItemDashboardChildrenBinding
-import com.glints.lingoparents.databinding.ItemInsightBinding
-import com.glints.lingoparents.databinding.ItemPopupCharacterBinding
 import com.glints.lingoparents.ui.progress.ProgressViewModel
+import com.glints.lingoparents.utils.CustomViewModelFactory
+import com.glints.lingoparents.utils.TokenPreferences
+import com.glints.lingoparents.utils.dataStore
+import kotlinx.coroutines.flow.collect
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 
@@ -26,16 +27,63 @@ class ProgressProfileFragment : Fragment(R.layout.fragment_progress_profile) {
     private var _binding: FragmentProgressProfileBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var tokenPreferences: TokenPreferences
+    private lateinit var viewModel: ProgressProfileViewModel
+
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         _binding = FragmentProgressProfileBinding.bind(view)
-        binding.ivCharacterBadge.setOnClickListener {
-            showDialog()
+
+        tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
+        viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this))[
+                ProgressProfileViewModel::class.java
+        ]
+
+        showLoading(false)
+
+        binding.apply {
+            ivCharacterBadge.setOnClickListener {
+                showDialog()
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.progressProfileEvent.collect { event ->
+                when (event) {
+                    is ProgressProfileViewModel.ProgressProfileEvent.Loading -> {
+                        showLoading(true)
+                    }
+                    is ProgressProfileViewModel.ProgressProfileEvent.Success -> {
+                        event.result.apply {
+                            binding.apply {
+                                photo?.let {
+                                    imageView.load(it)
+                                }
+                                tvProfileName.text = fullname
+                                tvProfileLevel.text =
+                                    "${level_name ?: "No Level"} - ${sublevel_name ?: "No Sub Level"}"
+                                logo?.let {
+                                    ivCharacterBadge.load(it)
+                                }
+                                tvPhoneNumberValue.text = phone
+                                tvEmailValue.text = email
+                                tvAddressValue.text = address
+                            }
+                        }
+                        showLoading(false)
+                    }
+                    is ProgressProfileViewModel.ProgressProfileEvent.Error -> {
+                        showLoading(false)
+                    }
+                }
+            }
         }
     }
 
@@ -54,12 +102,13 @@ class ProgressProfileFragment : Fragment(R.layout.fragment_progress_profile) {
 
     @Subscribe
     fun collectStudentIdEvent(event: ProgressViewModel.EventBusAction.SendStudentId) {
-        Log.d("EventCollected", event.studentId.toString())
+        val studentId = event.studentId
+        viewModel.getStudentProfileByStudentId(studentId)
     }
 
     private fun showLoading(b: Boolean) {
         binding.apply {
-            when(b) {
+            when (b) {
                 true -> {
                     shimmerLayout.visibility = View.VISIBLE
                     mainContent.visibility = View.GONE

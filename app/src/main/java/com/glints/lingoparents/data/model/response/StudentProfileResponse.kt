@@ -6,10 +6,10 @@ data class StudentProfileResponse(
     val status: String? = null
 ) {
     data class Data(
-        val levelName: Any? = null,
+        val level_name: Any? = null,
         val address: String? = null,
         val phone: String? = null,
-        val sublevelName: Any? = null,
+        val sublevel_name: Any? = null,
         val logo: String? = null,
         val photo: String? = null,
         val idCharacter: Int? = null,
