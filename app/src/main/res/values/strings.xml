@@ -251,4 +251,5 @@
     <string name="dashboard_no_recent_insight">No Recent Insight Available</string>
     <string name="dashboard_no_live_event">No Event Available</string>
     <string name="gender">Gender</string>
+    <string name="level_divider">-</string>
 </resources>
