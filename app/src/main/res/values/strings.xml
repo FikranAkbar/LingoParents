@@ -253,4 +253,10 @@
     <string name="dummy_sesame_street_no_76_east_jakarta_13782">Sesame Street No. 76 East Jakarta, 13782</string>
     <string name="dummy_john_doe">John Doe</string>
     <string name="gender">Gender</string>
+    <string name="total_learning_hours">Total Learning Hours</string>
+    <string name="dummy_3_hours">3 Hours</string>
+    <string name="total_hours_to_complete">Total Hours to Complete</string>
+    <string name="dummy_3_modules">3 Modules</string>
+    <string name="total_module_to_complete">Total Module to Complete</string>
+    <string name="dummy_7_hours">7 Hours</string>
 </resources>
