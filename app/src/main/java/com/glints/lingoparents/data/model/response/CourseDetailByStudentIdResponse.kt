@@ -16,7 +16,7 @@ data class CourseDetailByStudentIdResponse(
 	data class Data(
 
 		@field:SerializedName("sessions")
-		val sessions: List<SessionsItem?>? = null,
+		val sessions: List<SessionsItem>? = null,
 
 		@field:SerializedName("hours_to_complete")
 		val hoursToComplete: Int? = null,
@@ -40,7 +40,7 @@ data class CourseDetailByStudentIdResponse(
 		val category: String? = null,
 
 		@field:SerializedName("level_list")
-		val levelList: List<LevelListItem?>? = null,
+		val levelList: List<LevelListItem>? = null,
 
 		@field:SerializedName("overall_score")
 		val overallScore: Int? = null
@@ -49,16 +49,16 @@ data class CourseDetailByStudentIdResponse(
 	data class LevelListItem(
 
 		@field:SerializedName("Upper Intermediate English")
-		val upperIntermediateEnglish: List<String?>? = null,
+		val upperIntermediateEnglish: List<String>? = null,
 
 		@field:SerializedName("Intermediate English")
-		val intermediateEnglish: List<String?>? = null,
+		val intermediateEnglish: List<String>? = null,
 
 		@field:SerializedName("Elementary English")
-		val elementaryEnglish: List<String?>? = null,
+		val elementaryEnglish: List<String>? = null,
 
 		@field:SerializedName("Beginner English")
-		val beginnerEnglish: List<String?>? = null
+		val beginnerEnglish: List<String>? = null
 	)
 
 	data class SessionsItem(

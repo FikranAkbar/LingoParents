@@ -13,7 +13,6 @@ import com.glints.lingoparents.ui.progress.ProgressViewModel
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import org.greenrobot.eventbus.EventBus
@@ -67,7 +66,8 @@ class ProgressLearningFragment : Fragment(R.layout.fragment_progress_learning) {
 
     @Subscribe(sticky = true)
     fun collectedEventStudentId(event: ProgressViewModel.EventBusActionToStudentLearningProgress.SendStudentId) {
-
+        viewModel.getCourseListByStudentId(event.studentId)
+        EventBus.getDefault().removeStickyEvent(event)
     }
 
     override fun onStop() {
