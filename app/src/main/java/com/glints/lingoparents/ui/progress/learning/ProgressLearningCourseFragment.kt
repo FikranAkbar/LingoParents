@@ -12,14 +12,13 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.widget.TooltipCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.glints.lingoparents.R
-import com.glints.lingoparents.data.model.SessionItem
 import com.glints.lingoparents.data.model.response.CourseDetailByStudentIdResponse
 import com.glints.lingoparents.databinding.FragmentProgressLearningCourseBinding
 import com.glints.lingoparents.ui.progress.adapter.SessionAdapter
@@ -27,7 +26,6 @@ import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import com.google.android.material.card.MaterialCardView
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 import kotlin.math.roundToInt
 
@@ -62,17 +60,26 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.progressLearningCourseEvent.collect { event ->
-                when(event) {
+                when (event) {
                     is ProgressLearningCourseViewModel.ProgressLearningCourseEvent.Loading -> {
 
                     }
                     is ProgressLearningCourseViewModel.ProgressLearningCourseEvent.Success -> {
-                        val data = event.result
+                        val courseDetail = event.courseDetail
+                        val sessionDetail = event.lastSessionDetail
                         binding.apply {
+                            tvTutorname.apply {
+                                text = "${sessionDetail.tutorName}"
+                                TooltipCompat.setTooltipText(this, "${sessionDetail.tutorName}")
+                            }
                             expandable.apply {
-                                val arrowImage = parentLayout.findViewById<ImageView>(R.id.iv_coursearrow)
+                                val arrowImage =
+                                    parentLayout.findViewById<ImageView>(R.id.iv_coursearrow)
                                 parentLayout.apply {
-                                    findViewById<TextView>(R.id.tv_levelvalue).text = "${data.progress!!.times(100)}%"
+                                    findViewById<TextView>(R.id.tv_courselevel).text =
+                                        "${sessionDetail.sessionLevel}-${sessionDetail.sessionSublevel}"
+                                    findViewById<TextView>(R.id.tv_levelvalue).text =
+                                        "${courseDetail.progress!!.times(100)}%"
                                     setOnClickListener {
                                         if (!isExpanded) {
                                             expand()
@@ -93,27 +100,30 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
                                         }
                                     }
                                     secondLayout.apply {
-                                        findViewById<ProgressBar>(R.id.progressBar).progress = data.progress!!.times(100).roundToInt()
-                                        findViewById<TextView>(R.id.tv_modulevalue).text = "${data.modulesToComplete} Modules"
-                                        findViewById<TextView>(R.id.tv_hoursvalue).text = "${data.hoursToComplete} Hours"
-                                        findViewById<TextView>(R.id.tv_learninghoursvalue).text = "${data.learningHours} Hours"
+                                        findViewById<ProgressBar>(R.id.progressBar).progress =
+                                            courseDetail.progress!!.times(100).roundToInt()
+                                        findViewById<TextView>(R.id.tv_modulevalue).text =
+                                            "${courseDetail.modulesToComplete} Modules"
+                                        findViewById<TextView>(R.id.tv_hoursvalue).text =
+                                            "${courseDetail.hoursToComplete} Hours"
+                                        findViewById<TextView>(R.id.tv_learninghoursvalue).text =
+                                            "${courseDetail.learningHours} Hours"
                                     }
                                 }
                             }
 
                             tvScore.apply {
-                                if (data.overallScore != 0) {
+                                text = if (courseDetail.overallScore != 0) {
                                     setTextColor(Color.BLACK)
-                                    text = data.overallScore.toString()
-                                }
-                                else {
+                                    courseDetail.overallScore.toString()
+                                } else {
                                     setTextColor(Color.parseColor("#C2C9D1"))
-                                    text = requireContext().getString(R.string.no_score_text)
+                                    requireContext().getString(R.string.no_score_text)
                                 }
                             }
 
                             sessionAdapter.submitList(
-                                data.sessions!!
+                                courseDetail.sessions!!
                             )
 
                             sessionNumber.apply {
@@ -125,7 +135,7 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
                             sessionAttendance.apply {
                                 for (i: Int in 0..9) {
                                     try {
-                                        addView(makeNewCellForSessionAttendance(data.sessions[i].attendance == "Yes"))
+                                        addView(makeNewCellForSessionAttendance(courseDetail.sessions[i].attendance == "Yes"))
                                     } catch (e: IndexOutOfBoundsException) {
                                         addView(makeNewCellForSessionAttendance(null))
                                     }

@@ -1,10 +1,10 @@
 package com.glints.lingoparents.ui.progress.learning
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.model.response.CourseDetailByStudentIdResponse
+import com.glints.lingoparents.data.model.response.SessionDetailBySessionIdResponse
 import com.glints.lingoparents.utils.ErrorUtils
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -30,18 +30,20 @@ class ProgressLearningCourseViewModel(
 
     }
 
-    private fun onApiCallSuccess(result: CourseDetailByStudentIdResponse.Data) = viewModelScope.launch {
-        progressLearningCourseEventChannel.send(ProgressLearningCourseEvent.Success(result))
-    }
+    private fun onApiCallSuccess(
+        courseDetail: CourseDetailByStudentIdResponse.Data,
+        lastSessionDetail: SessionDetailBySessionIdResponse.Data
+    ) =
+        viewModelScope.launch {
+            progressLearningCourseEventChannel.send(ProgressLearningCourseEvent.Success(courseDetail, lastSessionDetail))
+        }
 
     private fun onApiCallError(message: String) = viewModelScope.launch {
         progressLearningCourseEventChannel.send(ProgressLearningCourseEvent.Error(message))
-
     }
 
     fun getCourseDetailByStudentId() = viewModelScope.launch {
         onApiCallStarted()
-        Log.d("APICALL:", "Started..")
         APIClient
             .service
             .getCourseDetailByStudentId(studentId, courseId)
@@ -51,13 +53,11 @@ class ProgressLearningCourseViewModel(
                     response: Response<CourseDetailByStudentIdResponse>
                 ) {
                     if (response.isSuccessful) {
-                        onApiCallSuccess(response.body()?.data!!)
-                        Log.d("APICALL:", "Success..")
-                    }
-                    else {
+                        //onApiCallSuccess(response.body()?.data!!)
+                        getSessionDetailBySessionId(response.body()?.data!!)
+                    } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallError(apiError.message())
-                        Log.d("APICALL:", "Failed.. ${response.code()}")
                     }
                 }
 
@@ -67,9 +67,41 @@ class ProgressLearningCourseViewModel(
             })
     }
 
+    private fun getSessionDetailBySessionId(courseDetail: CourseDetailByStudentIdResponse.Data) =
+        viewModelScope.launch {
+            APIClient
+                .service
+                .getSessionDetailBySessionId(studentId, courseDetail.currentSession!!)
+                .enqueue(object : Callback<SessionDetailBySessionIdResponse> {
+                    override fun onResponse(
+                        call: Call<SessionDetailBySessionIdResponse>,
+                        response: Response<SessionDetailBySessionIdResponse>
+                    ) {
+                        if (response.isSuccessful) {
+                            onApiCallSuccess(courseDetail, response.body()?.data!!)
+                        }
+                        else {
+                            val apiError = ErrorUtils.parseError(response)
+                            onApiCallError(apiError.message())
+                        }
+                    }
+
+                    override fun onFailure(
+                        call: Call<SessionDetailBySessionIdResponse>,
+                        t: Throwable
+                    ) {
+                        onApiCallError("Network Failed..")
+                    }
+                })
+        }
+
     sealed class ProgressLearningCourseEvent {
         object Loading : ProgressLearningCourseEvent()
-        data class Success(val result: CourseDetailByStudentIdResponse.Data) : ProgressLearningCourseEvent()
+        data class Success(
+            val courseDetail: CourseDetailByStudentIdResponse.Data,
+            val lastSessionDetail: SessionDetailBySessionIdResponse.Data
+        ) : ProgressLearningCourseEvent()
+
         data class Error(val message: String) : ProgressLearningCourseEvent()
     }
 }

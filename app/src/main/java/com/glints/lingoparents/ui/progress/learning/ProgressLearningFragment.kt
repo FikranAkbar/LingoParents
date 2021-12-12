@@ -131,9 +131,10 @@ class ProgressLearningFragment : Fragment(R.layout.fragment_progress_learning) {
         return tabItem
     }
 
-    @Subscribe
+    @Subscribe(sticky = true)
     fun collectedEventStudentId(event: ProgressViewModel.EventBusActionToStudentLearningProgress.SendStudentId) {
         viewModel.getCourseListByStudentId(event.studentId)
+        EventBus.getDefault().removeStickyEvent(event)
     }
 
     override fun onStop() {
