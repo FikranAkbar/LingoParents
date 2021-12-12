@@ -1,13 +1,22 @@
 package com.glints.lingoparents.ui.progress.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.glints.lingoparents.data.model.QuestionItem
 import com.glints.lingoparents.databinding.ItemQuestionBinding
 
-class QuestionAdapter(private val listQuestion: ArrayList<QuestionItem>) :
-    RecyclerView.Adapter<QuestionAdapter.QuestionViewHolder>() {
+class QuestionAdapter : RecyclerView.Adapter<QuestionAdapter.QuestionViewHolder>() {
+    private val questionItems = ArrayList<QuestionItem>()
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun submitList(list: List<QuestionItem>) {
+        questionItems.clear()
+        questionItems.addAll(list)
+        notifyDataSetChanged()
+    }
+
     private lateinit var onItemClickCallback: OnItemClickCallback
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
@@ -25,7 +34,7 @@ class QuestionAdapter(private val listQuestion: ArrayList<QuestionItem>) :
                 tvStudentAnswer.text = question.studentAnswer
                 tvCorrectAnswer.text = question.correctAnswer
                 itemView.setOnClickListener {
-                    onItemClickCallback?.onItemClicked(question)
+                    onItemClickCallback.onItemClicked(question)
                 }
             }
         }
@@ -38,9 +47,8 @@ class QuestionAdapter(private val listQuestion: ArrayList<QuestionItem>) :
     }
 
     override fun onBindViewHolder(holder: QuestionViewHolder, position: Int) {
-        holder.bind(listQuestion[position])
+        holder.bind(questionItems[position])
     }
 
-    override fun getItemCount(): Int = listQuestion.size
-
+    override fun getItemCount(): Int = questionItems.size
 }

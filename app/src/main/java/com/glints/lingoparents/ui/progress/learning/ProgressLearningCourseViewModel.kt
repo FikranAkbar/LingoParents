@@ -32,10 +32,11 @@ class ProgressLearningCourseViewModel(
 
     private fun onApiCallSuccess(
         courseDetail: CourseDetailByStudentIdResponse.Data,
-        lastSessionDetail: SessionDetailBySessionIdResponse.Data
+        lastSessionDetail: SessionDetailBySessionIdResponse.Data,
+        studentId: Int
     ) =
         viewModelScope.launch {
-            progressLearningCourseEventChannel.send(ProgressLearningCourseEvent.Success(courseDetail, lastSessionDetail))
+            progressLearningCourseEventChannel.send(ProgressLearningCourseEvent.Success(courseDetail, lastSessionDetail, studentId))
         }
 
     private fun onApiCallError(message: String) = viewModelScope.launch {
@@ -53,7 +54,6 @@ class ProgressLearningCourseViewModel(
                     response: Response<CourseDetailByStudentIdResponse>
                 ) {
                     if (response.isSuccessful) {
-                        //onApiCallSuccess(response.body()?.data!!)
                         getSessionDetailBySessionId(response.body()?.data!!)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
@@ -78,7 +78,7 @@ class ProgressLearningCourseViewModel(
                         response: Response<SessionDetailBySessionIdResponse>
                     ) {
                         if (response.isSuccessful) {
-                            onApiCallSuccess(courseDetail, response.body()?.data!!)
+                            onApiCallSuccess(courseDetail, response.body()?.data!!, studentId)
                         }
                         else {
                             val apiError = ErrorUtils.parseError(response)
@@ -99,7 +99,8 @@ class ProgressLearningCourseViewModel(
         object Loading : ProgressLearningCourseEvent()
         data class Success(
             val courseDetail: CourseDetailByStudentIdResponse.Data,
-            val lastSessionDetail: SessionDetailBySessionIdResponse.Data
+            val lastSessionDetail: SessionDetailBySessionIdResponse.Data,
+            val studentId: Int
         ) : ProgressLearningCourseEvent()
 
         data class Error(val message: String) : ProgressLearningCourseEvent()

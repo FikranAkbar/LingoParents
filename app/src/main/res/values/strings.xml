@@ -262,4 +262,12 @@
     <string name="no_score_text">You\'re not complete the session</string>
     <string name="tutor_name">Tutor Name:</string>
     <string name="dummy_eleanor_pena">Eleanor Pena</string>
+    <string name="tutor_name_title">Tutor Name :</string>
+    <string name="session_schedule">Session Schedule :</string>
+    <string name="assignment">Assignment</string>
+    <string name="attendance">Attendance :</string>
+    <string name="student_score">Student Score :</string>
+    <string name="assignment_feedback">Assignment Feedback:</string>
+    <string name="session_feedback">Session Feedback:</string>
+    <string name="notes">Notes:</string>
 </resources>

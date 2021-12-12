@@ -3,6 +3,7 @@ package com.glints.lingoparents.ui.progress.learning
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
@@ -18,9 +19,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.SnapHelper
 import com.glints.lingoparents.R
 import com.glints.lingoparents.data.model.response.CourseDetailByStudentIdResponse
 import com.glints.lingoparents.databinding.FragmentProgressLearningCourseBinding
+import com.glints.lingoparents.ui.progress.ProgressFragmentDirections
 import com.glints.lingoparents.ui.progress.adapter.SessionAdapter
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
@@ -101,7 +105,7 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
                                     }
                                     secondLayout.apply {
                                         findViewById<ProgressBar>(R.id.progressBar).progress =
-                                            courseDetail.progress!!.times(100).roundToInt()
+                                            courseDetail.progress.times(100).roundToInt()
                                         findViewById<TextView>(R.id.tv_modulevalue).text =
                                             "${courseDetail.modulesToComplete} Modules"
                                         findViewById<TextView>(R.id.tv_hoursvalue).text =
@@ -122,9 +126,19 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
                                 }
                             }
 
-                            sessionAdapter.submitList(
-                                courseDetail.sessions!!
-                            )
+                            sessionAdapter.apply {
+                                submitList(
+                                    courseDetail.sessions!!
+                                )
+                                setOnItemClickCallback(object : SessionAdapter.OnItemClickCallback {
+                                    override fun onItemClicked(session: CourseDetailByStudentIdResponse.SessionsItem) {
+                                        val action =
+                                            ProgressFragmentDirections.actionProgressFragmentToAssignmentFragment(event.studentId, session.idSession!!)
+                                        Log.d("ACTION:", "$action")
+                                        findNavController().navigate(action)
+                                    }
+                                })
+                            }
 
                             sessionNumber.apply {
                                 for (i: Int in 1..10) {
@@ -135,7 +149,7 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
                             sessionAttendance.apply {
                                 for (i: Int in 0..9) {
                                     try {
-                                        addView(makeNewCellForSessionAttendance(courseDetail.sessions[i].attendance == "Yes"))
+                                        addView(makeNewCellForSessionAttendance(courseDetail.sessions!![i].attendance == "Yes"))
                                     } catch (e: IndexOutOfBoundsException) {
                                         addView(makeNewCellForSessionAttendance(null))
                                     }
@@ -217,13 +231,10 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
         binding.apply {
             rvSession.layoutManager =
                 LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            val snapHelper = LinearSnapHelper()
+            snapHelper.attachToRecyclerView(rvSession)
             sessionAdapter = SessionAdapter()
             rvSession.adapter = sessionAdapter
-            sessionAdapter.setOnItemClickCallback(object : SessionAdapter.OnItemClickCallback {
-                override fun onItemClicked(session: CourseDetailByStudentIdResponse.SessionsItem) {
-                    findNavController().navigate(R.id.action_progressLearningCourseFragment_to_assignmentFragment)
-                }
-            })
         }
     }
 }
