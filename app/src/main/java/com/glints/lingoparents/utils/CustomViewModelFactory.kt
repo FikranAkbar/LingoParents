@@ -13,6 +13,7 @@ import com.glints.lingoparents.ui.accountsetting.profile.ProfileViewModel
 import com.glints.lingoparents.ui.insight.InsightListViewModel
 import com.glints.lingoparents.ui.insight.detail.DetailInsightViewModel
 import com.glints.lingoparents.ui.course.AllCoursesViewModel
+import com.glints.lingoparents.ui.home.HomeViewModel
 import com.glints.lingoparents.ui.course.DetailCourseViewModel
 import com.glints.lingoparents.ui.liveevent.LiveEventListViewModel
 import com.glints.lingoparents.ui.liveevent.category.CompletedLiveEventViewModel
@@ -79,6 +80,9 @@ class CustomViewModelFactory(
             }
             modelClass.isAssignableFrom(AllCoursesViewModel::class.java) -> {
                 AllCoursesViewModel(tokenPref) as T
+            }
+            modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
+                HomeViewModel(tokenPref) as T
             }
             modelClass.isAssignableFrom(DetailCourseViewModel::class.java) -> {
                 DetailCourseViewModel(tokenPref, eventId!!) as T

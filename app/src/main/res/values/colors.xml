@@ -10,4 +10,5 @@
     <color name="transparent">#00000000</color>
     <color name="shimmer_placeholder">#DDDDDD</color>
     <color name="shimmer_item_inside">#C5C4C4</color>
+    <color name="navy_blue">#182E7C</color>
 </resources>

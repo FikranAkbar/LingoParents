@@ -68,6 +68,7 @@ interface APIService {
         @Path("id") id: Int,
     ): Call<LiveEventDetailResponse>
 
+
     @GET("api/v1/insights?status=Publish")
     fun getAllInsightList(
         @QueryMap options: Map<String, String>,
@@ -89,7 +90,7 @@ interface APIService {
         @Path("id") id: Int,
         @Path("type") type: String,
     ): Call<InsightLikeDislikeResponse>
-  
+
     //amin
     @GET("api/v1/courses")
     fun getCourseList(
@@ -120,6 +121,18 @@ interface APIService {
         @Field("confirmpassword") confirmPassword: String,
     ): Call<ChangePasswordResponse>
 
+    @GET("api/v1/students/list/{id}")
+    fun getStudentList(
+        @Path("id") id: Int,
+    ): Call<StudentListResponse>
+
+    @GET("api/v1/insights/recent")
+    fun getRecentInsight(
+    ): Call<RecentInsightResponse>
+
+    @GET("api/v1/events/parent")
+    fun getAllEvent(
+    ): Call<AllEventResponse>
 
     @GET("api/v1/courses/{id}")
     fun getCourseDetail(

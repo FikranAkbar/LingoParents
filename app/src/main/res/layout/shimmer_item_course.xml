@@ -17,26 +17,28 @@
         <ImageView
             android:id="@+id/courseImage"
             android:layout_width="100dp"
-            android:background="@color/shimmer_item_inside"
             android:layout_height="100dp"
+            android:background="@color/shimmer_item_inside"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/courseTitle"
-            android:layout_width="wrap_content"
-            android:background="@color/shimmer_item_inside"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="@color/shimmer_item_inside"
             android:fontFamily="@font/poppins_w700"
-            android:textColor="@color/white"
+            android:text="@string/shimmer_course_placeholder"
+            android:layout_marginStart="32dp"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/shimmer_item_inside"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-             />
+            app:layout_constraintStart_toEndOf="@+id/courseImage"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

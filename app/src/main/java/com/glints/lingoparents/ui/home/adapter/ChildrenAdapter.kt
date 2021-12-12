@@ -4,31 +4,45 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.glints.lingoparents.R
-import com.glints.lingoparents.data.model.ChildrenItem
+import coil.load
+import com.glints.lingoparents.data.model.response.StudentListResponse
 import com.glints.lingoparents.databinding.ItemDashboardChildrenBinding
 
-class ChildrenAdapter(private val listener: OnItemClickCallback) : RecyclerView.Adapter<ChildrenAdapter.CustomViewHolder>() {
-    private val children = ArrayList<ChildrenItem>()
+class ChildrenAdapter(private val listener: OnItemClickCallback) :
+    RecyclerView.Adapter<ChildrenAdapter.CustomViewHolder>() {
+    private val children = ArrayList<StudentListResponse.DataItem>()
 
     inner class CustomViewHolder(private val itemDashboardChildrenBinding: ItemDashboardChildrenBinding) :
         RecyclerView.ViewHolder(itemDashboardChildrenBinding.root) {
-            fun bind(holder: CustomViewHolder, children: ChildrenItem) {
-                itemDashboardChildrenBinding.apply {
-                    Glide.with(holder.itemView.context).load(R.drawable.ic_user_avatar_female_square).into(ivChildren)
-                    tvChildrenName.text = "Jane Doe"
-                    tvChildrenAge.text = "(16 years old)"
-                    tvChildrenRelationship.text = "Relationship : Guardian"
-                    tvChildrenLanguageCourse.text = "Arabian"
-                    tvChildrenLevelSublevel.text = "Beginner - Sublevel 2"
+        @SuppressLint("SetTextI18n")
+        fun bind(holder: CustomViewHolder, children: StudentListResponse.DataItem) {
+            holder.itemView.setOnClickListener {
+                listener.onItemClicked(children)
+            }
+            itemDashboardChildrenBinding.apply {
+                ivChildren.load(children.photo)
+                tvChildrenName.text = children.name
+                tvChildrenAge.text = "(${children.age} years old)"
+                tvChildrenRelationship.text = children.relationship
+                if (children.level == null) {
+                    tvChildrenLevel.text = "No Level"
+                } else {
+                    tvChildrenLevel.text = children.level
+                }
+                if (children.sublevel == null) {
+                    tvChildrenSublevel.text = "No Sublevel"
+
+                } else {
+                    tvChildrenSublevel.text = children.sublevel
+
                 }
             }
         }
+    }
 
 
     interface OnItemClickCallback {
-        fun onItemClicked(children: ChildrenItem)
+        fun onItemClicked(children: StudentListResponse.DataItem)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
@@ -45,9 +59,10 @@ class ChildrenAdapter(private val listener: OnItemClickCallback) : RecyclerView.
     override fun getItemCount(): Int = children.size
 
     @SuppressLint("NotifyDataSetChanged")
-    fun submitList(list: List<ChildrenItem>) {
+    fun submitList(list: List<StudentListResponse.DataItem>) {
         children.clear()
         children.addAll(list)
         notifyDataSetChanged()
     }
 }
+

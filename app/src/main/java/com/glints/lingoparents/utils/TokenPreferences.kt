@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +18,6 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
         private val REFRESH_TOKEN_KEY = stringPreferencesKey("refresh_token")
         private val EMAIL_KEY = stringPreferencesKey("email")
         private val USER_ID_KEY = stringPreferencesKey("user_id")
-
 
         @Volatile
         private var INSTANCE: TokenPreferences? = null
@@ -89,6 +89,7 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
             preferences.clear()
         }
     }
+
 
     suspend fun resetAccessEmail() {
         dataStore.edit { preferences ->
