@@ -76,7 +76,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             mbtnLoginWithGoogle.setOnClickListener {
                 viewModel.onLoginWithGoogleClick()
             }
-            tilEmail.editText?.setText("azizahnurul262@gmail.com")
+            tilEmail.editText?.setText("jessicamillenia@gmail.com")
             tilPassword.editText?.setText("parent12345")
         }
 

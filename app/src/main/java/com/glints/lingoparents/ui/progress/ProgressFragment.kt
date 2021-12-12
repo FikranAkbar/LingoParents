@@ -71,7 +71,7 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
                             ProgressViewModel.EventBusActionToStudentLearningProgress.SendStudentId(
                                 firstStudentId
                             )
-                        viewModel.sendStickyEventToLearningProgressFragment(
+                        viewModel.sendEventToLearningProgressFragment(
                             eventBusActionToStudentLearningProgress
                         )
                     }

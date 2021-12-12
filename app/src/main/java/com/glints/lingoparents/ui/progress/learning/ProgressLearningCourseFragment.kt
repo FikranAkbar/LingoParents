@@ -1,18 +1,19 @@
 package com.glints.lingoparents.ui.progress.learning
 
-import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.View
-import android.widget.*
-import android.view.Gravity
 import android.graphics.Color
-import android.util.Log
+import android.os.Bundle
 import android.util.TypedValue
+import android.view.Gravity
+import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,7 +25,7 @@ import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import com.google.android.material.card.MaterialCardView
-import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.collect
 
 class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learning_course) {
     companion object {
@@ -37,7 +38,6 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
         )
     }
 
-    private lateinit var rvSession: RecyclerView
     private val list = ArrayList<SessionItem>()
 
     private var _binding: FragmentProgressLearningCourseBinding? = null
@@ -52,11 +52,13 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
         _binding = FragmentProgressLearningCourseBinding.bind(view)
 
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
-        viewModel = ViewModelProvider(this, CustomViewModelFactory(
-            tokenPreferences, this,
-            studentId = arguments?.getInt(ProgressLearningCourseViewModel.STUDENT_ID_KEY),
-            courseId = arguments?.getInt(ProgressLearningCourseViewModel.COURSE_ID_KEY)
-        ))[
+        viewModel = ViewModelProvider(
+            this, CustomViewModelFactory(
+                tokenPreferences, this,
+                studentId = arguments?.getInt(ProgressLearningCourseViewModel.STUDENT_ID_KEY),
+                courseId = arguments?.getInt(ProgressLearningCourseViewModel.COURSE_ID_KEY)
+            )
+        )[
                 ProgressLearningCourseViewModel::class.java
         ]
 
@@ -80,19 +82,47 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
                 parentLayout.setOnClickListener {
                     if (!isExpanded) {
                         expand()
-                        arrowImage.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_keyboard_arrow_up_24, requireContext().theme))
+                        arrowImage.setImageDrawable(
+                            resources.getDrawable(
+                                R.drawable.ic_baseline_keyboard_arrow_up_24,
+                                requireContext().theme
+                            )
+                        )
                     } else {
                         collapse()
-                        arrowImage.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_keyboard_arrow_down_24, requireContext().theme))
+                        arrowImage.setImageDrawable(
+                            resources.getDrawable(
+                                R.drawable.ic_baseline_keyboard_arrow_down_24,
+                                requireContext().theme
+                            )
+                        )
                     }
+                }
+                rvSession.apply {
+                    setHasFixedSize(true)
+                    showRecyclerList()
                 }
             }
         }
 
-        rvSession = binding.rvSession
-        rvSession.setHasFixedSize(true)
-        showRecyclerList()
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.progressLearningCourseEvent.collect { event ->
+                when(event) {
+                    is ProgressLearningCourseViewModel.ProgressLearningCourseEvent.Loading -> {
 
+                    }
+                    is ProgressLearningCourseViewModel.ProgressLearningCourseEvent.Success -> {
+                        val data = event.result
+                        binding.apply {
+
+                        }
+                    }
+                    is ProgressLearningCourseViewModel.ProgressLearningCourseEvent.Error -> {
+
+                    }
+                }
+            }
+        }
     }
 
     override fun onDestroy() {
@@ -178,17 +208,19 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
         }
 
     private fun showRecyclerList() {
-        rvSession.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        val listSessionAdapter = SessionAdapter(list)
-        rvSession.adapter = listSessionAdapter
-        listSessionAdapter.setOnItemClickCallback(object : SessionAdapter.OnItemClickCallback {
-            override fun onItemClicked(session: SessionItem) {
-                findNavController().navigate(R.id.action_progressLearningCourseFragment_to_assignmentFragment)
-            }
-        })
+        binding.apply {
+            rvSession.layoutManager =
+                LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            val listSessionAdapter = SessionAdapter(list)
+            rvSession.adapter = listSessionAdapter
+            listSessionAdapter.setOnItemClickCallback(object : SessionAdapter.OnItemClickCallback {
+                override fun onItemClicked(session: SessionItem) {
+                    findNavController().navigate(R.id.action_progressLearningCourseFragment_to_assignmentFragment)
+                }
+            })
 
-        list.clear()
-        list.addAll(listSession)
+            list.clear()
+            list.addAll(listSession)
+        }
     }
 }
