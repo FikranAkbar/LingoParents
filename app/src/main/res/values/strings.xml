@@ -259,4 +259,7 @@
     <string name="dummy_3_modules">3 Modules</string>
     <string name="total_module_to_complete">Total Module to Complete</string>
     <string name="dummy_7_hours">7 Hours</string>
+    <string name="no_score_text">You\'re not complete the session</string>
+    <string name="tutor_name">Tutor Name:</string>
+    <string name="dummy_eleanor_pena">Eleanor Pena</string>
 </resources>

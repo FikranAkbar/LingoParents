@@ -10,6 +10,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -19,34 +20,27 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.glints.lingoparents.R
 import com.glints.lingoparents.data.model.SessionItem
+import com.glints.lingoparents.data.model.response.CourseDetailByStudentIdResponse
 import com.glints.lingoparents.databinding.FragmentProgressLearningCourseBinding
 import com.glints.lingoparents.ui.progress.adapter.SessionAdapter
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
+import kotlin.math.roundToInt
 
 class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learning_course) {
-    companion object {
-        private val DUMMY_SESSION_ATTENDANCE = listOf(
-            true,
-            false,
-            true,
-            false,
-            true
-        )
-    }
-
-    private val list = ArrayList<SessionItem>()
-
     private var _binding: FragmentProgressLearningCourseBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var sessionAdapter: SessionAdapter
 
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var viewModel: ProgressLearningCourseViewModel
 
-    @SuppressLint("UseCompatLoadingForDrawables")
+    @SuppressLint("UseCompatLoadingForDrawables", "SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentProgressLearningCourseBinding.bind(view)
@@ -62,48 +56,9 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
                 ProgressLearningCourseViewModel::class.java
         ]
 
-        binding.apply {
-            sessionNumber.apply {
-                for (i: Int in 1..10) {
-                    addView(makeNewCellForSessionNumber(i))
-                }
-            }
-            sessionAttendance.apply {
-                for (i: Int in 0..9) {
-                    try {
-                        addView(makeNewCellForSessionAttendance(DUMMY_SESSION_ATTENDANCE[i]))
-                    } catch (e: IndexOutOfBoundsException) {
-                        addView(makeNewCellForSessionAttendance(null))
-                    }
-                }
-            }
-            expandable.apply {
-                val arrowImage = parentLayout.findViewById<ImageView>(R.id.iv_coursearrow)
-                parentLayout.setOnClickListener {
-                    if (!isExpanded) {
-                        expand()
-                        arrowImage.setImageDrawable(
-                            resources.getDrawable(
-                                R.drawable.ic_baseline_keyboard_arrow_up_24,
-                                requireContext().theme
-                            )
-                        )
-                    } else {
-                        collapse()
-                        arrowImage.setImageDrawable(
-                            resources.getDrawable(
-                                R.drawable.ic_baseline_keyboard_arrow_down_24,
-                                requireContext().theme
-                            )
-                        )
-                    }
-                }
-                rvSession.apply {
-                    setHasFixedSize(true)
-                    showRecyclerList()
-                }
-            }
-        }
+        viewModel.getCourseDetailByStudentId()
+
+        showRecyclerList()
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.progressLearningCourseEvent.collect { event ->
@@ -114,7 +69,68 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
                     is ProgressLearningCourseViewModel.ProgressLearningCourseEvent.Success -> {
                         val data = event.result
                         binding.apply {
+                            expandable.apply {
+                                val arrowImage = parentLayout.findViewById<ImageView>(R.id.iv_coursearrow)
+                                parentLayout.apply {
+                                    findViewById<TextView>(R.id.tv_levelvalue).text = "${data.progress!!.times(100)}%"
+                                    setOnClickListener {
+                                        if (!isExpanded) {
+                                            expand()
+                                            arrowImage.setImageDrawable(
+                                                resources.getDrawable(
+                                                    R.drawable.ic_baseline_keyboard_arrow_up_24,
+                                                    requireContext().theme
+                                                )
+                                            )
+                                        } else {
+                                            collapse()
+                                            arrowImage.setImageDrawable(
+                                                resources.getDrawable(
+                                                    R.drawable.ic_baseline_keyboard_arrow_down_24,
+                                                    requireContext().theme
+                                                )
+                                            )
+                                        }
+                                    }
+                                    secondLayout.apply {
+                                        findViewById<ProgressBar>(R.id.progressBar).progress = data.progress!!.times(100).roundToInt()
+                                        findViewById<TextView>(R.id.tv_modulevalue).text = "${data.modulesToComplete} Modules"
+                                        findViewById<TextView>(R.id.tv_hoursvalue).text = "${data.hoursToComplete} Hours"
+                                        findViewById<TextView>(R.id.tv_learninghoursvalue).text = "${data.learningHours} Hours"
+                                    }
+                                }
+                            }
 
+                            tvScore.apply {
+                                if (data.overallScore != 0) {
+                                    setTextColor(Color.BLACK)
+                                    text = data.overallScore.toString()
+                                }
+                                else {
+                                    setTextColor(Color.parseColor("#C2C9D1"))
+                                    text = requireContext().getString(R.string.no_score_text)
+                                }
+                            }
+
+                            sessionAdapter.submitList(
+                                data.sessions!!
+                            )
+
+                            sessionNumber.apply {
+                                for (i: Int in 1..10) {
+                                    addView(makeNewCellForSessionNumber(i))
+                                }
+                            }
+
+                            sessionAttendance.apply {
+                                for (i: Int in 0..9) {
+                                    try {
+                                        addView(makeNewCellForSessionAttendance(data.sessions[i].attendance == "Yes"))
+                                    } catch (e: IndexOutOfBoundsException) {
+                                        addView(makeNewCellForSessionAttendance(null))
+                                    }
+                                }
+                            }
                         }
                     }
                     is ProgressLearningCourseViewModel.ProgressLearningCourseEvent.Error -> {
@@ -187,40 +203,17 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
     private fun Float.toDips() =
         TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this, resources.displayMetrics)
 
-    //rv
-    private val listSession: ArrayList<SessionItem>
-        get() {
-            val dataSession = resources.getStringArray(R.array.session_name)
-            val dataShortDesc = resources.getStringArray(R.array.session_shortdesc)
-            val dataDesc = resources.getStringArray(R.array.session_desc)
-            val dataScore = resources.getStringArray(R.array.session_score)
-            val listSession = ArrayList<SessionItem>()
-            for (i in dataSession.indices) {
-                val session = SessionItem(
-                    dataSession[i],
-                    dataShortDesc[i],
-                    dataDesc[i],
-                    dataScore[i],
-                )
-                listSession.add(session)
-            }
-            return listSession
-        }
-
     private fun showRecyclerList() {
         binding.apply {
             rvSession.layoutManager =
                 LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-            val listSessionAdapter = SessionAdapter(list)
-            rvSession.adapter = listSessionAdapter
-            listSessionAdapter.setOnItemClickCallback(object : SessionAdapter.OnItemClickCallback {
-                override fun onItemClicked(session: SessionItem) {
+            sessionAdapter = SessionAdapter()
+            rvSession.adapter = sessionAdapter
+            sessionAdapter.setOnItemClickCallback(object : SessionAdapter.OnItemClickCallback {
+                override fun onItemClicked(session: CourseDetailByStudentIdResponse.SessionsItem) {
                     findNavController().navigate(R.id.action_progressLearningCourseFragment_to_assignmentFragment)
                 }
             })
-
-            list.clear()
-            list.addAll(listSession)
         }
     }
 }

@@ -28,7 +28,7 @@ data class CourseDetailByStudentIdResponse(
 		val learningHours: Int? = null,
 
 		@field:SerializedName("progress")
-		val progress: Int? = null,
+		val progress: Float? = null,
 
 		@field:SerializedName("overall_feedback")
 		val overallFeedback: String? = null,
@@ -70,7 +70,7 @@ data class CourseDetailByStudentIdResponse(
 		val sessionTitle: String? = null,
 
 		@field:SerializedName("score")
-		val score: Int? = null,
+		val score: Float? = null,
 
 		@field:SerializedName("id_session")
 		val idSession: Int? = null,

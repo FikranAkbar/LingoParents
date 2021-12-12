@@ -1,5 +1,6 @@
 package com.glints.lingoparents.ui.progress.learning
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
@@ -26,6 +27,7 @@ class ProgressLearningCourseViewModel(
 
     private fun onApiCallStarted() = viewModelScope.launch {
         progressLearningCourseEventChannel.send(ProgressLearningCourseEvent.Loading)
+
     }
 
     private fun onApiCallSuccess(result: CourseDetailByStudentIdResponse.Data) = viewModelScope.launch {
@@ -34,10 +36,12 @@ class ProgressLearningCourseViewModel(
 
     private fun onApiCallError(message: String) = viewModelScope.launch {
         progressLearningCourseEventChannel.send(ProgressLearningCourseEvent.Error(message))
+
     }
 
     fun getCourseDetailByStudentId() = viewModelScope.launch {
         onApiCallStarted()
+        Log.d("APICALL:", "Started..")
         APIClient
             .service
             .getCourseDetailByStudentId(studentId, courseId)
@@ -48,10 +52,12 @@ class ProgressLearningCourseViewModel(
                 ) {
                     if (response.isSuccessful) {
                         onApiCallSuccess(response.body()?.data!!)
+                        Log.d("APICALL:", "Success..")
                     }
                     else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallError(apiError.message())
+                        Log.d("APICALL:", "Failed.. ${response.code()}")
                     }
                 }
 
