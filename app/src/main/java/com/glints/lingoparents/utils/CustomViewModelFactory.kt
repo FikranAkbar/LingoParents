@@ -8,6 +8,7 @@ import androidx.savedstate.SavedStateRegistryOwner
 import com.glints.lingoparents.ui.accountsetting.changepassword.PasswordSettingViewModel
 import com.glints.lingoparents.ui.accountsetting.profile.ProfileViewModel
 import com.glints.lingoparents.ui.course.AllCoursesViewModel
+import com.glints.lingoparents.ui.home.HomeViewModel
 import com.glints.lingoparents.ui.course.DetailCourseViewModel
 import com.glints.lingoparents.ui.dashboard.DashboardViewModel
 import com.glints.lingoparents.ui.insight.InsightListViewModel
@@ -83,6 +84,9 @@ class CustomViewModelFactory(
             }
             modelClass.isAssignableFrom(AllCoursesViewModel::class.java) -> {
                 AllCoursesViewModel(tokenPref) as T
+            }
+            modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
+                HomeViewModel(tokenPref) as T
             }
             modelClass.isAssignableFrom(DetailCourseViewModel::class.java) -> {
                 DetailCourseViewModel(tokenPref, eventId!!) as T

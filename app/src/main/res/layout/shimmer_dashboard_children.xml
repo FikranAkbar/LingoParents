@@ -14,6 +14,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:background="@color/shimmer_placeholder"
         android:layout_height="wrap_content">
 
         <androidx.cardview.widget.CardView
@@ -28,35 +29,40 @@
 
             <ImageView
                 android:id="@+id/iv_children"
+                android:background="@color/shimmer_item_inside"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription"
-                tools:src="@drawable/ic_user_avatar_female_square" />
+                />
         </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/tv_children_name"
             android:layout_width="wrap_content"
+            android:textColor="@color/shimmer_item_inside"
+            android:background="@color/shimmer_item_inside"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:fontFamily="@font/poppins_w700"
             android:maxWidth="160dp"
-            android:textColor="@color/navy_blue"
+            android:text="Children Name"
             android:textSize="13sp"
             app:layout_constraintStart_toEndOf="@id/cv_children_image_wrapper"
             app:layout_constraintTop_toTopOf="@id/cv_children_image_wrapper"
-            tools:text="Jane Doe" />
+             />
 
         <TextView
             android:id="@+id/tv_children_age"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
+            android:textColor="@color/shimmer_item_inside"
+            android:text="12"
             android:fontFamily="@font/poppins_w400"
-            android:text="@string/_1s_years_old"
             android:textSize="11sp"
+            android:background="@color/shimmer_item_inside"
             app:layout_constraintBottom_toBottomOf="@id/tv_children_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.1"
@@ -66,9 +72,11 @@
         <TextView
             android:id="@+id/tv_children_relationship"
             android:layout_width="wrap_content"
+            android:textColor="@color/shimmer_item_inside"
             android:layout_height="wrap_content"
+            android:text="Mother"
             android:fontFamily="@font/poppins_w400"
-            android:text="@string/relationship_1s"
+            android:background="@color/shimmer_item_inside"
             android:textSize="11sp"
             app:layout_constraintStart_toStartOf="@id/tv_children_name"
             app:layout_constraintTop_toBottomOf="@id/tv_children_name" />
@@ -76,48 +84,25 @@
         <TextView
             android:id="@+id/tv_children_level"
             android:layout_width="wrap_content"
+            android:text="Beginner"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_w400"
-            android:text="@string/_1s_sublevel_2s"
-            android:textColor="@color/black"
+            android:background="@color/shimmer_item_inside"
+            android:textColor="@color/shimmer_item_inside"
             android:textSize="11sp"
             app:layout_constraintStart_toStartOf="@id/tv_children_name"
             app:layout_constraintTop_toBottomOf="@id/tv_children_relationship" />
 
         <TextView
-            android:id="@+id/tvLevelDivider"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="4dp"
-            android:text="@string/level_divider"
-            app:layout_constraintBottom_toBottomOf="@id/tv_children_level"
-            app:layout_constraintEnd_toStartOf="@id/tv_children_sublevel"
-            app:layout_constraintStart_toEndOf="@id/tv_children_level"
-            app:layout_constraintTop_toTopOf="@id/tv_children_level" />
-
-        <TextView
-            android:id="@+id/tv_children_sublevel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="4dp"
-            android:fontFamily="@font/poppins_w400"
-            android:text="@string/_1s_sublevel_2s"
-            android:textColor="@color/black"
-            android:textSize="11sp"
-            app:layout_constraintBottom_toBottomOf="@id/tvLevelDivider"
-            app:layout_constraintStart_toEndOf="@id/tvLevelDivider"
-            app:layout_constraintTop_toTopOf="@id/tvLevelDivider" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:background="@color/shimmer_item_inside"
+            android:textColor="@color/shimmer_item_inside"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:text="@string/learning_progress"
-            android:textColor="#F9663A"
             android:textSize="9sp"
-            android:fontFamily="@font/poppins_w500"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_children_level"

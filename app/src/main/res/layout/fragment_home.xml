@@ -18,7 +18,7 @@
             android:layout_marginTop="16dp"
             android:fontFamily="@font/poppins_w700"
             android:text="@string/insight"
-            android:textColor="@color/black"
+            android:textColor="@color/navy_blue"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -28,6 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
+            android:textColor="@color/navy_blue"
             android:fontFamily="@font/poppins_w700"
             android:text="@string/view_all"
             android:textSize="12sp"
@@ -35,28 +36,76 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_insight_header" />
 
+
         <com.opensooq.pluto.PlutoView
             android:id="@+id/slider_insight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="invisible"
+            app:indicator_visibility="true"
             app:layout_constraintTop_toBottomOf="@id/tv_insight_header" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_layout_insight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@id/tv_insight_header">
+            <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <include layout="@layout/shimmer_dashboard_insight" />
+
+                <include layout="@layout/shimmer_dashboard_insight" />
+
+
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <ImageView
+            android:id="@+id/ivNoRecentInsight"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_insight"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/shimmer_layout_insight"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/shimmer_layout_insight"
+            app:tint="@color/shimmer_item_inside"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tvNoRecentInsight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_w500"
+            android:text="@string/dashboard_no_recent_insight"
+            android:visibility="invisible"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivNoRecentInsight"
+            tools:visibility="visible" />
 
         <com.opensooq.pluto.PlutoIndicator
             android:id="@+id/slider_insight_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            app:layout_constraintEnd_toEndOf="@id/tv_insight_header"
             app:layout_constraintStart_toStartOf="@id/tv_insight_header"
             app:layout_constraintTop_toBottomOf="@id/slider_insight"
-            app:selected_color="#0095BF"
+            app:selected_color="#F9663A"
             app:selected_height="10dp"
             app:selected_padding_left="2dp"
             app:selected_padding_right="2dp"
             app:selected_width="10dp"
-            app:shape="rect"
-            app:unselected_color="#55333333"
+            app:shape="oval"
+            app:unselected_color="#808080"
             app:unselected_height="6dp"
             app:unselected_padding_left="2dp"
             app:unselected_padding_right="2dp"
@@ -71,10 +120,10 @@
             android:layout_marginTop="32dp"
             android:fontFamily="@font/poppins_w700"
             android:text="@string/live_event"
-            android:textColor="@color/black"
+            android:textColor="@color/navy_blue"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/slider_insight_indicator" />
+            app:layout_constraintTop_toBottomOf="@id/shimmer_layout_insight" />
 
         <TextView
             android:id="@+id/tv_view_all_live_event"
@@ -84,32 +133,83 @@
             android:fontFamily="@font/poppins_w700"
             android:text="@string/view_all"
             android:textSize="12sp"
+            android:textColor="@color/navy_blue"
             app:layout_constraintBottom_toBottomOf="@id/tv_live_event_header"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_live_event_header" />
+
 
         <com.opensooq.pluto.PlutoView
             android:id="@+id/slider_live_event"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:indicator_visibility="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_live_event_header" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_layout_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@id/tv_live_event_header">
+            <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <include layout="@layout/shimmer_dashboard_live_event" />
+
+                <include layout="@layout/shimmer_dashboard_live_event" />
+
+
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+        <ImageView
+            android:id="@+id/ivNoLiveEvent"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_event"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/shimmer_layout_event"
+            app:layout_constraintBottom_toBottomOf="@id/shimmer_layout_event"
+            app:tint="@color/shimmer_item_inside"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tvNoLiveEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_w500"
+            android:text="@string/dashboard_no_live_event"
+            android:visibility="invisible"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivNoLiveEvent"
+            tools:visibility="visible" />
 
         <com.opensooq.pluto.PlutoIndicator
             android:id="@+id/slider_live_event_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            app:layout_constraintEnd_toEndOf="@id/tv_live_event_header"
             app:layout_constraintStart_toStartOf="@id/tv_live_event_header"
             app:layout_constraintTop_toBottomOf="@id/slider_live_event"
-            app:selected_color="#0095BF"
+            app:selected_color="#F9663A"
             app:selected_height="10dp"
             app:selected_padding_left="2dp"
             app:selected_padding_right="2dp"
             app:selected_width="10dp"
-            app:shape="rect"
-            app:unselected_color="#55333333"
+            app:shape="oval"
+            app:unselected_color="#808080"
             app:unselected_height="6dp"
             app:unselected_padding_left="2dp"
             app:unselected_padding_right="2dp"
@@ -124,71 +224,130 @@
             android:layout_marginTop="32dp"
             android:fontFamily="@font/poppins_w700"
             android:text="@string/children"
-            android:textColor="@color/black"
+            android:textColor="@color/navy_blue"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/slider_live_event_indicator" />
+            app:layout_constraintTop_toBottomOf="@id/shimmer_layout_event" />
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_children"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_children_header" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_enroll_course_information"
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_layout_children"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="12dp"
-            android:layout_marginVertical="32dp"
-            app:cardElevation="10dp"
+            android:layout_marginBottom="24dp"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv_children">
+            app:layout_constraintTop_toBottomOf="@id/tv_children_header">
+            <!--            app:layout_constraintBottom_toBottomOf="parent"-->
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_learn_language"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/poppins_w500"
-                    android:text="@string/learn_a_language_now"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="22sp"
-                    app:layout_constraintTop_toTopOf="parent" />
+                <include layout="@layout/shimmer_dashboard_children" />
 
-                <TextView
-                    android:id="@+id/tv_persuasive_paragraph"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/poppins_w400"
-                    android:text="@string/learn_the_language_that_your_children_fancy_on_the_time_you_wish_and_the_place_you_like_lingotalk_offer_all_the_flexibility_at_your_fingertip_lets_start_learning_now"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    app:layout_constraintTop_toBottomOf="@id/tv_learn_language" />
+                <include layout="@layout/shimmer_dashboard_children" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/mbtn_enroll_course"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="12dp"
-                    android:fontFamily="@font/poppins_w700"
-                    android:letterSpacing="0.01"
-                    android:text="@string/enroll_course"
-                    android:textAllCaps="false"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@id/tv_persuasive_paragraph"
-                    app:layout_constraintStart_toStartOf="@id/tv_persuasive_paragraph"
-                    app:layout_constraintTop_toBottomOf="@id/tv_persuasive_paragraph" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+        <ImageView
+            android:id="@+id/ivNoStudentList"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_baseline_person"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/shimmer_layout_children"
+            app:layout_constraintBottom_toBottomOf="@id/shimmer_layout_children"
+            app:tint="@color/shimmer_item_inside"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tvNoStudentList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:textSize="20sp"
+            android:fontFamily="@font/poppins_w500"
+            android:text="@string/dashboard_no_children_data"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivNoStudentList"
+            tools:visibility="visible" />
+
+
+
+
+        <!--        <androidx.cardview.widget.CardView-->
+        <!--            android:id="@+id/cv_enroll_course_information"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginHorizontal="12dp"-->
+        <!--            android:layout_marginVertical="32dp"-->
+        <!--            app:cardElevation="10dp"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/rv_children">-->
+
+        <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content">-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/tv_learn_language"-->
+        <!--                    android:layout_width="match_parent"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_marginTop="10dp"-->
+        <!--                    android:fontFamily="@font/poppins_w500"-->
+        <!--                    android:text="@string/learn_a_language_now"-->
+        <!--                    android:textAlignment="center"-->
+        <!--                    android:textColor="@color/black"-->
+        <!--                    android:textSize="22sp"-->
+        <!--                    app:layout_constraintTop_toTopOf="parent" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/tv_persuasive_paragraph"-->
+        <!--                    android:layout_width="match_parent"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_marginHorizontal="8dp"-->
+        <!--                    android:layout_marginTop="10dp"-->
+        <!--                    android:fontFamily="@font/poppins_w400"-->
+        <!--                    android:text="@string/learn_the_language_that_your_children_fancy_on_the_time_you_wish_and_the_place_you_like_lingotalk_offer_all_the_flexibility_at_your_fingertip_lets_start_learning_now"-->
+        <!--                    android:textAlignment="center"-->
+        <!--                    android:textColor="@color/black"-->
+        <!--                    android:textSize="14sp"-->
+        <!--                    app:layout_constraintTop_toBottomOf="@id/tv_learn_language" />-->
+
+        <!--                <com.google.android.material.button.MaterialButton-->
+        <!--                    android:id="@+id/mbtn_enroll_course"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_marginTop="10dp"-->
+        <!--                    android:layout_marginBottom="12dp"-->
+        <!--                    android:fontFamily="@font/poppins_w700"-->
+        <!--                    android:letterSpacing="0.01"-->
+        <!--                    android:text="@string/enroll_course"-->
+        <!--                    android:textAllCaps="false"-->
+        <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--                    app:layout_constraintEnd_toEndOf="@id/tv_persuasive_paragraph"-->
+        <!--                    app:layout_constraintStart_toStartOf="@id/tv_persuasive_paragraph"-->
+        <!--                    app:layout_constraintTop_toBottomOf="@id/tv_persuasive_paragraph" />-->
+        <!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
+        <!--        </androidx.cardview.widget.CardView>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

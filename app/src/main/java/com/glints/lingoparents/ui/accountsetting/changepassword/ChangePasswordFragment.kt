@@ -80,6 +80,7 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
                                                     newPassword,
                                                     confirmPassword
                                                 )
+                                                //viewModel.savePassword(binding.tfNewPassword.editText?.text.toString())
                                                 //viewModel.savePassword(event.newPassword)
                                             } else {
                                                 Snackbar.make(

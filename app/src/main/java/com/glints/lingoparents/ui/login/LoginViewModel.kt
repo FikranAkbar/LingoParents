@@ -1,5 +1,6 @@
 package com.glints.lingoparents.ui.login
 
+import android.os.Build
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,9 +14,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel() {
     private val loginEventChannel = Channel<LoginEvent>()
@@ -76,10 +80,10 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
     fun saveEmail(email: String) = viewModelScope.launch {
         tokenPreferences.saveAccessEmail(email)
     }
-
     fun saveUserId(id: String) = viewModelScope.launch {
         tokenPreferences.saveUserId(id)
     }
+
 
     fun loginUserByEmailPassword(email: String, password: String) = viewModelScope.launch {
         onApiCallStarted()
@@ -93,6 +97,7 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
                 ) {
                     if (response.isSuccessful) {
                         onApiCallSuccess("Login Successful")
+
                         val accessToken = response.body()?.data?.accessToken.toString()
                         val refreshToken = response.body()?.data?.refreshToken.toString()
                         val userId = JWTUtils.getIdFromAccessToken(accessToken)

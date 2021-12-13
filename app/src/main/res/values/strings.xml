@@ -41,111 +41,6 @@
     <string name="tab_progress_text_2">Progress</string>
     <string name="tab_progress_course_list_text_1">Korean</string>
     <string name="tab_progress_course_list_text_2">German</string>
-
-    <!--coba-->
-    <string-array name="data_course">
-        <item>Arabic</item>
-        <item>English</item>
-        <item>French</item>
-        <item>German</item>
-        <item>Indonesian</item>
-        <item>Japanese</item>
-        <item>Korean</item>
-        <item>Mandarin</item>
-        <item>Spanish</item>
-        <item>Thai</item>
-    </string-array>
-    <string-array name="data_desccourse1">
-        <item>desc 1 Arabic</item>
-        <item>desc 1 English</item>
-        <item>(desc 1 french)Indulge the beauty of French artistic refinements, such as fine arts, music, dance, and architecture through language.</item>
-        <item>desc 1 German</item>
-        <item>desc 1 Indonesian</item>
-        <item>desc 1 Japanese</item>
-        <item>desc 1 Korean</item>
-        <item>desc 1 Mandarin</item>
-        <item>desc 1 Spanish</item>
-        <item>desc 1 Thai</item>
-    </string-array>
-
-    <string-array name="data_desccourse2">
-        <item>desc 2 Arabic</item>
-        <item>desc 2 English</item>
-        <item>(desc 2 french)Spoken across the globe with various pronounciation and used as an official countries</item>
-        <item>desc 2 German</item>
-        <item>desc 2 Indonesian</item>
-        <item>desc 2 Japanese</item>
-        <item>desc 2 Korean</item>
-        <item>desc 2 Mandarin</item>
-        <item>desc 2 Spanish</item>
-        <item>desc 2 Thai</item>
-    </string-array>
-
-    <string-array name="data_desccourse3">
-        <item>desc 3 Arabic</item>
-        <item>desc 3 English</item>
-        <item>(desc 3 French)French pronounciation is surprisingly simple and more consistent than the other language.</item>
-        <item>desc 3 German</item>
-        <item>desc 3 Indonesian</item>
-        <item>desc 3 Japanese</item>
-        <item>desc 3 Korean</item>
-        <item>desc 3 Mandarin</item>
-        <item>desc 3 Spanish</item>
-        <item>desc 3 Thai</item>
-    </string-array>
-
-    <integer-array name="data_coursephoto">
-        <item>@drawable/img_course_arabic</item>
-        <item>@drawable/img_course_english</item>
-        <item>@drawable/img_course_french</item>
-        <item>@drawable/img_course_german</item>
-        <item>@drawable/img_course_indonesian</item>
-        <item>@drawable/img_course_japanese</item>
-        <item>@drawable/img_course_korean</item>
-        <item>@drawable/img_course_mandarin</item>
-        <item>@drawable/img_course_spanish</item>
-        <item>@drawable/img_course_thai</item>
-    </integer-array>
-
-    <integer-array name="data_coursecardphoto1">
-        <item>@drawable/french_card1</item>
-        <item>@drawable/french_card1</item>
-        <item>@drawable/french_card1</item>
-        <item>@drawable/french_card1</item>
-        <item>@drawable/french_card1</item>
-        <item>@drawable/french_card1</item>
-        <item>@drawable/french_card1</item>
-        <item>@drawable/french_card1</item>
-        <item>@drawable/french_card1</item>
-        <item>@drawable/french_card1</item>
-    </integer-array>
-
-    <integer-array name="data_coursecardphoto2">
-        <item>@drawable/french_card2</item>
-        <item>@drawable/french_card2</item>
-        <item>@drawable/french_card2</item>
-        <item>@drawable/french_card2</item>
-        <item>@drawable/french_card2</item>
-        <item>@drawable/french_card2</item>
-        <item>@drawable/french_card2</item>
-        <item>@drawable/french_card2</item>
-        <item>@drawable/french_card2</item>
-        <item>@drawable/french_card2</item>
-    </integer-array>
-
-    <integer-array name="data_coursecardphoto3">
-        <item>@drawable/french_card3</item>
-        <item>@drawable/french_card3</item>
-        <item>@drawable/french_card3</item>
-        <item>@drawable/french_card3</item>
-        <item>@drawable/french_card3</item>
-        <item>@drawable/french_card3</item>
-        <item>@drawable/french_card3</item>
-        <item>@drawable/french_card3</item>
-        <item>@drawable/french_card3</item>
-        <item>@drawable/french_card3</item>
-    </integer-array>
-
     <string-array name="session_name">
         <item>Session 1</item>
         <item>Session 2</item>
@@ -247,12 +142,17 @@
     <string name="enter_voucher_code">Enter Voucher Code</string>
     <string name="payment_method">Payment Method</string>
     <string name="bank_transfer">Bank Transfer</string>
+    <string name="dashboard_no_children_data">No Children Data Available</string>
+    <string name="dashboard_no_recent_insight">No Recent Insight Available</string>
+    <string name="dashboard_no_live_event">No Event Available</string>
     <string name="dummy_beginner_sublevel_2">Beginner - Sublevel 2</string>
     <string name="dummy_010_987">010-987</string>
     <string name="dummy_janedoe_gmail_com">janedoe@gmail.com</string>
     <string name="dummy_sesame_street_no_76_east_jakarta_13782">Sesame Street No. 76 East Jakarta, 13782</string>
     <string name="dummy_john_doe">John Doe</string>
     <string name="gender">Gender</string>
+    <string name="level_divider">-</string>
+    <string name="shimmer_course_placeholder">Placeholder</string>
     <string name="total_learning_hours">Total Learning Hours</string>
     <string name="dummy_3_hours">3 Hours</string>
     <string name="total_hours_to_complete">Total Hours to Complete</string>
