@@ -141,12 +141,12 @@ class InsightListViewModel(private val tokenPref: TokenPreferences) : ViewModel(
 
     fun sendBlankKeywordToInsightListFragment() = viewModelScope.launch {
         EventBus.getDefault()
-            .post(InsightSearchList.SendBlackKeywordToInsightListFragment)
+            .post(InsightSearchList.SendBlankKeywordToInsightListFragment)
     }
 
     sealed class InsightSearchList {
         data class SendKeywordToInsightListFragment(val keyword: String) : InsightSearchList()
-        object SendBlackKeywordToInsightListFragment : InsightSearchList()
+        object SendBlankKeywordToInsightListFragment : InsightSearchList()
     }
 
     sealed class AllInsightList {

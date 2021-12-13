@@ -85,7 +85,7 @@ class LifestyleInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
     }
 
     @Subscribe
-    fun onBlankKeywordSent(){
+    fun onBlankKeywordSent(insight: InsightListViewModel.InsightSearchList.SendBlankKeywordToInsightListFragment){
         viewModel.loadInsightList(InsightListViewModel.LIFESTYLE_TAG)
     }
 

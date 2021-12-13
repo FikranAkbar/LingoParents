@@ -84,13 +84,15 @@ class AllInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
     }
 
     @Subscribe
-    fun onBlankKeywordSent(){
+    fun onBlankKeywordSent(insight: InsightListViewModel.InsightSearchList.SendBlankKeywordToInsightListFragment){
         viewModel.loadInsightList(InsightListViewModel.ALL_TAG)
+        EventBus.getDefault().removeStickyEvent(insight)
     }
 
     @Subscribe
     fun onKeywordSent(insight: InsightListViewModel.InsightSearchList.SendKeywordToInsightListFragment){
         viewModel.getInsightSearchList(InsightListViewModel.ALL_TAG, insight.keyword)
+        EventBus.getDefault().removeStickyEvent(insight)
     }
 
     private fun showLoading(b: Boolean) {
