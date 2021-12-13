@@ -74,6 +74,11 @@ interface APIService {
         @QueryMap options: Map<String, String>,
     ): Call<AllInsightsListResponse>
 
+    @GET("api/v1/insights?status=Publish")
+    fun getInsightSearchList(
+        @QueryMap options: Map<String, String>
+    ): Call<AllInsightsListResponse>
+
     @GET("api/v1/insights/{id}")
     fun getInsightDetail(
         @Path("id") id: Int,
