@@ -20,7 +20,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
-import androidx.recyclerview.widget.SnapHelper
 import com.glints.lingoparents.R
 import com.glints.lingoparents.data.model.response.CourseDetailByStudentIdResponse
 import com.glints.lingoparents.databinding.FragmentProgressLearningCourseBinding
@@ -66,7 +65,7 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
             viewModel.progressLearningCourseEvent.collect { event ->
                 when (event) {
                     is ProgressLearningCourseViewModel.ProgressLearningCourseEvent.Loading -> {
-
+                        showLoading(true)
                     }
                     is ProgressLearningCourseViewModel.ProgressLearningCourseEvent.Success -> {
                         val courseDetail = event.courseDetail
@@ -133,7 +132,10 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
                                 setOnItemClickCallback(object : SessionAdapter.OnItemClickCallback {
                                     override fun onItemClicked(session: CourseDetailByStudentIdResponse.SessionsItem) {
                                         val action =
-                                            ProgressFragmentDirections.actionProgressFragmentToAssignmentFragment(event.studentId, session.idSession!!)
+                                            ProgressFragmentDirections.actionProgressFragmentToAssignmentFragment(
+                                                event.studentId,
+                                                session.idSession!!
+                                            )
                                         Log.d("ACTION:", "$action")
                                         findNavController().navigate(action)
                                     }
@@ -156,9 +158,95 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
                                 }
                             }
                         }
+
+                        showLoading(false)
+                    }
+                    is ProgressLearningCourseViewModel.ProgressLearningCourseEvent.SuccessWithNoSession -> {
+                        val courseDetail = event.courseDetail
+                        binding.apply {
+                            tvTutorname.apply {
+                                text = "No Tutor"
+                            }
+                            expandable.apply {
+                                val arrowImage =
+                                    parentLayout.findViewById<ImageView>(R.id.iv_coursearrow)
+                                parentLayout.apply {
+                                    findViewById<TextView>(R.id.tv_courselevel).text =
+                                        "No Level - No Sub Level"
+                                    findViewById<TextView>(R.id.tv_levelvalue).text =
+                                        "${courseDetail.progress!!.times(100)}%"
+                                    setOnClickListener {
+                                        if (!isExpanded) {
+                                            expand()
+                                            arrowImage.setImageDrawable(
+                                                resources.getDrawable(
+                                                    R.drawable.ic_baseline_keyboard_arrow_up_24,
+                                                    requireContext().theme
+                                                )
+                                            )
+                                        } else {
+                                            collapse()
+                                            arrowImage.setImageDrawable(
+                                                resources.getDrawable(
+                                                    R.drawable.ic_baseline_keyboard_arrow_down_24,
+                                                    requireContext().theme
+                                                )
+                                            )
+                                        }
+                                    }
+                                    secondLayout.apply {
+                                        findViewById<ProgressBar>(R.id.progressBar).progress =
+                                            courseDetail.progress.times(100).roundToInt()
+                                        findViewById<TextView>(R.id.tv_modulevalue).text =
+                                            "${courseDetail.modulesToComplete} Modules"
+                                        findViewById<TextView>(R.id.tv_hoursvalue).text =
+                                            "${courseDetail.hoursToComplete} Hours"
+                                        findViewById<TextView>(R.id.tv_learninghoursvalue).text =
+                                            "${courseDetail.learningHours} Hours"
+                                    }
+                                }
+                            }
+
+                            tvScore.apply {
+                                text = if (courseDetail.overallScore != 0) {
+                                    setTextColor(Color.BLACK)
+                                    courseDetail.overallScore.toString()
+                                } else {
+                                    setTextColor(Color.parseColor("#C2C9D1"))
+                                    requireContext().getString(R.string.no_score_text)
+                                }
+                            }
+
+                            sessionAdapter.apply {
+                                submitList(
+                                    courseDetail.sessions!!
+                                )
+                                setOnItemClickCallback(object : SessionAdapter.OnItemClickCallback {
+                                    override fun onItemClicked(session: CourseDetailByStudentIdResponse.SessionsItem) {}
+                                })
+                            }
+
+                            sessionNumber.apply {
+                                for (i: Int in 1..10) {
+                                    addView(makeNewCellForSessionNumber(i))
+                                }
+                            }
+
+                            sessionAttendance.apply {
+                                for (i: Int in 0..9) {
+                                    try {
+                                        addView(makeNewCellForSessionAttendance(courseDetail.sessions!![i].attendance == "Yes"))
+                                    } catch (e: IndexOutOfBoundsException) {
+                                        addView(makeNewCellForSessionAttendance(null))
+                                    }
+                                }
+                            }
+                        }
+
+                        showLoading(false)
                     }
                     is ProgressLearningCourseViewModel.ProgressLearningCourseEvent.Error -> {
-
+                        showLoading(false)
                     }
                 }
             }
@@ -235,6 +323,29 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
             snapHelper.attachToRecyclerView(rvSession)
             sessionAdapter = SessionAdapter()
             rvSession.adapter = sessionAdapter
+        }
+    }
+
+    private fun showLoading(b: Boolean) {
+        binding.apply {
+            when (b) {
+                true -> {
+                    View.VISIBLE.apply {
+                        shimmerExpandable.visibility = this
+                        shimmerRvSession.visibility = this
+                        shimmerScore.visibility = this
+                        shimmerTvTutorname.visibility = this
+                    }
+                }
+                false -> {
+                    View.GONE.apply {
+                        shimmerExpandable.visibility = this
+                        shimmerRvSession.visibility = this
+                        shimmerScore.visibility = this
+                        shimmerTvTutorname.visibility = this
+                    }
+                }
+            }
         }
     }
 }

@@ -39,6 +39,12 @@ class ProgressLearningCourseViewModel(
             progressLearningCourseEventChannel.send(ProgressLearningCourseEvent.Success(courseDetail, lastSessionDetail, studentId))
         }
 
+    private fun onApiCallSuccessWithNoSession(
+        courseDetail: CourseDetailByStudentIdResponse.Data
+    ) = viewModelScope.launch {
+        progressLearningCourseEventChannel.send(ProgressLearningCourseEvent.SuccessWithNoSession(courseDetail))
+    }
+
     private fun onApiCallError(message: String) = viewModelScope.launch {
         progressLearningCourseEventChannel.send(ProgressLearningCourseEvent.Error(message))
     }
@@ -83,6 +89,7 @@ class ProgressLearningCourseViewModel(
                         else {
                             val apiError = ErrorUtils.parseError(response)
                             onApiCallError(apiError.message())
+                            onApiCallSuccessWithNoSession(courseDetail)
                         }
                     }
 
@@ -103,6 +110,9 @@ class ProgressLearningCourseViewModel(
             val studentId: Int
         ) : ProgressLearningCourseEvent()
 
+        data class SuccessWithNoSession(
+            val courseDetail: CourseDetailByStudentIdResponse.Data
+        ) : ProgressLearningCourseEvent()
         data class Error(val message: String) : ProgressLearningCourseEvent()
     }
 }

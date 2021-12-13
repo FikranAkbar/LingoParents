@@ -259,7 +259,7 @@
     <string name="dummy_3_modules">3 Modules</string>
     <string name="total_module_to_complete">Total Module to Complete</string>
     <string name="dummy_7_hours">7 Hours</string>
-    <string name="no_score_text">You\'re not complete the session</string>
+    <string name="no_score_text">Student not complete the session</string>
     <string name="tutor_name">Tutor Name:</string>
     <string name="dummy_eleanor_pena">Eleanor Pena</string>
     <string name="tutor_name_title">Tutor Name :</string>
@@ -271,4 +271,6 @@
     <string name="session_feedback">Session Feedback:</string>
     <string name="notes">Notes:</string>
     <string name="you_have_no_children_connected">You have no children connected</string>
+    <string name="student_not_joined_any_class_yet">Student not joined any class yet</string>
+    <string name="title_learning_progress">Learning Progress</string>
 </resources>

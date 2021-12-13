@@ -58,10 +58,11 @@ class ProgressLearningFragment : Fragment(R.layout.fragment_progress_learning) {
 
                     }
                     is ProgressLearningViewModel.ProgressLearningEvent.Success -> {
+                        showNoCourseRegistered(false)
                         initViewPager(event.result, event.studentId)
                     }
                     is ProgressLearningViewModel.ProgressLearningEvent.Error -> {
-
+                        showNoCourseRegistered(true)
                     }
                 }
             }
@@ -139,6 +140,25 @@ class ProgressLearningFragment : Fragment(R.layout.fragment_progress_learning) {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    private fun showNoCourseRegistered(b: Boolean) {
+        binding.apply {
+            when(b) {
+                true -> {
+                    ivNoCourseRegistered.visibility = View.VISIBLE
+                    tvNoCourseRegistered.visibility = View.VISIBLE
+                    viewPager.visibility = View.GONE
+                    tlCourseList.visibility = View.GONE
+                }
+                else -> {
+                    ivNoCourseRegistered.visibility = View.GONE
+                    tvNoCourseRegistered.visibility = View.GONE
+                    viewPager.visibility = View.VISIBLE
+                    tlCourseList.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
 }

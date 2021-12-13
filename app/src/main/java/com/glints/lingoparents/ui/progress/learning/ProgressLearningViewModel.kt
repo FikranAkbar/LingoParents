@@ -40,8 +40,14 @@ class ProgressLearningViewModel : ViewModel() {
                     response: Response<CourseListByStudentIdResponse>
                 ) {
                     if (response.isSuccessful) {
-                        val result = response.body()?.data!!
-                        onApiCallSuccess(result, id)
+                        if (response.body()?.data!!.isNotEmpty()) {
+                            val result = response.body()?.data!!
+                            onApiCallSuccess(result, id)
+                        }
+                        else {
+                            onApiCallError(response.body()?.message!!)
+                        }
+
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallError(apiError.message())

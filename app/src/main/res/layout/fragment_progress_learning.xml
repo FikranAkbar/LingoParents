@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_w700"
-                android:text="Learning Progress"
+                android:text="@string/title_learning_progress"
                 android:textAlignment="center"
                 android:textSize="24sp"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -43,7 +43,7 @@
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tl_course_list"
-                app:tabInlineLabel="true"
+                style="@style/CourseTabsTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginTop="4dp"
@@ -51,10 +51,11 @@
                 app:layout_constraintTop_toTopOf="@id/line_divider"
                 app:tabGravity="fill"
                 app:tabIconTint="@null"
-                style="@style/CourseTabsTextStyle"
                 app:tabIndicatorColor="#F9663A"
-                app:tabSelectedTextColor="@color/black"
-                app:tabMode="auto"/>
+                app:tabInlineLabel="true"
+                app:tabMode="auto"
+                app:tabSelectedTextColor="@color/black" />
+
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/view_pager"
                 android:layout_width="match_parent"
@@ -64,6 +65,34 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tl_course_list"
                 tools:layout_editor_absoluteX="16dp" />
+
+            <ImageView
+                android:id="@+id/iv_no_course_registered"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/ic_course"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/line_divider"
+                app:layout_constraintVertical_bias="0.45"
+                app:tint="@color/shimmer_item_inside"
+                android:visibility="gone"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/tv_no_course_registered"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/poppins_w500"
+                android:maxLines="2"
+                android:text="@string/student_not_joined_any_class_yet"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_no_course_registered" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
