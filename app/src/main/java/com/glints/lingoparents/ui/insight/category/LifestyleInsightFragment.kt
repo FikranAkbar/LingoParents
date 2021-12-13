@@ -17,6 +17,8 @@ import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import kotlinx.coroutines.flow.collect
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 
 class LifestyleInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
 
@@ -46,7 +48,7 @@ class LifestyleInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel =
-            ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this, arguments))[
+            ViewModelProvider(requireParentFragment(), CustomViewModelFactory(tokenPreferences, requireParentFragment(), arguments))[
                     InsightListViewModel::class.java
             ]
 
@@ -82,6 +84,16 @@ class LifestyleInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
         }
     }
 
+    @Subscribe
+    fun onBlankKeywordSent(){
+        viewModel.loadInsightList(InsightListViewModel.LIFESTYLE_TAG)
+    }
+
+    @Subscribe
+    fun onKeywordSent(insight: InsightListViewModel.InsightSearchList.SendKeywordToInsightListFragment){
+        viewModel.getInsightSearchList(InsightListViewModel.LIFESTYLE_TAG, insight.keyword)
+    }
+
     private fun showLoading(b: Boolean) {
         binding.apply {
             if (b) {
@@ -105,6 +117,16 @@ class LifestyleInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
                 tvNoLifestyleInsight.visibility = View.GONE
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
     }
 
     override fun onDestroy() {
