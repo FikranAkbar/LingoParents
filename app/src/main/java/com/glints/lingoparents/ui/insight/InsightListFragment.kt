@@ -1,11 +1,14 @@
 package com.glints.lingoparents.ui.insight
 
+import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import com.glints.lingoparents.databinding.FragmentInsightListBinding
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
@@ -32,10 +35,9 @@ class InsightListFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this))[
+        viewModel = ViewModelProvider(requireActivity(), CustomViewModelFactory(tokenPreferences, requireActivity()))[
                 InsightListViewModel::class.java
         ]
-        // TODO: Use the ViewModel
     }
 
     private fun initViews(){
@@ -47,6 +49,24 @@ class InsightListFragment : Fragment() {
                 TabLayoutMediator(binding.tlInsightCategory, binding.vpInsight){tab,position ->
                     tab.text = tabNames[position]
                 }.attach()
+            }
+
+            tfSearchInsight.apply {
+                editText?.setOnEditorActionListener { textView, actionId, _ ->
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        val query = textView.text.toString()
+                        if (query.isBlank()) {
+                            viewModel.sendBlankKeywordToInsightListFragment()
+                        } else {
+                            viewModel.sendKeywordToInsightListFragment(query)
+                        }
+
+                        val imm =
+                            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        imm.hideSoftInputFromWindow(textView.windowToken, 0)
+                    }
+                    true
+                }
             }
         }
     }

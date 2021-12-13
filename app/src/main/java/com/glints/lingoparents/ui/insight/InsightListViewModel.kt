@@ -1,8 +1,6 @@
 package com.glints.lingoparents.ui.insight
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.model.response.AllInsightsListResponse
@@ -11,6 +9,7 @@ import com.glints.lingoparents.utils.TokenPreferences
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -44,7 +43,7 @@ class InsightListViewModel(private val tokenPref: TokenPreferences) : ViewModel(
     }
 
     private fun onApiCallStarted(tag: String) = viewModelScope.launch {
-        when(tag){
+        when (tag) {
             ALL_TAG -> {
                 allInsightListChannel.send(AllInsightList.Loading)
             }
@@ -59,7 +58,7 @@ class InsightListViewModel(private val tokenPref: TokenPreferences) : ViewModel(
 
     private fun onApiCallSuccess(tag: String, list: List<AllInsightsListResponse.Message>) =
         viewModelScope.launch {
-            when(tag){
+            when (tag) {
                 ALL_TAG -> {
                     allInsightListChannel.send(AllInsightList.Success(list))
                 }
@@ -73,7 +72,7 @@ class InsightListViewModel(private val tokenPref: TokenPreferences) : ViewModel(
         }
 
     private fun onApiCallError(tag: String, message: String) = viewModelScope.launch {
-        when(tag){
+        when (tag) {
             ALL_TAG -> {
                 allInsightListChannel.send(AllInsightList.Error(message))
             }
@@ -91,7 +90,7 @@ class InsightListViewModel(private val tokenPref: TokenPreferences) : ViewModel(
         APIClient
             .service
             .getAllInsightList(mapOf("tag" to tag))
-            .enqueue(object: Callback<AllInsightsListResponse> {
+            .enqueue(object : Callback<AllInsightsListResponse> {
                 override fun onResponse(
                     call: Call<AllInsightsListResponse>,
                     response: Response<AllInsightsListResponse>
@@ -110,24 +109,64 @@ class InsightListViewModel(private val tokenPref: TokenPreferences) : ViewModel(
             })
     }
 
-    sealed class AllInsightList{
-        object Loading: AllInsightList()
-        data class Success(val list: List<AllInsightsListResponse.Message>): AllInsightList()
-        data class Error(val message: String): AllInsightList()
-        data class NavigateToDetailInsightFragment(val id: Int): AllInsightList()
+    fun getInsightSearchList(tag: String, keyword: String) = viewModelScope.launch {
+        onApiCallStarted(tag)
+        APIClient
+            .service
+            .getInsightSearchList(mapOf("tag" to tag, "keyword" to keyword))
+            .enqueue(object : Callback<AllInsightsListResponse>{
+                override fun onResponse(
+                    call: Call<AllInsightsListResponse>,
+                    response: Response<AllInsightsListResponse>,
+                ) {
+                    if (response.isSuccessful) {
+                        onApiCallSuccess(tag, response.body()?.message!!)
+                    } else {
+                        val apiError = ErrorUtils.parseError(response)
+                        onApiCallError(tag, apiError.message())
+                    }
+                }
+
+                override fun onFailure(call: Call<AllInsightsListResponse>, t: Throwable) {
+                    onApiCallError(tag, "Network Failed...")
+                }
+
+            })
     }
 
-    sealed class ParentingInsightList{
-        object Loading: ParentingInsightList()
-        data class Success(val list: List<AllInsightsListResponse.Message>): ParentingInsightList()
-        data class Error(val message: String): ParentingInsightList()
-        data class NavigateToDetailInsightFragment(val id: Int): ParentingInsightList()
+    fun sendKeywordToInsightListFragment(keyword: String) = viewModelScope.launch {
+        EventBus.getDefault()
+            .post(InsightSearchList.SendKeywordToInsightListFragment(keyword))
     }
 
-    sealed class LifestyleInsightList{
-        object Loading: LifestyleInsightList()
-        data class Success(val list: List<AllInsightsListResponse.Message>): LifestyleInsightList()
-        data class Error(val message: String): LifestyleInsightList()
-        data class NavigateToDetailInsightFragment(val id: Int): LifestyleInsightList()
+    fun sendBlankKeywordToInsightListFragment() = viewModelScope.launch {
+        EventBus.getDefault()
+            .post(InsightSearchList.SendBlackKeywordToInsightListFragment)
+    }
+
+    sealed class InsightSearchList {
+        data class SendKeywordToInsightListFragment(val keyword: String) : InsightSearchList()
+        object SendBlackKeywordToInsightListFragment : InsightSearchList()
+    }
+
+    sealed class AllInsightList {
+        object Loading : AllInsightList()
+        data class Success(val list: List<AllInsightsListResponse.Message>) : AllInsightList()
+        data class Error(val message: String) : AllInsightList()
+        data class NavigateToDetailInsightFragment(val id: Int) : AllInsightList()
+    }
+
+    sealed class ParentingInsightList {
+        object Loading : ParentingInsightList()
+        data class Success(val list: List<AllInsightsListResponse.Message>) : ParentingInsightList()
+        data class Error(val message: String) : ParentingInsightList()
+        data class NavigateToDetailInsightFragment(val id: Int) : ParentingInsightList()
+    }
+
+    sealed class LifestyleInsightList {
+        object Loading : LifestyleInsightList()
+        data class Success(val list: List<AllInsightsListResponse.Message>) : LifestyleInsightList()
+        data class Error(val message: String) : LifestyleInsightList()
+        data class NavigateToDetailInsightFragment(val id: Int) : LifestyleInsightList()
     }
 }
