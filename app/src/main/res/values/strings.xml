@@ -153,4 +153,24 @@
     <string name="gender">Gender</string>
     <string name="level_divider">-</string>
     <string name="shimmer_course_placeholder">Placeholder</string>
+    <string name="total_learning_hours">Total Learning Hours</string>
+    <string name="dummy_3_hours">3 Hours</string>
+    <string name="total_hours_to_complete">Total Hours to Complete</string>
+    <string name="dummy_3_modules">3 Modules</string>
+    <string name="total_module_to_complete">Total Module to Complete</string>
+    <string name="dummy_7_hours">7 Hours</string>
+    <string name="no_score_text">Student not complete the session</string>
+    <string name="tutor_name">Tutor Name:</string>
+    <string name="dummy_eleanor_pena">Eleanor Pena</string>
+    <string name="tutor_name_title">Tutor Name :</string>
+    <string name="session_schedule">Session Schedule :</string>
+    <string name="assignment">Assignment</string>
+    <string name="attendance">Attendance :</string>
+    <string name="student_score">Student Score :</string>
+    <string name="assignment_feedback">Assignment Feedback:</string>
+    <string name="session_feedback">Session Feedback:</string>
+    <string name="notes">Notes:</string>
+    <string name="you_have_no_children_connected">You have no children connected</string>
+    <string name="student_not_joined_any_class_yet">Student not joined any class yet</string>
+    <string name="title_learning_progress">Learning Progress</string>
 </resources>

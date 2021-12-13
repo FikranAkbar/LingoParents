@@ -6,12 +6,15 @@
 
     <TextView
         android:id="@+id/tv_courselevel"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_w700"
-        android:text="Beginner - Sublevel 2"
         android:textColor="#F37323"
         android:textStyle="bold"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:layout_marginEnd="48dp"
+        app:layout_constraintEnd_toStartOf="@id/tv_levelvalue"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,17 +24,18 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
         app:layout_constraintStart_toEndOf="@id/tv_courselevel"
+        app:layout_constraintEnd_toStartOf="@id/tv_levelvalue"
+        app:layout_constraintBottom_toBottomOf="@id/tv_courselevel"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_levelvalue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:fontFamily="@font/poppins_w700"
-        android:text="70%"
         android:textColor="#182E7C"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/tv_courselevel"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

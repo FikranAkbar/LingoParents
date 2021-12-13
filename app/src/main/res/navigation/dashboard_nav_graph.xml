@@ -119,7 +119,15 @@
         android:id="@+id/progressFragment"
         android:name="com.glints.lingoparents.ui.progress.ProgressFragment"
         android:label="fragment_progress"
-        tools:layout="@layout/fragment_progress" />
+        tools:layout="@layout/fragment_progress">
+        <action
+            android:id="@+id/action_progressFragment_to_assignmentFragment"
+            app:destination="@id/progressAssignmentFragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
     <fragment
         android:id="@+id/progressProfileFragment"
         android:name="com.glints.lingoparents.ui.progress.profile.ProgressProfileFragment"
@@ -167,19 +175,12 @@
         android:id="@+id/progressAssignmentFragment"
         android:name="com.glints.lingoparents.ui.progress.learning.assignment.AssignmentFragment"
         android:label="fragment_assignment"
-        tools:layout="@layout/fragment_assignment" />
-
-    <!--    <fragment-->
-    <!--        android:id="@+id/profileFragment"-->
-    <!--        android:name="com.glints.lingoparents.ui.accountsetting.profile.ProfileFragment"-->
-    <!--        android:label="ProfileFragment" >-->
-    <!--        <argument-->
-    <!--            android:name="email"-->
-    <!--            app:argType="string"-->
-    <!--            android:defaultValue="parent@email.com" />-->
-    <!--    </fragment>-->
-    <!--    <fragment-->
-    <!--        android:id="@+id/profileFragment"-->
-    <!--        android:name="com.glints.lingoparents.ui.accountsetting.profile.ProfileFragment"-->
-    <!--        android:label="ProfileFragment" />-->
+        tools:layout="@layout/fragment_assignment" >
+        <argument
+            android:name="studentId"
+            app:argType="integer" />
+        <argument
+            android:name="sessionId"
+            app:argType="integer" />
+    </fragment>
 </navigation>

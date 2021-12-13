@@ -1,87 +1,256 @@
 package com.glints.lingoparents.ui.progress.learning
 
-import android.animation.ObjectAnimator
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.View
-import android.widget.*
-import android.view.Gravity
+import android.annotation.SuppressLint
 import android.graphics.Color
+import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
+import android.view.Gravity
+import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.ProgressBar
+import android.widget.TextView
+import androidx.appcompat.widget.TooltipCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.LinearSnapHelper
 import com.glints.lingoparents.R
-import com.glints.lingoparents.data.model.SessionItem
+import com.glints.lingoparents.data.model.response.CourseDetailByStudentIdResponse
 import com.glints.lingoparents.databinding.FragmentProgressLearningCourseBinding
+import com.glints.lingoparents.ui.progress.ProgressFragmentDirections
 import com.glints.lingoparents.ui.progress.adapter.SessionAdapter
+import com.glints.lingoparents.utils.CustomViewModelFactory
+import com.glints.lingoparents.utils.TokenPreferences
+import com.glints.lingoparents.utils.dataStore
 import com.google.android.material.card.MaterialCardView
+import kotlinx.coroutines.flow.collect
+import kotlin.math.roundToInt
 
 class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learning_course) {
-    private lateinit var rvSession: RecyclerView
-    private val list = ArrayList<SessionItem>()
-
-
     private var _binding: FragmentProgressLearningCourseBinding? = null
     private val binding get() = _binding!!
 
-    companion object {
-        private val DUMMY_SESSION_ATTENDANCE = listOf(
-            true,
-            false,
-            true,
-            false,
-            true
-        )
-    }
+    private lateinit var sessionAdapter: SessionAdapter
 
+    private lateinit var tokenPreferences: TokenPreferences
+    private lateinit var viewModel: ProgressLearningCourseViewModel
+
+    @SuppressLint("UseCompatLoadingForDrawables", "SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentProgressLearningCourseBinding.bind(view)
-        binding.apply {
-            sessionNumber.apply {
-                for (i: Int in 1..10) {
-                    addView(makeNewCellForSessionNumber(i))
-                }
-            }
-            sessionAttendance.apply {
-                for (i: Int in 0..9) {
-                    try {
-                        addView(makeNewCellForSessionAttendance(DUMMY_SESSION_ATTENDANCE[i]))
-                    } catch (e: IndexOutOfBoundsException) {
-                        addView(makeNewCellForSessionAttendance(null))
+
+        tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
+        viewModel = ViewModelProvider(
+            this, CustomViewModelFactory(
+                tokenPreferences, this,
+                studentId = arguments?.getInt(ProgressLearningCourseViewModel.STUDENT_ID_KEY),
+                courseId = arguments?.getInt(ProgressLearningCourseViewModel.COURSE_ID_KEY)
+            )
+        )[
+                ProgressLearningCourseViewModel::class.java
+        ]
+
+        viewModel.getCourseDetailByStudentId()
+
+        showRecyclerList()
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.progressLearningCourseEvent.collect { event ->
+                when (event) {
+                    is ProgressLearningCourseViewModel.ProgressLearningCourseEvent.Loading -> {
+                        showLoading(true)
+                    }
+                    is ProgressLearningCourseViewModel.ProgressLearningCourseEvent.Success -> {
+                        val courseDetail = event.courseDetail
+                        val sessionDetail = event.lastSessionDetail
+                        binding.apply {
+                            tvTutorname.apply {
+                                text = "${sessionDetail.tutorName}"
+                                TooltipCompat.setTooltipText(this, "${sessionDetail.tutorName}")
+                            }
+                            expandable.apply {
+                                val arrowImage =
+                                    parentLayout.findViewById<ImageView>(R.id.iv_coursearrow)
+                                parentLayout.apply {
+                                    findViewById<TextView>(R.id.tv_courselevel).text =
+                                        "${sessionDetail.sessionLevel}-${sessionDetail.sessionSublevel}"
+                                    findViewById<TextView>(R.id.tv_levelvalue).text =
+                                        "${courseDetail.progress!!.times(100)}%"
+                                    setOnClickListener {
+                                        if (!isExpanded) {
+                                            expand()
+                                            arrowImage.setImageDrawable(
+                                                resources.getDrawable(
+                                                    R.drawable.ic_baseline_keyboard_arrow_up_24,
+                                                    requireContext().theme
+                                                )
+                                            )
+                                        } else {
+                                            collapse()
+                                            arrowImage.setImageDrawable(
+                                                resources.getDrawable(
+                                                    R.drawable.ic_baseline_keyboard_arrow_down_24,
+                                                    requireContext().theme
+                                                )
+                                            )
+                                        }
+                                    }
+                                    secondLayout.apply {
+                                        findViewById<ProgressBar>(R.id.progressBar).progress =
+                                            courseDetail.progress.times(100).roundToInt()
+                                        findViewById<TextView>(R.id.tv_modulevalue).text =
+                                            "${courseDetail.modulesToComplete} Modules"
+                                        findViewById<TextView>(R.id.tv_hoursvalue).text =
+                                            "${courseDetail.hoursToComplete} Hours"
+                                        findViewById<TextView>(R.id.tv_learninghoursvalue).text =
+                                            "${courseDetail.learningHours} Hours"
+                                    }
+                                }
+                            }
+
+                            tvScore.apply {
+                                text = if (courseDetail.overallScore != 0) {
+                                    setTextColor(Color.BLACK)
+                                    courseDetail.overallScore.toString()
+                                } else {
+                                    setTextColor(Color.parseColor("#C2C9D1"))
+                                    requireContext().getString(R.string.no_score_text)
+                                }
+                            }
+
+                            sessionAdapter.apply {
+                                submitList(
+                                    courseDetail.sessions!!
+                                )
+                                setOnItemClickCallback(object : SessionAdapter.OnItemClickCallback {
+                                    override fun onItemClicked(session: CourseDetailByStudentIdResponse.SessionsItem) {
+                                        val action =
+                                            ProgressFragmentDirections.actionProgressFragmentToAssignmentFragment(
+                                                event.studentId,
+                                                session.idSession!!
+                                            )
+                                        Log.d("ACTION:", "$action")
+                                        findNavController().navigate(action)
+                                    }
+                                })
+                            }
+
+                            sessionNumber.apply {
+                                for (i: Int in 1..10) {
+                                    addView(makeNewCellForSessionNumber(i))
+                                }
+                            }
+
+                            sessionAttendance.apply {
+                                for (i: Int in 0..9) {
+                                    try {
+                                        addView(makeNewCellForSessionAttendance(courseDetail.sessions!![i].attendance == "Yes"))
+                                    } catch (e: IndexOutOfBoundsException) {
+                                        addView(makeNewCellForSessionAttendance(null))
+                                    }
+                                }
+                            }
+                        }
+
+                        showLoading(false)
+                    }
+                    is ProgressLearningCourseViewModel.ProgressLearningCourseEvent.SuccessWithNoSession -> {
+                        val courseDetail = event.courseDetail
+                        binding.apply {
+                            tvTutorname.apply {
+                                text = "No Tutor"
+                            }
+                            expandable.apply {
+                                val arrowImage =
+                                    parentLayout.findViewById<ImageView>(R.id.iv_coursearrow)
+                                parentLayout.apply {
+                                    findViewById<TextView>(R.id.tv_courselevel).text =
+                                        "No Level - No Sub Level"
+                                    findViewById<TextView>(R.id.tv_levelvalue).text =
+                                        "${courseDetail.progress!!.times(100)}%"
+                                    setOnClickListener {
+                                        if (!isExpanded) {
+                                            expand()
+                                            arrowImage.setImageDrawable(
+                                                resources.getDrawable(
+                                                    R.drawable.ic_baseline_keyboard_arrow_up_24,
+                                                    requireContext().theme
+                                                )
+                                            )
+                                        } else {
+                                            collapse()
+                                            arrowImage.setImageDrawable(
+                                                resources.getDrawable(
+                                                    R.drawable.ic_baseline_keyboard_arrow_down_24,
+                                                    requireContext().theme
+                                                )
+                                            )
+                                        }
+                                    }
+                                    secondLayout.apply {
+                                        findViewById<ProgressBar>(R.id.progressBar).progress =
+                                            courseDetail.progress.times(100).roundToInt()
+                                        findViewById<TextView>(R.id.tv_modulevalue).text =
+                                            "${courseDetail.modulesToComplete} Modules"
+                                        findViewById<TextView>(R.id.tv_hoursvalue).text =
+                                            "${courseDetail.hoursToComplete} Hours"
+                                        findViewById<TextView>(R.id.tv_learninghoursvalue).text =
+                                            "${courseDetail.learningHours} Hours"
+                                    }
+                                }
+                            }
+
+                            tvScore.apply {
+                                text = if (courseDetail.overallScore != 0) {
+                                    setTextColor(Color.BLACK)
+                                    courseDetail.overallScore.toString()
+                                } else {
+                                    setTextColor(Color.parseColor("#C2C9D1"))
+                                    requireContext().getString(R.string.no_score_text)
+                                }
+                            }
+
+                            sessionAdapter.apply {
+                                submitList(
+                                    courseDetail.sessions!!
+                                )
+                                setOnItemClickCallback(object : SessionAdapter.OnItemClickCallback {
+                                    override fun onItemClicked(session: CourseDetailByStudentIdResponse.SessionsItem) {}
+                                })
+                            }
+
+                            sessionNumber.apply {
+                                for (i: Int in 1..10) {
+                                    addView(makeNewCellForSessionNumber(i))
+                                }
+                            }
+
+                            sessionAttendance.apply {
+                                for (i: Int in 0..9) {
+                                    try {
+                                        addView(makeNewCellForSessionAttendance(courseDetail.sessions!![i].attendance == "Yes"))
+                                    } catch (e: IndexOutOfBoundsException) {
+                                        addView(makeNewCellForSessionAttendance(null))
+                                    }
+                                }
+                            }
+                        }
+
+                        showLoading(false)
+                    }
+                    is ProgressLearningCourseViewModel.ProgressLearningCourseEvent.Error -> {
+                        showLoading(false)
                     }
                 }
             }
         }
-        var g = 0
-        var arrowImage =
-            binding.expandable.parentLayout.findViewById<ImageView>(R.id.iv_coursearrow)
-        binding.expandable.parentLayout.setOnClickListener {
-            if (g == 0) {
-                g = 1
-                binding.expandable.expand()
-                arrowImage.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_keyboard_arrow_up_24))
-            } else {
-                g = 0
-                binding.expandable.collapse()
-                arrowImage.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_keyboard_arrow_down_24))
-            }
-        }
-        //binding.progressBar.max = 100
-        val pb = binding.expandable.secondLayout.findViewById<ProgressBar>(R.id.progressBar)
-        pb.max = 100
-        val currentProgress = 70
-        ObjectAnimator.ofInt(pb, "progress", currentProgress)
-            //.setDuration(1500)
-            .start()
-        //rv
-        rvSession = binding.rvSession
-        rvSession.setHasFixedSize(true)
-        showRecyclerList()
-
     }
 
     override fun onDestroy() {
@@ -146,42 +315,37 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
     private fun Float.toDips() =
         TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this, resources.displayMetrics)
 
-    //rv
-    private val listSession: ArrayList<SessionItem>
-        get() {
-            val dataSession = resources.getStringArray(R.array.session_name)
-            val dataShortDesc = resources.getStringArray(R.array.session_shortdesc)
-            val dataDesc = resources.getStringArray(R.array.session_desc)
-            val dataScore = resources.getStringArray(R.array.session_score)
-            val listSession = ArrayList<SessionItem>()
-            for (i in dataSession.indices) {
-                val session = SessionItem(
-                    dataSession[i],
-                    dataShortDesc[i],
-                    dataDesc[i],
-                    dataScore[i],
-                )
-                listSession.add(session)
-            }
-            return listSession
-        }
-
     private fun showRecyclerList() {
-        rvSession.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        val listSessionAdapter = SessionAdapter(list)
-        rvSession.adapter = listSessionAdapter
-        listSessionAdapter.setOnItemClickCallback(object : SessionAdapter.OnItemClickCallback {
-            override fun onItemClicked(session: SessionItem) {
-//                Toast.makeText(context, "Kamu memilih " + session.session, Toast.LENGTH_SHORT)
-//                    .show()
-                //Navigation.createNavigateOnClickListener(R.id.action_progressLearningCourseFragment_to_assignmentFragment)
-                findNavController().navigate(R.id.action_progressLearningCourseFragment_to_progressAssignmentFragment)
-            }
-        })
+        binding.apply {
+            rvSession.layoutManager =
+                LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            val snapHelper = LinearSnapHelper()
+            snapHelper.attachToRecyclerView(rvSession)
+            sessionAdapter = SessionAdapter()
+            rvSession.adapter = sessionAdapter
+        }
+    }
 
-        list.clear()
-        list.addAll(listSession)
-        listSessionAdapter.notifyDataSetChanged()
+    private fun showLoading(b: Boolean) {
+        binding.apply {
+            when (b) {
+                true -> {
+                    View.VISIBLE.apply {
+                        shimmerExpandable.visibility = this
+                        shimmerRvSession.visibility = this
+                        shimmerScore.visibility = this
+                        shimmerTvTutorname.visibility = this
+                    }
+                }
+                false -> {
+                    View.GONE.apply {
+                        shimmerExpandable.visibility = this
+                        shimmerRvSession.visibility = this
+                        shimmerScore.visibility = this
+                        shimmerTvTutorname.visibility = this
+                    }
+                }
+            }
+        }
     }
 }

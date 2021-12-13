@@ -17,6 +17,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ProgressViewModel(private val tokenPreferences: TokenPreferences) : ViewModel() {
+    private var studentId = 0
+
     private val progressEventChannel = Channel<ProgressEvent>()
     val progressEvent = progressEventChannel.receiveAsFlow()
 
@@ -33,8 +35,12 @@ class ProgressViewModel(private val tokenPreferences: TokenPreferences) : ViewMo
         progressEventChannel.send(ProgressEvent.Error(message))
     }
 
-    fun sendEventToProfileAndProgressFragment(event: ProgressViewModel.EventBusAction) = viewModelScope.launch {
+    fun sendEventToProfileFragment(event: EventBusActionToStudentProfile) = viewModelScope.launch {
         EventBus.getDefault().post(event)
+    }
+
+    fun sendStickyEventToLearningProgressFragment(event: EventBusActionToStudentLearningProgress) = viewModelScope.launch {
+        EventBus.getDefault().postSticky(event)
     }
 
     fun getParentId() = tokenPreferences.getUserId().asLiveData()
@@ -81,6 +87,10 @@ class ProgressViewModel(private val tokenPreferences: TokenPreferences) : ViewMo
             progressEventChannel.send(ProgressEvent.NameListGenerated(nameList))
         }
 
+    fun saveSelectedStudentId(newId: Int) = viewModelScope.launch {
+        studentId = newId
+    }
+
     sealed class ProgressEvent {
         object Loading : ProgressEvent()
         data class Success(val result: List<StudentListResponse.DataItem>) : ProgressEvent()
@@ -88,7 +98,12 @@ class ProgressViewModel(private val tokenPreferences: TokenPreferences) : ViewMo
         data class NameListGenerated(val result: Map<String, Int>) : ProgressEvent()
     }
 
-    sealed class EventBusAction {
-        data class SendStudentId(val studentId: Int) : EventBusAction()
+    sealed class EventBusActionToStudentProfile {
+        data class SendStudentId(val studentId: Int) : EventBusActionToStudentProfile()
+    }
+
+    sealed class EventBusActionToStudentLearningProgress {
+        data class SendStudentId(val studentId: Int) : EventBusActionToStudentLearningProgress()
+        object RequestStudentId : EventBusActionToStudentLearningProgress()
     }
 }

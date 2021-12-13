@@ -1,34 +1,46 @@
 package com.glints.lingoparents.ui.progress.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.glints.lingoparents.data.model.SessionItem
+import com.glints.lingoparents.data.model.response.CourseDetailByStudentIdResponse
 import com.glints.lingoparents.databinding.ItemSessionBinding
 
-class SessionAdapter(private val listSession: ArrayList<SessionItem>) :
-    RecyclerView.Adapter<SessionAdapter.SessionViewHolder>() {
+class SessionAdapter : RecyclerView.Adapter<SessionAdapter.SessionViewHolder>() {
+
+    private val sessionItems = ArrayList<CourseDetailByStudentIdResponse.SessionsItem>()
+
     private lateinit var onItemClickCallback: OnItemClickCallback
+
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun submitList(list: List<CourseDetailByStudentIdResponse.SessionsItem>) {
+        sessionItems.clear()
+        sessionItems.addAll(list)
+        notifyDataSetChanged()
+    }
+
     interface OnItemClickCallback {
-        fun onItemClicked(session: SessionItem)
+        fun onItemClicked(session: CourseDetailByStudentIdResponse.SessionsItem)
     }
 
     inner class SessionViewHolder(private val binding: ItemSessionBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(session: SessionItem) {
+        fun bind(session: CourseDetailByStudentIdResponse.SessionsItem) {
             with(binding) {
 
-                tvSession.text = session.session
-                tvShortdesc.text = session.shortDesc
-                tvSessiondesc.text = session.desc
-                tvSessionscore.text = session.score
+                tvSession.text = session.sessionTitle
+                tvShortdesc.text = ""
+                tvSessiondesc.text = session.feedback
+                tvSessionscore.text = session.score.toString()
 
                 itemView.setOnClickListener {
-                    onItemClickCallback?.onItemClicked(session)
+                    onItemClickCallback.onItemClicked(session)
                 }
             }
         }
@@ -40,9 +52,9 @@ class SessionAdapter(private val listSession: ArrayList<SessionItem>) :
     }
 
     override fun onBindViewHolder(holder: SessionViewHolder, position: Int) {
-        holder.bind(listSession[position])
+        holder.bind(sessionItems[position])
     }
 
-    override fun getItemCount(): Int = listSession.size
+    override fun getItemCount(): Int = sessionItems.size
 
 }

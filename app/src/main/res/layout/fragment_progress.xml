@@ -15,7 +15,8 @@
         app:layout_constraintBottom_toTopOf="@id/view_pager"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/cv_profile_container"
-        app:layout_constraintBottom_toBottomOf="@id/cv_profile_container"/>
+        app:layout_constraintBottom_toBottomOf="@id/cv_profile_container"
+        tools:ignore="ContentDescription" />
 
     <Spinner
         android:id="@+id/sp_students"
@@ -63,4 +64,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cv_profile_container" />
 
+    <ImageView
+        android:id="@+id/iv_no_children"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/ic_round_people_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tv_no_children"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/you_have_no_children_connected"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:fontFamily="@font/poppins_w500"
+        app:layout_constraintTop_toBottomOf="@id/iv_no_children" />
 </androidx.constraintlayout.widget.ConstraintLayout>
