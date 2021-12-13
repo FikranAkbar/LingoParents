@@ -1,6 +1,7 @@
 package com.glints.lingoparents.ui.progress
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -126,20 +127,23 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
                 id: Long
             ) {
                 val selectedItem = parent?.getItemAtPosition(position) as String
-                val studentId = map[selectedItem]!!
-                viewModel.saveSelectedStudentId(studentId)
+                Log.d("MAP:", map.toString())
+                Log.d("SELECTEDITEM:", selectedItem)
+                if (selectedItem != "No Students") {
+                    val studentId = map[selectedItem]!!
+                    viewModel.saveSelectedStudentId(studentId)
 
-                val eventBusActionToProfileFragment =
-                    ProgressViewModel.EventBusActionToStudentProfile.SendStudentId(studentId)
-                viewModel.sendEventToProfileFragment(eventBusActionToProfileFragment)
-                val eventBusActionToLearningProgressFragment =
-                    ProgressViewModel.EventBusActionToStudentLearningProgress.SendStudentId(
-                        studentId
+                    val eventBusActionToProfileFragment =
+                        ProgressViewModel.EventBusActionToStudentProfile.SendStudentId(studentId)
+                    viewModel.sendEventToProfileFragment(eventBusActionToProfileFragment)
+                    val eventBusActionToLearningProgressFragment =
+                        ProgressViewModel.EventBusActionToStudentLearningProgress.SendStudentId(
+                            studentId
+                        )
+                    viewModel.sendStickyEventToLearningProgressFragment(
+                        eventBusActionToLearningProgressFragment
                     )
-                viewModel.sendStickyEventToLearningProgressFragment(
-                    eventBusActionToLearningProgressFragment
-                )
-
+                }
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {

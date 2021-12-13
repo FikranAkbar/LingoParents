@@ -51,11 +51,13 @@ class ProgressLearningFragment : Fragment(R.layout.fragment_progress_learning) {
                 ProgressLearningViewModel::class.java
         ]
 
+        showNoCourseRegistered(true)
+
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.progressLearningEvent.collect { event ->
                 when(event) {
                     is ProgressLearningViewModel.ProgressLearningEvent.Loading -> {
-
+                        showNoCourseRegistered(true)
                     }
                     is ProgressLearningViewModel.ProgressLearningEvent.Success -> {
                         showNoCourseRegistered(false)
