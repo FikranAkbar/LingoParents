@@ -39,10 +39,6 @@ class ProgressViewModel(private val tokenPreferences: TokenPreferences) : ViewMo
         EventBus.getDefault().post(event)
     }
 
-    fun sendEventToLearningProgressFragment(event: EventBusActionToStudentLearningProgress) = viewModelScope.launch {
-        EventBus.getDefault().postSticky(event)
-    }
-
     fun sendStickyEventToLearningProgressFragment(event: EventBusActionToStudentLearningProgress) = viewModelScope.launch {
         EventBus.getDefault().postSticky(event)
     }

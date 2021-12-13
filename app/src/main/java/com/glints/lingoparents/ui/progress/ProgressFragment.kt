@@ -44,8 +44,6 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
                 ProgressViewModel::class.java
         ]
 
-        initViewPager()
-
         viewModel.getParentId().observe(viewLifecycleOwner) { parentId ->
             viewModel.getStudentListByParentId(parentId)
         }
@@ -54,9 +52,16 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
             viewModel.progressEvent.collect { event ->
                 when (event) {
                     is ProgressViewModel.ProgressEvent.Loading -> {
-
+                        initBlankSpinner()
                     }
                     is ProgressViewModel.ProgressEvent.Success -> {
+                        initViewPager()
+
+                        binding.apply {
+                            ivNoChildren.visibility = View.GONE
+                            tvNoChildren.visibility = View.GONE
+                        }
+
                         viewModel.makeMapFromStudentList(event.result)
                         val firstStudentId = event.result[0].student_id!!
                         viewModel.saveSelectedStudentId(firstStudentId)
@@ -76,7 +81,12 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
                         )
                     }
                     is ProgressViewModel.ProgressEvent.Error -> {
+                        removeViewPager()
 
+                        binding.apply {
+                            ivNoChildren.visibility = View.VISIBLE
+                            tvNoChildren.visibility = View.VISIBLE
+                        }
                     }
                     is ProgressViewModel.ProgressEvent.NameListGenerated -> {
                         initSpinner(event.result)
@@ -95,6 +105,12 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
         TabLayoutMediator(tabs, viewPager) { tab, position ->
             tab.text = resources.getString(TAB_TITLES[position])
         }.attach()
+    }
+
+    private fun removeViewPager() {
+        binding.viewPager.apply {
+            removeAllViews()
+        }
     }
 
     private fun initSpinner(map: Map<String, Int>) {
@@ -131,6 +147,13 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
             }
 
         }
+    }
+
+    private fun initBlankSpinner() {
+        val spinner = binding.spStudents
+        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.item_student, listOf("No Students"))
+        spinner.adapter = arrayAdapter
+        spinner.isClickable = false
     }
 
     override fun onDestroy() {

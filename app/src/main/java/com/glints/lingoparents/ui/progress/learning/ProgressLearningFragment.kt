@@ -31,14 +31,6 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 
 class ProgressLearningFragment : Fragment(R.layout.fragment_progress_learning) {
-    companion object {
-        @StringRes
-        private val TAB_TITLES = intArrayOf(
-            R.string.tab_progress_course_list_text_1,
-            R.string.tab_progress_course_list_text_2
-        )
-    }
-
     private var _binding: FragmentProgressLearningBinding? = null
     private val binding get() = _binding!!
 
@@ -88,6 +80,8 @@ class ProgressLearningFragment : Fragment(R.layout.fragment_progress_learning) {
             TabLayoutMediator(tabs, viewPager) { tab, position ->
                 tab.customView = createTabItemView(courseList[position], position)
             }.attach()
+        } else {
+            tabs.removeAllTabs()
         }
 
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {

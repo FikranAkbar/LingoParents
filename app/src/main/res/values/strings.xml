@@ -270,4 +270,5 @@
     <string name="assignment_feedback">Assignment Feedback:</string>
     <string name="session_feedback">Session Feedback:</string>
     <string name="notes">Notes:</string>
+    <string name="you_have_no_children_connected">You have no children connected</string>
 </resources>
