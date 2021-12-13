@@ -48,7 +48,10 @@ class LifestyleInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel =
-            ViewModelProvider(requireParentFragment(), CustomViewModelFactory(tokenPreferences, requireParentFragment(), arguments))[
+            ViewModelProvider(
+                requireParentFragment(),
+                CustomViewModelFactory(tokenPreferences, requireParentFragment(), arguments)
+            )[
                     InsightListViewModel::class.java
             ]
 
@@ -85,12 +88,12 @@ class LifestyleInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
     }
 
     @Subscribe
-    fun onBlankKeywordSent(insight: InsightListViewModel.InsightSearchList.SendBlankKeywordToInsightListFragment){
+    fun onBlankKeywordSent(insight: InsightListViewModel.InsightSearchList.SendBlankKeywordToInsightListFragment) {
         viewModel.loadInsightList(InsightListViewModel.LIFESTYLE_TAG)
     }
 
     @Subscribe
-    fun onKeywordSent(insight: InsightListViewModel.InsightSearchList.SendKeywordToInsightListFragment){
+    fun onKeywordSent(insight: InsightListViewModel.InsightSearchList.SendKeywordToInsightListFragment) {
         viewModel.getInsightSearchList(InsightListViewModel.LIFESTYLE_TAG, insight.keyword)
     }
 

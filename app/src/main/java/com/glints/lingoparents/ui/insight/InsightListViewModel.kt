@@ -114,7 +114,7 @@ class InsightListViewModel(private val tokenPref: TokenPreferences) : ViewModel(
         APIClient
             .service
             .getInsightSearchList(mapOf("tag" to tag, "keyword" to keyword))
-            .enqueue(object : Callback<AllInsightsListResponse>{
+            .enqueue(object : Callback<AllInsightsListResponse> {
                 override fun onResponse(
                     call: Call<AllInsightsListResponse>,
                     response: Response<AllInsightsListResponse>,

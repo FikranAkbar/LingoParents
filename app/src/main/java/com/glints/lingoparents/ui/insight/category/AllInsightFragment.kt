@@ -47,7 +47,10 @@ class AllInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel =
-            ViewModelProvider(requireActivity(), CustomViewModelFactory(tokenPreferences, requireActivity(), arguments))[
+            ViewModelProvider(
+                requireActivity(),
+                CustomViewModelFactory(tokenPreferences, requireActivity(), arguments)
+            )[
                     InsightListViewModel::class.java
             ]
 
@@ -84,15 +87,13 @@ class AllInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
     }
 
     @Subscribe
-    fun onBlankKeywordSent(insight: InsightListViewModel.InsightSearchList.SendBlankKeywordToInsightListFragment){
+    fun onBlankKeywordSent(insight: InsightListViewModel.InsightSearchList.SendBlankKeywordToInsightListFragment) {
         viewModel.loadInsightList(InsightListViewModel.ALL_TAG)
-        EventBus.getDefault().removeStickyEvent(insight)
     }
 
     @Subscribe
-    fun onKeywordSent(insight: InsightListViewModel.InsightSearchList.SendKeywordToInsightListFragment){
+    fun onKeywordSent(insight: InsightListViewModel.InsightSearchList.SendKeywordToInsightListFragment) {
         viewModel.getInsightSearchList(InsightListViewModel.ALL_TAG, insight.keyword)
-        EventBus.getDefault().removeStickyEvent(insight)
     }
 
     private fun showLoading(b: Boolean) {

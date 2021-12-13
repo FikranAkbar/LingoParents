@@ -1,10 +1,10 @@
 package com.glints.lingoparents.ui.insight.category
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -48,11 +48,14 @@ class ParentingInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel =
-            ViewModelProvider(requireActivity(), CustomViewModelFactory(tokenPreferences, requireActivity(), arguments))[
+            ViewModelProvider(
+                requireActivity(),
+                CustomViewModelFactory(tokenPreferences, requireActivity(), arguments)
+            )[
                     InsightListViewModel::class.java
             ]
 
-            viewModel.loadInsightList(InsightListViewModel.PARENTING_TAG)
+        viewModel.loadInsightList(InsightListViewModel.PARENTING_TAG)
 
         lifecycleScope.launchWhenStarted {
             viewModel.parentingInsightList.collect { insight ->
@@ -85,15 +88,13 @@ class ParentingInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
     }
 
     @Subscribe
-    fun onBlankKeywordSent(insight: InsightListViewModel.InsightSearchList.SendBlankKeywordToInsightListFragment){
+    fun onBlankKeywordSent(insight: InsightListViewModel.InsightSearchList.SendBlankKeywordToInsightListFragment) {
         viewModel.loadInsightList(InsightListViewModel.PARENTING_TAG)
-        EventBus.getDefault().removeStickyEvent(insight)
     }
 
     @Subscribe
-    fun onKeywordSent(insight: InsightListViewModel.InsightSearchList.SendKeywordToInsightListFragment){
+    fun onKeywordSent(insight: InsightListViewModel.InsightSearchList.SendKeywordToInsightListFragment) {
         viewModel.getInsightSearchList(InsightListViewModel.PARENTING_TAG, insight.keyword)
-        EventBus.getDefault().removeStickyEvent(insight)
     }
 
     private fun showLoading(b: Boolean) {
