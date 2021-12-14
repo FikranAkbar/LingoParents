@@ -26,6 +26,23 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var viewModel: LiveEventDetailViewModel
 
+    //register live event
+    private var id_user: String? = null
+
+    //idevent
+    private var fullname: String? = null
+    private var phoneNumber: String? = null
+    private var email: String? = null
+
+    //attendance
+    private var attendance_time_event: String? = null
+
+    //iduser create
+    private var total_price: Int? = null
+    private var voucherCode: String? = null
+    private var paymentMethod: String? = null
+    private var status: String? = null
+
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,6 +66,13 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
             mbtnRegister.setOnClickListener {
                 showDialog(inflater)
             }
+        }
+        //amin
+        viewModel.getAccessEmail().observe(viewLifecycleOwner) { userEmail ->
+            email = userEmail
+        }
+        viewModel.getUserId().observe(viewLifecycleOwner) { userId ->
+            id_user = userId
         }
 
         viewModel.getLiveEventDetailById(viewModel.getCurrentEventId())
@@ -74,7 +98,16 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                                 tvSpeakerProfession.text = speaker_profession
                                 tvSpeakerCompany.text = speaker_company
                                 tvDescriptionContent.text = description
+                                //register live event
+                                attendance_time_event = started_at
+                                total_price = price.toInt()
                             }
+                        }
+                    }
+                    is LiveEventDetailViewModel.LiveEventDetailEvent.SuccessGetProfile -> {
+                        event.parentProfile.apply {
+                            fullname = "$firstname $lastname"
+                            phoneNumber = phone
                         }
                     }
                     is LiveEventDetailViewModel.LiveEventDetailEvent.Loading -> {
@@ -110,8 +143,8 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
     }
 
     private fun showDialog(inflater: LayoutInflater) {
-        val formRegisterEventBinding: FormRegisterEventBinding = FormRegisterEventBinding.inflate(inflater)
-
+        val formRegisterEventBinding: FormRegisterEventBinding =
+            FormRegisterEventBinding.inflate(inflater)
 
 
         val formRegister = Dialog(requireActivity())
