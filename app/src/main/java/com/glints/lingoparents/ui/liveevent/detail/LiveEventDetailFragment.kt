@@ -19,6 +19,7 @@ import com.glints.lingoparents.databinding.FragmentLiveEventDetailBinding
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 
 class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
@@ -27,7 +28,8 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
     private lateinit var viewModel: LiveEventDetailViewModel
 
     //register live event
-    private var id_user: String? = null
+    private var id_user: Int? = null
+    private var id_event: Int? = null
 
     //idevent
     private var fullname: String? = null
@@ -68,13 +70,17 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
             }
         }
         //amin
+        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
+            viewModel.getParentProfile(accessToken)
+        }
+
         viewModel.getAccessEmail().observe(viewLifecycleOwner) { userEmail ->
             email = userEmail
         }
         viewModel.getUserId().observe(viewLifecycleOwner) { userId ->
-            id_user = userId
+            id_user = userId.toInt()
         }
-
+        id_event = viewModel.getCurrentEventId()
         viewModel.getLiveEventDetailById(viewModel.getCurrentEventId())
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
@@ -109,6 +115,35 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                             fullname = "$firstname $lastname"
                             phoneNumber = phone
                         }
+                    }
+                    is LiveEventDetailViewModel.LiveEventDetailEvent.RegisterClick -> {
+
+                        viewModel.registerLiveEvent(
+                            total_price!!,
+                            phoneNumber!!,
+                            "sdfds",
+                            id_user!!,
+                            id_event!!,
+                            fullname!!,
+                            attendance_time_event!!,
+                            email!!,
+                            "yes",
+                            "cash",
+                            1,
+                            "success"
+                        )
+                    }
+                    is LiveEventDetailViewModel.LiveEventDetailEvent.RegisterSuccess -> {
+                        Snackbar.make(
+                            requireView(),
+                            "Register Live Event Success",
+                            Snackbar.LENGTH_LONG
+                        )
+                            .setBackgroundTint(Color.parseColor("#42ba96"))
+                            .setTextColor(Color.parseColor("#FFFFFF"))
+                            .show()
+
+
                     }
                     is LiveEventDetailViewModel.LiveEventDetailEvent.Loading -> {
                         showLoading(true)
@@ -153,6 +188,28 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                 ivBackButton.setOnClickListener {
                     dismiss()
                 }
+                mbtnRegister.setOnClickListener {
+//                    viewModel.onRegisterButtonClick(
+//                        tfVoucherCode.editText?.text.toString(),
+//                        tfPaymentMethod.editText?.text.toString()
+//                    )
+                    viewModel.registerLiveEvent(
+                        total_price!!,
+                        phoneNumber!!,
+                        "sdfds",
+                        1,
+                        id_event!!,
+                        fullname!!,
+                        attendance_time_event!!,
+                        email!!,
+                        "yes",
+                        "cash",
+                        1,
+                        "success"
+                    )
+
+                }
+
             }
 
             setCancelable(false)

@@ -5,8 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
-import com.glints.lingoparents.data.model.response.LiveEventDetailResponse
-import com.glints.lingoparents.data.model.response.ParentProfileResponse
+import com.glints.lingoparents.data.model.response.*
 import com.glints.lingoparents.utils.ErrorUtils
 import com.glints.lingoparents.utils.TokenPreferences
 import kotlinx.coroutines.channels.Channel
@@ -30,6 +29,10 @@ class LiveEventDetailViewModel(
     private fun onApiCallSuccess(result: LiveEventDetailResponse.LiveEventDetailItemResponse) =
         viewModelScope.launch {
             liveEventDetailEventChannel.send(LiveEventDetailEvent.Success(result))
+        }
+    private fun onRegisterApiCallSuccess() =
+        viewModelScope.launch {
+            liveEventDetailEventChannel.send(LiveEventDetailEvent.RegisterSuccess)
         }
 
     private fun onGetProfileApiCallSuccess(result: ParentProfileResponse) =
@@ -99,6 +102,44 @@ class LiveEventDetailViewModel(
             })
     }
 
+    fun registerLiveEvent(
+        totalPrice: Int,
+        phone: String,
+        voucherCode: String,
+        idUser: Int,
+        idEvent: Int,
+        fullname: String,
+        attendanceTime: String,
+        email: String,
+        attendance: String,
+        paymentMethod: String,
+        idUserCreate: Int,
+        status: String
+    ) = viewModelScope.launch {
+        onApiCallStarted()
+        APIClient
+            .service
+            .registerLiveEvent(idUser,idEvent,fullname,phone,email,attendance,attendanceTime,idUserCreate,totalPrice,voucherCode,paymentMethod,status)
+            .enqueue(object : Callback<LiveEventRegisterResponse> {
+                override fun onResponse(
+                    call: Call<LiveEventRegisterResponse>,
+                    response: Response<LiveEventRegisterResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        onRegisterApiCallSuccess()
+                    } else {
+                        val apiError = ErrorUtils.parseError(response)
+                        onApiCallError(apiError.message())
+                    }
+                }
+
+                override fun onFailure(call: Call<LiveEventRegisterResponse>, t: Throwable) {
+                    onApiCallError("Network Failed...")
+                }
+            })
+
+    }
+
 
     sealed class LiveEventDetailEvent {
         object Loading : LiveEventDetailEvent()
@@ -106,8 +147,22 @@ class LiveEventDetailViewModel(
             LiveEventDetailEvent()
 
         data class Error(val message: String) : LiveEventDetailEvent()
-        //amin
-        data class SuccessGetProfile(val parentProfile: ParentProfileResponse) : LiveEventDetailEvent()
 
+        //amin
+        data class SuccessGetProfile(val parentProfile: ParentProfileResponse) :
+            LiveEventDetailEvent()
+
+        data class RegisterClick(val voucherCode: String, val paymentMethod: String) :
+            LiveEventDetailEvent()
+        object RegisterSuccess : LiveEventDetailEvent()
     }
+
+    //amin
+//    fun onRegisterButtonClick(voucherCode: String, paymentMethod: String) = viewModelScope.launch {
+//        liveEventDetailEventChannel.send(
+//            LiveEventDetailEvent.RegisterClick(
+//                voucherCode, paymentMethod
+//            )
+//        )
+//    }
 }

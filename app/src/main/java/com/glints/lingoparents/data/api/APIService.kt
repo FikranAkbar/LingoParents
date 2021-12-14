@@ -175,19 +175,18 @@ interface APIService {
     @FormUrlEncoded
     @POST("api/v1/events/participants")
     fun registerLiveEvent(
-        @Header("authorization") authorization: String,
-        @Field("id_user") id_user: String,
-        @Field("id_event") id_event: String,
+        @Field("id_user") id_user: Int,
+        @Field("id_event") id_event: Int,
         @Field("fullname") fullname: String,
         @Field("phone") phone: String,
         @Field("email") email: String,
         @Field("attendance") attendance: String,
         @Field("attendance_time") attendance_time: String,
-        @Field("idUser_create") idUser_create: String,
-        @Field("total_prize") total_prize: String,
+        @Field("idUser_create") idUser_create: Int,
+        @Field("total_prize") total_prize: Int,
         @Field("voucher_code") voucher_code: String,
         @Field("payment_method") payment_method: String,
         @Field("status") status: String
-    ): Call<LoginUserResponse>
+    ): Call<LiveEventRegisterResponse>
 
 }
