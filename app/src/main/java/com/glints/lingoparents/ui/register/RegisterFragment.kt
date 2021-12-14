@@ -22,8 +22,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
     private val binding get() = _binding!!
     private val viewModel: RegisterViewModel by viewModels()
 
-    private val genderItems = listOf<String>("Male", "Female")
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _binding = FragmentRegisterBinding.bind(view)
 
@@ -37,14 +35,10 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                     lastName = tilLastName.editText?.text.toString(),
                     email = tilEmail.editText?.text.toString(),
                     password = tilPassword.editText?.text.toString(),
-                    phone = tilPhone.editText?.text.toString(),
-                    gender = tilGender.editText?.text.toString(),
-                    address = tilAddress.editText?.text.toString()
+                    phone = tilPhone.editText?.text.toString()
                 )
             }
         }
-
-        setGenderItems()
 
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
@@ -54,7 +48,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             }
         )
 
-        lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.registerEvent.collect { event ->
                 when (event) {
                     is RegisterViewModel.RegisterEvent.NavigateBackToLogin -> {
@@ -76,9 +70,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                                         tilFirstName,
                                         tilLastName,
                                         tilPassword,
-                                        tilPhone,
-                                        tilGender,
-                                        tilAddress
+                                        tilPhone
                                     )
                                 )
 
@@ -87,25 +79,19 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                                 val email = event.email
                                 val password = event.password
                                 val phone = event.phone
-                                val gender = event.gender
-                                val address = event.address
 
                                 if (isValidEmail(email) &&
                                     isValidPassword(password) &&
                                     isValidField(firstName) &&
                                     isValidField(lastName) &&
-                                    isValidField(phone) &&
-                                    isValidField(gender) &&
-                                    isValidField(address)
+                                    isValidField(phone)
                                 ) {
                                     viewModel.registerUser(
                                         email,
                                         password,
                                         firstName,
                                         lastName,
-                                        phone,
-                                        gender,
-                                        address
+                                        phone
                                     )
                                 } else {
                                     if (!isValidEmail(email)) {
@@ -122,12 +108,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                                     }
                                     if (!isValidField(phone)) {
                                         showFieldError(tilPhone, EMPTY_FIELD_ERROR)
-                                    }
-                                    if (!isValidField(gender)) {
-                                        showFieldError(tilGender, EMPTY_FIELD_ERROR)
-                                    }
-                                    if (!isValidField(address)) {
-                                        showFieldError(tilAddress, EMPTY_FIELD_ERROR)
                                     }
                                 }
                             }
@@ -164,21 +144,32 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         }
     }
 
-    private fun setGenderItems() {
-        val adapter = ArrayAdapter(requireContext(), R.layout.item_gender, genderItems)
-        (binding.tilGender.editText as AutoCompleteTextView).setAdapter(adapter)
-    }
-
     private fun showLoading(bool: Boolean) {
         binding.apply {
             when (bool) {
                 true -> {
                     vLoadingBackground.visibility = View.VISIBLE
                     vLoadingProgress.visibility = View.VISIBLE
+                    mbtnSubmit.isClickable = false
+                    mbtnLoginWithGoogle.isClickable = false
+                    mbtnLogin.isClickable = false
+                    tilFirstName.isEnabled = false
+                    tilLastName.isEnabled = false
+                    tilEmail.isEnabled = false
+                    tilPassword.isEnabled = false
+                    tilPhone.isEnabled = false
                 }
                 else -> {
                     vLoadingBackground.visibility = View.GONE
                     vLoadingProgress.visibility = View.GONE
+                    mbtnSubmit.isClickable = true
+                    mbtnLoginWithGoogle.isClickable = true
+                    mbtnLogin.isClickable = true
+                    tilFirstName.isEnabled = true
+                    tilLastName.isEnabled = true
+                    tilEmail.isEnabled = true
+                    tilPassword.isEnabled = true
+                    tilPhone.isEnabled = true
                 }
             }
         }

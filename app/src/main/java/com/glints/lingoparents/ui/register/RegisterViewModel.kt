@@ -23,8 +23,6 @@ class RegisterViewModel : ViewModel() {
         email: String,
         password: String,
         phone: String,
-        gender: String,
-        address: String,
     ) = viewModelScope.launch {
         registerEventChannel.send(
             RegisterEvent.TryToRegisterUser(
@@ -32,9 +30,7 @@ class RegisterViewModel : ViewModel() {
                 lastName= lastName,
                 email= email,
                 password= password,
-                phone= phone,
-                gender= gender,
-                address= address
+                phone= phone
             )
         )
     }
@@ -65,13 +61,11 @@ class RegisterViewModel : ViewModel() {
         firstName: String,
         lastName: String,
         phone: String,
-        gender: String,
-        address: String
     ) = viewModelScope.launch {
         onApiCallStarted()
         APIClient
             .service
-            .registerUser(email, firstName, lastName, password, phone, gender, address)
+            .registerUser(email, firstName, lastName, password, phone)
             .enqueue(object : Callback<RegisterUserResponse> {
                 override fun onResponse(
                     call: Call<RegisterUserResponse>,
@@ -100,8 +94,6 @@ class RegisterViewModel : ViewModel() {
             val email: String,
             val password: String,
             val phone: String,
-            val address: String,
-            val gender: String,
             val role: String = "parent"
         ) : RegisterEvent()
 

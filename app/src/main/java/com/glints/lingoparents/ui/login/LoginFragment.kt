@@ -80,7 +80,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             tilPassword.editText?.setText("aminamin")
         }
 
-        lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.loginEvent.collect { event ->
                 when (event) {
                     is LoginViewModel.LoginEvent.TryToLoginUser -> {
@@ -251,10 +251,20 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 true -> {
                     vLoadingBackground.visibility = View.VISIBLE
                     vLoadingProgress.visibility = View.VISIBLE
+                    tilEmail.isEnabled = false
+                    tilPassword.isEnabled = false
+                    mbtnForgetPassword.isClickable = false
+                    mbtnLogin.isClickable = false
+                    mbtnLoginWithGoogle.isClickable = false
                 }
                 else -> {
                     vLoadingBackground.visibility = View.GONE
                     vLoadingProgress.visibility = View.GONE
+                    tilEmail.isEnabled = true
+                    tilPassword.isEnabled = true
+                    mbtnForgetPassword.isClickable = true
+                    mbtnLogin.isClickable = true
+                    mbtnLoginWithGoogle.isClickable = true
                 }
             }
         }

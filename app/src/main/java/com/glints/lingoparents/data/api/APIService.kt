@@ -23,8 +23,6 @@ interface APIService {
         @Field("lastname") lastname: String,
         @Field("password") password: String,
         @Field("phone") phone: String,
-        @Field("address") address: String = "_",
-        @Field("gender") gender: String = "Male",
         @Field("role") role: String = "parent"
     ): Call<RegisterUserResponse>
 
