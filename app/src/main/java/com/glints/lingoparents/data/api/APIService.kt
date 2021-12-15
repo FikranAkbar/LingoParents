@@ -96,6 +96,14 @@ interface APIService {
         @Path("type") type: String,
     ): Call<InsightLikeDislikeResponse>
 
+    @FormUrlEncoded
+    @POST("api/v1/insights/comment/{id}/{type}")
+    fun createComment(
+        @Path("id") id: Int,
+        @Path("type") type: String,
+        @Field("comment") comment: String
+    ): Call<CreateCommentResponse>
+
     //amin
     @GET("api/v1/courses")
     fun getCourseList(
