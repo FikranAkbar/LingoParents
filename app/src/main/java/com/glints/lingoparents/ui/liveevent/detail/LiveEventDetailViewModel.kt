@@ -53,6 +53,20 @@ class LiveEventDetailViewModel(
 
     fun getCurrentEventId(): Int = eventId
 
+    fun onRegisterButtonClick(
+        fullname: String,
+        email: String,
+        phone: String,
+        voucherCode: String,
+        paymentMethod: String
+    ) = viewModelScope.launch {
+        liveEventDetailEventChannel.send(
+            LiveEventDetailEvent.RegisterClick(
+                fullname, email, phone, voucherCode, paymentMethod
+            )
+        )
+    }
+
     fun getLiveEventDetailById(id: Int) = viewModelScope.launch {
         onApiCallStarted()
         APIClient
@@ -162,7 +176,6 @@ class LiveEventDetailViewModel(
 
         data class Error(val message: String) : LiveEventDetailEvent()
 
-        //amin
         data class SuccessGetProfile(val parentProfile: ParentProfileResponse) :
             LiveEventDetailEvent()
 
@@ -176,20 +189,5 @@ class LiveEventDetailViewModel(
             LiveEventDetailEvent()
 
         object RegisterSuccess : LiveEventDetailEvent()
-    }
-
-    //amin
-    fun onRegisterButtonClick(
-        fullname: String,
-        email: String,
-        phone: String,
-        voucherCode: String,
-        paymentMethod: String
-    ) = viewModelScope.launch {
-        liveEventDetailEventChannel.send(
-            LiveEventDetailEvent.RegisterClick(
-                fullname, email, phone, voucherCode, paymentMethod
-            )
-        )
     }
 }

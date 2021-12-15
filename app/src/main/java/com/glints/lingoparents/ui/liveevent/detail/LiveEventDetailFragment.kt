@@ -28,7 +28,7 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
     private lateinit var binding: FragmentLiveEventDetailBinding
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var viewModel: LiveEventDetailViewModel
-    private val paymentMethodItems = listOf<String>("Cash", "Checks", "Debit", "Credit")
+    private val paymentMethodItems = listOf<String>("Cash", "BRI", "BNI", "BCA", "GoPay", "OVO")
 
     private var id_user: Int? = null
     private var id_event: Int? = null
@@ -68,7 +68,7 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                 showDialog(inflater)
             }
         }
-        //amin
+
         viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
             viewModel.getParentProfile(accessToken)
         }
@@ -103,7 +103,6 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                                 tvSpeakerProfession.text = speaker_profession
                                 tvSpeakerCompany.text = speaker_company
                                 tvDescriptionContent.text = description
-                                //register live event
                                 attendance_time_event = started_at
                                 total_price = price.toInt()
                                 idUser_createValue = idUser_create
@@ -124,7 +123,6 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                         val paymentMethod = event.paymentMethod
                         val status = "yes"
 
-                        //kalo bener semua
                         viewModel.registerLiveEvent(
                             total_price!!,
                             phoneNumber,
@@ -216,8 +214,6 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                 (tfPaymentMethod.editText as AutoCompleteTextView).setAdapter(adapter)
                 ivBackButton.setOnClickListener {
                     closeDialog()
-//                    dismiss()
-//                    viewModel.getLiveEventDetailById(viewModel.getCurrentEventId())
                 }
                 mbtnRegister.setOnClickListener {
                     fullname = tfFullName.editText?.text.toString()
@@ -270,8 +266,6 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
 
                     }
                 }
-//                dismiss()
-//                viewModel.getLiveEventDetailById(viewModel.getCurrentEventId())
 
 
             }
