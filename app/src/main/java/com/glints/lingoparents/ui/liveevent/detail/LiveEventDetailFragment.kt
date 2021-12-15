@@ -158,6 +158,18 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                     is LiveEventDetailViewModel.LiveEventDetailEvent.Error -> {
                         Snackbar.make(
                             requireView(),
+                            "Error",
+                            Snackbar.LENGTH_SHORT
+                        )
+                            .setBackgroundTint(Color.parseColor("#FF0000"))
+                            .setTextColor(Color.parseColor("#FFFFFF"))
+                            .show()
+                        showLoading(false)
+                    }
+
+                    is LiveEventDetailViewModel.LiveEventDetailEvent.RegisterError -> {
+                        Snackbar.make(
+                            requireView(),
                             "Failed To Register Live Event",
                             Snackbar.LENGTH_SHORT
                         )

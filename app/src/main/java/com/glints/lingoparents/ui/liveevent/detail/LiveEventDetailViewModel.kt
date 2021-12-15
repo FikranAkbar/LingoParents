@@ -44,6 +44,9 @@ class LiveEventDetailViewModel(
     private fun onApiCallError(message: String) = viewModelScope.launch {
         liveEventDetailEventChannel.send(LiveEventDetailEvent.Error(message))
     }
+    private fun onRegisterApiCallError(message: String) = viewModelScope.launch {
+        liveEventDetailEventChannel.send(LiveEventDetailEvent.RegisterError(message))
+    }
 
     fun getUserId(): LiveData<String> = tokenPreferences.getUserId().asLiveData()
 
@@ -157,7 +160,7 @@ class LiveEventDetailViewModel(
                         onRegisterApiCallSuccess()
                     } else {
                         val apiError = ErrorUtils.parseError(response)
-                        onApiCallError(apiError.message())
+                        onRegisterApiCallError(apiError.message())
                     }
                 }
 
@@ -175,6 +178,7 @@ class LiveEventDetailViewModel(
             LiveEventDetailEvent()
 
         data class Error(val message: String) : LiveEventDetailEvent()
+        data class RegisterError(val message: String) : LiveEventDetailEvent()
 
         data class SuccessGetProfile(val parentProfile: ParentProfileResponse) :
             LiveEventDetailEvent()
