@@ -66,9 +66,15 @@ interface APIService {
         @Path("id") id: Int,
     ): Call<LiveEventDetailResponse>
 
+
     @GET("api/v1/insights?status=Publish")
     fun getAllInsightList(
         @QueryMap options: Map<String, String>,
+    ): Call<AllInsightsListResponse>
+
+    @GET("api/v1/insights?status=Publish")
+    fun getInsightSearchList(
+        @QueryMap options: Map<String, String>
     ): Call<AllInsightsListResponse>
 
     @GET("api/v1/insights/{id}")
@@ -87,7 +93,7 @@ interface APIService {
         @Path("id") id: Int,
         @Path("type") type: String,
     ): Call<InsightLikeDislikeResponse>
-  
+
     //amin
     @GET("api/v1/courses")
     fun getCourseList(
@@ -118,10 +124,49 @@ interface APIService {
         @Field("confirmpassword") confirmPassword: String,
     ): Call<ChangePasswordResponse>
 
+    @GET("api/v1/students/list/{id}")
+    fun getStudentList(
+        @Path("id") id: Int,
+    ): Call<StudentListResponse>
+
+    @GET("api/v1/insights/recent")
+    fun getRecentInsight(
+    ): Call<RecentInsightResponse>
+
+    @GET("api/v1/events/parent")
+    fun getAllEvent(
+    ): Call<AllEventResponse>
 
     @GET("api/v1/courses/{id}")
     fun getCourseDetail(
         @Path("id") id: Int,
         @Header("authorization") authorization: String
     ): Call<DetailCourseResponse>
+
+    @GET("api/v1/students/list/{id}")
+    fun getStudentListByParentId(
+        @Path("id") id: String,
+    ): Call<StudentListResponse>
+
+    @GET("api/v1/students/{id}")
+    fun getStudentProfileById(
+        @Path("id") id: Int,
+    ): Call<StudentProfileResponse>
+
+    @GET("api/v1/students/{id}/courses")
+    fun getCourseListByStudentId(
+        @Path("id") studentId: Int
+    ): Call<CourseListByStudentIdResponse>
+
+    @GET("api/v1/students/{studentId}/courses/{courseId}")
+    fun getCourseDetailByStudentId(
+        @Path("studentId") studentId: Int,
+        @Path("courseId") courseId: Int
+    ): Call<CourseDetailByStudentIdResponse>
+
+    @GET("api/v1/students/{studentId}/session-detail/{sessionId}")
+    fun getSessionDetailBySessionId(
+        @Path("studentId") studentId: Int,
+        @Path("sessionId") sessionId: Int
+    ): Call<SessionDetailBySessionIdResponse>
 }

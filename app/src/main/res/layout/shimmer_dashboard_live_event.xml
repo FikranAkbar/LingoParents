@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="340dp"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginVertical="12dp"
+    android:background="@drawable/img_dummy_insight"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackgroundBorderless"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="12dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_live_event_poster"
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription"
+            android:scaleType="centerCrop"
+            android:background="@color/shimmer_placeholder" />
+
+        <TextView
+            android:id="@+id/tv_live_event_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/poppins_w600"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/iv_live_event_poster"
+            android:background="@color/shimmer_item_inside" />
+
+        <TextView
+            android:id="@+id/tv_live_event_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/poppins_w600"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/tv_live_event_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_live_event_title"
+            android:background="@color/shimmer_item_inside" />
+
+        <ImageView
+            android:id="@+id/iv_live_event_price"
+            android:layout_width="8dp"
+            android:layout_height="7dp"
+            android:background="@color/shimmer_item_inside"
+            app:layout_constraintBottom_toBottomOf="@id/tv_live_event_price"
+            app:layout_constraintStart_toStartOf="@id/tv_live_event_title"
+            app:layout_constraintTop_toTopOf="@id/tv_live_event_price"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/tv_live_event_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/poppins_w400"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/iv_live_event_price"
+            app:layout_constraintTop_toBottomOf="@id/tv_live_event_price"
+            android:background="@color/shimmer_item_inside" />
+
+        <TextView
+            android:id="@+id/tv_live_event_showmore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/show_more"
+            android:fontFamily="@font/poppins_w500"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_live_event_date"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@color/shimmer_item_inside" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

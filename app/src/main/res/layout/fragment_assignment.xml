@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.progress.AssignmentFragment">
+    tools:context=".ui.progress.learning.assignment.AssignmentFragment">
 
     <ImageView
         android:id="@+id/iv_back_button"
@@ -37,7 +37,6 @@
         android:id="@+id/materialCardView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-
         android:layout_marginHorizontal="16dp"
         android:layout_marginVertical="24dp"
         app:cardCornerRadius="12dp"
@@ -60,6 +59,7 @@
                     android:id="@+id/ivFlag"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
+                    android:layout_marginTop="24dp"
                     android:src="@drawable/img_course_korean"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -68,9 +68,9 @@
                     android:id="@+id/tvAssignment"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="24dp"
                     android:fontFamily="@font/poppins_w500"
-                    android:text="Assignment"
+                    android:text="@string/assignment"
                     android:textColor="#182E7C"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -83,7 +83,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_w500"
-                    android:text="Beginner - Sublevel 2"
+                    android:text="@string/dummy_beginner_sublevel_2"
                     android:textColor="#F37323"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -93,122 +93,141 @@
 
                 <TextView
                     android:id="@+id/tvTutorName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_w600"
+                    android:text="@string/tutor_name_title"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toEndOf="@id/guideline8"
+                    app:layout_constraintTop_toBottomOf="@id/tvAssignmentLevel" />
+
+                <TextView
+                    android:id="@+id/tvTutorNameValue"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
                     android:fontFamily="@font/poppins_w400"
-                    android:text="Tutor Name : "
                     android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/guideline8"
-                    app:layout_constraintTop_toBottomOf="@id/tvAssignmentLevel"/>
+                    app:layout_constraintStart_toEndOf="@id/tvTutorName"
+                    app:layout_constraintTop_toTopOf="@id/tvTutorName" />
+
 
                 <TextView
                     android:id="@+id/tvSessionSchedule"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_w400"
-                    android:text="Session Schedule : "
+                    android:fontFamily="@font/poppins_w600"
+                    android:text="@string/session_schedule"
                     android:textColor="@color/black"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/guideline8"
                     app:layout_constraintTop_toBottomOf="@id/tvTutorName" />
 
+                <TextView
+                    android:id="@+id/tvSessionScheduleValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:fontFamily="@font/poppins_w400"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvSessionSchedule"
+                    app:layout_constraintTop_toTopOf="@id/tvSessionSchedule" />
 
                 <TextView
                     android:id="@+id/tvAttendance"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_w400"
-                    android:text="Attendance : "
+                    android:fontFamily="@font/poppins_w600"
+                    android:text="@string/attendance"
                     android:textColor="@color/black"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/guideline8"
                     app:layout_constraintTop_toBottomOf="@id/tvSessionSchedule" />
 
+                <TextView
+                    android:id="@+id/tvAttendanceValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:fontFamily="@font/poppins_w400"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvAttendance"
+                    app:layout_constraintTop_toTopOf="@id/tvAttendance" />
 
                 <TextView
                     android:id="@+id/tvStudentScore"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_w400"
-                    android:text="Student Score :"
+                    android:fontFamily="@font/poppins_w600"
+                    android:text="@string/student_score"
                     android:textColor="@color/black"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/guideline8"
                     app:layout_constraintTop_toBottomOf="@id/tvAttendance" />
 
-
-<!--                <TextView-->
-<!--                    android:id="@+id/tvQuestion"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginStart="16dp"-->
-<!--                    android:fontFamily="@font/poppins_w700"-->
-<!--                    android:text="1. Question 1?"-->
-<!--                    android:textColor="@color/black"-->
-<!--                    android:textSize="16sp"-->
-<!--                    android:textStyle="bold"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toBottomOf="@id/tvStudentScore" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/tvStudentAnswer"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:fontFamily="@font/poppins_w400"-->
-<!--                    android:text="Student Answer: lorem ipsum"-->
-<!--                    android:textColor="@color/black"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintStart_toEndOf="@id/guideline9"-->
-<!--                    app:layout_constraintTop_toBottomOf="@id/tvQuestion" />-->
-
-
-<!--                <TextView-->
-<!--                    android:id="@+id/tvCorrectAnswer"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:fontFamily="@font/poppins_w400"-->
-<!--                    android:text="Correct Answer: lorem ipsum"-->
-<!--                    android:textColor="#4FE34E"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintStart_toEndOf="@id/guideline9"-->
-<!--                    app:layout_constraintTop_toBottomOf="@id/tvStudentAnswer" />-->
+                <TextView
+                    android:id="@+id/tvStudentScoreValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:fontFamily="@font/poppins_w400"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvStudentScore"
+                    app:layout_constraintTop_toTopOf="@id/tvStudentScore" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvQuestion"
-                    tools:listitem="@layout/item_question"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvStudentScore"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvStudentScore"
+                    tools:listitem="@layout/item_question" />
 
                 <TextView
                     android:id="@+id/tvAssignmentFeedback"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:fontFamily="@font/poppins_w400"
-                    android:text="Assignment Feedback: “Student need deeply learn about time and date”"
+                    android:fontFamily="@font/poppins_w600"
+                    android:text="@string/assignment_feedback"
                     android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/guideline8"
                     app:layout_constraintTop_toBottomOf="@id/rvQuestion" />
 
+                <TextView
+                    android:id="@+id/tvAssignmentFeedbackValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_w400"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/tvAssignmentFeedback"
+                    app:layout_constraintTop_toBottomOf="@id/tvAssignmentFeedback" />
 
                 <TextView
                     android:id="@+id/tvSessionFeedback"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:fontFamily="@font/poppins_w400"
-                    android:text="Session Feedback: “Student active and on time attending the class”"
+                    android:fontFamily="@font/poppins_w600"
+                    android:text="@string/session_feedback"
                     android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/guideline8"
-                    app:layout_constraintTop_toBottomOf="@id/tvAssignmentFeedback" />
+                    app:layout_constraintTop_toBottomOf="@id/tvAssignmentFeedbackValue" />
 
+                <TextView
+                    android:id="@+id/tvSessionFeedbackValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_w400"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/tvSessionFeedback"
+                    app:layout_constraintTop_toBottomOf="@id/tvSessionFeedback" />
 
                 <TextView
                     android:id="@+id/tvNotes"
@@ -216,14 +235,25 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
-                    android:fontFamily="@font/poppins_w400"
-                    android:text="Notes: “Student active and on time attendingdfdfdfdf the class”"
+                    android:fontFamily="@font/poppins_w600"
+                    android:text="@string/notes"
                     android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/guideline8"
-                    app:layout_constraintTop_toBottomOf="@id/tvSessionFeedback" />
+                    app:layout_constraintTop_toBottomOf="@id/tvSessionFeedbackValue" />
 
+                <TextView
+                    android:id="@+id/tvNotesValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/poppins_w400"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/tvNotes"
+                    app:layout_constraintTop_toBottomOf="@id/tvNotes" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline8"

@@ -108,7 +108,6 @@ class DashboardActivity : AppCompatActivity(), Toolbar.OnMenuItemClickListener {
             }
         }
     }
-
     @Subscribe
     fun onRefreshTokenExpiredEvent(event: TokenAuthenticationInterceptor.TokenAuthenticationEvent.RefreshTokenExpiredEvent) {
         viewModel.onRefreshTokenExpired()

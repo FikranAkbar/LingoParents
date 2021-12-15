@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="4dp"
         android:layout_marginVertical="8dp">
 
@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_w400"
-            android:text="Tutor Name:"
+            android:text="@string/tutor_name"
             android:textColor="@color/black"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,27 +38,58 @@
             android:id="@+id/tv_tutorname"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:fontFamily="@font/poppins_w400"
-            android:paddingStart="8dp"
-            android:text="Eleanor Pena"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tv_tutortext"
             app:layout_constraintTop_toBottomOf="@+id/tv_progresscheck" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_tv_tutorname"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_tutortext"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_tutortext"
+            app:layout_constraintTop_toBottomOf="@+id/tv_progresscheck">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/shimmer_placeholder" />
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
 
         <com.skydoves.expandablelayout.ExpandableLayout
             android:id="@+id/expandable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             app:expandable_duration="300"
             app:expandable_isExpanded="false"
             app:expandable_parentLayout="@layout/expand_title"
             app:expandable_secondLayout="@layout/expand_content"
+            app:expandable_showSpinner="false"
+            app:expandable_spinner_color="@null"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tv_tutortext"
             app:layout_constraintTop_toBottomOf="@id/tv_tutortext" />
 
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_expandable"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/expandable"
+            app:layout_constraintEnd_toEndOf="@id/expandable"
+            app:layout_constraintStart_toStartOf="@id/expandable"
+            app:layout_constraintTop_toTopOf="@id/expandable">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/shimmer_placeholder" />
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_score"
@@ -78,6 +109,7 @@
                     android:id="@+id/tv_overallscore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     android:fontFamily="@font/poppins_w700"
                     android:text="Overall Score"
                     android:textColor="#182E7C"
@@ -98,16 +130,32 @@
                     android:id="@+id/tv_score"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
                     android:layout_marginVertical="24dp"
                     android:fontFamily="@font/poppins_w700"
-                    android:text="Score"
                     android:textColor="#C2C9D1"
+                    android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/line_divider" />
 
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmer_score"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/shimmer_placeholder" />
+                </com.facebook.shimmer.ShimmerFrameLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.cardview.widget.CardView>
 
         <TextView
@@ -122,137 +170,31 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cv_score" />
 
-        <!--rv-->
-
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvSession"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="horizontal"
             android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_completedsession" />
 
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_rvSession"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="@id/rvSession"
+            app:layout_constraintEnd_toEndOf="@id/rvSession"
+            app:layout_constraintTop_toTopOf="@id/rvSession"
+            app:layout_constraintBottom_toBottomOf="@id/rvSession">
 
-        <!--        <HorizontalScrollView ini horizontal-->
-        <!--            android:id="@+id/hsv_session"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintHorizontal_bias="0.5"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/tv_completedsession">-->
-
-        <!--            <LinearLayout-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:orientation="horizontal">-->
-
-
-        <!--                <ImageView-->
-        <!--                    android:id="@+id/image1"-->
-        <!--                    android:layout_width="200dp"-->
-        <!--                    android:layout_height="200dp"-->
-        <!--                    android:layout_marginRight="20dp"-->
-        <!--                    android:src="@drawable/ic_rectangle_131"/>-->
-
-        <!--                <ImageView-->
-        <!--                    android:id="@+id/image2"-->
-        <!--                    android:layout_width="200dp"-->
-        <!--                    android:layout_height="200dp"-->
-        <!--                    android:layout_marginRight="20dp"-->
-        <!--                    android:src="@drawable/ic_rectangle_131_red"/>-->
-
-        <!--                <ImageView-->
-        <!--                    android:id="@+id/image3"-->
-        <!--                    android:layout_width="200dp"-->
-        <!--                    android:layout_height="200dp"-->
-        <!--                    android:layout_marginRight="20dp"-->
-        <!--                    android:src="@drawable/ic_rectangle_131"/>-->
-
-        <!--                <ImageView-->
-        <!--                    android:id="@+id/image4"-->
-        <!--                    android:layout_width="200dp"-->
-        <!--                    android:layout_height="200dp"-->
-        <!--                    android:layout_marginRight="20dp"-->
-        <!--                    android:src="@drawable/ic_rectangle_131"/>-->
-
-
-        <!--            </LinearLayout>       -->
-        <!--        </HorizontalScrollView>-->
-        <!--        <androidx.cardview.widget.CardView-->
-        <!--            android:id="@+id/cv_sessionscore"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginVertical="16dp"-->
-        <!--            app:cardCornerRadius="20dp"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/tv_completedsession">-->
-
-        <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:background="#e8eaf2">-->
-
-        <!--                <TextView-->
-        <!--                    android:id="@+id/tv_session"-->
-        <!--                    android:layout_width="wrap_content"-->
-        <!--                    android:layout_height="wrap_content"-->
-        <!--                    android:layout_marginTop="16dp"-->
-        <!--                    android:fontFamily="@font/poppins_w700"-->
-        <!--                    android:text="Session 7"-->
-        <!--                    android:textColor="@color/black"-->
-        <!--                    android:textSize="20sp"-->
-        <!--                    android:textStyle="bold"-->
-        <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-        <!--                    app:layout_constraintStart_toStartOf="parent"-->
-        <!--                    app:layout_constraintTop_toTopOf="parent" />-->
-
-
-        <!--                <TextView-->
-        <!--                    android:id="@+id/tv_shortdesc"-->
-        <!--                    android:layout_width="wrap_content"-->
-        <!--                    android:layout_height="wrap_content"-->
-        <!--                    android:layout_marginVertical="8dp"-->
-        <!--                    android:fontFamily="@font/poppins_w400"-->
-        <!--                    android:text="Lorem ipsum"-->
-        <!--                    android:textColor="@color/black"-->
-        <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-        <!--                    app:layout_constraintStart_toStartOf="parent"-->
-        <!--                    app:layout_constraintTop_toBottomOf="@id/tv_session" />-->
-
-        <!--                <TextView-->
-        <!--                    android:id="@+id/tv_sessionscore"-->
-        <!--                    android:layout_width="wrap_content"-->
-        <!--                    android:layout_height="wrap_content"-->
-        <!--                    android:layout_marginVertical="8dp"-->
-        <!--                    android:fontFamily="@font/poppins_w400"-->
-        <!--                    android:text="Score 90"-->
-        <!--                    android:textColor="#182E7C"-->
-        <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-        <!--                    app:layout_constraintStart_toStartOf="parent"-->
-        <!--                    app:layout_constraintTop_toBottomOf="@id/tv_shortdesc" />-->
-
-        <!--                <TextView-->
-        <!--                    android:id="@+id/tv_sessiondesc"-->
-        <!--                    android:layout_width="wrap_content"-->
-        <!--                    android:layout_height="wrap_content"-->
-        <!--                    android:layout_marginVertical="24dp"-->
-        <!--                    android:fontFamily="@font/poppins_w600"-->
-        <!--                    android:maxLines="4"-->
-        <!--                    android:text="lorem ipsum lorem ipsum loremsdfsdfsdfdsfsdfdsfd ipsum lorem ipsum"-->
-        <!--                    android:textAlignment="center"-->
-        <!--                    android:textColor="@color/black"-->
-        <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-        <!--                    app:layout_constraintStart_toStartOf="parent"-->
-        <!--                    app:layout_constraintTop_toBottomOf="@id/tv_sessionscore" />-->
-
-        <!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
-        <!--        </androidx.cardview.widget.CardView>-->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/shimmer_placeholder" />
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cv_attendancesession"
@@ -270,7 +212,6 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:layout_margin="8dp">
 
                 <TextView

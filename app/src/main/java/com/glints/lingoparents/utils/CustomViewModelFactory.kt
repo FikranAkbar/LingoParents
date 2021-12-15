@@ -5,21 +5,25 @@ import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
-import com.glints.lingoparents.ui.accountsetting.AccountSettingViewModel
-import com.glints.lingoparents.ui.dashboard.DashboardViewModel
-import com.glints.lingoparents.ui.accountsetting.AccountSettingFragment
 import com.glints.lingoparents.ui.accountsetting.changepassword.PasswordSettingViewModel
 import com.glints.lingoparents.ui.accountsetting.profile.ProfileViewModel
+import com.glints.lingoparents.ui.course.AllCoursesViewModel
+import com.glints.lingoparents.ui.home.HomeViewModel
+import com.glints.lingoparents.ui.course.DetailCourseViewModel
+import com.glints.lingoparents.ui.dashboard.DashboardViewModel
 import com.glints.lingoparents.ui.insight.InsightListViewModel
 import com.glints.lingoparents.ui.insight.detail.DetailInsightViewModel
-import com.glints.lingoparents.ui.course.AllCoursesViewModel
-import com.glints.lingoparents.ui.course.DetailCourseViewModel
 import com.glints.lingoparents.ui.liveevent.LiveEventListViewModel
 import com.glints.lingoparents.ui.liveevent.category.CompletedLiveEventViewModel
 import com.glints.lingoparents.ui.liveevent.category.TodayLiveEventViewModel
 import com.glints.lingoparents.ui.liveevent.category.UpcomingLiveEventViewModel
 import com.glints.lingoparents.ui.liveevent.detail.LiveEventDetailViewModel
 import com.glints.lingoparents.ui.login.LoginViewModel
+import com.glints.lingoparents.ui.progress.ProgressViewModel
+import com.glints.lingoparents.ui.progress.learning.ProgressLearningCourseViewModel
+import com.glints.lingoparents.ui.progress.learning.ProgressLearningViewModel
+import com.glints.lingoparents.ui.progress.learning.assignment.AssignmentViewModel
+import com.glints.lingoparents.ui.progress.profile.ProgressProfileViewModel
 import com.glints.lingoparents.ui.register.RegisterViewModel
 import com.glints.lingoparents.ui.splash.SplashViewModel
 
@@ -30,6 +34,9 @@ class CustomViewModelFactory(
     private val eventId: Int? = null,
     private val insightId: Int? = null,
     private val accountId: Int? = null,
+    private val studentId: Int? = null,
+    private val courseId: Int? = null,
+    private val sessionId: Int? = null
 ) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
 
     @Suppress("UNCHECKED_CAST")
@@ -61,7 +68,7 @@ class CustomViewModelFactory(
                 CompletedLiveEventViewModel(tokenPref) as T
             }
             modelClass.isAssignableFrom(LiveEventDetailViewModel::class.java) -> {
-                LiveEventDetailViewModel(tokenPref, eventId as Int) as T
+                LiveEventDetailViewModel(tokenPref, eventId!!) as T
             }
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
                 ProfileViewModel(tokenPref) as T
@@ -78,11 +85,29 @@ class CustomViewModelFactory(
             modelClass.isAssignableFrom(AllCoursesViewModel::class.java) -> {
                 AllCoursesViewModel(tokenPref) as T
             }
+            modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
+                HomeViewModel(tokenPref) as T
+            }
             modelClass.isAssignableFrom(DetailCourseViewModel::class.java) -> {
-                DetailCourseViewModel(tokenPref, eventId as Int) as T
+                DetailCourseViewModel(tokenPref, eventId!!) as T
             }
             modelClass.isAssignableFrom(DetailInsightViewModel::class.java) -> {
-                DetailInsightViewModel(tokenPref, insightId as Int) as T
+                DetailInsightViewModel(tokenPref, insightId!!) as T
+            }
+            modelClass.isAssignableFrom(ProgressViewModel::class.java) -> {
+                ProgressViewModel(tokenPref) as T
+            }
+            modelClass.isAssignableFrom(ProgressProfileViewModel::class.java) -> {
+                ProgressProfileViewModel() as T
+            }
+            modelClass.isAssignableFrom(ProgressLearningViewModel::class.java) -> {
+                ProgressLearningViewModel() as T
+            }
+            modelClass.isAssignableFrom(ProgressLearningCourseViewModel::class.java) -> {
+                ProgressLearningCourseViewModel(studentId = studentId!!, courseId = courseId!!) as T
+            }
+            modelClass.isAssignableFrom(AssignmentViewModel::class.java) -> {
+                AssignmentViewModel(studentId!!, sessionId!!) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }
