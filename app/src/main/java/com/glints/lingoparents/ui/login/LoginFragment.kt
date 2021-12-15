@@ -17,6 +17,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.glints.lingoparents.BuildConfig
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentLoginBinding
 import com.glints.lingoparents.ui.accountsetting.profile.ProfileFragment

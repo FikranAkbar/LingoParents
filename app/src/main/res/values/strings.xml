@@ -173,4 +173,7 @@
     <string name="you_have_no_children_connected">You have no children connected</string>
     <string name="student_not_joined_any_class_yet">Student not joined any class yet</string>
     <string name="title_learning_progress">Learning Progress</string>
+    <!-- Google Auth Id -->
+    <string name="google_client_id">401776833845-cgqt5ephhprpfmmiuj3vk0eljneq3vu3.apps.googleusercontent.com</string>
+    <string name="google_client_secret">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</string>
 </resources>
