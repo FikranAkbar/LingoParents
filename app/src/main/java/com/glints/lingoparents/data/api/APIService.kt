@@ -12,6 +12,12 @@ interface APIService {
         @Field("password") password: String
     ): Call<LoginUserResponse>
 
+    @FormUrlEncoded
+    @POST("api/v1/google-login")
+    fun loginWithGoogle(
+        @Field("id_token") idToken: String
+    ): Call<LoginUserResponse>
+
     @POST("api/v1/logout")
     fun logoutUser(): Call<LogoutUserResponse>
 
