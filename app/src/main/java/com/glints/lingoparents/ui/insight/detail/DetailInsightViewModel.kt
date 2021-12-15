@@ -1,11 +1,9 @@
 package com.glints.lingoparents.ui.insight.detail
 
-import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
+import com.glints.lingoparents.data.model.response.CreateCommentResponse
 import com.glints.lingoparents.data.model.response.InsightDetailResponse
 import com.glints.lingoparents.data.model.response.InsightLikeDislikeResponse
 import com.glints.lingoparents.utils.ErrorUtils
@@ -33,17 +31,19 @@ class DetailInsightViewModel(
     private val likeDislikeInsightChannel = Channel<LikeDislikeInsight>()
     val likeDislikeInsight = likeDislikeInsightChannel.receiveAsFlow()
 
+    private val createCommentChannel = Channel<CreateComment>()
+    val createComment = createCommentChannel.receiveAsFlow()
+
     private fun onApiCallStarted() = viewModelScope.launch {
         insightDetailChannel.send(InsightDetail.Loading)
     }
 
     private fun onApiCallStartedLikeDislike(type: String) = viewModelScope.launch {
-        when (type) {
-            INSIGHT_TYPE -> {
-                Log.d("LikeInsight", "Loading")
-                likeDislikeInsightChannel.send(LikeDislikeInsight.Loading)
-            }
-        }
+        likeDislikeInsightChannel.send(LikeDislikeInsight.Loading)
+    }
+
+    private fun onApiCallStartedCreateComment(type: String) = viewModelScope.launch {
+        createCommentChannel.send(CreateComment.Loading)
     }
 
     private fun onApiCallSuccess(
@@ -56,8 +56,12 @@ class DetailInsightViewModel(
 
     private fun onApiCallSuccessLikeDislike(result: InsightLikeDislikeResponse) =
         viewModelScope.launch {
-            Log.d("LikeInsight", "Success")
             likeDislikeInsightChannel.send(LikeDislikeInsight.Success(result))
+        }
+
+    private fun onApiCallSuccessCreateComment(result: CreateCommentResponse) =
+        viewModelScope.launch {
+            createCommentChannel.send(CreateComment.Success(result))
         }
 
     private fun onApiCallError(message: String) = viewModelScope.launch {
@@ -65,12 +69,11 @@ class DetailInsightViewModel(
     }
 
     private fun onApiCallErrorLikeDislike(type: String, message: String) = viewModelScope.launch {
-        when (type) {
-            INSIGHT_TYPE -> {
-                Log.d("LikeInsight", "Error")
-                likeDislikeInsightChannel.send(LikeDislikeInsight.Error(message))
-            }
-        }
+        likeDislikeInsightChannel.send(LikeDislikeInsight.Error(message))
+    }
+
+    private fun onApiCallErrorCreateComment(message: String) = viewModelScope.launch {
+        createCommentChannel.send(CreateComment.Error(message))
     }
 
     fun loadInsightDetail(id: Int) = viewModelScope.launch {
@@ -112,7 +115,7 @@ class DetailInsightViewModel(
                         onApiCallSuccessLikeDislike(response.body()!!)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
-                        onApiCallError(apiError.message())
+                        onApiCallErrorLikeDislike(type, apiError.message())
                     }
                 }
 
@@ -136,12 +139,36 @@ class DetailInsightViewModel(
                         onApiCallSuccessLikeDislike(response.body()!!)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
-                        onApiCallError(apiError.message())
+                        onApiCallErrorLikeDislike(type, apiError.message())
                     }
                 }
 
                 override fun onFailure(call: Call<InsightLikeDislikeResponse>, t: Throwable) {
-                    onApiCallError("Network Failed...")
+                    onApiCallErrorLikeDislike(type, "Network Failed...")
+                }
+            })
+    }
+
+    fun createComment(id: Int, type: String, comment: String) = viewModelScope.launch {
+        onApiCallStartedCreateComment(type)
+        APIClient
+            .service
+            .createComment(id, type, comment)
+            .enqueue(object : Callback<CreateCommentResponse> {
+                override fun onResponse(
+                    call: Call<CreateCommentResponse>,
+                    response: Response<CreateCommentResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        onApiCallSuccessCreateComment(response.body()!!)
+                    } else {
+                        val apiError = ErrorUtils.parseError(response)
+                        onApiCallErrorCreateComment(apiError.message())
+                    }
+                }
+
+                override fun onFailure(call: Call<CreateCommentResponse>, t: Throwable) {
+                    onApiCallErrorCreateComment("Network Failed...")
                 }
             })
     }
@@ -161,5 +188,11 @@ class DetailInsightViewModel(
         object Loading : LikeDislikeInsight()
         data class Success(val result: InsightLikeDislikeResponse) : LikeDislikeInsight()
         data class Error(val message: String) : LikeDislikeInsight()
+    }
+
+    sealed class CreateComment {
+        object Loading : CreateComment()
+        data class Success(val result: CreateCommentResponse) : CreateComment()
+        data class Error(val message: String) : CreateComment()
     }
 }
