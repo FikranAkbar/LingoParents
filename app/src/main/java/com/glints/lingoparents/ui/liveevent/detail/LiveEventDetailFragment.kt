@@ -5,8 +5,9 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.*
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +17,7 @@ import coil.load
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FormRegisterEventBinding
 import com.glints.lingoparents.databinding.FragmentLiveEventDetailBinding
+import com.glints.lingoparents.utils.AuthFormValidator
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
@@ -26,24 +28,21 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
     private lateinit var binding: FragmentLiveEventDetailBinding
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var viewModel: LiveEventDetailViewModel
+    private val paymentMethodItems = listOf<String>("Cash", "Checks", "Debit", "Credit")
 
-    //register live event
     private var id_user: Int? = null
     private var id_event: Int? = null
 
-    //idevent
     private var fullname: String? = null
     private var phoneNumber: String? = null
     private var email: String? = null
 
-    //attendance
     private var attendance_time_event: String? = null
 
-    //iduser create
+    private var idUser_createValue: Int? = null
     private var total_price: Int? = null
     private var voucherCode: String? = null
     private var paymentMethod: String? = null
-    private var status: String? = null
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -107,6 +106,7 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                                 //register live event
                                 attendance_time_event = started_at
                                 total_price = price.toInt()
+                                idUser_createValue = idUser_create
                             }
                         }
                     }
@@ -117,21 +117,30 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                         }
                     }
                     is LiveEventDetailViewModel.LiveEventDetailEvent.RegisterClick -> {
+                        val phoneNumber = event.phone
+                        val voucherCode = event.voucherCode
+                        val fullname = event.fullname
+                        val email = event.email
+                        val paymentMethod = event.paymentMethod
+                        val status = "yes"
 
+                        //kalo bener semua
                         viewModel.registerLiveEvent(
                             total_price!!,
-                            phoneNumber!!,
-                            "sdfds",
+                            phoneNumber,
+                            voucherCode,
                             id_user!!,
                             id_event!!,
-                            fullname!!,
+                            fullname,
                             attendance_time_event!!,
-                            email!!,
+                            email,
                             "yes",
-                            "cash",
-                            1,
-                            "success"
+                            paymentMethod,
+                            idUser_createValue!!,
+                            status
                         )
+
+
                     }
                     is LiveEventDetailViewModel.LiveEventDetailEvent.RegisterSuccess -> {
                         Snackbar.make(
@@ -149,6 +158,14 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                         showLoading(true)
                     }
                     is LiveEventDetailViewModel.LiveEventDetailEvent.Error -> {
+                        Snackbar.make(
+                            requireView(),
+                            "Failed To Register Live Event",
+                            Snackbar.LENGTH_SHORT
+                        )
+                            .setBackgroundTint(Color.parseColor("#FF0000"))
+                            .setTextColor(Color.parseColor("#FFFFFF"))
+                            .show()
                         showLoading(false)
                     }
                 }
@@ -178,37 +195,84 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
     }
 
     private fun showDialog(inflater: LayoutInflater) {
+        val formRegister = Dialog(requireActivity())
         val formRegisterEventBinding: FormRegisterEventBinding =
             FormRegisterEventBinding.inflate(inflater)
 
 
-        val formRegister = Dialog(requireActivity())
         formRegister.apply {
+            fun closeDialog() {
+                dismiss()
+                viewModel.getLiveEventDetailById(viewModel.getCurrentEventId())
+
+            }
+
             formRegisterEventBinding.apply {
+                tfEmail.editText?.setText(email)
+                tfFullName.editText?.setText(fullname)
+                tfPhoneNumber.editText?.setText(phoneNumber)
+                val adapter =
+                    ArrayAdapter(context, R.layout.item_payment_method, paymentMethodItems)
+                (tfPaymentMethod.editText as AutoCompleteTextView).setAdapter(adapter)
                 ivBackButton.setOnClickListener {
-                    dismiss()
+                    closeDialog()
+//                    dismiss()
+//                    viewModel.getLiveEventDetailById(viewModel.getCurrentEventId())
                 }
                 mbtnRegister.setOnClickListener {
-//                    viewModel.onRegisterButtonClick(
-//                        tfVoucherCode.editText?.text.toString(),
-//                        tfPaymentMethod.editText?.text.toString()
-//                    )
-                    viewModel.registerLiveEvent(
-                        total_price!!,
-                        phoneNumber!!,
-                        "sdfds",
-                        1,
-                        id_event!!,
-                        fullname!!,
-                        attendance_time_event!!,
-                        email!!,
-                        "yes",
-                        "cash",
-                        1,
-                        "success"
-                    )
+                    fullname = tfFullName.editText?.text.toString()
+                    phoneNumber = tfPhoneNumber.editText?.text.toString()
+                    email = tfEmail.editText?.text.toString()
+                    voucherCode = tfVoucherCode.editText?.text.toString()
+                    paymentMethod = tfPaymentMethod.editText?.text.toString()
+                    AuthFormValidator.apply {
+                        hideFieldError(
+                            arrayListOf(
+                                tfFullName,
+                                tfEmail,
+                                tfPhoneNumber,
+                                tfVoucherCode,
+                                tfPaymentMethod
+                            )
+                        )
+                        if (isValidEmail(email) && isValidField(fullname) && isValidPhoneNumber(
+                                phoneNumber
+                            ) && isValidField(voucherCode) && isValidField(
+                                paymentMethod
+                            )
+                        ) {
+                            viewModel.onRegisterButtonClick(
+                                tfFullName.editText?.text.toString(),
+                                tfEmail.editText?.text.toString(),
+                                tfPhoneNumber.editText?.text.toString(),
+                                tfVoucherCode.editText?.text.toString(),
+                                tfPaymentMethod.editText?.text.toString()
+                            )
+                            closeDialog()
+                        } else {
+                            if (!isValidEmail(email)) {
+                                showFieldError(tfEmail, EMAIL_WRONG_FORMAT_ERROR)
+                            }
+                            if (!isValidField(fullname)) {
+                                showFieldError(tfFullName, EMPTY_FIELD_ERROR)
+                            }
+                            if (!isValidPhoneNumber(phoneNumber)) {
+                                showFieldError(tfPhoneNumber, PHONENUMBER_ERROR)
+                            }
+                            if (!isValidField(paymentMethod)) {
+                                showFieldError(tfPaymentMethod, EMPTY_FIELD_ERROR)
+                            }
+                            if (!isValidField(voucherCode)) {
+                                showFieldError(tfVoucherCode, EMPTY_FIELD_ERROR)
+                            }
+                        }
 
+
+                    }
                 }
+//                dismiss()
+//                viewModel.getLiveEventDetailById(viewModel.getCurrentEventId())
+
 
             }
 

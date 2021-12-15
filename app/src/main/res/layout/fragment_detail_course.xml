@@ -66,6 +66,8 @@
             android:orientation="vertical">
 
             <include layout="@layout/shimmer_item_detail_course" />
+            <include layout="@layout/shimmer_item_detail_course_second" />
+
 
         </LinearLayout>
     </com.facebook.shimmer.ShimmerFrameLayout>

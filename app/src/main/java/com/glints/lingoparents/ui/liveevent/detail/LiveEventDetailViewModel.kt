@@ -30,6 +30,7 @@ class LiveEventDetailViewModel(
         viewModelScope.launch {
             liveEventDetailEventChannel.send(LiveEventDetailEvent.Success(result))
         }
+
     private fun onRegisterApiCallSuccess() =
         viewModelScope.launch {
             liveEventDetailEventChannel.send(LiveEventDetailEvent.RegisterSuccess)
@@ -119,7 +120,20 @@ class LiveEventDetailViewModel(
         onApiCallStarted()
         APIClient
             .service
-            .registerLiveEvent(idUser,idEvent,fullname,phone,email,attendance,attendanceTime,idUserCreate,totalPrice,voucherCode,paymentMethod,status)
+            .registerLiveEvent(
+                idUser,
+                idEvent,
+                fullname,
+                phone,
+                email,
+                attendance,
+                attendanceTime,
+                idUserCreate,
+                totalPrice,
+                voucherCode,
+                paymentMethod,
+                status
+            )
             .enqueue(object : Callback<LiveEventRegisterResponse> {
                 override fun onResponse(
                     call: Call<LiveEventRegisterResponse>,
@@ -152,17 +166,30 @@ class LiveEventDetailViewModel(
         data class SuccessGetProfile(val parentProfile: ParentProfileResponse) :
             LiveEventDetailEvent()
 
-        data class RegisterClick(val voucherCode: String, val paymentMethod: String) :
+        data class RegisterClick(
+            val fullname: String,
+            val email: String,
+            val phone: String,
+            val voucherCode: String,
+            val paymentMethod: String
+        ) :
             LiveEventDetailEvent()
+
         object RegisterSuccess : LiveEventDetailEvent()
     }
 
     //amin
-//    fun onRegisterButtonClick(voucherCode: String, paymentMethod: String) = viewModelScope.launch {
-//        liveEventDetailEventChannel.send(
-//            LiveEventDetailEvent.RegisterClick(
-//                voucherCode, paymentMethod
-//            )
-//        )
-//    }
+    fun onRegisterButtonClick(
+        fullname: String,
+        email: String,
+        phone: String,
+        voucherCode: String,
+        paymentMethod: String
+    ) = viewModelScope.launch {
+        liveEventDetailEventChannel.send(
+            LiveEventDetailEvent.RegisterClick(
+                fullname, email, phone, voucherCode, paymentMethod
+            )
+        )
+    }
 }
