@@ -1,6 +1,8 @@
 package com.glints.lingoparents.ui.accountsetting
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.utils.TokenPreferences
 import kotlinx.coroutines.channels.Channel
@@ -8,15 +10,16 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class AccountSettingViewModel(private val tokenPreferences: TokenPreferences) : ViewModel() {
-    private val profileChannel = Channel<ProfileEvent>()
-    val profileEvent = profileChannel.receiveAsFlow()
+    private val accountSettingChannel = Channel<AccountSetting>()
+    val accountSettingEvent = accountSettingChannel.receiveAsFlow()
 
-    fun onLogOutButtonClick() = viewModelScope.launch {
-        profileChannel.send(ProfileEvent.NavigateToAuthScreen)
-        tokenPreferences.resetToken()
+    fun loadingState() = viewModelScope.launch {
+        accountSettingChannel.send(AccountSetting.Loading)
     }
 
-    sealed class ProfileEvent {
-        object NavigateToAuthScreen : ProfileEvent()
+    fun getAccessToken(): LiveData<String> = tokenPreferences.getAccessToken().asLiveData()
+
+    sealed class AccountSetting {
+        object Loading : AccountSetting()
     }
 }

@@ -19,7 +19,6 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
-    //amin
     private var emailValue: String? = null
 
 
@@ -62,7 +61,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     tfPhoneNumber.editText?.text.toString()
                 )
                 exitEditState()
-                //binding.fragmentProfile.invalidate()
             }
             mbtnLogout.setOnClickListener {
                 viewModel.onLogOutButtonClick()
@@ -78,7 +76,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                         startActivity(intent)
                         requireActivity().finish()
                     }
-                    //amin
                     is ProfileViewModel.ProfileEvent.Success -> {
                         binding.apply {
                             event.parentProfile.apply {
@@ -106,11 +103,16 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                             .setBackgroundTint(Color.parseColor("#42ba96"))
                             .setTextColor(Color.parseColor("#FFFFFF"))
                             .show()
-                        //findNavController().navigate(R.id.accountSettingFragment)
                         viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
                             viewModel.getParentProfile(accessToken)
                         }
-
+                    }
+                    is ProfileViewModel.ProfileEvent.SendToAccountSetting -> {
+                        val eventBusActionToAccountSetting =
+                            ProfileViewModel.EventBusActionToAccountSetting.SendParentData(event.parentProfile)
+                        viewModel.sendParentDataToAccountSettingFragment(
+                            eventBusActionToAccountSetting
+                        )
 
                     }
                     is ProfileViewModel.ProfileEvent.Error -> {

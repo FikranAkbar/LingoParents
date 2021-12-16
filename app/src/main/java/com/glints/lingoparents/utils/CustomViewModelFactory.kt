@@ -5,6 +5,7 @@ import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
+import com.glints.lingoparents.ui.accountsetting.AccountSettingViewModel
 import com.glints.lingoparents.ui.accountsetting.changepassword.PasswordSettingViewModel
 import com.glints.lingoparents.ui.accountsetting.profile.ProfileViewModel
 import com.glints.lingoparents.ui.course.AllCoursesViewModel
@@ -108,6 +109,9 @@ class CustomViewModelFactory(
             }
             modelClass.isAssignableFrom(AssignmentViewModel::class.java) -> {
                 AssignmentViewModel(studentId!!, sessionId!!) as T
+            }
+            modelClass.isAssignableFrom(AccountSettingViewModel::class.java) -> {
+                AccountSettingViewModel(tokenPref) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

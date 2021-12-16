@@ -1,41 +1,35 @@
 package com.glints.lingoparents.ui.accountsetting
 
-import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
+import coil.load
 import com.glints.lingoparents.R
-import com.glints.lingoparents.data.api.APIClient
-import com.glints.lingoparents.data.model.response.ParentProfileResponse
 import com.glints.lingoparents.databinding.FragmentAccountSettingBinding
+import com.glints.lingoparents.ui.accountsetting.profile.ProfileViewModel
 import com.glints.lingoparents.ui.dashboard.DashboardActivity
-import com.glints.lingoparents.utils.ErrorUtils
+import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.flow.collect
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 
 class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
-    //class AccountSettingFragment(private val tokenPreferences: TokenPreferences) : Fragment(R.layout.fragment_account_setting) {
     private lateinit var tokenPreferences: TokenPreferences
+    private lateinit var viewModel: AccountSettingViewModel
 
     companion object {
         @StringRes
@@ -47,6 +41,10 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
 
     private var _binding: FragmentAccountSettingBinding? = null
     private val binding get() = _binding!!
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,6 +52,11 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
         savedInstanceState: Bundle?
     ): View {
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
+        viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this))[
+                AccountSettingViewModel::class.java
+        ]
+        viewModel.loadingState()
+
         _binding = FragmentAccountSettingBinding.inflate(inflater)
 
         val sectionsPagerAdapter =
@@ -95,8 +98,54 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
                 (activity as DashboardActivity).showBottomNav(true)
             }
         }
+        lifecycleScope.launchWhenStarted {
+            viewModel.accountSettingEvent.collect { event ->
+                when (event) {
+                    is AccountSettingViewModel.AccountSetting.Loading -> {
+                        showLoading(true)
+                    }
+                }
+            }
+        }
 
         return binding.root
+    }
+
+    @Subscribe
+    fun getNameAndPhoto(event: ProfileViewModel.EventBusActionToAccountSetting.SendParentData) {
+        showLoading(false)
+        Toast.makeText(context, "event bus", Toast.LENGTH_LONG).show()
+        binding.apply {
+            event.parentProfile.apply {
+                val name = "$firstname $lastname"
+                tvParent.text = name
+                if (photo != null) {
+                    ivProfilePicture.load(photo)
+                }
+                ivProfilePicture.load(R.drawable.ic_user_avatar_male_square)
+
+            }
+        }
+    }
+
+    private fun showLoading(boolean: Boolean) {
+        binding.apply {
+            if (boolean) {
+                ivProfilePicture.visibility = View.INVISIBLE
+                tvHello.visibility = View.INVISIBLE
+                tvParent.visibility = View.INVISIBLE
+            } else {
+                ivProfilePicture.visibility = View.VISIBLE
+                tvHello.visibility = View.VISIBLE
+                tvParent.visibility = View.VISIBLE
+
+            }
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
     }
 
     override fun onDestroy() {

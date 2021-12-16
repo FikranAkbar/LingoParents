@@ -12,6 +12,7 @@ import com.glints.lingoparents.utils.TokenPreferences
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -23,7 +24,6 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
     fun onLogOutButtonClick() = viewModelScope.launch {
         profileChannel.send(ProfileEvent.NavigateToAuthScreen)
         tokenPreferences.resetToken()
-//        tokenPreferences.resetAccessEmail()
     }
 
 
@@ -33,9 +33,9 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
 
     private fun onApiCallSuccess(parentProfile: ParentProfileResponse) = viewModelScope.launch {
         profileChannel.send(ProfileEvent.Success(parentProfile))
+        profileChannel.send(ProfileEvent.SendToAccountSetting(parentProfile))
     }
 
-    //amin
     private fun onEditApiCallSuccess() =
         viewModelScope.launch {
             profileChannel.send(ProfileEvent.EditSuccess)
@@ -45,26 +45,10 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
         profileChannel.send(ProfileEvent.Error(message))
     }
 
-    sealed class ProfileEvent {
-        object NavigateToAuthScreen : ProfileEvent()
-        object Loading : ProfileEvent()
-        data class Success(val parentProfile: ParentProfileResponse) : ProfileEvent()
-        data class Error(val message: String) : ProfileEvent()
-        object EditSuccess : ProfileEvent()
-        data class TryToEditProfile(
-            val firstname: String,
-            val lastname: String,
-            val address: String,
-            val phone: String
-        ) : ProfileEvent()
-
-
-    }
-
     fun getAccessToken(): LiveData<String> = tokenPreferences.getAccessToken().asLiveData()
     fun getAccessEmail(): LiveData<String> = tokenPreferences.getAccessEmail().asLiveData()
 
-    //amin get
+
     fun getParentProfile(accessToken: String) = viewModelScope.launch {
         onApiCallStarted()
         APIClient
@@ -90,7 +74,6 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
             })
     }
 
-    //amin put
     fun editParentProfile(
         accessToken: String,
         firstname: String,
@@ -136,5 +119,30 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
                 phone
             )
         )
+    }
+
+    fun sendParentDataToAccountSettingFragment(event: EventBusActionToAccountSetting) =
+        viewModelScope.launch {
+            EventBus.getDefault().post(event)
+        }
+
+    sealed class ProfileEvent {
+        object NavigateToAuthScreen : ProfileEvent()
+        object Loading : ProfileEvent()
+        data class Success(val parentProfile: ParentProfileResponse) : ProfileEvent()
+        data class SendToAccountSetting(val parentProfile: ParentProfileResponse) : ProfileEvent()
+        data class Error(val message: String) : ProfileEvent()
+        object EditSuccess : ProfileEvent()
+        data class TryToEditProfile(
+            val firstname: String,
+            val lastname: String,
+            val address: String,
+            val phone: String
+        ) : ProfileEvent()
+    }
+
+    sealed class EventBusActionToAccountSetting {
+        data class SendParentData(val parentProfile: ParentProfileResponse) :
+            EventBusActionToAccountSetting()
     }
 }
