@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
@@ -114,15 +113,15 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
     @Subscribe
     fun getNameAndPhoto(event: ProfileViewModel.EventBusActionToAccountSetting.SendParentData) {
         showLoading(false)
-        Toast.makeText(context, "event bus", Toast.LENGTH_LONG).show()
         binding.apply {
             event.parentProfile.apply {
                 val name = "$firstname $lastname"
                 tvParent.text = name
                 if (photo != null) {
                     ivProfilePicture.load(photo)
+                } else {
+                    ivProfilePicture.load(R.drawable.ic_user_avatar_male_square)
                 }
-                ivProfilePicture.load(R.drawable.ic_user_avatar_male_square)
 
             }
         }
