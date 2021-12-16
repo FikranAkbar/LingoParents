@@ -1,7 +1,7 @@
 package com.glints.lingoparents.ui.insight.detail
 
+import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
+import com.glints.lingoparents.data.model.response.InsightDetailResponse
 import com.glints.lingoparents.databinding.FragmentDetailInsightBinding
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
@@ -19,7 +20,7 @@ import com.glints.lingoparents.utils.dataStore
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 
-class DetailInsightFragment : Fragment() {
+class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
     private lateinit var binding: FragmentDetailInsightBinding
     private lateinit var viewModel: DetailInsightViewModel
     private lateinit var commentsAdapter: CommentsAdapter
@@ -37,7 +38,7 @@ class DetailInsightFragment : Fragment() {
         binding.rvInsightComment.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext())
-            commentsAdapter = CommentsAdapter()
+            commentsAdapter = CommentsAdapter(this@DetailInsightFragment)
             adapter = commentsAdapter
         }
 
@@ -56,8 +57,8 @@ class DetailInsightFragment : Fragment() {
                 )
             )[DetailInsightViewModel::class.java]
 
-
         viewModel.loadInsightDetail(viewModel.getCurrentInsightId())
+
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.insightDetail.collect { insight ->
                 when (insight) {
@@ -91,7 +92,6 @@ class DetailInsightFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.likeDislikeInsight.collect { insight ->
-                Snackbar.make(binding.root, "insight event collected", Snackbar.LENGTH_SHORT).show()
                 when (insight) {
                     is DetailInsightViewModel.LikeDislikeInsight.Success -> {
                         Snackbar.make(
@@ -108,6 +108,33 @@ class DetailInsightFragment : Fragment() {
                             insight.message,
                             Snackbar.LENGTH_SHORT
                         ).show()
+                    }
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.createComment.collect { insight ->
+                when (insight) {
+                    is DetailInsightViewModel.CreateComment.Success -> {
+                        Snackbar.make(
+                            requireView(),
+                            "Comment Created Successfully",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+
+                        binding.apply {
+                            tfInsightComment.editText?.setText("")
+                        }
+                    }
+                    is DetailInsightViewModel.CreateComment.Loading -> {
+
+                    }
+                    is DetailInsightViewModel.CreateComment.Error -> {
+                        Snackbar.make(requireView(), "Something's Wrong", Snackbar.LENGTH_LONG)
+                            .setBackgroundTint(Color.parseColor("#FF0000"))
+                            .setTextColor(Color.parseColor("#FFFFFF"))
+                            .show()
                     }
                 }
             }
@@ -147,6 +174,13 @@ class DetailInsightFragment : Fragment() {
                     DetailInsightViewModel.INSIGHT_TYPE
                 )
             }
+            btnComment.setOnClickListener {
+                viewModel.createComment(
+                    viewModel.getCurrentInsightId(),
+                    DetailInsightViewModel.INSIGHT_TYPE,
+                    tfInsightComment.editText?.text.toString()
+                )
+            }
         }
 
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner,
@@ -155,5 +189,27 @@ class DetailInsightFragment : Fragment() {
                     findNavController().popBackStack()
                 }
             })
+    }
+
+    override fun onLikeCommentClicked(item: InsightDetailResponse.MasterComment) {
+        viewModel.sendLikeRequest(
+            item.id,
+            DetailInsightViewModel.COMMENT_TYPE
+        )
+    }
+
+    override fun onDislikeCommentClicked(item: InsightDetailResponse.MasterComment) {
+        viewModel.sendDislikeRequest(
+            item.id,
+            DetailInsightViewModel.COMMENT_TYPE
+        )
+    }
+
+    override fun onReplyCommentClicked(item: InsightDetailResponse.MasterComment, comment: String) {
+        viewModel.createComment(
+            item.id,
+            DetailInsightViewModel.COMMENT_TYPE,
+            comment
+        )
     }
 }

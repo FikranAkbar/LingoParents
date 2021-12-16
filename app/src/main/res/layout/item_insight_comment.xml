@@ -6,7 +6,7 @@
     android:layout_marginBottom="18dp">
 
     <ImageView
-        android:id="@+id/iv_insight_comment"
+        android:id="@+id/iv_comment"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@drawable/ic_user_avatar_female" />
@@ -16,56 +16,87 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_toEndOf="@+id/iv_insight_comment"
+        android:layout_toEndOf="@+id/iv_comment"
         android:text="Camile Berger"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/tv_insight_comment_body"
+        android:id="@+id/tv_comment_body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_username_comment"
         android:layout_marginStart="12dp"
         android:layout_marginVertical="4dp"
-        android:layout_toEndOf="@+id/iv_insight_comment"
+        android:layout_toEndOf="@+id/iv_comment"
         android:justificationMode="inter_word"
         android:text="A special child needs constant attention and support. They require assistance even for trivial things. It is essential for parents to feel overwhelmed and exhausted at times." />
 
     <TextView
-        android:id="@+id/tv_insight_like_comment"
+        android:id="@+id/tv_like_comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_insight_comment_body"
+        android:layout_below="@id/tv_comment_body"
         android:text="19"
         app:drawableStartCompat="@drawable/ic_insight_like" />
 
     <TextView
-        android:id="@+id/tv_insight_dislike_comment"
+        android:id="@+id/tv_dislike_comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_insight_comment_body"
+        android:layout_below="@id/tv_comment_body"
         android:layout_marginHorizontal="4dp"
-        android:layout_toEndOf="@id/tv_insight_like_comment"
+        android:layout_toEndOf="@id/tv_like_comment"
         android:text="19"
         app:drawableStartCompat="@drawable/ic_insight_dislike" />
 
-
     <TextView
-        android:id="@+id/tv_insight_reply_comment"
+        android:id="@+id/tv_reply_comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_insight_comment_body"
+        android:layout_below="@id/tv_comment_body"
         android:layout_marginHorizontal="4dp"
-        android:layout_toStartOf="@id/tv_insight_report_comment"
+        android:layout_toStartOf="@id/tv_report_comment"
         android:text="@string/reply"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/tv_insight_report_comment"
+        android:id="@+id/tv_report_comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_insight_comment_body"
+        android:layout_below="@id/tv_comment_body"
         android:layout_alignParentEnd="true"
         android:text="@string/report"
         android:textStyle="bold" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tf_reply_comment"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_report_comment"
+        android:layout_marginVertical="4dp"
+        android:visibility="gone"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxStrokeColor="#797979"
+        app:hintEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_reply_comment"
+        style="@style/Typography.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tf_reply_comment"
+        android:layout_alignParentEnd="true"
+        android:text="@string/reply"
+        android:textAllCaps="false"
+        android:visibility="gone" />
 </RelativeLayout>
