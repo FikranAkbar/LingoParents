@@ -10,6 +10,7 @@ object AuthFormValidator {
     const val PASSWORD_EMPTY_ERROR = "Passowrd must be minimum $PASSWORD_MIN_SIZE character"
     const val PASSWORD_DIFFERENCE_ERROR = "Confirm password is different from password"
     const val EMPTY_FIELD_ERROR = "Field must not be empty"
+    const val PHONENUMBER_ERROR = "Minimum length of phone number is 10"
 
     fun <T> showFieldError(v: T, errorText: String? = null) {
         when (v) {
@@ -46,4 +47,5 @@ object AuthFormValidator {
     }
 
     fun isValidField(text: String?): Boolean = text?.length!! > 0
+    fun isValidPhoneNumber(text: String?): Boolean = text?.length!! > 9
 }

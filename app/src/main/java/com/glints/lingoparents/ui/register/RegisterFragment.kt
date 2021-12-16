@@ -94,7 +94,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                                     isValidPassword(password) &&
                                     isValidField(firstName) &&
                                     isValidField(lastName) &&
-                                    isValidField(phone) &&
+                                    isValidPhoneNumber(phone) &&
                                     isValidField(gender) &&
                                     isValidField(address)
                                 ) {
@@ -120,8 +120,8 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                                     if (!isValidField(lastName)) {
                                         showFieldError(tilLastName, EMPTY_FIELD_ERROR)
                                     }
-                                    if (!isValidField(phone)) {
-                                        showFieldError(tilPhone, EMPTY_FIELD_ERROR)
+                                    if (!isValidPhoneNumber(phone)) {
+                                        showFieldError(tilPhone, PHONENUMBER_ERROR)
                                     }
                                     if (!isValidField(gender)) {
                                         showFieldError(tilGender, EMPTY_FIELD_ERROR)

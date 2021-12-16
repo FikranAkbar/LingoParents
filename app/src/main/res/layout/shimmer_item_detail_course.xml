@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="16dp">
@@ -13,7 +12,6 @@
         android:layout_height="wrap_content"
         android:background="@color/shimmer_placeholder"
         android:fontFamily="@font/poppins_w700"
-        android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,24 +47,24 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="8dp"
-        android:background="@color/shimmer_item_inside"
-        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/shimmer_placeholder"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ivCourseCard" />
 
     <TextView
         android:id="@+id/tvCourseDesc2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@color/shimmer_placeholder"
         android:ellipsize="end"
         android:fontFamily="@font/poppins_w600"
-        android:gravity="start"
+        android:gravity="end"
         android:maxLines="7"
         app:layout_constraintBottom_toBottomOf="@+id/ivCourseCard2"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/ivCourseCard2"
+        app:layout_constraintEnd_toStartOf="@+id/ivCourseCard2"
         app:layout_constraintTop_toTopOf="@+id/ivCourseCard2" />
 
     <ImageView
@@ -74,7 +72,7 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="8dp"
-        android:background="@color/shimmer_item_inside"
+        android:background="@color/shimmer_placeholder"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ivCourseCard2" />
 
@@ -93,16 +91,4 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/ivCourseCard3"
         app:layout_constraintTop_toTopOf="@+id/ivCourseCard3" />
-    <!--    <androidx.recyclerview.widget.RecyclerView-->
-    <!--        android:id="@+id/rvDetailCourse"-->
-    <!--        android:layout_marginTop="8dp"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:background="@color/shimmer_item_inside"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@id/tvCourse" />-->
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
