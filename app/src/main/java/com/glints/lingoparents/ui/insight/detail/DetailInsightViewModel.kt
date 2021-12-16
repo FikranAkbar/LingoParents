@@ -38,11 +38,11 @@ class DetailInsightViewModel(
         insightDetailChannel.send(InsightDetail.Loading)
     }
 
-    private fun onApiCallStartedLikeDislike(type: String) = viewModelScope.launch {
+    private fun onApiCallStartedLikeDislike() = viewModelScope.launch {
         likeDislikeInsightChannel.send(LikeDislikeInsight.Loading)
     }
 
-    private fun onApiCallStartedCreateComment(type: String) = viewModelScope.launch {
+    private fun onApiCallStartedCreateComment() = viewModelScope.launch {
         createCommentChannel.send(CreateComment.Loading)
     }
 
@@ -68,7 +68,7 @@ class DetailInsightViewModel(
         insightDetailChannel.send(InsightDetail.Error(message))
     }
 
-    private fun onApiCallErrorLikeDislike(type: String, message: String) = viewModelScope.launch {
+    private fun onApiCallErrorLikeDislike(message: String) = viewModelScope.launch {
         likeDislikeInsightChannel.send(LikeDislikeInsight.Error(message))
     }
 
@@ -102,7 +102,7 @@ class DetailInsightViewModel(
     }
 
     fun sendLikeRequest(id: Int, type: String) = viewModelScope.launch {
-        onApiCallStartedLikeDislike(type)
+        onApiCallStartedLikeDislike()
         APIClient
             .service
             .likeInsightDetail(id, type)
@@ -115,18 +115,18 @@ class DetailInsightViewModel(
                         onApiCallSuccessLikeDislike(response.body()!!)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
-                        onApiCallErrorLikeDislike(type, apiError.message())
+                        onApiCallErrorLikeDislike(apiError.message())
                     }
                 }
 
                 override fun onFailure(call: Call<InsightLikeDislikeResponse>, t: Throwable) {
-                    onApiCallErrorLikeDislike(type, "Network Failed...")
+                    onApiCallErrorLikeDislike("Network Failed...")
                 }
             })
     }
 
     fun sendDislikeRequest(id: Int, type: String) = viewModelScope.launch {
-        onApiCallStartedLikeDislike(type)
+        onApiCallStartedLikeDislike()
         APIClient
             .service
             .dislikeInsightDetail(id, type)
@@ -139,18 +139,18 @@ class DetailInsightViewModel(
                         onApiCallSuccessLikeDislike(response.body()!!)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
-                        onApiCallErrorLikeDislike(type, apiError.message())
+                        onApiCallErrorLikeDislike(apiError.message())
                     }
                 }
 
                 override fun onFailure(call: Call<InsightLikeDislikeResponse>, t: Throwable) {
-                    onApiCallErrorLikeDislike(type, "Network Failed...")
+                    onApiCallErrorLikeDislike("Network Failed...")
                 }
             })
     }
 
     fun createComment(id: Int, type: String, comment: String) = viewModelScope.launch {
-        onApiCallStartedCreateComment(type)
+        onApiCallStartedCreateComment()
         APIClient
             .service
             .createComment(id, type, comment)
