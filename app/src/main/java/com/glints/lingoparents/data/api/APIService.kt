@@ -104,6 +104,11 @@ interface APIService {
         @Field("comment") comment: String
     ): Call<CreateCommentResponse>
 
+    @GET("api/v1/insights/comment/{id}")
+    fun getCommentReplies(
+        @Path("id") id: Int
+    ): Call<GetCommentRepliesResponse>
+
     //amin
     @GET("api/v1/courses")
     fun getCourseList(
