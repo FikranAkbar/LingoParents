@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.model.response.CreateCommentResponse
+import com.glints.lingoparents.data.model.response.GetCommentRepliesResponse
 import com.glints.lingoparents.data.model.response.InsightDetailResponse
 import com.glints.lingoparents.data.model.response.InsightLikeDislikeResponse
 import com.glints.lingoparents.utils.ErrorUtils
@@ -19,6 +20,7 @@ class DetailInsightViewModel(
     private val tokenPref: TokenPreferences,
     private val insightId: Int
 ) : ViewModel() {
+    private var commentId: Int = 0
 
     companion object {
         const val INSIGHT_TYPE = "insight"
@@ -34,6 +36,9 @@ class DetailInsightViewModel(
     private val createCommentChannel = Channel<CreateComment>()
     val createComment = createCommentChannel.receiveAsFlow()
 
+    private val commentRepliesChannel = Channel<GetCommentReplies>()
+    val getCommentReplies = commentRepliesChannel.receiveAsFlow()
+
     private fun onApiCallStarted() = viewModelScope.launch {
         insightDetailChannel.send(InsightDetail.Loading)
     }
@@ -44,6 +49,10 @@ class DetailInsightViewModel(
 
     private fun onApiCallStartedCreateComment() = viewModelScope.launch {
         createCommentChannel.send(CreateComment.Loading)
+    }
+
+    private fun onApiCallStartedGetCommentReplies() = viewModelScope.launch {
+        commentRepliesChannel.send(GetCommentReplies.Loading)
     }
 
     private fun onApiCallSuccess(
@@ -64,6 +73,11 @@ class DetailInsightViewModel(
             createCommentChannel.send(CreateComment.Success(result))
         }
 
+    private fun onApiCallSuccessGetCommentReplies(list: List<GetCommentRepliesResponse.Message>) =
+        viewModelScope.launch {
+            commentRepliesChannel.send(GetCommentReplies.Success(list))
+        }
+
     private fun onApiCallError(message: String) = viewModelScope.launch {
         insightDetailChannel.send(InsightDetail.Error(message))
     }
@@ -74,6 +88,10 @@ class DetailInsightViewModel(
 
     private fun onApiCallErrorCreateComment(message: String) = viewModelScope.launch {
         createCommentChannel.send(CreateComment.Error(message))
+    }
+
+    private fun onApiCallErrorGetCommentReplies(message: String) = viewModelScope.launch {
+        commentRepliesChannel.send(GetCommentReplies.Error(message))
     }
 
     fun loadInsightDetail(id: Int) = viewModelScope.launch {
@@ -88,6 +106,10 @@ class DetailInsightViewModel(
                 ) {
                     if (response.isSuccessful) {
                         val result = response.body()?.message!!
+                        val commentId = result.Master_comments
+                        for (comment in commentId) {
+                            saveCommentId(comment.id)
+                        }
                         onApiCallSuccess(result, result.Master_comments)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
@@ -173,7 +195,34 @@ class DetailInsightViewModel(
             })
     }
 
+    fun getCommentReplies(id: Int) = viewModelScope.launch {
+        onApiCallStartedGetCommentReplies()
+        APIClient
+            .service
+            .getCommentReplies(id)
+            .enqueue(object : Callback<GetCommentRepliesResponse> {
+                override fun onResponse(
+                    call: Call<GetCommentRepliesResponse>,
+                    response: Response<GetCommentRepliesResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        onApiCallSuccessGetCommentReplies(response.body()?.message!!)
+                    } else {
+                        val apiError = ErrorUtils.parseError(response)
+                        onApiCallErrorGetCommentReplies(apiError.message())
+                    }
+                }
+
+                override fun onFailure(call: Call<GetCommentRepliesResponse>, t: Throwable) {
+                    onApiCallErrorGetCommentReplies("Network Failed...")
+                }
+            })
+    }
+
     fun getCurrentInsightId(): Int = insightId
+    fun saveCommentId(id: Int) = viewModelScope.launch {
+        commentId = id
+    }
 
     sealed class InsightDetail {
         object Loading : InsightDetail()
@@ -194,5 +243,11 @@ class DetailInsightViewModel(
         object Loading : CreateComment()
         data class Success(val result: CreateCommentResponse) : CreateComment()
         data class Error(val message: String) : CreateComment()
+    }
+
+    sealed class GetCommentReplies {
+        object Loading : GetCommentReplies()
+        data class Success(val list: List<GetCommentRepliesResponse.Message>) : GetCommentReplies()
+        data class Error(val message: String) : GetCommentReplies()
     }
 }

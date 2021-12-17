@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.glints.lingoparents.data.model.response.InsightDetailResponse
 import com.glints.lingoparents.databinding.FragmentDetailInsightBinding
+import com.glints.lingoparents.ui.insight.detail.adapter.CommentRepliesAdapter
+import com.glints.lingoparents.ui.insight.detail.adapter.CommentsAdapter
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
@@ -24,6 +26,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
     private lateinit var binding: FragmentDetailInsightBinding
     private lateinit var viewModel: DetailInsightViewModel
     private lateinit var commentsAdapter: CommentsAdapter
+    private lateinit var commentRepliesAdapter: CommentRepliesAdapter
     private lateinit var tokenPreferences: TokenPreferences
 
     override fun onCreateView(
@@ -138,6 +141,23 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                     }
                 }
             }
+
+            viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                viewModel.getCommentReplies.collect { insight ->
+                    when (insight) {
+                        is DetailInsightViewModel.GetCommentReplies.Loading -> {
+
+                        }
+                        is DetailInsightViewModel.GetCommentReplies.Success -> {
+                            commentRepliesAdapter = CommentRepliesAdapter(this@DetailInsightFragment)
+                            commentRepliesAdapter.submitList(insight.list)
+                        }
+                        is DetailInsightViewModel.GetCommentReplies.Error -> {
+
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -211,5 +231,9 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
             DetailInsightViewModel.COMMENT_TYPE,
             comment
         )
+    }
+
+    override fun onShowCommentRepliesClicked(item: InsightDetailResponse.MasterComment) {
+        viewModel.getCommentReplies(item.id)
     }
 }
