@@ -56,7 +56,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="18dp"
                     android:layout_marginTop="2dp"
-                    android:visibility="gone"
+                    android:visibility="invisible"
                     app:boxCornerRadiusBottomEnd="5dp"
                     app:boxCornerRadiusBottomStart="5dp"
                     app:boxCornerRadiusTopEnd="5dp"
@@ -99,7 +99,7 @@
                     android:text="@string/last_name"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_first_name_content" />
+                    app:layout_constraintTop_toBottomOf="@id/tf_first_name" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tf_last_name"
@@ -108,7 +108,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="18dp"
                     android:layout_marginTop="2dp"
-                    android:visibility="gone"
+                    android:visibility="invisible"
                     app:boxCornerRadiusBottomEnd="5dp"
                     app:boxCornerRadiusBottomStart="5dp"
                     app:boxCornerRadiusTopEnd="5dp"
@@ -151,7 +151,33 @@
                     android:text="@string/email"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_last_name_content" />
+                    app:layout_constraintTop_toBottomOf="@id/tf_last_name" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tf_email"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="18dp"
+                    android:layout_marginTop="2dp"
+                    android:visibility="invisible"
+                    app:boxCornerRadiusBottomEnd="5dp"
+                    app:boxCornerRadiusBottomStart="5dp"
+                    app:boxCornerRadiusTopEnd="5dp"
+                    app:boxCornerRadiusTopStart="5dp"
+                    app:hintEnabled="false"
+                    app:layout_constraintTop_toBottomOf="@id/tv_email_title">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:paddingVertical="8dp"
+                        android:textSize="12sp"
+                        tools:ignore="SpeakableTextPresentCheck" />
+                </com.google.android.material.textfield.TextInputLayout>
+
 
                 <TextView
                     android:id="@+id/tv_email_content"
@@ -178,7 +204,8 @@
                     android:text="@string/address"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_email_content" />
+                    app:layout_constraintTop_toBottomOf="@id/tf_email" />
+<!--                    app:layout_constraintTop_toBottomOf="@id/tv_email_content" />-->
 
                 <TextView
                     android:id="@+id/tv_address_content"
@@ -202,7 +229,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="18dp"
                     android:layout_marginTop="2dp"
-                    android:visibility="gone"
+                    android:visibility="invisible"
                     app:boxCornerRadiusBottomEnd="5dp"
                     app:boxCornerRadiusBottomStart="5dp"
                     app:boxCornerRadiusTopEnd="5dp"
@@ -230,7 +257,7 @@
                     android:text="@string/phone_number"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_address_content" />
+                    app:layout_constraintTop_toBottomOf="@id/tf_address" />
 
                 <TextView
                     android:id="@+id/tv_phone_number_content"
@@ -254,7 +281,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="18dp"
                     android:layout_marginTop="2dp"
-                    android:visibility="gone"
+                    android:visibility="invisible"
                     app:boxCornerRadiusBottomEnd="5dp"
                     app:boxCornerRadiusBottomStart="5dp"
                     app:boxCornerRadiusTopEnd="5dp"
@@ -265,7 +292,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text"
+                        android:inputType="number"
                         android:maxLines="1"
                         android:paddingVertical="8dp"
                         android:textSize="12sp"
@@ -302,7 +329,7 @@
             android:text="@string/logout"
             android:textAllCaps="false"
             android:textSize="14sp"
-            app:backgroundTint="@color/custom_material_button_positive_state_color"
+            app:backgroundTint="#F03738"
             app:icon="@drawable/ic_logout"
             app:iconGravity="textStart"
             app:iconSize="16dp"

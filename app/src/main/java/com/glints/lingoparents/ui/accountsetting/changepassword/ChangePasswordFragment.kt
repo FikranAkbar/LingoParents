@@ -88,7 +88,7 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
                                                     "New password value must be different with current password value",
                                                     Snackbar.LENGTH_SHORT
                                                 )
-                                                    .setBackgroundTint(Color.parseColor("#FF0000"))
+                                                    .setBackgroundTint(Color.parseColor("#F03738"))
                                                     .setTextColor(Color.parseColor("#FFFFFF"))
                                                     .show()
                                             }
@@ -98,7 +98,7 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
                                                 "New password value must be same with confimation password's",
                                                 Snackbar.LENGTH_SHORT
                                             )
-                                                .setBackgroundTint(Color.parseColor("#FF0000"))
+                                                .setBackgroundTint(Color.parseColor("#F03738"))
                                                 .setTextColor(Color.parseColor("#FFFFFF"))
                                                 .show()
 
@@ -109,7 +109,7 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
                                             "Minimum character for a password is 8",
                                             Snackbar.LENGTH_SHORT
                                         )
-                                            .setBackgroundTint(Color.parseColor("#FF0000"))
+                                            .setBackgroundTint(Color.parseColor("#F03738"))
                                             .setTextColor(Color.parseColor("#FFFFFF"))
                                             .show()
 
@@ -122,7 +122,7 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
                                         "Field(s) must be filled out",
                                         Snackbar.LENGTH_SHORT
                                     )
-                                        .setBackgroundTint(Color.parseColor("#FF0000"))
+                                        .setBackgroundTint(Color.parseColor("#F03738"))
                                         .setTextColor(Color.parseColor("#FFFFFF"))
                                         .show()
 
@@ -148,7 +148,7 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
                     }
                     is PasswordSettingViewModel.PasswordSettingEvent.Error -> {
                         Snackbar.make(requireView(), "Wrong Password", Snackbar.LENGTH_SHORT)
-                            .setBackgroundTint(Color.parseColor("#FF0000"))
+                            .setBackgroundTint(Color.parseColor("#F03738"))
                             .setTextColor(Color.parseColor("#FFFFFF"))
                             .show()
                     }

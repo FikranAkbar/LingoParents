@@ -161,7 +161,7 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                             "Error",
                             Snackbar.LENGTH_SHORT
                         )
-                            .setBackgroundTint(Color.parseColor("#FF0000"))
+                            .setBackgroundTint(Color.parseColor("#F03738"))
                             .setTextColor(Color.parseColor("#FFFFFF"))
                             .show()
                         showLoading(false)
@@ -173,7 +173,7 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                             "Failed To Register Live Event",
                             Snackbar.LENGTH_SHORT
                         )
-                            .setBackgroundTint(Color.parseColor("#FF0000"))
+                            .setBackgroundTint(Color.parseColor("#F03738"))
                             .setTextColor(Color.parseColor("#FFFFFF"))
                             .show()
                         showLoading(false)

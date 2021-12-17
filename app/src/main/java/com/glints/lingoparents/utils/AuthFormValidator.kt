@@ -27,13 +27,15 @@ object AuthFormValidator {
                 v.map {
                     (it as TextInputLayout).apply {
                         isErrorEnabled = false
-                        error = ""
+                        //error = ""
+                        error = null
                     }
                 }
             }
             is TextInputLayout -> {
                 v.isErrorEnabled = false
-                v.error = ""
+                //v.error = ""
+                v.error = null
             }
         }
     }
