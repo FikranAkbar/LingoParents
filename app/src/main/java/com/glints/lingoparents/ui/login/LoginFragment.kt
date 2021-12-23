@@ -9,6 +9,7 @@ import android.text.Spanned
 import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -17,10 +18,8 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.glints.lingoparents.BuildConfig
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentLoginBinding
-import com.glints.lingoparents.ui.accountsetting.profile.ProfileFragment
 import com.glints.lingoparents.ui.dashboard.DashboardActivity
 import com.glints.lingoparents.utils.AuthFormValidator
 import com.glints.lingoparents.utils.CustomViewModelFactory
@@ -38,7 +37,6 @@ import kotlinx.coroutines.flow.collect
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
     companion object {
-        private const val TAG = "LoginFragment"
         private const val RC_GOOGLE_SIGN_IN = 9001
     }
 
@@ -127,6 +125,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                                 AuthFormValidator.showFieldError(binding.tilPassword, it)
                             }
                         }
+
                     }
                     is LoginViewModel.LoginEvent.NavigateToForgotPassword -> {
                         val action =
@@ -141,6 +140,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         Snackbar.make(binding.root, event.message, Snackbar.LENGTH_SHORT).show()
                     }
                     is LoginViewModel.LoginEvent.TryToLoginWithGoogle -> {
+                        googleSignInClient.signOut()
                         val signInIntent = googleSignInClient.signInIntent
                         startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN)
                     }
@@ -150,10 +150,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                             event.account.email as CharSequence,
                             Snackbar.LENGTH_SHORT
                         ).show()
+                        event.account.printInformation()
                     }
                     is LoginViewModel.LoginEvent.LoginWithGoogleFailure -> {
                         Snackbar.make(binding.root, event.errorMessage, Snackbar.LENGTH_SHORT)
                             .show()
+                        Log.d("Google Sign In Error:", event.errorMessage)
                     }
                 }
             }
@@ -167,6 +169,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun setGoogleSignInClient() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.google_client_id))
             .requestEmail()
             .build()
 
@@ -285,8 +288,18 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             val account = task?.getResult(ApiException::class.java)
             viewModel.onLoginWithGoogleSuccessful(account as GoogleSignInAccount)
         } catch (e: ApiException) {
-            viewModel.onLoginWithGoogleFailure("signInResult:failed code" + e.statusCode)
+            viewModel.onLoginWithGoogleFailure("signInResult:failed code" + e.status)
         }
+    }
+
+    private fun GoogleSignInAccount.printInformation() {
+        println("""
+            account = ${this.account}
+            id = ${this.id}
+            idToken = ${this.idToken}
+            serverAuthCode = ${this.serverAuthCode}
+            givenName = ${this.givenName}
+        """.trimIndent())
     }
 
     override fun onDestroy() {
