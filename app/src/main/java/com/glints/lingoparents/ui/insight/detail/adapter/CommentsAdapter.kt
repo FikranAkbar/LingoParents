@@ -71,6 +71,10 @@ class CommentsAdapter(private val listener: OnItemClickCallback) :
                     }
                     listener.onShowCommentRepliesClicked(item)
                 }
+
+                tvDeleteComment.setOnClickListener {
+                    listener.onDeleteCommentClicked(item ,item.id)
+                }
             }
         }
     }
@@ -98,6 +102,8 @@ class CommentsAdapter(private val listener: OnItemClickCallback) :
         fun onDislikeCommentClicked(item: InsightDetailResponse.MasterComment)
         fun onReplyCommentClicked(item: InsightDetailResponse.MasterComment, comment: String)
         fun onShowCommentRepliesClicked(item: InsightDetailResponse.MasterComment)
+        fun onDeleteCommentClicked(item: InsightDetailResponse.MasterComment, id: Int)
+
         override fun onLikeCommentClicked(item: GetCommentRepliesResponse.Message) {
             onLikeCommentClicked(item)
         }
@@ -123,5 +129,18 @@ class CommentsAdapter(private val listener: OnItemClickCallback) :
         dataList.clear()
         dataList.addAll(list)
         notifyDataSetChanged()
+    }
+
+    fun hideTextView(binding: ItemInsightCommentBinding, b: Boolean){
+        binding.apply {
+            if (b){
+                tvDeleteComment.visibility = View.VISIBLE
+                tvUpdateComment.visibility = View.VISIBLE
+            }
+            else{
+                tvDeleteComment.visibility = View.GONE
+                tvUpdateComment.visibility = View.GONE
+            }
+        }
     }
 }

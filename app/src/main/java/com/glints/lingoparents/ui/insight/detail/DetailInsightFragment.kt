@@ -2,6 +2,7 @@ package com.glints.lingoparents.ui.insight.detail
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.glints.lingoparents.data.model.response.InsightDetailResponse
 import com.glints.lingoparents.databinding.FragmentDetailInsightBinding
+import com.glints.lingoparents.databinding.ItemInsightCommentBinding
 import com.glints.lingoparents.ui.insight.detail.adapter.CommentRepliesAdapter
 import com.glints.lingoparents.ui.insight.detail.adapter.CommentsAdapter
 import com.glints.lingoparents.utils.CustomViewModelFactory
@@ -82,6 +84,14 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                     }
                     is DetailInsightViewModel.InsightDetail.SuccessGetComment -> {
                         commentsAdapter.submitList(insight.list)
+//                        viewModel.getParentId().observe(viewLifecycleOwner){ parentId ->
+//                            for (user in insight.list){
+//                                if (parentId.toString().toInt() == user.id_user)
+//                                    commentsAdapter.hideTextView(ItemInsightCommentBinding.bind(view), true)
+//                                else
+//                                    commentsAdapter.hideTextView(ItemInsightCommentBinding.bind(view), false)
+//                            }
+//                        }
                     }
                     is DetailInsightViewModel.InsightDetail.Loading -> {
                         showLoading(true)
@@ -153,6 +163,27 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                             commentRepliesAdapter.submitList(insight.list)
                         }
                         is DetailInsightViewModel.GetCommentReplies.Error -> {
+
+                        }
+                    }
+                }
+            }
+
+            viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                viewModel.deleteComment.collect { insight ->
+                    Log.e("Fragment", "Collect")
+                    when (insight) {
+                        is DetailInsightViewModel.DeleteComment.Loading -> {
+
+                        }
+                        is DetailInsightViewModel.DeleteComment.Success -> {
+                            Snackbar.make(
+                                requireView(),
+                                insight.result.message,
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                        }
+                        is DetailInsightViewModel.DeleteComment.Error -> {
 
                         }
                     }
@@ -235,5 +266,9 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
 
     override fun onShowCommentRepliesClicked(item: InsightDetailResponse.MasterComment) {
         viewModel.getCommentReplies(item.id)
+    }
+
+    override fun onDeleteCommentClicked(item: InsightDetailResponse.MasterComment, id: Int) {
+        viewModel.deleteComment(id)
     }
 }
