@@ -100,6 +100,14 @@ interface APIService {
         @Path("type") type: String,
     ): Call<InsightLikeDislikeResponse>
 
+    @FormUrlEncoded
+    @POST("api/v1/insights/comment/{id}/{type}")
+    fun createComment(
+        @Path("id") id: Int,
+        @Path("type") type: String,
+        @Field("comment") comment: String
+    ): Call<CreateCommentResponse>
+
     //amin
     @GET("api/v1/courses")
     fun getCourseList(
@@ -175,4 +183,22 @@ interface APIService {
         @Path("studentId") studentId: Int,
         @Path("sessionId") sessionId: Int
     ): Call<SessionDetailBySessionIdResponse>
+
+    @FormUrlEncoded
+    @POST("api/v1/events/participants")
+    fun registerLiveEvent(
+        @Field("id_user") id_user: Int,
+        @Field("id_event") id_event: Int,
+        @Field("fullname") fullname: String,
+        @Field("phone") phone: String,
+        @Field("email") email: String,
+        @Field("attendance") attendance: String,
+        @Field("attendance_time") attendance_time: String,
+        @Field("idUser_create") idUser_create: Int,
+        @Field("total_prize") total_prize: Int,
+        @Field("voucher_code") voucher_code: String,
+        @Field("payment_method") payment_method: String,
+        @Field("status") status: String
+    ): Call<LiveEventRegisterResponse>
+
 }

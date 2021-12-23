@@ -116,9 +116,15 @@ class DetailCourseFragment : Fragment(R.layout.fragment_detail_course),
     private fun showEmptyWarning(bool: Boolean) {
         binding.apply {
             if (bool) {
+                cvBackButton.visibility = View.INVISIBLE
+                rvDetailCourse.visibility = View.INVISIBLE
+                tvCourse.visibility = View.INVISIBLE
                 ivNoDetailCourse.visibility = View.VISIBLE
                 tvNoDetailCourse.visibility = View.VISIBLE
             } else {
+                cvBackButton.visibility = View.VISIBLE
+                rvDetailCourse.visibility = View.VISIBLE
+                tvCourse.visibility = View.VISIBLE
                 ivNoDetailCourse.visibility = View.GONE
                 tvNoDetailCourse.visibility = View.GONE
             }
