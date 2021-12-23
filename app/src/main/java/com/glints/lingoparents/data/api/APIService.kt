@@ -109,6 +109,11 @@ interface APIService {
         @Path("id") id: Int
     ): Call<GetCommentRepliesResponse>
 
+    @DELETE("api/v1/insights/comment/{id}")
+    fun deleteComment(
+        @Path("id") id: Int
+    ): Call<DeleteCommentResponse>
+
     //amin
     @GET("api/v1/courses")
     fun getCourseList(
