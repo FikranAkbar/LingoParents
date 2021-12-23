@@ -1,7 +1,5 @@
 package com.glints.lingoparents.ui.login
 
-import android.os.Build
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
@@ -14,12 +12,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 
 class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel() {
     private val loginEventChannel = Channel<LoginEvent>()
@@ -80,10 +75,10 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
     fun saveEmail(email: String) = viewModelScope.launch {
         tokenPreferences.saveAccessEmail(email)
     }
+
     fun saveUserId(id: String) = viewModelScope.launch {
         tokenPreferences.saveUserId(id)
     }
-
 
     fun loginUserByEmailPassword(email: String, password: String) = viewModelScope.launch {
         onApiCallStarted()
@@ -105,6 +100,36 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
                         saveEmail(email)
                         saveUserId(userId)
 
+                    } else {
+                        val apiError = ErrorUtils.parseError(response)
+                        onApiCallError(apiError.message())
+                    }
+                }
+
+                override fun onFailure(call: Call<LoginUserResponse>, t: Throwable) {
+                    onApiCallError("Network Failed...")
+                }
+            })
+    }
+
+    fun loginWithGoogleEmail(idToken: String) = viewModelScope.launch {
+        onApiCallStarted()
+        APIClient
+            .service
+            .loginWithGoogle(idToken)
+            .enqueue(object : Callback<LoginUserResponse> {
+                override fun onResponse(
+                    call: Call<LoginUserResponse>,
+                    response: Response<LoginUserResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        onApiCallSuccess("Login Successful")
+
+                        val accessToken = response.body()?.data?.accessToken.toString()
+                        val refreshToken = response.body()?.data?.refreshToken.toString()
+                        val userId = JWTUtils.getIdFromAccessToken(accessToken)
+                        saveToken(accessToken, refreshToken)
+                        saveUserId(userId)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallError(apiError.message())

@@ -286,7 +286,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private fun handleSignInResult(task: Task<GoogleSignInAccount>?) {
         try {
             val account = task?.getResult(ApiException::class.java)
-            viewModel.onLoginWithGoogleSuccessful(account as GoogleSignInAccount)
+            // viewModel.onLoginWithGoogleSuccessful(account as GoogleSignInAccount)
+            viewModel.loginWithGoogleEmail(account!!.idToken!!)
         } catch (e: ApiException) {
             viewModel.onLoginWithGoogleFailure("signInResult:failed code" + e.status)
         }
