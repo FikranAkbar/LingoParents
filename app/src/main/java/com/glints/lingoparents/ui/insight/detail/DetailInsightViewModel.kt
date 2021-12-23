@@ -1,12 +1,11 @@
 package com.glints.lingoparents.ui.insight.detail
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
-import com.glints.lingoparents.data.model.response.CreateCommentResponse
-import com.glints.lingoparents.data.model.response.GetCommentRepliesResponse
-import com.glints.lingoparents.data.model.response.InsightDetailResponse
-import com.glints.lingoparents.data.model.response.InsightLikeDislikeResponse
+import com.glints.lingoparents.data.model.response.*
 import com.glints.lingoparents.utils.ErrorUtils
 import com.glints.lingoparents.utils.TokenPreferences
 import kotlinx.coroutines.channels.Channel
@@ -39,6 +38,9 @@ class DetailInsightViewModel(
     private val commentRepliesChannel = Channel<GetCommentReplies>()
     val getCommentReplies = commentRepliesChannel.receiveAsFlow()
 
+    private val deleteCommentChannel = Channel<DeleteComment>()
+    val deleteComment = deleteCommentChannel.receiveAsFlow()
+
     private fun onApiCallStarted() = viewModelScope.launch {
         insightDetailChannel.send(InsightDetail.Loading)
     }
@@ -53,6 +55,11 @@ class DetailInsightViewModel(
 
     private fun onApiCallStartedGetCommentReplies() = viewModelScope.launch {
         commentRepliesChannel.send(GetCommentReplies.Loading)
+    }
+
+    private fun onApiCallStartedDeleteComment() = viewModelScope.launch {
+        deleteCommentChannel.send(DeleteComment.Loading)
+        Log.e("ViewModel", "Loading")
     }
 
     private fun onApiCallSuccess(
@@ -78,6 +85,10 @@ class DetailInsightViewModel(
             commentRepliesChannel.send(GetCommentReplies.Success(list))
         }
 
+    private fun onApiCallSuccessDeleteComment(result: DeleteCommentResponse) = viewModelScope.launch {
+        deleteCommentChannel.send(DeleteComment.Success(result))
+    }
+
     private fun onApiCallError(message: String) = viewModelScope.launch {
         insightDetailChannel.send(InsightDetail.Error(message))
     }
@@ -92,6 +103,10 @@ class DetailInsightViewModel(
 
     private fun onApiCallErrorGetCommentReplies(message: String) = viewModelScope.launch {
         commentRepliesChannel.send(GetCommentReplies.Error(message))
+    }
+
+    private fun onApiCallErrorDeleteComment(message: String) = viewModelScope.launch {
+        deleteCommentChannel.send(DeleteComment.Error(message))
     }
 
     fun loadInsightDetail(id: Int) = viewModelScope.launch {
@@ -219,10 +234,35 @@ class DetailInsightViewModel(
             })
     }
 
+    fun deleteComment(id: Int) = viewModelScope.launch {
+        onApiCallStartedDeleteComment()
+        APIClient
+            .service
+            .deleteComment(id)
+            .enqueue(object : Callback<DeleteCommentResponse> {
+                override fun onResponse(
+                    call: Call<DeleteCommentResponse>,
+                    response: Response<DeleteCommentResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        onApiCallSuccessDeleteComment(response.body()!!)
+                    } else {
+                        val apiError = ErrorUtils.parseError(response)
+                        onApiCallErrorDeleteComment(apiError.message())
+                    }
+                }
+
+                override fun onFailure(call: Call<DeleteCommentResponse>, t: Throwable) {
+                    onApiCallErrorDeleteComment("Network Failed...")
+                }
+            })
+    }
+
     fun getCurrentInsightId(): Int = insightId
     fun saveCommentId(id: Int) = viewModelScope.launch {
         commentId = id
     }
+    fun getParentId() = tokenPref.getUserId().asLiveData()
 
     sealed class InsightDetail {
         object Loading : InsightDetail()
@@ -249,5 +289,11 @@ class DetailInsightViewModel(
         object Loading : GetCommentReplies()
         data class Success(val list: List<GetCommentRepliesResponse.Message>) : GetCommentReplies()
         data class Error(val message: String) : GetCommentReplies()
+    }
+
+    sealed class DeleteComment {
+        object Loading: DeleteComment()
+        data class Success(val result: DeleteCommentResponse): DeleteComment()
+        data class Error(val message: String): DeleteComment()
     }
 }
