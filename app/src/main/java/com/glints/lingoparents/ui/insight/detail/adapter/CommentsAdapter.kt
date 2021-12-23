@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.glints.lingoparents.data.model.response.GetCommentRepliesResponse
 import com.glints.lingoparents.data.model.response.InsightDetailResponse
 import com.glints.lingoparents.databinding.ItemInsightCommentBinding
 
@@ -64,6 +65,10 @@ class CommentsAdapter(private val listener: OnItemClickCallback) :
                         tvShowReplyComment.text = "Show $totalReplies Replies"
                     }
                 }
+
+                tvDeleteComment.setOnClickListener {
+                    listener.onDeleteCommentClicked(item ,item.id)
+                }
             }
         }
     }
@@ -106,6 +111,26 @@ class CommentsAdapter(private val listener: OnItemClickCallback) :
         fun onDislikeCommentClicked(item: InsightDetailResponse.MasterComment)
         fun onReplyCommentClicked(item: InsightDetailResponse.MasterComment, comment: String)
         fun onShowCommentRepliesClicked(item: InsightDetailResponse.MasterComment)
+        fun onDeleteCommentClicked(item: InsightDetailResponse.MasterComment, id: Int)
+
+        override fun onLikeCommentClicked(item: GetCommentRepliesResponse.Message) {
+            onLikeCommentClicked(item)
+        }
+
+        override fun onDislikeCommentClicked(item: GetCommentRepliesResponse.Message) {
+            onDislikeCommentClicked(item)
+        }
+
+        override fun onReplyCommentClicked(
+            item: GetCommentRepliesResponse.Message,
+            comment: String
+        ) {
+            onReplyCommentClicked(item, comment)
+        }
+
+        override fun onShowCommentRepliesClicked(item: GetCommentRepliesResponse.Message) {
+            onShowCommentRepliesClicked(item)
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -113,5 +138,18 @@ class CommentsAdapter(private val listener: OnItemClickCallback) :
         dataList.clear()
         dataList.addAll(list)
         notifyDataSetChanged()
+    }
+
+    fun hideTextView(binding: ItemInsightCommentBinding, b: Boolean){
+        binding.apply {
+            if (b){
+                tvDeleteComment.visibility = View.VISIBLE
+                tvUpdateComment.visibility = View.VISIBLE
+            }
+            else{
+                tvDeleteComment.visibility = View.GONE
+                tvUpdateComment.visibility = View.GONE
+            }
+        }
     }
 }

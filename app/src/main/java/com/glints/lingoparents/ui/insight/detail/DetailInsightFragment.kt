@@ -2,6 +2,7 @@ package com.glints.lingoparents.ui.insight.detail
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import coil.load
 import com.glints.lingoparents.data.model.response.GetCommentRepliesResponse
 import com.glints.lingoparents.data.model.response.InsightDetailResponse
 import com.glints.lingoparents.databinding.FragmentDetailInsightBinding
+import com.glints.lingoparents.databinding.ItemInsightCommentBinding
 import com.glints.lingoparents.ui.insight.detail.adapter.CommentRepliesAdapter
 import com.glints.lingoparents.ui.insight.detail.adapter.CommentsAdapter
 import com.glints.lingoparents.utils.CustomViewModelFactory
@@ -163,6 +165,27 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback, C
                 }
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.deleteComment.collect { insight ->
+                Log.e("Fragment", "Collect")
+                when (insight) {
+                    is DetailInsightViewModel.DeleteComment.Loading -> {
+
+                    }
+                    is DetailInsightViewModel.DeleteComment.Success -> {
+                        Snackbar.make(
+                            requireView(),
+                            insight.result.message,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                    is DetailInsightViewModel.DeleteComment.Error -> {
+
+                    }
+                }
+            }
+        }
     }
 
     private fun showLoading(b: Boolean) {
@@ -239,6 +262,10 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback, C
 
     override fun onShowCommentRepliesClicked(item: InsightDetailResponse.MasterComment) {
         viewModel.getCommentReplies(item.id)
+    }
+
+    override fun onDeleteCommentClicked(item: InsightDetailResponse.MasterComment, id: Int) {
+        viewModel.deleteComment(id)
     }
 
     override fun onLikeCommentClicked(item: GetCommentRepliesResponse.Message) {
