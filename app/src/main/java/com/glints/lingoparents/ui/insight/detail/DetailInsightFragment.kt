@@ -2,7 +2,6 @@ package com.glints.lingoparents.ui.insight.detail
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.glints.lingoparents.data.model.response.InsightDetailResponse
 import com.glints.lingoparents.databinding.FragmentDetailInsightBinding
-import com.glints.lingoparents.databinding.ItemInsightCommentBinding
 import com.glints.lingoparents.ui.insight.detail.adapter.CommentRepliesAdapter
 import com.glints.lingoparents.ui.insight.detail.adapter.CommentsAdapter
 import com.glints.lingoparents.utils.CustomViewModelFactory
@@ -33,7 +31,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentDetailInsightBinding.inflate(inflater, container, false)
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
@@ -132,7 +130,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                     is DetailInsightViewModel.CreateComment.Success -> {
                         Snackbar.make(
                             requireView(),
-                            "Comment Created Successfully",
+                            insight.result.toString(),
                             Snackbar.LENGTH_SHORT
                         ).show()
 
@@ -159,31 +157,11 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
 
                         }
                         is DetailInsightViewModel.GetCommentReplies.Success -> {
-                            commentRepliesAdapter = CommentRepliesAdapter(this@DetailInsightFragment)
+                            commentRepliesAdapter =
+                                CommentRepliesAdapter(this@DetailInsightFragment)
                             commentRepliesAdapter.submitList(insight.list)
                         }
                         is DetailInsightViewModel.GetCommentReplies.Error -> {
-
-                        }
-                    }
-                }
-            }
-
-            viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-                viewModel.deleteComment.collect { insight ->
-                    Log.e("Fragment", "Collect")
-                    when (insight) {
-                        is DetailInsightViewModel.DeleteComment.Loading -> {
-
-                        }
-                        is DetailInsightViewModel.DeleteComment.Success -> {
-                            Snackbar.make(
-                                requireView(),
-                                insight.result.message,
-                                Snackbar.LENGTH_SHORT
-                            ).show()
-                        }
-                        is DetailInsightViewModel.DeleteComment.Error -> {
 
                         }
                     }
@@ -210,8 +188,9 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                 findNavController().popBackStack()
             }
             tvInsightAddComment.setOnClickListener {
-                binding.tfInsightComment.visibility = View.VISIBLE
-                binding.btnComment.visibility = View.VISIBLE
+                tfInsightComment.visibility = View.VISIBLE
+                tfInsightComment.requestFocus()
+                btnComment.visibility = View.VISIBLE
             }
             tvInsightLike.setOnClickListener {
                 viewModel.sendLikeRequest(
@@ -270,5 +249,24 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
 
     override fun onDeleteCommentClicked(item: InsightDetailResponse.MasterComment, id: Int) {
         viewModel.deleteComment(id)
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.deleteComment.collect { insight ->
+                when (insight) {
+                    is DetailInsightViewModel.DeleteComment.Loading -> {
+
+                    }
+                    is DetailInsightViewModel.DeleteComment.Success -> {
+                        Snackbar.make(
+                            requireView(),
+                            insight.result.message,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                    is DetailInsightViewModel.DeleteComment.Error -> {
+
+                    }
+                }
+            }
+        }
     }
 }

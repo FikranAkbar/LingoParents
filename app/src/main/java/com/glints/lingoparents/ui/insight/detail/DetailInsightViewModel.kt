@@ -59,7 +59,6 @@ class DetailInsightViewModel(
 
     private fun onApiCallStartedDeleteComment() = viewModelScope.launch {
         deleteCommentChannel.send(DeleteComment.Loading)
-        Log.e("ViewModel", "Loading")
     }
 
     private fun onApiCallSuccess(
