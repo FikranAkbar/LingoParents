@@ -114,6 +114,13 @@ interface APIService {
         @Path("id") id: Int
     ): Call<DeleteCommentResponse>
 
+    @FormUrlEncoded
+    @PATCH("api/v1/insights/comment/{id}")
+    fun updateComment(
+        @Path("id") id: Int,
+        @Field("comment") comment: String
+    ): Call<UpdateCommentResponse>
+
     //amin
     @GET("api/v1/courses")
     fun getCourseList(
