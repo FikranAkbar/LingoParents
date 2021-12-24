@@ -41,13 +41,21 @@ class CommentsAdapter(private val listener: OnItemClickCallback) :
 
                 tvReplyComment.setOnClickListener {
                     tfReplyComment.visibility = View.VISIBLE
+                    tfReplyComment.requestFocus()
                     btnReplyComment.visibility = View.VISIBLE
+                    "Reply".also { btnReplyComment.text = it }
+
                     btnReplyComment.setOnClickListener {
-                        listener.onReplyCommentClicked(
-                            item,
-                            tfReplyComment.editText?.text.toString()
-                        )
-                        tfReplyComment.editText?.setText("")
+                        if (TextUtils.isEmpty(tfReplyComment.editText?.text)) {
+                            tfReplyComment.requestFocus()
+                            tfReplyComment.error = "Please enter your comment"
+                        } else {
+                            listener.onReplyCommentClicked(
+                                item,
+                                tfReplyComment.editText?.text.toString()
+                            )
+                            tfReplyComment.editText?.setText("")
+                        }
                     }
                 }
 
