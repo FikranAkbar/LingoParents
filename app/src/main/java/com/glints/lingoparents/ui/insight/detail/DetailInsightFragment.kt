@@ -2,6 +2,8 @@ package com.glints.lingoparents.ui.insight.detail
 
 import android.graphics.Color
 import android.os.Bundle
+import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -83,6 +85,14 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback, C
                     }
                     is DetailInsightViewModel.InsightDetail.SuccessGetComment -> {
                         commentsAdapter.submitList(insight.list)
+                        viewModel.getParentId().observe(viewLifecycleOwner){ parentId ->
+                            Log.e("Observe", "GetComment")
+                            for (user in insight.list){
+                                if (user.id_user != parentId.toInt())
+                                    commentsAdapter.hideTextView(false)
+                                else commentsAdapter.hideTextView(true)
+                            }
+                        }
                     }
                     is DetailInsightViewModel.InsightDetail.Loading -> {
                         showLoading(true)
@@ -123,7 +133,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback, C
                     is DetailInsightViewModel.CreateComment.Success -> {
                         Snackbar.make(
                             requireView(),
-                            "Comment Created Successfully",
+                            "Add comment successfully",
                             Snackbar.LENGTH_SHORT
                         ).show()
 
@@ -264,7 +274,41 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback, C
                         ).show()
                     }
                     is DetailInsightViewModel.DeleteComment.Error -> {
+                        Snackbar.make(
+                            requireView(),
+                            insight.message,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        }
+    }
 
+    override fun onUpdateCommentClicked(
+        item: InsightDetailResponse.MasterComment,
+        comment: String,
+    ) {
+        viewModel.updateComment(item.id, comment)
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.updateComment.collect { insight ->
+                when (insight) {
+                    is DetailInsightViewModel.UpdateComment.Loading -> {
+
+                    }
+                    is DetailInsightViewModel.UpdateComment.Success -> {
+                        Snackbar.make(
+                            requireView(),
+                            insight.result.message,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                    is DetailInsightViewModel.UpdateComment.Error -> {
+                        Snackbar.make(
+                            requireView(),
+                            insight.message,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }

@@ -1,9 +1,11 @@
 package com.glints.lingoparents.ui.insight.detail.adapter
 
 import android.annotation.SuppressLint
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -13,6 +15,8 @@ import com.glints.lingoparents.databinding.ItemInsightCommentBinding
 
 class CommentsAdapter(private val listener: OnItemClickCallback) :
     RecyclerView.Adapter<CommentsAdapter.AdapterHolder>() {
+    private var _binding: ItemInsightCommentBinding? = null
+    private val binding get() = _binding
     private val dataList = ArrayList<InsightDetailResponse.MasterComment>()
     private lateinit var rvChild: RecyclerView
 
@@ -75,7 +79,27 @@ class CommentsAdapter(private val listener: OnItemClickCallback) :
                 }
 
                 tvDeleteComment.setOnClickListener {
-                    listener.onDeleteCommentClicked(item ,item.id)
+                    listener.onDeleteCommentClicked(item, item.id)
+                }
+
+                tvUpdateComment.setOnClickListener {
+                    tfReplyComment.visibility = View.VISIBLE
+                    tfReplyComment.requestFocus()
+                    btnReplyComment.visibility = View.VISIBLE
+                    "Update".also { btnReplyComment.text = it }
+
+                    btnReplyComment.setOnClickListener {
+                        if (TextUtils.isEmpty(tfReplyComment.editText?.text)) {
+                            tfReplyComment.requestFocus()
+                            tfReplyComment.error = "Please enter your comment"
+                        } else {
+                            listener.onUpdateCommentClicked(
+                                item,
+                                tfReplyComment.editText?.text.toString()
+                            )
+                            tfReplyComment.editText?.setText("")
+                        }
+                    }
                 }
             }
         }
@@ -97,13 +121,11 @@ class CommentsAdapter(private val listener: OnItemClickCallback) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdapterHolder {
-        return AdapterHolder(
-            ItemInsightCommentBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
+        _binding = ItemInsightCommentBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false)
+        return AdapterHolder(binding!!)
     }
 
     override fun onBindViewHolder(holder: AdapterHolder, position: Int) {
@@ -120,6 +142,7 @@ class CommentsAdapter(private val listener: OnItemClickCallback) :
         fun onReplyCommentClicked(item: InsightDetailResponse.MasterComment, comment: String)
         fun onShowCommentRepliesClicked(item: InsightDetailResponse.MasterComment)
         fun onDeleteCommentClicked(item: InsightDetailResponse.MasterComment, id: Int)
+        fun onUpdateCommentClicked(item: InsightDetailResponse.MasterComment, comment: String)
 
         override fun onLikeCommentClicked(item: GetCommentRepliesResponse.Message) {
             onLikeCommentClicked(item)
@@ -131,7 +154,7 @@ class CommentsAdapter(private val listener: OnItemClickCallback) :
 
         override fun onReplyCommentClicked(
             item: GetCommentRepliesResponse.Message,
-            comment: String
+            comment: String,
         ) {
             onReplyCommentClicked(item, comment)
         }
@@ -148,16 +171,10 @@ class CommentsAdapter(private val listener: OnItemClickCallback) :
         notifyDataSetChanged()
     }
 
-    fun hideTextView(binding: ItemInsightCommentBinding, b: Boolean){
-        binding.apply {
-            if (b){
-                tvDeleteComment.visibility = View.VISIBLE
-                tvUpdateComment.visibility = View.VISIBLE
-            }
-            else{
-                tvDeleteComment.visibility = View.GONE
-                tvUpdateComment.visibility = View.GONE
-            }
+    fun hideTextView(b: Boolean) {
+        binding?.apply {
+            tvDeleteComment.isVisible = b
+            tvUpdateComment.isVisible = b
         }
     }
 }
