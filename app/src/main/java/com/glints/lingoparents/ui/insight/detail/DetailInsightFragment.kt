@@ -199,12 +199,18 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback, C
                     DetailInsightViewModel.INSIGHT_TYPE
                 )
             }
+
             btnComment.setOnClickListener {
-                viewModel.createComment(
-                    viewModel.getCurrentInsightId(),
-                    DetailInsightViewModel.INSIGHT_TYPE,
-                    tfInsightComment.editText?.text.toString()
-                )
+                if (TextUtils.isEmpty(tfInsightComment.editText?.text)) {
+                    tfInsightComment.requestFocus()
+                    tfInsightComment.error = "Please enter your comment"
+                } else {
+                    viewModel.createComment(
+                        viewModel.getCurrentInsightId(),
+                        DetailInsightViewModel.INSIGHT_TYPE,
+                        tfInsightComment.editText?.text.toString()
+                    )
+                }
             }
         }
 
