@@ -118,14 +118,23 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     }
                     is LoginViewModel.LoginEvent.Error -> {
                         showLoading(false)
-                        event.message.let {
-                            if (it.contains("email", ignoreCase = true)) {
-                                AuthFormValidator.showFieldError(binding.tilEmail, it)
-                            } else if (it.contains("password", ignoreCase = true)) {
-                                AuthFormValidator.showFieldError(binding.tilPassword, it)
+                        event.message.let { message ->
+                            when {
+                                message.contains("email", ignoreCase = true) -> {
+                                    AuthFormValidator.showFieldError(binding.tilEmail, message)
+                                }
+                                message.contains("password", ignoreCase = true) -> {
+                                    AuthFormValidator.showFieldError(binding.tilPassword, message)
+                                }
+                                else -> {
+                                    event.idToken?.let { idToken ->
+                                        println("SEND ID TOKEN: $idToken")
+                                        val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment(idToken)
+                                        findNavController().navigate(action)
+                                    }
+                                }
                             }
                         }
-
                     }
                     is LoginViewModel.LoginEvent.NavigateToForgotPassword -> {
                         val action =

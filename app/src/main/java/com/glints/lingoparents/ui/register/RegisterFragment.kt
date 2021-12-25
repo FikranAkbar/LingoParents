@@ -9,21 +9,36 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentRegisterBinding
+import com.glints.lingoparents.ui.progress.learning.ProgressLearningCourseViewModel
 import com.glints.lingoparents.utils.AuthFormValidator
+import com.glints.lingoparents.utils.CustomViewModelFactory
+import com.glints.lingoparents.utils.TokenPreferences
+import com.glints.lingoparents.utils.dataStore
 import kotlinx.coroutines.flow.collect
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: RegisterViewModel by viewModels()
+
+    private lateinit var tokenPreferences: TokenPreferences
+    private lateinit var viewModel: RegisterViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _binding = FragmentRegisterBinding.bind(view)
+
+        tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
+        viewModel = ViewModelProvider(this, CustomViewModelFactory(
+            tokenPreferences, this,
+            googleIdToken = arguments?.getString(RegisterViewModel.GOOGLE_ID_TOKEN_KEY)
+        ))[
+                RegisterViewModel::class.java
+        ]
 
         binding.apply {
             mbtnLogin.setOnClickListener {
@@ -38,6 +53,9 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                     phone = tilPhone.editText?.text.toString()
                 )
             }
+            tilFirstName.editText?.setText(viewModel.googleFirstName)
+            tilLastName.editText?.setText(viewModel.googleLastName)
+            tilEmail.editText?.setText(viewModel.googleEmail)
         }
 
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner,

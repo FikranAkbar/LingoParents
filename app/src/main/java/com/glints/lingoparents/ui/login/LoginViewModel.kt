@@ -58,8 +58,8 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
         loginEventChannel.send(LoginEvent.Success(result))
     }
 
-    private fun onApiCallError(message: String) = viewModelScope.launch {
-        loginEventChannel.send(LoginEvent.Error(message))
+    private fun onApiCallError(message: String, idToken: String? = null) = viewModelScope.launch {
+        loginEventChannel.send(LoginEvent.Error(message, idToken))
     }
 
     private fun showSnackBarMessage(message: String) = viewModelScope.launch {
@@ -132,7 +132,7 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
                         saveUserId(userId)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
-                        onApiCallError(apiError.message())
+                        onApiCallError(apiError.message(), idToken)
                     }
                 }
 
@@ -151,7 +151,7 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
         data class LoginWithGoogleFailure(val errorMessage: String) : LoginEvent()
         object Loading : LoginEvent()
         data class Success(val result: String) : LoginEvent()
-        data class Error(val message: String) : LoginEvent()
+        data class Error(val message: String, val idToken: String?) : LoginEvent()
         data class ShowSnackBarMessage(val message: String) : LoginEvent()
     }
 }

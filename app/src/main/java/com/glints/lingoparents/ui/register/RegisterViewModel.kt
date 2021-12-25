@@ -6,6 +6,8 @@ import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.model.response.RegisterUserResponse
 import com.glints.lingoparents.ui.REGISTER_USER_RESULT_OK
 import com.glints.lingoparents.utils.ErrorUtils
+import com.glints.lingoparents.utils.JWTUtils
+import com.google.android.gms.auth.api.credentials.IdToken
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -13,7 +15,38 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RegisterViewModel : ViewModel() {
+class RegisterViewModel(
+    private val googleIdToken: String? = null
+) : ViewModel() {
+    companion object {
+        const val GOOGLE_ID_TOKEN_KEY = "idToken"
+    }
+
+    val googleFirstName: String
+    val googleLastName: String
+    val googleEmail: String
+
+    init {
+        if (googleIdToken != null && googleIdToken.isNotEmpty()) {
+            println("Google Id Token: $googleIdToken")
+            val data = JWTUtils.getDataFromGoogleIdToken(googleIdToken)
+            data.apply {
+                googleFirstName = given_name
+                googleLastName = family_name
+                googleEmail = email
+            }
+        }
+        else {
+            googleFirstName = ""
+            googleLastName = ""
+            googleEmail = ""
+        }
+
+        println("Google First Name: $googleFirstName")
+        println("Google Last Name: $googleLastName")
+        println("Google Email: $googleEmail")
+    }
+
     private val registerEventChannel = Channel<RegisterEvent>()
     val registerEvent = registerEventChannel.receiveAsFlow()
 
@@ -96,7 +129,6 @@ class RegisterViewModel : ViewModel() {
             val phone: String,
             val role: String = "parent"
         ) : RegisterEvent()
-
         object Loading : RegisterEvent()
         object Success : RegisterEvent()
         data class Error(val message: String) : RegisterEvent()
