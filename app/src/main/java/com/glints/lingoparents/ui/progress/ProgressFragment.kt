@@ -28,6 +28,7 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
             R.string.tab_progress_text_1,
             R.string.tab_progress_text_2
         )
+        private const val SELECTED_SPINNER_ITEM = "selected_spinner_item"
     }
 
     private var _binding: FragmentProgressBinding? = null
@@ -119,6 +120,7 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
         val nameList = map.keys.toList()
         val arrayAdapter = ArrayAdapter(requireContext(), R.layout.item_student, nameList)
         spinner.adapter = arrayAdapter
+        spinner.setSelection(viewModel.lastSelectedSpinnerItem)
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -129,6 +131,7 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
                 val selectedItem = parent?.getItemAtPosition(position) as String
                 Log.d("MAP:", map.toString())
                 Log.d("SELECTEDITEM:", selectedItem)
+                viewModel.lastSelectedSpinnerItem = position
                 if (selectedItem != "No Students") {
                     val studentId = map[selectedItem]!!
                     viewModel.saveSelectedStudentId(studentId)
@@ -149,7 +152,6 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
             override fun onNothingSelected(p0: AdapterView<*>?) {
 
             }
-
         }
     }
 
@@ -160,8 +162,16 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
         spinner.isClickable = false
     }
 
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+
+        binding.spStudents.setSelection(viewModel.lastSelectedSpinnerItem)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+        println("Apakah hancur ?")
     }
 }
