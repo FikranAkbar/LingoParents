@@ -1,29 +1,32 @@
 package com.glints.lingoparents.ui.insight.detail.adapter
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import coil.load
 import com.glints.lingoparents.data.model.response.GetCommentRepliesResponse
 import com.glints.lingoparents.databinding.ItemInsightCommentBinding
 
-class CommentRepliesAdapter(private val listener: OnItemClickCallback) :
-    RecyclerView.Adapter<CommentRepliesAdapter.AdapterHolder>() {
+open class CommentRepliesAdapter(private val listener: OnItemClickCallback) :
+    RecyclerView.Adapter<CommentRepliesAdapter.ChildAdapterHolder>() {
     private val dataList = ArrayList<GetCommentRepliesResponse.Message>()
 
-    inner class AdapterHolder(private val binding: ItemInsightCommentBinding) :
+    inner class ChildAdapterHolder(private val binding: ItemInsightCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: GetCommentRepliesResponse.Message, holder: AdapterHolder) {
+        @SuppressLint("SetTextI18n")
+        private fun initBinding(
+            item: GetCommentRepliesResponse.Message,
+            binding: ItemInsightCommentBinding
+        ) {
             binding.apply {
                 val firstname: String = item.Master_user.Master_parent.firstname
                 val lastname: String = item.Master_user.Master_parent.lastname
-                val totalReplies = item.replies
 
-                Glide.with(holder.itemView.context).load(item.Master_user.Master_parent.photo)
-                    .into(ivComment)
+                ivComment.load(item.Master_user.Master_parent.photo)
                 "$firstname $lastname".also { tvUsernameComment.text = it }
                 tvCommentBody.text = item.comment
                 tvLikeComment.text = item.total_like.toString()
@@ -48,34 +51,46 @@ class CommentRepliesAdapter(private val listener: OnItemClickCallback) :
                     }
                 }
 
-                when {
-                    totalReplies > 1 -> "Show $totalReplies replies".also {
-                        tvShowReplyComment.text = it
-                    }
-                    totalReplies == 1 -> "Show $totalReplies reply".also {
-                        tvShowReplyComment.text = it
-                    }
-                    else -> tvShowReplyComment.visibility = View.GONE
-                }
+                if (item.replies > 0) createNestedComment(binding, item)
+            }
+        }
 
+        fun bind(item: GetCommentRepliesResponse.Message) = initBinding(item, binding)
+
+        @SuppressLint("SetTextI18n")
+        private fun createNestedComment(
+            binding: ItemInsightCommentBinding,
+            item: GetCommentRepliesResponse.Message
+        ) {
+            binding.apply {
+                if (item.replies > 0) tvShowReplyComment.visibility = View.VISIBLE
+                tvShowReplyComment.text = "Show ${item.replies} Replies"
                 tvShowReplyComment.setOnClickListener {
-                    val commentRepliesAdapter = CommentRepliesAdapter(listener)
-                    rvCommentReply.apply {
-                        setHasFixedSize(true)
-                        layoutManager = LinearLayoutManager(rvCommentReply.context)
-                        adapter = commentRepliesAdapter
+                    if (llReplies.visibility == View.GONE) {
+                        llReplies.isVisible = true
+                        tvShowReplyComment.text = "Hide Replies"
+                        val newBinding = ItemInsightCommentBinding.inflate(
+                            LayoutInflater.from(binding.root.context)
+                        )
+                        initBinding(item, newBinding)
+                        llReplies.addView(newBinding.root)
+                        listener.onShowCommentRepliesClicked(item)
+                    } else {
+                        tvShowReplyComment.text = "Show ${item.replies} Replies"
+                        llReplies.removeAllViews()
+                        llReplies.isVisible = false
                     }
-                    listener.onShowCommentRepliesClicked(item)
                 }
             }
+            return
         }
     }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): CommentRepliesAdapter.AdapterHolder {
-        return AdapterHolder(
+    ): CommentRepliesAdapter.ChildAdapterHolder {
+        return ChildAdapterHolder(
             ItemInsightCommentBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -84,8 +99,8 @@ class CommentRepliesAdapter(private val listener: OnItemClickCallback) :
         )
     }
 
-    override fun onBindViewHolder(holder: CommentRepliesAdapter.AdapterHolder, position: Int) {
-        holder.bind(dataList[position], holder)
+    override fun onBindViewHolder(holder: CommentRepliesAdapter.ChildAdapterHolder, position: Int) {
+        holder.bind(dataList[position])
     }
 
     override fun getItemCount(): Int = dataList.size
