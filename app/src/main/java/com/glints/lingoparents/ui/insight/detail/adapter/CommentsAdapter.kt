@@ -7,17 +7,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.glints.lingoparents.data.model.response.GetCommentRepliesResponse
 import com.glints.lingoparents.data.model.response.InsightDetailResponse
 import com.glints.lingoparents.databinding.ItemInsightCommentBinding
-import java.util.*
 
 class CommentsAdapter(private val listener: OnItemClickCallback) :
     RecyclerView.Adapter<CommentsAdapter.AdapterHolder>() {
     private val dataList = ArrayList<InsightDetailResponse.MasterComment>()
+    private lateinit var rvChild: RecyclerView
 
     inner class AdapterHolder(private val binding: ItemInsightCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(item: InsightDetailResponse.MasterComment, holder: AdapterHolder) {
             binding.apply {
                 val firstname: String = item.Master_user.Master_parent.firstname
@@ -51,27 +51,35 @@ class CommentsAdapter(private val listener: OnItemClickCallback) :
                     }
                 }
 
-                when {
-                    totalReplies > 1 -> "Show $totalReplies replies".also {
-                        tvShowReplyComment.text = it
-                    }
-                    totalReplies == 1 -> "Show $totalReplies reply".also {
-                        tvShowReplyComment.text = it
-                    }
-                    else -> tvShowReplyComment.visibility = View.GONE
-                }
-
+                if (item.replies > 0) tvShowReplyComment.visibility = View.VISIBLE
+                tvShowReplyComment.text = "Show $totalReplies Replies"
                 tvShowReplyComment.setOnClickListener {
-                    val commentRepliesAdapter = CommentRepliesAdapter(listener)
-                    rvCommentReply.apply {
-                        visibility = View.VISIBLE
-                        setHasFixedSize(true)
-                        layoutManager = LinearLayoutManager(rvCommentReply.context)
-                        adapter = commentRepliesAdapter
+                    if (rvCommentReply.visibility == View.GONE) {
+                        rvCommentReply.visibility = View.VISIBLE
+                        tvShowReplyComment.text = "Hide Replies"
+                        rvChild = rvCommentReply
+                        listener.onShowCommentRepliesClicked(item)
+                    } else if (rvCommentReply.visibility == View.VISIBLE) {
+                        rvCommentReply.visibility = View.GONE
+                        tvShowReplyComment.text = "Show $totalReplies Replies"
                     }
-                    listener.onShowCommentRepliesClicked(item)
                 }
             }
+        }
+    }
+
+    fun showCommentReplies(_adapter: CommentRepliesAdapter) {
+        rvChild.apply {
+            visibility = View.VISIBLE
+            setHasFixedSize(true)
+
+            val linearLayoutManager = object : LinearLayoutManager(context) {
+                override fun canScrollVertically(): Boolean {
+                    return false
+                }
+            }
+            layoutManager = linearLayoutManager
+            adapter = _adapter
         }
     }
 
@@ -98,24 +106,6 @@ class CommentsAdapter(private val listener: OnItemClickCallback) :
         fun onDislikeCommentClicked(item: InsightDetailResponse.MasterComment)
         fun onReplyCommentClicked(item: InsightDetailResponse.MasterComment, comment: String)
         fun onShowCommentRepliesClicked(item: InsightDetailResponse.MasterComment)
-        override fun onLikeCommentClicked(item: GetCommentRepliesResponse.Message) {
-            onLikeCommentClicked(item)
-        }
-
-        override fun onDislikeCommentClicked(item: GetCommentRepliesResponse.Message) {
-            onDislikeCommentClicked(item)
-        }
-
-        override fun onReplyCommentClicked(
-            item: GetCommentRepliesResponse.Message,
-            comment: String
-        ) {
-            onReplyCommentClicked(item, comment)
-        }
-
-        override fun onShowCommentRepliesClicked(item: GetCommentRepliesResponse.Message) {
-            onShowCommentRepliesClicked(item)
-        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
