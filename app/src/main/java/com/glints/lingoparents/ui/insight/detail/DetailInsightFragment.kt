@@ -23,6 +23,7 @@ import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 
 class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback, CommentRepliesAdapter.OnItemClickCallback {
@@ -65,6 +66,10 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback, C
 
         viewModel.loadInsightDetail(viewModel.getCurrentInsightId())
 
+        viewModel.getParentId().observe(viewLifecycleOwner){ parentId ->
+            commentsAdapter.submitParentId(parentId.toInt())
+        }
+        
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.insightDetail.collect { insight ->
                 when (insight) {
@@ -85,14 +90,6 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback, C
                     }
                     is DetailInsightViewModel.InsightDetail.SuccessGetComment -> {
                         commentsAdapter.submitList(insight.list)
-                        viewModel.getParentId().observe(viewLifecycleOwner){ parentId ->
-                            Log.e("Observe", "GetComment")
-                            for (user in insight.list){
-                                if (user.id_user != parentId.toInt())
-                                    commentsAdapter.hideTextView(false)
-                                else commentsAdapter.hideTextView(true)
-                            }
-                        }
                     }
                     is DetailInsightViewModel.InsightDetail.Loading -> {
                         showLoading(true)
