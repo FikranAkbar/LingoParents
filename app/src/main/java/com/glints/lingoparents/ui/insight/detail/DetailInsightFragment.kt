@@ -12,18 +12,22 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
+import com.glints.lingoparents.data.model.response.GetCommentRepliesResponse
 import com.glints.lingoparents.data.model.response.InsightDetailResponse
 import com.glints.lingoparents.databinding.FragmentDetailInsightBinding
+import com.glints.lingoparents.ui.insight.detail.adapter.CommentRepliesAdapter
+import com.glints.lingoparents.ui.insight.detail.adapter.CommentsAdapter
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 
-class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
+class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback, CommentRepliesAdapter.OnItemClickCallback {
     private lateinit var binding: FragmentDetailInsightBinding
     private lateinit var viewModel: DetailInsightViewModel
     private lateinit var commentsAdapter: CommentsAdapter
+    private lateinit var commentRepliesAdapter: CommentRepliesAdapter
     private lateinit var tokenPreferences: TokenPreferences
 
     override fun onCreateView(
@@ -139,6 +143,26 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                 }
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.getCommentReplies.collect { insight ->
+                when (insight) {
+                    is DetailInsightViewModel.GetCommentReplies.Loading -> {
+                    }
+                    is DetailInsightViewModel.GetCommentReplies.Success -> {
+                        commentRepliesAdapter = CommentRepliesAdapter(this@DetailInsightFragment)
+                        commentRepliesAdapter.submitList(insight.list)
+                        commentsAdapter.showCommentReplies(commentRepliesAdapter)
+                    }
+                    is DetailInsightViewModel.GetCommentReplies.Error -> {
+                        Snackbar.make(requireView(), insight.message, Snackbar.LENGTH_LONG)
+                            .setBackgroundTint(Color.parseColor("#FF0000"))
+                            .setTextColor(Color.parseColor("#FFFFFF"))
+                            .show()
+                    }
+                }
+            }
+        }
     }
 
     private fun showLoading(b: Boolean) {
@@ -211,5 +235,35 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
             DetailInsightViewModel.COMMENT_TYPE,
             comment
         )
+    }
+
+    override fun onShowCommentRepliesClicked(item: InsightDetailResponse.MasterComment) {
+        viewModel.getCommentReplies(item.id)
+    }
+
+    override fun onLikeCommentClicked(item: GetCommentRepliesResponse.Message) {
+        viewModel.sendLikeRequest(
+            item.id,
+            DetailInsightViewModel.COMMENT_TYPE
+        )
+    }
+
+    override fun onDislikeCommentClicked(item: GetCommentRepliesResponse.Message) {
+        viewModel.sendDislikeRequest(
+            item.id,
+            DetailInsightViewModel.COMMENT_TYPE
+        )
+    }
+
+    override fun onReplyCommentClicked(item: GetCommentRepliesResponse.Message, comment: String) {
+        viewModel.createComment(
+            item.id,
+            DetailInsightViewModel.COMMENT_TYPE,
+            comment
+        )
+    }
+
+    override fun onShowCommentRepliesClicked(item: GetCommentRepliesResponse.Message) {
+        viewModel.getCommentReplies(item.id)
     }
 }

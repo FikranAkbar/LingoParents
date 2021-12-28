@@ -1,27 +1,32 @@
-package com.glints.lingoparents.ui.insight.detail
+package com.glints.lingoparents.ui.insight.detail.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.glints.lingoparents.R
 import com.glints.lingoparents.data.model.response.InsightDetailResponse
 import com.glints.lingoparents.databinding.ItemInsightCommentBinding
-import java.util.*
 
 class CommentsAdapter(private val listener: OnItemClickCallback) :
     RecyclerView.Adapter<CommentsAdapter.AdapterHolder>() {
     private val dataList = ArrayList<InsightDetailResponse.MasterComment>()
+    private lateinit var rvChild: RecyclerView
 
     inner class AdapterHolder(private val binding: ItemInsightCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(item: InsightDetailResponse.MasterComment, holder: AdapterHolder) {
             binding.apply {
-                Glide.with(holder.itemView.context).load(R.drawable.ic_user_avatar_female)
+                val firstname: String = item.Master_user.Master_parent.firstname
+                val lastname: String = item.Master_user.Master_parent.lastname
+                val totalReplies = item.replies
+
+                Glide.with(holder.itemView.context).load(item.Master_user.Master_parent.photo)
                     .into(ivComment)
-                tvUsernameComment.text = item.commentable_type
+                "$firstname $lastname".also { tvUsernameComment.text = it }
                 tvCommentBody.text = item.comment
                 tvLikeComment.text = item.total_like.toString()
                 tvDislikeComment.text = item.total_dislike.toString()
@@ -45,7 +50,36 @@ class CommentsAdapter(private val listener: OnItemClickCallback) :
                         tfReplyComment.editText?.setText("")
                     }
                 }
+
+                if (item.replies > 0) tvShowReplyComment.visibility = View.VISIBLE
+                tvShowReplyComment.text = "Show $totalReplies Replies"
+                tvShowReplyComment.setOnClickListener {
+                    if (rvCommentReply.visibility == View.GONE) {
+                        rvCommentReply.visibility = View.VISIBLE
+                        tvShowReplyComment.text = "Hide Replies"
+                        rvChild = rvCommentReply
+                        listener.onShowCommentRepliesClicked(item)
+                    } else if (rvCommentReply.visibility == View.VISIBLE) {
+                        rvCommentReply.visibility = View.GONE
+                        tvShowReplyComment.text = "Show $totalReplies Replies"
+                    }
+                }
             }
+        }
+    }
+
+    fun showCommentReplies(_adapter: CommentRepliesAdapter) {
+        rvChild.apply {
+            visibility = View.VISIBLE
+            setHasFixedSize(true)
+
+            val linearLayoutManager = object : LinearLayoutManager(context) {
+                override fun canScrollVertically(): Boolean {
+                    return false
+                }
+            }
+            layoutManager = linearLayoutManager
+            adapter = _adapter
         }
     }
 
@@ -67,10 +101,11 @@ class CommentsAdapter(private val listener: OnItemClickCallback) :
         return dataList.size
     }
 
-    interface OnItemClickCallback {
+    interface OnItemClickCallback : CommentRepliesAdapter.OnItemClickCallback {
         fun onLikeCommentClicked(item: InsightDetailResponse.MasterComment)
         fun onDislikeCommentClicked(item: InsightDetailResponse.MasterComment)
         fun onReplyCommentClicked(item: InsightDetailResponse.MasterComment, comment: String)
+        fun onShowCommentRepliesClicked(item: InsightDetailResponse.MasterComment)
     }
 
     @SuppressLint("NotifyDataSetChanged")
