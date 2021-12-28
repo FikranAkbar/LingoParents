@@ -2,6 +2,7 @@ package com.glints.lingoparents.ui.insight.detail.adapter
 
 import android.annotation.SuppressLint
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,18 +13,24 @@ import com.bumptech.glide.Glide
 import com.glints.lingoparents.data.model.response.GetCommentRepliesResponse
 import com.glints.lingoparents.data.model.response.InsightDetailResponse
 import com.glints.lingoparents.databinding.ItemInsightCommentBinding
+import java.lang.NullPointerException
 import java.util.*
 
 class CommentsAdapter(private val listener: OnItemClickCallback) :
     RecyclerView.Adapter<CommentsAdapter.AdapterHolder>() {
     private var _binding: ItemInsightCommentBinding? = null
-    private val binding get() = _binding
+    private val binding get() = _binding!!
     private val dataList = ArrayList<InsightDetailResponse.MasterComment>()
+    private var parentId: Int = 0
 
     inner class AdapterHolder(private val binding: ItemInsightCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: InsightDetailResponse.MasterComment, holder: AdapterHolder) {
             binding.apply {
+                if (parentId == item.id_user)
+                    hideTextView(true)
+                else hideTextView(false)
+
                 val firstname: String = item.Master_user.Master_parent.firstname
                 val lastname: String = item.Master_user.Master_parent.lastname
                 val totalReplies = item.replies
@@ -116,7 +123,7 @@ class CommentsAdapter(private val listener: OnItemClickCallback) :
             LayoutInflater.from(parent.context),
             parent,
             false)
-        return AdapterHolder(binding!!)
+        return AdapterHolder(binding)
     }
 
     override fun onBindViewHolder(holder: AdapterHolder, position: Int) {
@@ -162,10 +169,25 @@ class CommentsAdapter(private val listener: OnItemClickCallback) :
         notifyDataSetChanged()
     }
 
+    fun submitParentId(id: Int) {
+        parentId = id
+    }
+
     fun hideTextView(b: Boolean) {
-        binding?.apply {
+        Log.d("TESTNAME", binding.tvUsernameComment.text.toString())
+        binding.apply {
             tvDeleteComment.isVisible = b
             tvUpdateComment.isVisible = b
         }
+        /*
+        try {
+            binding.apply {
+                tvDeleteComment.isVisible = b
+                tvUpdateComment.isVisible = b
+            }
+        } catch (e: Exception) {
+            Log.e("TEST", e.toString())
+        }
+         */
     }
 }
