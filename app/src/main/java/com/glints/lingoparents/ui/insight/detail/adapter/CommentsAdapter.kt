@@ -9,7 +9,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.glints.lingoparents.data.model.response.GetCommentRepliesResponse
 import com.glints.lingoparents.data.model.response.InsightDetailResponse
 import com.glints.lingoparents.databinding.ItemInsightCommentBinding
 import java.util.*
@@ -154,25 +153,6 @@ class CommentsAdapter(private val listener: OnItemClickCallback) :
         fun onShowCommentRepliesClicked(item: InsightDetailResponse.MasterComment)
         fun onDeleteCommentClicked(item: InsightDetailResponse.MasterComment, id: Int)
         fun onUpdateCommentClicked(item: InsightDetailResponse.MasterComment, comment: String)
-
-        override fun onLikeCommentClicked(item: GetCommentRepliesResponse.Message) {
-            onLikeCommentClicked(item)
-        }
-
-        override fun onDislikeCommentClicked(item: GetCommentRepliesResponse.Message) {
-            onDislikeCommentClicked(item)
-        }
-
-        override fun onReplyCommentClicked(
-            item: GetCommentRepliesResponse.Message,
-            comment: String,
-        ) {
-            onReplyCommentClicked(item, comment)
-        }
-
-        override fun onShowCommentRepliesClicked(item: GetCommentRepliesResponse.Message) {
-            onShowCommentRepliesClicked(item)
-        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
