@@ -3,7 +3,6 @@ package com.glints.lingoparents.ui.insight.detail
 import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -65,10 +64,10 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
 
         viewModel.loadInsightDetail(viewModel.getCurrentInsightId())
 
-        viewModel.getParentId().observe(viewLifecycleOwner){ parentId ->
+        viewModel.getParentId().observe(viewLifecycleOwner) { parentId ->
             commentsAdapter.submitParentId(parentId.toInt())
         }
-        
+
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.insightDetail.collect { insight ->
                 when (insight) {

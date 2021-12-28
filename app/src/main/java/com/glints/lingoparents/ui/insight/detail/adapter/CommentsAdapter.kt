@@ -2,7 +2,6 @@ package com.glints.lingoparents.ui.insight.detail.adapter
 
 import android.annotation.SuppressLint
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +12,10 @@ import com.bumptech.glide.Glide
 import com.glints.lingoparents.data.model.response.GetCommentRepliesResponse
 import com.glints.lingoparents.data.model.response.InsightDetailResponse
 import com.glints.lingoparents.databinding.ItemInsightCommentBinding
-import java.lang.NullPointerException
 import java.util.*
 
 class CommentsAdapter(private val listener: OnItemClickCallback) :
     RecyclerView.Adapter<CommentsAdapter.AdapterHolder>() {
-    private var _binding: ItemInsightCommentBinding? = null
-    private val binding get() = _binding!!
     private val dataList = ArrayList<InsightDetailResponse.MasterComment>()
     private var parentId: Int = 0
 
@@ -116,14 +112,21 @@ class CommentsAdapter(private val listener: OnItemClickCallback) :
                 }
             }
         }
+
+        private fun hideTextView(b: Boolean) {
+            binding.apply {
+                tvDeleteComment.isVisible = b
+                tvUpdateComment.isVisible = b
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdapterHolder {
-        _binding = ItemInsightCommentBinding.inflate(
+        return AdapterHolder(ItemInsightCommentBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false)
-        return AdapterHolder(binding)
+        )
     }
 
     override fun onBindViewHolder(holder: AdapterHolder, position: Int) {
@@ -171,23 +174,5 @@ class CommentsAdapter(private val listener: OnItemClickCallback) :
 
     fun submitParentId(id: Int) {
         parentId = id
-    }
-
-    fun hideTextView(b: Boolean) {
-        Log.d("TESTNAME", binding.tvUsernameComment.text.toString())
-        binding.apply {
-            tvDeleteComment.isVisible = b
-            tvUpdateComment.isVisible = b
-        }
-        /*
-        try {
-            binding.apply {
-                tvDeleteComment.isVisible = b
-                tvUpdateComment.isVisible = b
-            }
-        } catch (e: Exception) {
-            Log.e("TEST", e.toString())
-        }
-         */
     }
 }
