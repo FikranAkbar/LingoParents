@@ -1,5 +1,6 @@
 package com.glints.lingoparents.ui.login
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
@@ -96,6 +97,7 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
                         val accessToken = response.body()?.data?.accessToken.toString()
                         val refreshToken = response.body()?.data?.refreshToken.toString()
                         val userId = JWTUtils.getIdFromAccessToken(accessToken)
+                        Log.d("TESTTOKEN", "ini accessToken $accessToken dan ini refreshToken $refreshToken")
                         saveToken(accessToken, refreshToken)
                         saveEmail(email)
                         saveUserId(userId)

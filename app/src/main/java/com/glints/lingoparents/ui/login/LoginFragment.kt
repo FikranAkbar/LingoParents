@@ -128,7 +128,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                                 }
                                 else -> {
                                     event.idToken?.let { idToken ->
-                                        println("SEND ID TOKEN: $idToken")
                                         val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment(idToken)
                                         findNavController().navigate(action)
                                     }

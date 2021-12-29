@@ -29,11 +29,13 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
             R.string.tab_progress_text_2
         )
         private const val SELECTED_SPINNER_ITEM = "selected_spinner_item"
+        private const val SELECTED_CHILDREN_FROM_HOME = "children_name"
     }
 
     private var _binding: FragmentProgressBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var selectedChildrenNameFromHome: String
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var viewModel: ProgressViewModel
 
@@ -45,6 +47,9 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
         viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this))[
                 ProgressViewModel::class.java
         ]
+
+        selectedChildrenNameFromHome = arguments?.getString(SELECTED_CHILDREN_FROM_HOME) ?: ""
+        arguments?.clear()
 
         viewModel.getParentId().observe(viewLifecycleOwner) { parentId ->
             viewModel.getStudentListByParentId(parentId)
@@ -120,7 +125,14 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
         val nameList = map.keys.toList()
         val arrayAdapter = ArrayAdapter(requireContext(), R.layout.item_student, nameList)
         spinner.adapter = arrayAdapter
-        spinner.setSelection(viewModel.lastSelectedSpinnerItem)
+        if (selectedChildrenNameFromHome.isNotBlank()) {
+            val childrenIndex = nameList.indexOf(selectedChildrenNameFromHome)
+            spinner.setSelection(childrenIndex)
+            selectedChildrenNameFromHome = ""
+        }
+        else {
+            spinner.setSelection(viewModel.lastSelectedSpinnerItem)
+        }
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
