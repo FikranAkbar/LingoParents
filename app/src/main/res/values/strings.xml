@@ -178,4 +178,6 @@
     <string name="dummy_date">12-12-2021</string>
     <string name="language">Language</string>
     <string name="show_replies">Show Replies</string>
+    <string name="delete">Delete</string>
+    <string name="update">Update</string>
 </resources>

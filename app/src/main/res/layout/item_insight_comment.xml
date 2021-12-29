@@ -50,6 +50,26 @@
         app:drawableStartCompat="@drawable/ic_insight_dislike" />
 
     <TextView
+        android:id="@+id/tv_update_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_comment_body"
+        android:layout_marginHorizontal="4dp"
+        android:layout_toStartOf="@id/tv_delete_comment"
+        android:text="@string/update"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_delete_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_comment_body"
+        android:layout_marginHorizontal="4dp"
+        android:layout_toStartOf="@id/tv_reply_comment"
+        android:text="@string/delete"
+        android:textStyle="bold" />
+
+    <TextView
         android:id="@+id/tv_reply_comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

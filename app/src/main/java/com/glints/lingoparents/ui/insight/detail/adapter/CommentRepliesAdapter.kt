@@ -1,7 +1,7 @@
 package com.glints.lingoparents.ui.insight.detail.adapter
 
 import android.annotation.SuppressLint
-import android.util.Log
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +20,7 @@ open class CommentRepliesAdapter(private val listener: OnItemClickCallback) :
         @SuppressLint("SetTextI18n")
         private fun initBinding(
             item: GetCommentRepliesResponse.Message,
-            binding: ItemInsightCommentBinding
+            binding: ItemInsightCommentBinding,
         ) {
             binding.apply {
                 val firstname: String = item.Master_user.Master_parent.firstname
@@ -51,6 +51,30 @@ open class CommentRepliesAdapter(private val listener: OnItemClickCallback) :
                     }
                 }
 
+                tvDeleteComment.setOnClickListener {
+                    listener.onDeleteCommentClicked(item, item.id)
+                }
+
+                tvUpdateComment.setOnClickListener {
+                    tfReplyComment.visibility = View.VISIBLE
+                    tfReplyComment.requestFocus()
+                    btnReplyComment.visibility = View.VISIBLE
+                    "Update".also { btnReplyComment.text = it }
+
+                    btnReplyComment.setOnClickListener {
+                        if (TextUtils.isEmpty(tfReplyComment.editText?.text)) {
+                            tfReplyComment.requestFocus()
+                            tfReplyComment.error = "Please enter your comment"
+                        } else {
+                            listener.onUpdateCommentClicked(
+                                item,
+                                tfReplyComment.editText?.text.toString()
+                            )
+                            tfReplyComment.editText?.setText("")
+                        }
+                    }
+                }
+
                 if (item.replies > 0) createNestedComment(binding, item)
             }
         }
@@ -60,7 +84,7 @@ open class CommentRepliesAdapter(private val listener: OnItemClickCallback) :
         @SuppressLint("SetTextI18n")
         private fun createNestedComment(
             binding: ItemInsightCommentBinding,
-            item: GetCommentRepliesResponse.Message
+            item: GetCommentRepliesResponse.Message,
         ) {
             binding.apply {
                 if (item.replies > 0) tvShowReplyComment.visibility = View.VISIBLE
@@ -88,7 +112,7 @@ open class CommentRepliesAdapter(private val listener: OnItemClickCallback) :
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
-        viewType: Int
+        viewType: Int,
     ): CommentRepliesAdapter.ChildAdapterHolder {
         return ChildAdapterHolder(
             ItemInsightCommentBinding.inflate(
@@ -110,6 +134,8 @@ open class CommentRepliesAdapter(private val listener: OnItemClickCallback) :
         fun onDislikeCommentClicked(item: GetCommentRepliesResponse.Message)
         fun onReplyCommentClicked(item: GetCommentRepliesResponse.Message, comment: String)
         fun onShowCommentRepliesClicked(item: GetCommentRepliesResponse.Message)
+        fun onDeleteCommentClicked(item: GetCommentRepliesResponse.Message, id: Int)
+        fun onUpdateCommentClicked(item: GetCommentRepliesResponse.Message, comment: String)
     }
 
     @SuppressLint("NotifyDataSetChanged")
