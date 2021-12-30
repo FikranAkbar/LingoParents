@@ -28,6 +28,9 @@ class DetailInsightViewModel(
     private val insightDetailChannel = Channel<InsightDetail>()
     val insightDetail = insightDetailChannel.receiveAsFlow()
 
+    private val reportInsightChannel = Channel<ReportInsight>()
+    val reportInsight = reportInsightChannel.receiveAsFlow()
+
     private val likeDislikeInsightChannel = Channel<LikeDislikeInsight>()
     val likeDislikeInsight = likeDislikeInsightChannel.receiveAsFlow()
 
@@ -45,6 +48,10 @@ class DetailInsightViewModel(
 
     private fun onApiCallStarted() = viewModelScope.launch {
         insightDetailChannel.send(InsightDetail.Loading)
+    }
+
+    private fun onApiCallStartedReport() = viewModelScope.launch {
+        reportInsightChannel.send(ReportInsight.Loading)
     }
 
     private fun onApiCallStartedLikeDislike() = viewModelScope.launch {
@@ -75,6 +82,10 @@ class DetailInsightViewModel(
         insightDetailChannel.send(InsightDetail.SuccessGetComment(list))
     }
 
+    private fun onApiCallSuccessReport(result: ReportResponse) = viewModelScope.launch {
+        reportInsightChannel.send(ReportInsight.Success(result))
+    }
+
     private fun onApiCallSuccessLikeDislike(result: InsightLikeDislikeResponse) =
         viewModelScope.launch {
             likeDislikeInsightChannel.send(LikeDislikeInsight.Success(result))
@@ -102,6 +113,10 @@ class DetailInsightViewModel(
 
     private fun onApiCallError(message: String) = viewModelScope.launch {
         insightDetailChannel.send(InsightDetail.Error(message))
+    }
+
+    private fun onApiCallErrorReport(message: String) = viewModelScope.launch {
+        reportInsightChannel.send(ReportInsight.Error(message))
     }
 
     private fun onApiCallErrorLikeDislike(message: String) = viewModelScope.launch {
@@ -148,6 +163,30 @@ class DetailInsightViewModel(
                 }
 
                 override fun onFailure(call: Call<InsightDetailResponse>, t: Throwable) {
+                    onApiCallError("Network Failed...")
+                }
+            })
+    }
+
+    fun reportInsight(id: String, type: String, report_comment: String) = viewModelScope.launch {
+        onApiCallStartedReport()
+        APIClient
+            .service
+            .reportInsight(mapOf("id" to id, "type" to type), report_comment)
+            .enqueue(object : Callback<ReportResponse> {
+                override fun onResponse(
+                    call: Call<ReportResponse>,
+                    response: Response<ReportResponse>,
+                ) {
+                    if (response.isSuccessful) {
+                        onApiCallSuccessReport(response.body()!!)
+                    } else {
+                        val apiError = ErrorUtils.parseError(response)
+                        onApiCallErrorReport(apiError.message())
+                    }
+                }
+
+                override fun onFailure(call: Call<ReportResponse>, t: Throwable) {
                     onApiCallError("Network Failed...")
                 }
             })
@@ -303,6 +342,12 @@ class DetailInsightViewModel(
     }
 
     fun getParentId() = tokenPref.getUserId().asLiveData()
+
+    sealed class ReportInsight {
+        object Loading : ReportInsight()
+        data class Success(val result: ReportResponse) : ReportInsight()
+        data class Error(val message: String) : ReportInsight()
+    }
 
     sealed class InsightDetail {
         object Loading : InsightDetail()

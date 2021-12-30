@@ -1,6 +1,8 @@
 package com.glints.lingoparents.ui.insight.detail.adapter
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.Context
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +11,13 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.glints.lingoparents.R
 import com.glints.lingoparents.data.model.response.InsightDetailResponse
 import com.glints.lingoparents.databinding.ItemInsightCommentBinding
+import com.glints.lingoparents.ui.insight.detail.DetailInsightFragment
 import java.util.*
 
-class CommentsAdapter(private val listener: OnItemClickCallback) :
+class CommentsAdapter(private val listener: OnItemClickCallback, private val context: Context) :
     RecyclerView.Adapter<CommentsAdapter.AdapterHolder>() {
     private val dataList = ArrayList<InsightDetailResponse.MasterComment>()
     private lateinit var rvChild: RecyclerView
@@ -45,6 +49,10 @@ class CommentsAdapter(private val listener: OnItemClickCallback) :
 
                 tvDislikeComment.setOnClickListener {
                     listener.onDislikeCommentClicked(item)
+                }
+
+                tvReportComment.setOnClickListener {
+                    showReportDialog(context, item, item.id)
                 }
 
                 tvReplyComment.setOnClickListener {
@@ -113,6 +121,33 @@ class CommentsAdapter(private val listener: OnItemClickCallback) :
                 tvUpdateComment.isVisible = b
             }
         }
+
+        private fun showReportDialog(
+            context: Context,
+            item: InsightDetailResponse.MasterComment,
+            id: Int,
+        ) {
+            val builder = AlertDialog.Builder(context)
+            var text = ""
+            builder.apply {
+                setCancelable(false)
+                setTitle(R.string.report)
+                setSingleChoiceItems(DetailInsightFragment.report_body, -1) { _, i ->
+                    try {
+                        text = DetailInsightFragment.report_body[i]
+                    } catch (e: IllegalArgumentException) {
+                        throw ClassCastException(e.toString())
+                    }
+                }
+                setPositiveButton(R.string.report) { _, _ ->
+                    listener.onReportCommentClicked(item, id, text)
+                }
+                setNegativeButton(R.string.cancel) { dialog, _ ->
+                    dialog.cancel()
+                }
+            }
+            builder.create().show()
+        }
     }
 
     fun showCommentReplies(_adapter: CommentRepliesAdapter) {
@@ -147,6 +182,12 @@ class CommentsAdapter(private val listener: OnItemClickCallback) :
     }
 
     interface OnItemClickCallback : CommentRepliesAdapter.OnItemClickCallback {
+        fun onReportCommentClicked(
+            item: InsightDetailResponse.MasterComment,
+            id: Int,
+            report_comment: String,
+        )
+
         fun onLikeCommentClicked(item: InsightDetailResponse.MasterComment)
         fun onDislikeCommentClicked(item: InsightDetailResponse.MasterComment)
         fun onReplyCommentClicked(item: InsightDetailResponse.MasterComment, comment: String)
