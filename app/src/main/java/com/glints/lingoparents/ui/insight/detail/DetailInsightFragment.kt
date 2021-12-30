@@ -1,5 +1,7 @@
 package com.glints.lingoparents.ui.insight.detail
 
+import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
@@ -13,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
+import com.glints.lingoparents.R
 import com.glints.lingoparents.data.model.response.GetCommentRepliesResponse
 import com.glints.lingoparents.data.model.response.InsightDetailResponse
 import com.glints.lingoparents.databinding.FragmentDetailInsightBinding
@@ -33,6 +36,10 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
     private lateinit var commentRepliesAdapter: CommentRepliesAdapter
     private lateinit var tokenPreferences: TokenPreferences
 
+    companion object {
+        val report_body = arrayOf("Spam", "Harassment", "Rules Violation", "Other")
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -45,7 +52,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
         binding.rvInsightComment.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext())
-            commentsAdapter = CommentsAdapter(this@DetailInsightFragment)
+            commentsAdapter = CommentsAdapter(this@DetailInsightFragment, requireContext())
             adapter = commentsAdapter
         }
 
@@ -157,7 +164,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
                     is DetailInsightViewModel.GetCommentReplies.Loading -> {
                     }
                     is DetailInsightViewModel.GetCommentReplies.Success -> {
-                        commentRepliesAdapter = CommentRepliesAdapter(this@DetailInsightFragment)
+                        commentRepliesAdapter = CommentRepliesAdapter(this@DetailInsightFragment, requireContext())
                         commentRepliesAdapter.submitList(insight.list)
                         commentsAdapter.showCommentReplies(commentRepliesAdapter)
                     }
@@ -166,6 +173,78 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
                             .setBackgroundTint(Color.parseColor("#FF0000"))
                             .setTextColor(Color.parseColor("#FFFFFF"))
                             .show()
+                    }
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.reportInsight.collect { insight ->
+                when(insight){
+                    is DetailInsightViewModel.ReportInsight.Loading -> {
+
+                    }
+                    is DetailInsightViewModel.ReportInsight.Success -> {
+                        Snackbar.make(
+                            requireView(),
+                            "Reported successfully",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                    is DetailInsightViewModel.ReportInsight.Error -> {
+                        Snackbar.make(
+                            requireView(),
+                            "Something went wrong...",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.deleteComment.collect { insight ->
+                when (insight) {
+                    is DetailInsightViewModel.DeleteComment.Loading -> {
+
+                    }
+                    is DetailInsightViewModel.DeleteComment.Success -> {
+                        Snackbar.make(
+                            requireView(),
+                            insight.result.message,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                    is DetailInsightViewModel.DeleteComment.Error -> {
+                        Snackbar.make(
+                            requireView(),
+                            insight.message,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.updateComment.collect { insight ->
+                when (insight) {
+                    is DetailInsightViewModel.UpdateComment.Loading -> {
+
+                    }
+                    is DetailInsightViewModel.UpdateComment.Success -> {
+                        Snackbar.make(
+                            requireView(),
+                            insight.result.message,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                    is DetailInsightViewModel.UpdateComment.Error -> {
+                        Snackbar.make(
+                            requireView(),
+                            insight.message,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
@@ -194,6 +273,11 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
                 tfInsightComment.requestFocus()
                 btnComment.visibility = View.VISIBLE
             }
+
+            tvInsightReport.setOnClickListener {
+                showReportDialog(requireContext())
+            }
+
             tvInsightLike.setOnClickListener {
                 viewModel.sendLikeRequest(
                     viewModel.getCurrentInsightId(),
@@ -229,6 +313,40 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
             })
     }
 
+    private fun showReportDialog(context: Context) {
+        val builder = AlertDialog.Builder(context)
+        var text = ""
+        builder.apply {
+            setCancelable(false)
+            setTitle(R.string.report)
+            setSingleChoiceItems(report_body, -1) { _, i ->
+                try {
+                    text = report_body[i]
+                } catch (e: IllegalArgumentException) {
+                    throw ClassCastException(e.toString())
+                }
+            }
+            setPositiveButton(R.string.report) { _, _ ->
+                viewModel.reportInsight(viewModel.getCurrentInsightId().toString(),
+                    DetailInsightViewModel.INSIGHT_TYPE,
+                    text)
+            }
+            setNegativeButton(R.string.cancel) { dialog, _ ->
+                dialog.cancel()
+            }
+        }
+
+        builder.create().show()
+    }
+
+    override fun onReportCommentClicked(
+        item: InsightDetailResponse.MasterComment,
+        id: Int,
+        report_comment: String,
+    ) {
+        viewModel.reportInsight(id.toString(), DetailInsightViewModel.COMMENT_TYPE, report_comment)
+    }
+
     override fun onLikeCommentClicked(item: InsightDetailResponse.MasterComment) {
         viewModel.sendLikeRequest(
             item.id,
@@ -257,29 +375,6 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
 
     override fun onDeleteCommentClicked(item: InsightDetailResponse.MasterComment, id: Int) {
         viewModel.deleteComment(id)
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.deleteComment.collect { insight ->
-                when (insight) {
-                    is DetailInsightViewModel.DeleteComment.Loading -> {
-
-                    }
-                    is DetailInsightViewModel.DeleteComment.Success -> {
-                        Snackbar.make(
-                            requireView(),
-                            insight.result.message,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
-                    is DetailInsightViewModel.DeleteComment.Error -> {
-                        Snackbar.make(
-                            requireView(),
-                            insight.message,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            }
-        }
     }
 
     override fun onUpdateCommentClicked(
@@ -287,29 +382,14 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
         comment: String,
     ) {
         viewModel.updateComment(item.id, comment)
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.updateComment.collect { insight ->
-                when (insight) {
-                    is DetailInsightViewModel.UpdateComment.Loading -> {
+    }
 
-                    }
-                    is DetailInsightViewModel.UpdateComment.Success -> {
-                        Snackbar.make(
-                            requireView(),
-                            insight.result.message,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
-                    is DetailInsightViewModel.UpdateComment.Error -> {
-                        Snackbar.make(
-                            requireView(),
-                            insight.message,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            }
-        }
+    override fun onReportCommentClicked(
+        item: GetCommentRepliesResponse.Message,
+        id: Int,
+        report_comment: String,
+    ) {
+        viewModel.reportInsight(id.toString(), DetailInsightViewModel.COMMENT_TYPE, report_comment)
     }
 
     override fun onLikeCommentClicked(item: GetCommentRepliesResponse.Message) {
@@ -340,55 +420,9 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
 
     override fun onDeleteCommentClicked(item: GetCommentRepliesResponse.Message, id: Int) {
         viewModel.deleteComment(id)
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.deleteComment.collect { insight ->
-                when (insight) {
-                    is DetailInsightViewModel.DeleteComment.Loading -> {
-
-                    }
-                    is DetailInsightViewModel.DeleteComment.Success -> {
-                        Snackbar.make(
-                            requireView(),
-                            insight.result.message,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
-                    is DetailInsightViewModel.DeleteComment.Error -> {
-                        Snackbar.make(
-                            requireView(),
-                            insight.message,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            }
-        }
     }
 
     override fun onUpdateCommentClicked(item: GetCommentRepliesResponse.Message, comment: String) {
         viewModel.updateComment(item.id, comment)
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.updateComment.collect { insight ->
-                when (insight) {
-                    is DetailInsightViewModel.UpdateComment.Loading -> {
-
-                    }
-                    is DetailInsightViewModel.UpdateComment.Success -> {
-                        Snackbar.make(
-                            requireView(),
-                            insight.result.message,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
-                    is DetailInsightViewModel.UpdateComment.Error -> {
-                        Snackbar.make(
-                            requireView(),
-                            insight.message,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            }
-        }
     }
 }
