@@ -3,12 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_detail_insight.xml" value="0.1" />
+        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/item_insight_comment.xml" value="0.22962962962962963" />
+        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/shimmer_item_insight_detail.xml" value="0.2212962962962963" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/drawable/shadow_border.xml" value="0.290625" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_all_insight.xml" value="0.23333333333333334" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_detail_insight.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_header.xml" value="0.1" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_insight_list.xml" value="0.264" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_live_event_list.xml" value="0.264" />
+        <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_progress_profile.xml" value="0.1" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/item_insight.xml" value="0.22685185185185186" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/item_insight_comment.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/menu/dashboard_app_bar_menu.xml" value="0.22592592592592592" />
@@ -166,7 +170,7 @@
       <item index="0" class="java.lang.String" itemvalue="org.greenrobot.eventbus.Subscribe" />
     </list>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

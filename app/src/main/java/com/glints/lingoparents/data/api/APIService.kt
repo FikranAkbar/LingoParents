@@ -84,6 +84,13 @@ interface APIService {
         @Path("id") id: Int,
     ): Call<InsightDetailResponse>
 
+    @FormUrlEncoded
+    @POST("api/v1/insights/report")
+    fun reportInsight(
+        @QueryMap options: Map<String, String>,
+        @Field("report_comment") report_comment: String
+    ): Call<ReportResponse>
+
     @POST("api/v1/insights/like/{id}/{type}")
     fun likeInsightDetail(
         @Path("id") id: Int,
@@ -103,6 +110,23 @@ interface APIService {
         @Path("type") type: String,
         @Field("comment") comment: String
     ): Call<CreateCommentResponse>
+
+    @GET("api/v1/insights/comment/{id}")
+    fun getCommentReplies(
+        @Path("id") id: Int
+    ): Call<GetCommentRepliesResponse>
+
+    @DELETE("api/v1/insights/comment/{id}")
+    fun deleteComment(
+        @Path("id") id: Int
+    ): Call<DeleteCommentResponse>
+
+    @FormUrlEncoded
+    @PATCH("api/v1/insights/comment/{id}")
+    fun updateComment(
+        @Path("id") id: Int,
+        @Field("comment") comment: String
+    ): Call<UpdateCommentResponse>
 
     //amin
     @GET("api/v1/courses")
