@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">LingoParents</string>
     <string name="welcome_back">Welcome back!</string>
     <string name="email">Email</string>
@@ -16,7 +16,6 @@
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="phone">Phone</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="acoount_setting">Acoount Setting</string>
     <string name="home">Home</string>
@@ -36,7 +35,6 @@
     <string name="learn_the_language_that_your_children_fancy_on_the_time_you_wish_and_the_place_you_like_lingotalk_offer_all_the_flexibility_at_your_fingertip_lets_start_learning_now">Learn the language that your children fancy, on the time you wish, and the place you like! LingoTalk offer all the flexibility at your fingertip. Lets start learning now!</string>
     <string name="enroll_course">Enroll Course</string>
     <string name="search">Search</string>
-    <!--viewpager-->
     <string name="tab_progress_text_1">Profile</string>
     <string name="tab_progress_text_2">Progress</string>
     <string name="tab_progress_course_list_text_1">Korean</string>
@@ -56,11 +54,11 @@
         <item>lorem ipsum</item>
     </string-array>
     <string-array name="session_desc">
-        <item>lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum</item>
-        <item>lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum</item>
-        <item>lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum</item>
-        <item>lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum</item>
-        <item>lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum</item>
+        <item tools:ignore="Typos">lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum</item>
+        <item tools:ignore="Typos">lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum</item>
+        <item tools:ignore="Typos">lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum</item>
+        <item tools:ignore="Typos">lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum</item>
+        <item tools:ignore="Typos">lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum</item>
     </string-array>
     <string-array name="session_score">
         <item>90</item>
@@ -146,7 +144,7 @@
     <string name="dashboard_no_recent_insight">No Recent Insight Available</string>
     <string name="dashboard_no_live_event">No Event Available</string>
     <string name="dummy_beginner_sublevel_2">Beginner - Sublevel 2</string>
-    <string name="dummy_010_987">010-987</string>
+    <string name="dummy_010_987">010–987</string>
     <string name="dummy_janedoe_gmail_com">janedoe@gmail.com</string>
     <string name="dummy_sesame_street_no_76_east_jakarta_13782">Sesame Street No. 76 East Jakarta, 13782</string>
     <string name="dummy_john_doe">John Doe</string>
@@ -175,7 +173,7 @@
     <string name="title_learning_progress">Learning Progress</string>
     <string name="select_your_payment_method">Select Your Payment Method</string>
     <string name="dummy_price_live_event">50000</string>
-    <string name="dummy_date">12-12-2021</string>
+    <string name="dummy_date">12–12–2021</string>
     <string name="language">Language</string>
     <!-- Google Auth Id -->
     <string name="google_client_id">401776833845-cgqt5ephhprpfmmiuj3vk0eljneq3vu3.apps.googleusercontent.com</string>
@@ -183,4 +181,35 @@
     <string name="show_replies">Show Replies</string>
     <string name="delete">Delete</string>
     <string name="update">Update</string>
+    <string name="ufo_green">Correct Answer: lorem ipsum</string>
+    <string name="student_answer_lorem_ipsum">Student Answer: lorem ipsum</string>
+    <string name="_1_question_1">1. Question 1?</string>
+    <string name="insight_title_">Insight Title</string>
+    <string name="children_name">Children Name</string>
+    <string name="_12">12</string>
+    <string name="mother">Mother</string>
+    <string name="beginner">Beginner</string>
+    <string name="lorem_ipsum_lorem_ipsum_loremsdfsdfsdfdsfsdfdsfd_ipsum_lorem_ipsum">lorem ipsum lorem ipsum loremsdfsdfsdfdsfsdfdsfd ipsum lorem ipsum</string>
+    <string name="score_90">Score 90</string>
+    <string name="lorem_ipsum">Lorem ipsum</string>
+    <string name="session_7">Session 7</string>
+    <string name="jane_doe">Jane Doe</string>
+    <string name="beginner_sublevel_2">Beginner - Sublevel 2</string>
+    <string name="lorem_ipsum_dolor_sit_amet_consectetur_adipiscing_elit_aenean_rhoncus_quam_eu_malesuada_consectetur_morbi_auctor_tellus_gravida_nibh_luctus_eget_scelerisque_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit.Aenean rhoncus quam eu malesuada consectetur.Morbi auctor tellus gravida nibh luctus, eget scelerisque ipsum.</string>
+    <string name="personality_traits_honest_and_straight_forward">Personality Traits: Honest and straight forward</string>
+    <string name="captain_america">Captain America</string>
+    <string name="build_career_for_genz">Build Career for GenZ</string>
+    <string name="_08_oct_2021">08 Oct 2021</string>
+    <string name="a_special_child_needs_constant_attention_and_support_they_require_assistance_even_for_trivial_things_it_is_essential_for_parents_to_feel_overwhelmed_and_exhausted_at_times">A special child needs constant attention and support. They require assistance even for trivial things. It is essential for parents to feel overwhelmed and exhausted at times.</string>
+    <string name="_19">19</string>
+    <string name="insight_title">Insight Title</string>
+    <string name="progress_check">Progress Check</string>
+    <string name="overall_score">Overall Score</string>
+    <string name="completed_session">Completed Session</string>
+    <string name="attendance_session">Attendance Session</string>
+    <string name="_yes">Yes</string>
+    <string name="_no">No</string>
+    <string name="_7_challenges_of_parenting_a_special_kid">7 Challenges of Parenting a Special Kid</string>
+    <string name="_14th_october_2021">14th October 2021</string>
+    <string name="back">Back</string>
 </resources>

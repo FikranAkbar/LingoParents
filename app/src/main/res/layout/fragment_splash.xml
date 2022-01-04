@@ -25,6 +25,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:mk_color="#F9663A"
+        app:mk_color="@color/primary_orange"
         app:mk_type="FishSpinner" />
 </androidx.constraintlayout.widget.ConstraintLayout>

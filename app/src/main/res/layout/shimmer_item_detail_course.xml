@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="16dp">
@@ -24,7 +25,8 @@
         android:layout_marginTop="8dp"
         android:background="@color/shimmer_item_inside"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvCourse" />
+        app:layout_constraintTop_toBottomOf="@id/tvCourse"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/tvCourseDesc"
@@ -49,7 +51,8 @@
         android:layout_marginTop="8dp"
         android:background="@color/shimmer_placeholder"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivCourseCard" />
+        app:layout_constraintTop_toBottomOf="@id/ivCourseCard"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/tvCourseDesc2"
@@ -74,7 +77,8 @@
         android:layout_marginTop="8dp"
         android:background="@color/shimmer_placeholder"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivCourseCard2" />
+        app:layout_constraintTop_toBottomOf="@id/ivCourseCard2"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/tvCourseDesc3"

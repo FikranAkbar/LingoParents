@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -9,7 +10,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_w700"
-        android:textColor="#F37323"
+        android:textColor="@color/primary_orange_variant"
         android:textStyle="bold"
         android:maxLines="2"
         android:ellipsize="end"
@@ -27,14 +28,15 @@
         app:layout_constraintEnd_toStartOf="@id/tv_levelvalue"
         app:layout_constraintBottom_toBottomOf="@id/tv_courselevel"
         app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/tv_levelvalue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_w700"
-        android:textColor="#182E7C"
+        android:textColor="@color/navy_blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/tv_courselevel"/>

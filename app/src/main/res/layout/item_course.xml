@@ -11,7 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FF7900"
+        android:background="@color/primary_orange_variant"
         android:padding="16dp">
 
         <ImageView
@@ -21,7 +21,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/img_course_thai" />
+            tools:src="@drawable/img_course_thai"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/courseTitle"

@@ -17,7 +17,7 @@
         android:layout_width="340dp"
         android:layout_height="60dp"
         android:adjustViewBounds="true"
-        android:contentDescription="Insight Title"
+        android:contentDescription="@string/insight_title"
         android:scaleType="centerCrop"
         android:src="@drawable/img_dummy_insight_card" />
 

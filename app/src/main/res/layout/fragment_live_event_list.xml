@@ -12,7 +12,7 @@
         android:layout_width="44dp"
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
-        app:cardBackgroundColor="#F9663A"
+        app:cardBackgroundColor="@color/primary_orange"
         app:layout_constraintBottom_toBottomOf="@id/tf_search"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/tf_search">
@@ -28,16 +28,11 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tf_search"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/OutlineBoxTextField"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="24dp"
-        app:boxCornerRadiusBottomEnd="5dp"
-        app:boxCornerRadiusBottomStart="0dp"
-        app:boxCornerRadiusTopEnd="5dp"
-        app:boxCornerRadiusTopStart="0dp"
-        app:boxStrokeColor="#F9663A"
         app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/cv_search"
@@ -75,9 +70,7 @@
             android:focusable="false"
             app:tabGravity="fill"
             app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/white"
-            app:tabTextAppearance="@style/Typography.TabLayoutTextAppearance"
-            app:tabTextColor="#FF7900" />
+            app:tabTextAppearance="@style/Typography.TabLayoutTextAppearance" />
     </androidx.cardview.widget.CardView>
 
     <com.google.android.material.card.MaterialCardView
@@ -113,7 +106,7 @@
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="8dp"
-                android:background="#33182E7C"
+                android:background="@color/line_divider_color"
                 app:layout_constraintTop_toBottomOf="@id/tv_category_title" />
 
             <androidx.viewpager2.widget.ViewPager2

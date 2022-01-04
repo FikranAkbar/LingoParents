@@ -77,7 +77,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/shimmer_layout_insight"
             app:tint="@color/shimmer_item_inside"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/tvNoRecentInsight"
@@ -99,13 +100,13 @@
             android:gravity="center"
             app:layout_constraintStart_toStartOf="@id/tv_insight_header"
             app:layout_constraintTop_toBottomOf="@id/slider_insight"
-            app:selected_color="#F9663A"
+            app:selected_color="@color/primary_orange"
             app:selected_height="10dp"
             app:selected_padding_left="2dp"
             app:selected_padding_right="2dp"
             app:selected_width="10dp"
             app:shape="oval"
-            app:unselected_color="#808080"
+            app:unselected_color="@color/light_grey"
             app:unselected_height="6dp"
             app:unselected_padding_left="2dp"
             app:unselected_padding_right="2dp"
@@ -181,7 +182,8 @@
             app:layout_constraintTop_toTopOf="@id/shimmer_layout_event"
             app:layout_constraintBottom_toBottomOf="@id/shimmer_layout_event"
             app:tint="@color/shimmer_item_inside"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/tvNoLiveEvent"
@@ -203,13 +205,13 @@
             android:gravity="center"
             app:layout_constraintStart_toStartOf="@id/tv_live_event_header"
             app:layout_constraintTop_toBottomOf="@id/slider_live_event"
-            app:selected_color="#F9663A"
+            app:selected_color="@color/primary_orange"
             app:selected_height="10dp"
             app:selected_padding_left="2dp"
             app:selected_padding_right="2dp"
             app:selected_width="10dp"
             app:shape="oval"
-            app:unselected_color="#808080"
+            app:unselected_color="@color/light_grey"
             app:unselected_height="6dp"
             app:unselected_padding_left="2dp"
             app:unselected_padding_right="2dp"
@@ -274,7 +276,8 @@
             app:layout_constraintTop_toTopOf="@id/shimmer_layout_children"
             app:layout_constraintBottom_toBottomOf="@id/shimmer_layout_children"
             app:tint="@color/shimmer_item_inside"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/tvNoStudentList"

@@ -50,7 +50,7 @@
             app:tabMode="fixed"
             app:tabSelectedTextColor="@color/white"
             app:tabTextAppearance="@style/Typography.TabLayoutTextAppearance"
-            app:tabTextColor="#FF7900" />
+            app:tabTextColor="@color/primary_orange_variant" />
 
     </com.google.android.material.card.MaterialCardView>
 

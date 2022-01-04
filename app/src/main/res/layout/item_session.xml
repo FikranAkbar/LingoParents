@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#e8eaf2">
+        android:background="@color/bright_grey">
 
         <TextView
             android:id="@+id/tv_session"
@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/poppins_w700"
-            android:text="Session 7"
+            android:text="@string/session_7"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
             android:fontFamily="@font/poppins_w400"
-            android:text="Lorem ipsum"
+            android:text="@string/lorem_ipsum"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -44,8 +44,8 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
             android:fontFamily="@font/poppins_w400"
-            android:text="Score 90"
-            android:textColor="#182E7C"
+            android:text="@string/score_90"
+            android:textColor="@color/navy_blue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_shortdesc" />
@@ -57,7 +57,7 @@
             android:layout_marginVertical="24dp"
             android:fontFamily="@font/poppins_w600"
             android:maxLines="4"
-            android:text="lorem ipsum lorem ipsum loremsdfsdfsdfdsfsdfdsfd ipsum lorem ipsum"
+            android:text="@string/lorem_ipsum_lorem_ipsum_loremsdfsdfsdfdsfsdfdsfd_ipsum_lorem_ipsum"
             android:textAlignment="center"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
