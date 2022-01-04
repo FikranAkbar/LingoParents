@@ -9,6 +9,7 @@ import android.text.Spanned
 import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -19,7 +20,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentLoginBinding
-import com.glints.lingoparents.ui.accountsetting.profile.ProfileFragment
 import com.glints.lingoparents.ui.dashboard.DashboardActivity
 import com.glints.lingoparents.utils.AuthFormValidator
 import com.glints.lingoparents.utils.CustomViewModelFactory
@@ -37,7 +37,6 @@ import kotlinx.coroutines.flow.collect
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
     companion object {
-        private const val TAG = "LoginFragment"
         private const val RC_GOOGLE_SIGN_IN = 9001
     }
 
@@ -80,7 +79,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             tilPassword.editText?.setText("parent12345")
         }
 
-        lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.loginEvent.collect { event ->
                 when (event) {
                     is LoginViewModel.LoginEvent.TryToLoginUser -> {
@@ -119,11 +118,20 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     }
                     is LoginViewModel.LoginEvent.Error -> {
                         showLoading(false)
-                        event.message.let {
-                            if (it.contains("email", ignoreCase = true)) {
-                                AuthFormValidator.showFieldError(binding.tilEmail, it)
-                            } else if (it.contains("password", ignoreCase = true)) {
-                                AuthFormValidator.showFieldError(binding.tilPassword, it)
+                        event.message.let { message ->
+                            when {
+                                message.contains("email", ignoreCase = true) -> {
+                                    AuthFormValidator.showFieldError(binding.tilEmail, message)
+                                }
+                                message.contains("password", ignoreCase = true) -> {
+                                    AuthFormValidator.showFieldError(binding.tilPassword, message)
+                                }
+                                else -> {
+                                    event.idToken?.let { idToken ->
+                                        val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment(idToken)
+                                        findNavController().navigate(action)
+                                    }
+                                }
                             }
                         }
                     }
@@ -140,6 +148,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         Snackbar.make(binding.root, event.message, Snackbar.LENGTH_SHORT).show()
                     }
                     is LoginViewModel.LoginEvent.TryToLoginWithGoogle -> {
+                        googleSignInClient.signOut()
                         val signInIntent = googleSignInClient.signInIntent
                         startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN)
                     }
@@ -149,10 +158,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                             event.account.email as CharSequence,
                             Snackbar.LENGTH_SHORT
                         ).show()
+                        event.account.printInformation()
                     }
                     is LoginViewModel.LoginEvent.LoginWithGoogleFailure -> {
                         Snackbar.make(binding.root, event.errorMessage, Snackbar.LENGTH_SHORT)
                             .show()
+                        Log.d("Google Sign In Error:", event.errorMessage)
                     }
                 }
             }
@@ -166,6 +177,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun setGoogleSignInClient() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.google_client_id))
             .requestEmail()
             .build()
 
@@ -251,10 +263,20 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 true -> {
                     vLoadingBackground.visibility = View.VISIBLE
                     vLoadingProgress.visibility = View.VISIBLE
+                    tilEmail.isEnabled = false
+                    tilPassword.isEnabled = false
+                    mbtnForgetPassword.isClickable = false
+                    mbtnLogin.isClickable = false
+                    mbtnLoginWithGoogle.isClickable = false
                 }
                 else -> {
                     vLoadingBackground.visibility = View.GONE
                     vLoadingProgress.visibility = View.GONE
+                    tilEmail.isEnabled = true
+                    tilPassword.isEnabled = true
+                    mbtnForgetPassword.isClickable = true
+                    mbtnLogin.isClickable = true
+                    mbtnLoginWithGoogle.isClickable = true
                 }
             }
         }
@@ -272,10 +294,21 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private fun handleSignInResult(task: Task<GoogleSignInAccount>?) {
         try {
             val account = task?.getResult(ApiException::class.java)
-            viewModel.onLoginWithGoogleSuccessful(account as GoogleSignInAccount)
+            // viewModel.onLoginWithGoogleSuccessful(account as GoogleSignInAccount)
+            viewModel.loginWithGoogleEmail(account!!.idToken!!)
         } catch (e: ApiException) {
-            viewModel.onLoginWithGoogleFailure("signInResult:failed code" + e.statusCode)
+            viewModel.onLoginWithGoogleFailure("signInResult:failed code" + e.status)
         }
+    }
+
+    private fun GoogleSignInAccount.printInformation() {
+        println("""
+            account = ${this.account}
+            id = ${this.id}
+            idToken = ${this.idToken}
+            serverAuthCode = ${this.serverAuthCode}
+            givenName = ${this.givenName}
+        """.trimIndent())
     }
 
     override fun onDestroy() {

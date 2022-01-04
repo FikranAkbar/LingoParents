@@ -37,7 +37,8 @@ class CustomViewModelFactory(
     private val accountId: Int? = null,
     private val studentId: Int? = null,
     private val courseId: Int? = null,
-    private val sessionId: Int? = null
+    private val sessionId: Int? = null,
+    private val googleIdToken: String? = null
 ) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
 
     @Suppress("UNCHECKED_CAST")
@@ -54,7 +55,7 @@ class CustomViewModelFactory(
                 LoginViewModel(tokenPref) as T
             }
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
-                RegisterViewModel() as T
+                RegisterViewModel(googleIdToken) as T
             }
             modelClass.isAssignableFrom(LiveEventListViewModel::class.java) -> {
                 LiveEventListViewModel() as T
