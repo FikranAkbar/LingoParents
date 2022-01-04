@@ -51,12 +51,11 @@
 
             <TextView
                 android:id="@+id/tv_detail_event"
+                style="@style/Typography.Headline5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_w700"
                 android:text="@string/detail_event"
-                android:textColor="@color/navy_blue"
-                android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="@id/iv_back_button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -95,13 +94,11 @@
 
             <TextView
                 android:id="@+id/tv_detail_event_title"
+                style="@style/Typography.Headline6"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="12dp"
                 android:layout_marginTop="24dp"
-                android:fontFamily="@font/poppins_w600"
-                android:textColor="@color/black"
-                android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cv_detail_event_poster"
@@ -216,16 +213,14 @@
 
             <TextView
                 android:id="@+id/tv_speaker_name"
+                style="@style/Typography.Body1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginEnd="24dp"
                 android:ellipsize="end"
-                android:fontFamily="@font/poppins_w600"
-                android:maxLines="1"
                 android:textColor="@color/black"
-                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/cv_photo_container"
                 app:layout_constraintTop_toTopOf="@id/cv_photo_container"

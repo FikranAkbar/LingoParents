@@ -19,7 +19,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentLoginBinding
-import com.glints.lingoparents.ui.accountsetting.profile.ProfileFragment
 import com.glints.lingoparents.ui.dashboard.DashboardActivity
 import com.glints.lingoparents.utils.AuthFormValidator
 import com.glints.lingoparents.utils.CustomViewModelFactory
@@ -120,10 +119,19 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     is LoginViewModel.LoginEvent.Error -> {
                         showLoading(false)
                         event.message.let {
-                            if (it.contains("email", ignoreCase = true)) {
-                                AuthFormValidator.showFieldError(binding.tilEmail, it)
-                            } else if (it.contains("password", ignoreCase = true)) {
-                                AuthFormValidator.showFieldError(binding.tilPassword, it)
+                            when {
+                                it.contains("email", ignoreCase = true) -> {
+                                    AuthFormValidator.showFieldError(binding.tilEmail, it)
+                                }
+                                it.contains("password", ignoreCase = true) -> {
+                                    AuthFormValidator.showFieldError(binding.tilPassword, it)
+                                }
+                                else -> {
+                                    Snackbar.make(requireView(),
+                                        event.message,
+                                        Snackbar.LENGTH_SHORT)
+                                        .show()
+                                }
                             }
                         }
                     }

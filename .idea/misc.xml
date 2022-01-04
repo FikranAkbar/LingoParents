@@ -3,9 +3,23 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_detail_insight.xml" value="0.1" />
-        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/item_insight_comment.xml" value="0.22962962962962963" />
+        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/drawable/ic_user.xml" value="0.290625" />
+        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_account_setting.xml" value="0.27447916666666666" />
+        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_change_password.xml" value="0.1962962962962963" />
+        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_detail_insight.xml" value="0.264" />
+        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_insight_list.xml" value="0.264" />
+        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_live_event_detail.xml" value="0.264" />
+        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_live_event_list.xml" value="0.22314814814814815" />
+        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_login.xml" value="0.22314814814814815" />
+        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_parenting_insight.xml" value="0.27447916666666666" />
+        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_register.xml" value="0.22314814814814815" />
+        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/item_insight_comment.xml" value="0.264" />
+        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/layout_or_divider.xml" value="0.27447916666666666" />
+        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/shimmer_item_insight_comment.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/shimmer_item_insight_detail.xml" value="0.2212962962962963" />
+        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/shimmer_item_live_event_detail.xml" value="0.264" />
+        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/menu/dashboard_app_bar_menu.xml" value="0.264" />
+        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/menu/dashboard_bottom_nav_menu.xml" value="0.264" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/drawable/shadow_border.xml" value="0.290625" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_all_insight.xml" value="0.23333333333333334" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_detail_insight.xml" value="0.27447916666666666" />
@@ -44,8 +58,7 @@
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/font/poppins_w500.xml" value="0.17395833333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/font/poppins_w600.xml" value="0.17395833333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/font/poppins_w700.xml" value="0.17395833333333333" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout-v23/shimmer_item_insight_detail.xml" value="0.2755208333333333" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/activity_dashboard.xml" value="0.2" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/activity_dashboard.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/activity_forgot_password.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/activity_home.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/activity_login.xml" value="0.19791666666666666" />
@@ -55,23 +68,21 @@
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/carousel_item_insight.xml" value="0.33" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/carousel_item_live_event.xml" value="0.25" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/detail_insight_fragment.xml" value="0.33" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/expand_content.xml" value="0.5896168108776267" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/expand_title.xml" value="0.9" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/form_register_event.xml" value="0.27380952380952384" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/expand_content.xml" value="0.3818350324374421" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/expand_title.xml" value="0.6109625668449198" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/form_register_event.xml" value="0.25" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_account_setting.xml" value="0.5" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_all_courses.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_all_insight.xml" value="0.2755208333333333" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_assignment.xml" value="0.22" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_change_password.xml" value="0.5012755102040817" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_assignment.xml" value="0.3010869565217391" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_change_password.xml" value="0.544799176107106" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_completed_event.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_dashboard.xml" value="0.2755208333333333" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_detail_course.xml" value="0.2046875" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_detail_insight.xml" value="0.33" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_detail_insight.xml" value="1.25" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_forgot_password.xml" value="0.33" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_header.xml" value="0.22" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_home.xml" value="0.5" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_home.xml" value="0.22" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_insight_list.xml" value="0.2" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_lifestyle_insight.xml" value="0.2046875" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_live_event_detail.xml" value="0.33" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_live_event_list.xml" value="0.33" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_login.xml" value="0.33" />
@@ -80,39 +91,23 @@
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_progress.xml" value="0.33" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_progress_learning.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_progress_learning_course.xml" value="0.5" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_progress_profile.xml" value="0.25" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_register.xml" value="0.25" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_progress_profile.xml" value="0.5" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_register.xml" value="0.22" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_reset_password.xml" value="0.33" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_splash.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_today_event.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_upcoming_event.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragmnet_login.xml" value="0.2755208333333333" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/item_course.xml" value="0.2046875" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/item_course_detail.xml" value="0.2046875" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/item_course_detail_second.xml" value="0.2046875" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/item_dashboard_children.xml" value="0.5" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/item_gender.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/item_insight.xml" value="0.2755208333333333" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/item_insight_comment.xml" value="0.140625" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/item_live_event.xml" value="0.5" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/item_payment_method.xml" value="0.140625" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/item_popup_character.xml" value="0.5" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/item_question.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/item_session.xml" value="0.5" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/item_student.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/item_tab_course.xml" value="0.5" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/layout_or_divider.xml" value="0.67" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/shimmer_dashboard_children.xml" value="0.2755208333333333" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/shimmer_dashboard_insight.xml" value="0.2755208333333333" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/shimmer_dashboard_live_event.xml" value="0.2755208333333333" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/shimmer_item_course.xml" value="0.2755208333333333" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/shimmer_item_detail_course.xml" value="0.2755208333333333" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/shimmer_item_insight_comment.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/shimmer_item_insight_detail.xml" value="0.2755208333333333" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/shimmer_item_insight_list.xml" value="0.2755208333333333" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/shimmer_item_live_event_detail.xml" value="0.21603260869565216" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/shimmer_item_live_event_list.xml" value="0.21603260869565216" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/shimmer_item_student_profile.xml" value="0.5" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/menu/dashboard_app_bar_menu.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/menu/dashboard_bottom_nav_menu.xml" value="0.25" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/menu/home_app_bar_menu.xml" value="0.2755208333333333" />

@@ -15,14 +15,17 @@
 
     <TextView
         android:id="@+id/tv_username_comment"
+        style="@style/Typography.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_toEndOf="@+id/iv_comment"
-        android:textStyle="bold" />
+        android:textColor="@color/grey_darker"
+        tools:text="@string/olivia_putri_rosmala" />
 
     <TextView
         android:id="@+id/tv_comment_body"
+        style="@style/Typography.Caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_username_comment"

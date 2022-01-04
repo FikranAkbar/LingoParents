@@ -34,52 +34,43 @@
             android:gravity="center" />
     </androidx.cardview.widget.CardView>
 
-    <ImageView
+    <androidx.cardview.widget.CardView
         android:id="@+id/shimmer_iv_insight_detail"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:background="@color/shimmer_placeholder"
-        app:layout_constraintBottom_toBottomOf="@+id/shimmer_tv_insight_title"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_marginVertical="12dp"
+        app:cardBackgroundColor="@color/shimmer_placeholder"
+        app:cardCornerRadius="12dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.209"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/shimmer_tv_insight_title"
+        app:layout_constraintTop_toBottomOf="@+id/shimmer_cardView"
         tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/shimmer_tv_insight_title"
-        style="@style/Typography.Subtitle2"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="10dp"
-        android:layout_marginEnd="16dp"
-        android:background="@color/shimmer_placeholder"
-        android:padding="10dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/shimmer_iv_insight_detail"
-        app:layout_constraintTop_toBottomOf="@+id/shimmer_cardView" />
-
-    <TextView
-        android:id="@+id/shimmer_tv_insight_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_height="44dp"
+        android:layout_marginVertical="12dp"
         android:background="@color/shimmer_placeholder"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.175"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/shimmer_iv_insight_detail" />
 
     <TextView
+        android:id="@+id/shimmer_tv_insight_date"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:background="@color/shimmer_placeholder"
+        app:layout_constraintStart_toStartOf="@+id/shimmer_tv_insight_title"
+        app:layout_constraintTop_toBottomOf="@+id/shimmer_tv_insight_title" />
+
+    <TextView
         android:id="@+id/shimmer_tv_insight_body"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="250dp"
         android:layout_marginTop="9dp"
         android:background="@color/shimmer_placeholder"
-        android:justificationMode="inter_word"
-        android:lineSpacingExtra="9sp"
-        android:paddingVertical="8dp"
         android:translationY="-4.5sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -109,7 +100,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
         android:background="@color/shimmer_placeholder"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/shimmer_tv_insight_add_comment"
         app:layout_constraintEnd_toStartOf="@id/shimmer_tv_insight_add_comment"
         app:layout_constraintTop_toTopOf="@id/shimmer_tv_insight_add_comment" />
@@ -119,7 +109,6 @@
         android:layout_width="44sp"
         android:layout_height="wrap_content"
         android:background="@color/shimmer_placeholder"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/shimmer_tv_insight_body" />
 
@@ -129,7 +118,6 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
         android:background="@color/shimmer_placeholder"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/shimmer_tv_insight_like" />
 
