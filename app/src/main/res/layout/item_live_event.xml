@@ -37,7 +37,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/poppins_w600"
             android:maxLines="1"
-            android:text="Build Career for GenZ"
+            android:text="@string/build_career_for_genz"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_image"
@@ -51,7 +51,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/poppins_w400"
             android:maxLines="1"
-            android:text="08 Oct 2021"
+            android:text="@string/_08_oct_2021"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tv_live_event_title"
@@ -65,7 +65,7 @@
             android:layout_marginBottom="8dp"
             android:fontFamily="@font/poppins_w500"
             android:text="@string/show_more"
-            android:textSize="10sp"
+            android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

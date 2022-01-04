@@ -27,6 +27,9 @@ import com.glints.lingoparents.utils.dataStore
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
     CommentRepliesAdapter.OnItemClickCallback {
@@ -84,11 +87,15 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
                         showLoading(false)
                         binding.apply {
                             insight.result.apply {
+                                val date = createdAt.getDateWithServerTimeStamp()
+
                                 cover.let {
                                     ivInsightDetail.load(it)
                                 }
                                 tvInsightTitle.text = title
-                                tvInsightDate.text = createdAt
+                                tvInsightDate.text =
+                                    SimpleDateFormat("EEE, MMM d", Locale.getDefault())
+                                        .format(date)
                                 tvInsightBody.text = content
                                 tvInsightLike.text = total_like.toString()
                                 tvInsightDislike.text = total_dislike.toString()
@@ -164,7 +171,8 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
                     is DetailInsightViewModel.GetCommentReplies.Loading -> {
                     }
                     is DetailInsightViewModel.GetCommentReplies.Success -> {
-                        commentRepliesAdapter = CommentRepliesAdapter(this@DetailInsightFragment, requireContext())
+                        commentRepliesAdapter =
+                            CommentRepliesAdapter(this@DetailInsightFragment, requireContext())
                         commentRepliesAdapter.submitList(insight.list)
                         commentsAdapter.showCommentReplies(commentRepliesAdapter)
                     }
@@ -180,7 +188,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.reportInsight.collect { insight ->
-                when(insight){
+                when (insight) {
                     is DetailInsightViewModel.ReportInsight.Loading -> {
 
                     }
@@ -337,6 +345,19 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
         }
 
         builder.create().show()
+    }
+
+
+    fun String.getDateWithServerTimeStamp(): Date? {
+        val dateFormat = SimpleDateFormat(
+            "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+            Locale.getDefault()
+        )
+        return try {
+            dateFormat.parse(this)
+        } catch (e: ParseException) {
+            null
+        }
     }
 
     override fun onReportCommentClicked(

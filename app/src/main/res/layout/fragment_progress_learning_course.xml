@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -16,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:text="Progress Check"
+            android:text="@string/progress_check"
             android:textAppearance="@style/Typography.Headline5"
             android:textColor="#182E7C"
             android:textStyle="bold"
@@ -111,8 +112,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:fontFamily="@font/poppins_w700"
-                    android:text="Overall Score"
-                    android:textColor="#182E7C"
+                    android:text="@string/overall_score"
+                    android:textColor="@color/navy_blue"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -123,7 +124,7 @@
                     android:layout_height="1dp"
                     android:layout_marginHorizontal="24dp"
                     android:layout_marginVertical="8dp"
-                    android:background="#33182E7C"
+                    android:background="@color/line_divider_color"
                     app:layout_constraintTop_toBottomOf="@id/tv_overallscore" />
 
                 <TextView
@@ -133,7 +134,7 @@
                     android:layout_marginHorizontal="12dp"
                     android:layout_marginVertical="24dp"
                     android:fontFamily="@font/poppins_w700"
-                    android:textColor="#C2C9D1"
+                    android:textColor="@color/secondary_variant"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -163,9 +164,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Completed Session"
+            android:text="@string/completed_session"
             android:textAppearance="@style/Typography.Headline5"
-            android:textColor="#182E7C"
+            android:textColor="@color/navy_blue"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cv_score" />
@@ -206,7 +207,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rvSession"
-            app:strokeColor="#808080"
+            app:strokeColor="@color/light_grey"
             app:strokeWidth="0.5dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -218,7 +219,7 @@
                     android:id="@+id/tv_attendancesession"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Attendance Session"
+                    android:text="@string/attendance_session"
                     android:textAlignment="center"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -252,7 +253,8 @@
                     android:src="@drawable/ic_rectangle_131"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/tv_yes"
-                    app:layout_constraintTop_toBottomOf="@id/session_attendance" />
+                    app:layout_constraintTop_toBottomOf="@id/session_attendance"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
                     android:id="@+id/tv_yes"
@@ -260,7 +262,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:fontFamily="@font/poppins_w400"
-                    android:text="Yes"
+                    android:text="@string/_yes"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/guideline7"
                     app:layout_constraintTop_toBottomOf="@id/session_attendance" />
@@ -273,14 +275,15 @@
                     android:src="@drawable/ic_rectangle_131_red"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/guideline7"
-                    app:layout_constraintTop_toBottomOf="@id/session_attendance" />
+                    app:layout_constraintTop_toBottomOf="@id/session_attendance"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
                     android:id="@+id/tv_no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_w400"
-                    android:text="No"
+                    android:text="@string/_no"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/iv_no"
                     app:layout_constraintTop_toBottomOf="@id/session_attendance" />

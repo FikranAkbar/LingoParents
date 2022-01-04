@@ -10,18 +10,22 @@
         android:id="@+id/iv_comment"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_user_avatar_female" />
+        android:src="@drawable/ic_user_avatar_female"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/tv_username_comment"
+        style="@style/Typography.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_toEndOf="@+id/iv_comment"
-        android:textStyle="bold" />
+        android:textColor="@color/grey_darker"
+        tools:text="@string/olivia_putri_rosmala" />
 
     <TextView
         android:id="@+id/tv_comment_body"
+        style="@style/Typography.Caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_username_comment"
@@ -29,14 +33,15 @@
         android:layout_marginStart="12dp"
         android:layout_toEndOf="@+id/iv_comment"
         android:justificationMode="inter_word"
-        android:text="A special child needs constant attention and support. They require assistance even for trivial things. It is essential for parents to feel overwhelmed and exhausted at times." />
+        android:text="@string/a_special_child_needs_constant_attention_and_support_they_require_assistance_even_for_trivial_things_it_is_essential_for_parents_to_feel_overwhelmed_and_exhausted_at_times"
+        tools:ignore="UnusedAttribute" />
 
     <TextView
         android:id="@+id/tv_like_comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_comment_body"
-        android:text="19"
+        android:text="@string/_19"
         app:drawableStartCompat="@drawable/ic_insight_like" />
 
     <TextView
@@ -46,7 +51,7 @@
         android:layout_below="@id/tv_comment_body"
         android:layout_marginHorizontal="4dp"
         android:layout_toEndOf="@id/tv_like_comment"
-        android:text="19"
+        android:text="@string/_19"
         app:drawableStartCompat="@drawable/ic_insight_dislike" />
 
     <TextView
@@ -100,7 +105,7 @@
         app:boxCornerRadiusBottomStart="10dp"
         app:boxCornerRadiusTopEnd="10dp"
         app:boxCornerRadiusTopStart="10dp"
-        app:boxStrokeColor="#797979"
+        app:boxStrokeColor="@color/dark_silver"
         app:hintEnabled="false">
 
         <com.google.android.material.textfield.TextInputEditText

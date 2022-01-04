@@ -25,7 +25,7 @@
         android:fontFamily="@font/poppins_w600"
         android:text="@string/welcome_back"
         android:textAppearance="@style/Typography.Headline5"
-        android:textColor="#182E7C"
+        android:textColor="@color/navy_blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_logo" />
@@ -39,8 +39,8 @@
         android:hint="@string/email"
         app:boxBackgroundColor="@color/white"
         app:boxBackgroundMode="filled"
-        app:boxStrokeColor="#F9663A"
-        app:hintTextColor="#F9663A"
+        app:boxStrokeColor="@color/primary_orange"
+        app:hintTextColor="@color/primary_orange"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_welcome_back">
@@ -52,8 +52,8 @@
             android:inputType="textEmailAddress"
             android:maxLines="1"
             android:textAppearance="@style/Typography.Body1"
-            android:textColor="#F9663A"
-            android:textColorHint="#F9663A" />
+            android:textColor="@color/primary_orange"
+            android:textColorHint="@color/primary_orange" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -65,7 +65,7 @@
         android:hint="@string/password"
         app:boxBackgroundColor="@color/white"
         app:boxBackgroundMode="filled"
-        app:boxStrokeColor="#F9663A"
+        app:boxStrokeColor="@color/primary_orange"
         app:endIconMode="password_toggle"
         app:endIconTint="@color/custom_password_toggle_color"
         app:hintTextColor="#F9663A"
@@ -80,8 +80,8 @@
             android:inputType="textPassword"
             android:maxLines="1"
             android:textAppearance="@style/Typography.Body1"
-            android:textColor="#F9663A"
-            android:textColorHint="#F9663A" />
+            android:textColor="@color/primary_orange"
+            android:textColorHint="@color/primary_orange" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
@@ -95,7 +95,7 @@
         android:letterSpacing="0.01"
         android:text="@string/forgot_your_password"
         android:textAppearance="@style/Typography.Subtitle2"
-        android:textColor="#182E7C"
+        android:textColor="@color/navy_blue"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_password" />
@@ -219,7 +219,7 @@
         android:id="@+id/v_loading_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#66000000"
+        android:background="@color/transparent_black"
         android:elevation="10dp"
         android:visibility="gone" />
 
@@ -233,6 +233,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:mk_color="#F9663A"
+        app:mk_color="@color/primary_orange"
         app:mk_type="FishSpinner" />
 </androidx.constraintlayout.widget.ConstraintLayout>

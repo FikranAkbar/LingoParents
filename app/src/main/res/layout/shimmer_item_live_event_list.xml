@@ -73,7 +73,7 @@
             android:layout_marginBottom="8dp"
             android:background="@color/shimmer_item_inside"
             android:fontFamily="@font/poppins_w500"
-            android:textSize="10sp"
+            android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
