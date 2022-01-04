@@ -12,7 +12,7 @@
         android:layout_width="44dp"
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
-        app:cardBackgroundColor="#F9663A"
+        app:cardBackgroundColor="@color/primary_orange"
         app:layout_constraintBottom_toBottomOf="@id/tf_search_insight"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/tf_search_insight">

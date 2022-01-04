@@ -35,7 +35,7 @@
         android:id="@+id/v_loading_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#66000000"
+        android:background="@color/transparent_black"
         android:elevation="200dp"
         android:visibility="gone" />
 
@@ -49,6 +49,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:mk_color="#F9663A"
+        app:mk_color="@color/primary_orange"
         app:mk_type="FishSpinner" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,7 +30,8 @@
         android:layout_marginStart="12dp"
         android:layout_marginVertical="4dp"
         android:layout_toEndOf="@+id/iv_insight_comment"
-        android:justificationMode="inter_word" />
+        android:justificationMode="inter_word"
+        tools:ignore="UnusedAttribute" />
 
     <TextView
         android:id="@+id/tv_insight_like_comment"

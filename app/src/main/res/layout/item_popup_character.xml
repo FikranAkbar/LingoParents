@@ -29,14 +29,15 @@
                 android:src="@drawable/captain"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="0dp" />
+                tools:layout_editor_absoluteY="0dp"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_w700"
-                android:text="Jane Doe"
+                android:text="@string/jane_doe"
                 android:textColor="@color/white"
                 android:textSize="25sp"
                 android:textStyle="bold"
@@ -49,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_w400"
-                android:text="Beginner - Sublevel 2"
+                android:text="@string/beginner_sublevel_2"
                 android:textColor="@color/white"
                 android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -63,7 +64,7 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginVertical="16dp"
                 android:fontFamily="@font/poppins_w400"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit.Aenean rhoncus quam eu malesuada consectetur.Morbi auctor tellus gravida nibh luctus, eget scelerisque ipsum."
+                android:text="@string/lorem_ipsum_dolor_sit_amet_consectetur_adipiscing_elit_aenean_rhoncus_quam_eu_malesuada_consectetur_morbi_auctor_tellus_gravida_nibh_luctus_eget_scelerisque_ipsum"
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@id/ivCharacter"
@@ -76,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="16dp"
                 android:fontFamily="@font/poppins_w700"
-                android:text="Personality Traits: Honest and straight forward"
+                android:text="@string/personality_traits_honest_and_straight_forward"
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -91,7 +92,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_w700"
-                android:text="Captain America"
+                android:text="@string/captain_america"
                 android:textColor="@color/white"
                 android:textSize="25sp"
                 android:layout_margin="16dp"
@@ -108,7 +109,8 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_baseline_close_24"
         app:layout_constraintBottom_toTopOf="@+id/cvCharacter"
-        app:layout_constraintEnd_toEndOf="@+id/cvCharacter" />
+        app:layout_constraintEnd_toEndOf="@+id/cvCharacter"
+        tools:ignore="ContentDescription" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -115,7 +115,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:text="@string/learning_progress"
-            android:textColor="#F9663A"
+            android:textColor="@color/primary_orange"
             android:textSize="9sp"
             android:fontFamily="@font/poppins_w500"
             app:layout_constraintBottom_toBottomOf="parent"

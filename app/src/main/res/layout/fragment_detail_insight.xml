@@ -45,7 +45,7 @@
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_back_account_setting"
-                    tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+                    tools:ignore="ContentDescription,SpeakableTextPresentCheck,TouchTargetSizeCheck,UnusedAttribute" />
 
                 <TextView
                     style="@style/Typography.Headline5"
@@ -83,7 +83,7 @@
                 android:layout_marginVertical="10dp"
                 android:layout_marginEnd="16dp"
                 android:padding="10dp"
-                android:text="7 Challenges of Parenting a Special Kid"
+                android:text="@string/_7_challenges_of_parenting_a_special_kid"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -94,7 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="14th October 2021"
+                android:text="@string/_14th_october_2021"
                 app:layout_constraintStart_toStartOf="@+id/tv_insight_title"
                 app:layout_constraintTop_toBottomOf="@+id/tv_insight_title" />
 
@@ -109,7 +109,8 @@
                 android:translationY="-4.5sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_insight_date" />
+                app:layout_constraintTop_toBottomOf="@id/tv_insight_date"
+                tools:ignore="UnusedAttribute" />
 
             <TextView
                 android:id="@+id/tv_insight_like"
@@ -170,7 +171,7 @@
                 app:boxCornerRadiusBottomStart="10dp"
                 app:boxCornerRadiusTopEnd="10dp"
                 app:boxCornerRadiusTopStart="10dp"
-                app:boxStrokeColor="#797979"
+                app:boxStrokeColor="@color/dark_silver"
                 app:hintEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
