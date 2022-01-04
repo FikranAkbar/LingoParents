@@ -35,7 +35,7 @@
         android:id="@+id/tv_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="40dp"
         android:fontFamily="@font/poppins_w600"
         android:text="@string/register"
         android:textAppearance="@style/Typography.Headline5"
@@ -266,6 +266,8 @@
                 app:boxCornerRadiusTopStart="0dp"
                 app:boxStrokeColor="@color/primary_orange"
                 app:hintEnabled="false"
+                android:layout_marginBottom="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/cv_phone"
                 app:layout_constraintTop_toBottomOf="@id/til_password">
@@ -402,6 +404,7 @@
         android:layout_height="1dp"
         android:layout_marginHorizontal="8dp"
         android:background="@color/black"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@id/tv_or"
         app:layout_constraintEnd_toStartOf="@id/tv_or"
         app:layout_constraintStart_toStartOf="parent"
@@ -409,6 +412,7 @@
 
     <TextView
         android:id="@+id/tv_or"
+        android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
@@ -422,6 +426,7 @@
     <View
         android:id="@+id/line_right"
         android:layout_width="0dp"
+        android:visibility="invisible"
         android:layout_height="1dp"
         android:layout_marginHorizontal="8dp"
         android:background="@color/black"
@@ -433,6 +438,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/mbtn_login_with_google"
         android:layout_width="0dp"
+        android:visibility="invisible"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
         android:layout_marginBottom="16dp"

@@ -22,6 +22,8 @@ class ProgressViewModel(private val tokenPreferences: TokenPreferences) : ViewMo
     private val progressEventChannel = Channel<ProgressEvent>()
     val progressEvent = progressEventChannel.receiveAsFlow()
 
+    var lastSelectedSpinnerItem = 0
+
     private fun onApiCallStarted() = viewModelScope.launch {
         progressEventChannel.send(ProgressEvent.Loading)
     }
