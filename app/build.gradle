@@ -5,6 +5,10 @@ plugins {
     id 'kotlin-parcelize'
 }
 
+// Define Google Auth ID
+def GOOGLE_CLIENT_ID = '""' + GoogleClientId + '""' ?: '"Define your Google Client Id!"'
+def GOOGLE_CLIENT_SECRET = '""' + GoogleClientSecret + '""' ?: '"Define your Google Client Secret!"'
+
 android {
     compileSdk 31
 

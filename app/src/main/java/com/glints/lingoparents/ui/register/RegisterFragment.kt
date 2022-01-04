@@ -9,23 +9,36 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentRegisterBinding
+import com.glints.lingoparents.ui.progress.learning.ProgressLearningCourseViewModel
 import com.glints.lingoparents.utils.AuthFormValidator
+import com.glints.lingoparents.utils.CustomViewModelFactory
+import com.glints.lingoparents.utils.TokenPreferences
+import com.glints.lingoparents.utils.dataStore
 import kotlinx.coroutines.flow.collect
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: RegisterViewModel by viewModels()
 
-    private val genderItems = listOf<String>("Male", "Female")
+    private lateinit var tokenPreferences: TokenPreferences
+    private lateinit var viewModel: RegisterViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _binding = FragmentRegisterBinding.bind(view)
+
+        tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
+        viewModel = ViewModelProvider(this, CustomViewModelFactory(
+            tokenPreferences, this,
+            googleIdToken = arguments?.getString(RegisterViewModel.GOOGLE_ID_TOKEN_KEY)
+        ))[
+                RegisterViewModel::class.java
+        ]
 
         binding.apply {
             mbtnLogin.setOnClickListener {
@@ -37,14 +50,13 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                     lastName = tilLastName.editText?.text.toString(),
                     email = tilEmail.editText?.text.toString(),
                     password = tilPassword.editText?.text.toString(),
-                    phone = tilPhone.editText?.text.toString(),
-                    gender = tilGender.editText?.text.toString(),
-                    address = tilAddress.editText?.text.toString()
+                    phone = tilPhone.editText?.text.toString()
                 )
             }
+            tilFirstName.editText?.setText(viewModel.googleFirstName)
+            tilLastName.editText?.setText(viewModel.googleLastName)
+            tilEmail.editText?.setText(viewModel.googleEmail)
         }
-
-        setGenderItems()
 
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
@@ -54,7 +66,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             }
         )
 
-        lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.registerEvent.collect { event ->
                 when (event) {
                     is RegisterViewModel.RegisterEvent.NavigateBackToLogin -> {
@@ -76,9 +88,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                                         tilFirstName,
                                         tilLastName,
                                         tilPassword,
-                                        tilPhone,
-                                        tilGender,
-                                        tilAddress
+                                        tilPhone
                                     )
                                 )
 
@@ -87,25 +97,19 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                                 val email = event.email
                                 val password = event.password
                                 val phone = event.phone
-                                val gender = event.gender
-                                val address = event.address
 
                                 if (isValidEmail(email) &&
                                     isValidPassword(password) &&
                                     isValidField(firstName) &&
                                     isValidField(lastName) &&
-                                    isValidPhoneNumber(phone) &&
-                                    isValidField(gender) &&
-                                    isValidField(address)
+                                    isValidField(phone)
                                 ) {
                                     viewModel.registerUser(
                                         email,
                                         password,
                                         firstName,
                                         lastName,
-                                        phone,
-                                        gender,
-                                        address
+                                        phone
                                     )
                                 } else {
                                     if (!isValidEmail(email)) {
@@ -120,14 +124,8 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                                     if (!isValidField(lastName)) {
                                         showFieldError(tilLastName, EMPTY_FIELD_ERROR)
                                     }
-                                    if (!isValidPhoneNumber(phone)) {
-                                        showFieldError(tilPhone, PHONENUMBER_ERROR)
-                                    }
-                                    if (!isValidField(gender)) {
-                                        showFieldError(tilGender, EMPTY_FIELD_ERROR)
-                                    }
-                                    if (!isValidField(address)) {
-                                        showFieldError(tilAddress, EMPTY_FIELD_ERROR)
+                                    if (!isValidField(phone)) {
+                                        showFieldError(tilPhone, EMPTY_FIELD_ERROR)
                                     }
                                 }
                             }
@@ -164,21 +162,32 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         }
     }
 
-    private fun setGenderItems() {
-        val adapter = ArrayAdapter(requireContext(), R.layout.item_gender, genderItems)
-        (binding.tilGender.editText as AutoCompleteTextView).setAdapter(adapter)
-    }
-
     private fun showLoading(bool: Boolean) {
         binding.apply {
             when (bool) {
                 true -> {
                     vLoadingBackground.visibility = View.VISIBLE
                     vLoadingProgress.visibility = View.VISIBLE
+                    mbtnSubmit.isClickable = false
+                    mbtnLoginWithGoogle.isClickable = false
+                    mbtnLogin.isClickable = false
+                    tilFirstName.isEnabled = false
+                    tilLastName.isEnabled = false
+                    tilEmail.isEnabled = false
+                    tilPassword.isEnabled = false
+                    tilPhone.isEnabled = false
                 }
                 else -> {
                     vLoadingBackground.visibility = View.GONE
                     vLoadingProgress.visibility = View.GONE
+                    mbtnSubmit.isClickable = true
+                    mbtnLoginWithGoogle.isClickable = true
+                    mbtnLogin.isClickable = true
+                    tilFirstName.isEnabled = true
+                    tilLastName.isEnabled = true
+                    tilEmail.isEnabled = true
+                    tilPassword.isEnabled = true
+                    tilPhone.isEnabled = true
                 }
             }
         }

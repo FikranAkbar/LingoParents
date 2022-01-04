@@ -27,7 +27,6 @@ import com.opensooq.pluto.listeners.OnSlideChangeListener
 import kotlinx.coroutines.flow.collect
 
 class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemClickCallback {
-    private var tokenValue = ""
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
@@ -85,16 +84,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
             }
         }
 
-
-        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
-            tokenValue = accessToken
-            if (tokenValue != "") {
-                viewModel.getRecentInsight(HomeViewModel.INSIGHT_TYPE)
-                viewModel.getAllEvent(HomeViewModel.EVENT_TYPE)
-
-            }
-
-        }
+        viewModel.getRecentInsight(HomeViewModel.INSIGHT_TYPE)
+        viewModel.getAllEvent(HomeViewModel.EVENT_TYPE)
 
 
         binding.apply {
@@ -317,11 +308,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
         }
     }
 
-    //belum selesai
     override fun onItemClicked(children: StudentListResponse.DataItem) {
-//        Toast.makeText(context, "student id: ${children.student_id}", Toast.LENGTH_SHORT)
-//            .show()
-        val action = R.id.action_homeFragment_to_progressFragment
+        val action = HomeFragmentDirections.actionHomeFragmentToProgressFragment(children.name)
         findNavController().navigate(action)
 
     }

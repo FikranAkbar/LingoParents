@@ -28,11 +28,14 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
             R.string.tab_progress_text_1,
             R.string.tab_progress_text_2
         )
+        private const val SELECTED_SPINNER_ITEM = "selected_spinner_item"
+        private const val SELECTED_CHILDREN_FROM_HOME = "children_name"
     }
 
     private var _binding: FragmentProgressBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var selectedChildrenNameFromHome: String
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var viewModel: ProgressViewModel
 
@@ -44,6 +47,9 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
         viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this))[
                 ProgressViewModel::class.java
         ]
+
+        selectedChildrenNameFromHome = arguments?.getString(SELECTED_CHILDREN_FROM_HOME) ?: ""
+        arguments?.clear()
 
         viewModel.getParentId().observe(viewLifecycleOwner) { parentId ->
             viewModel.getStudentListByParentId(parentId)
@@ -119,6 +125,14 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
         val nameList = map.keys.toList()
         val arrayAdapter = ArrayAdapter(requireContext(), R.layout.item_student, nameList)
         spinner.adapter = arrayAdapter
+        if (selectedChildrenNameFromHome.isNotBlank()) {
+            val childrenIndex = nameList.indexOf(selectedChildrenNameFromHome)
+            spinner.setSelection(childrenIndex)
+            selectedChildrenNameFromHome = ""
+        }
+        else {
+            spinner.setSelection(viewModel.lastSelectedSpinnerItem)
+        }
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -129,6 +143,7 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
                 val selectedItem = parent?.getItemAtPosition(position) as String
                 Log.d("MAP:", map.toString())
                 Log.d("SELECTEDITEM:", selectedItem)
+                viewModel.lastSelectedSpinnerItem = position
                 if (selectedItem != "No Students") {
                     val studentId = map[selectedItem]!!
                     viewModel.saveSelectedStudentId(studentId)
@@ -149,7 +164,6 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
             override fun onNothingSelected(p0: AdapterView<*>?) {
 
             }
-
         }
     }
 
@@ -160,8 +174,16 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
         spinner.isClickable = false
     }
 
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+
+        binding.spStudents.setSelection(viewModel.lastSelectedSpinnerItem)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+        println("Apakah hancur ?")
     }
 }

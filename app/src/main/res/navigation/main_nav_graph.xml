@@ -25,7 +25,13 @@
         android:id="@+id/registerFragment"
         android:name="com.glints.lingoparents.ui.register.RegisterFragment"
         android:label="fragment_register"
-        tools:layout="@layout/fragment_register" />
+        tools:layout="@layout/fragment_register" >
+        <argument
+            android:name="idToken"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.glints.lingoparents.ui.splash.SplashFragment"
