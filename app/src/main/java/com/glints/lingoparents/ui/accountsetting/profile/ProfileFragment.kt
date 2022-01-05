@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentProfileBinding
 import com.glints.lingoparents.ui.MainActivity
+import com.glints.lingoparents.utils.AuthFormValidator
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
@@ -19,7 +20,6 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
-    //amin
     private var emailValue: String? = null
 
 
@@ -61,14 +61,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     tfAddress.editText?.text.toString(),
                     tfPhoneNumber.editText?.text.toString()
                 )
-                exitEditState()
-                //binding.fragmentProfile.invalidate()
             }
             mbtnLogout.setOnClickListener {
                 viewModel.onLogOutButtonClick()
             }
         }
-        //amin
+
         lifecycleScope.launchWhenStarted {
             viewModel.profileEvent.collect { event ->
                 when (event) {
@@ -78,7 +76,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                         startActivity(intent)
                         requireActivity().finish()
                     }
-                    //amin
                     is ProfileViewModel.ProfileEvent.Success -> {
                         binding.apply {
                             event.parentProfile.apply {
@@ -91,31 +88,75 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                         }
                     }
                     is ProfileViewModel.ProfileEvent.TryToEditProfile -> {
-                        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
-                            viewModel.editParentProfile(
-                                accessToken,
-                                event.firstname,
-                                event.lastname,
-                                event.address,
-                                event.phone
-                            )
+                        binding.apply {
+                            val firstname = tfFirstName.editText?.text.toString()
+                            val lastname = tfLastName.editText?.text.toString()
+                            val address = tfAddress.editText?.text.toString()
+                            val phonenumber = tfPhoneNumber.editText?.text.toString()
+                            AuthFormValidator.apply {
+                                hideFieldError(
+                                    arrayListOf(
+                                        tfFirstName,
+                                        tfLastName,
+                                        tfEmail,
+                                        tfAddress,
+                                        tfPhoneNumber
+                                    )
+                                )
+                                if (isValidField(firstname) && isValidField(lastname) && isValidField(
+                                        address
+                                    ) && isValidPhoneNumber(phonenumber)
+                                ) {
+                                    viewModel.getAccessToken()
+                                        .observe(viewLifecycleOwner) { accessToken ->
+                                            viewModel.editParentProfile(
+                                                accessToken,
+                                                event.firstname,
+                                                event.lastname,
+                                                event.address,
+                                                event.phone
+                                            )
+                                        }
+                                    exitEditState()
+
+                                } else {
+                                    if (!isValidField(firstname)) {
+                                        showFieldError(tfFirstName, EMPTY_FIELD_ERROR)
+                                    }
+                                    if (!isValidField(lastname)) {
+                                        showFieldError(tfLastName, EMPTY_FIELD_ERROR)
+                                    }
+                                    if (!isValidField(address)) {
+                                        showFieldError(tfAddress, EMPTY_FIELD_ERROR)
+                                    }
+                                    if (!isValidPhoneNumber(phonenumber)) {
+                                        showFieldError(tfPhoneNumber, PHONENUMBER_ERROR)
+                                    }
+                                }
+                            }
                         }
+
                     }
                     is ProfileViewModel.ProfileEvent.EditSuccess -> {
                         Snackbar.make(requireView(), "Edit Profile Success", Snackbar.LENGTH_LONG)
                             .setBackgroundTint(Color.parseColor("#42ba96"))
                             .setTextColor(Color.parseColor("#FFFFFF"))
                             .show()
-                        //findNavController().navigate(R.id.accountSettingFragment)
                         viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
                             viewModel.getParentProfile(accessToken)
                         }
-
+                    }
+                    is ProfileViewModel.ProfileEvent.SendToAccountSetting -> {
+                        val eventBusActionToAccountSetting =
+                            ProfileViewModel.EventBusActionToAccountSetting.SendParentData(event.parentProfile)
+                        viewModel.sendParentDataToAccountSettingFragment(
+                            eventBusActionToAccountSetting
+                        )
 
                     }
                     is ProfileViewModel.ProfileEvent.Error -> {
                         Snackbar.make(requireView(), "Error", Snackbar.LENGTH_LONG)
-                            .setBackgroundTint(Color.parseColor("#FF0000"))
+                            .setBackgroundTint(Color.parseColor("#F03738"))
                             .setTextColor(Color.parseColor("#FFFFFF"))
                             .show()
                     }
@@ -143,6 +184,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 mbtnCancel.visibility = this
             }
             View.INVISIBLE.apply {
+                tfEmail.visibility = this
                 tvAddressContent.visibility = this
                 tvFirstNameContent.visibility = this
                 tvLastNameContent.visibility = this
@@ -155,25 +197,40 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun exitEditState() {
         binding.apply {
-            View.VISIBLE.apply {
-                tvAddressContent.visibility = this
-                tvFirstNameContent.visibility = this
-                tvLastNameContent.visibility = this
-                tvPhoneNumberContent.visibility = this
-                mbtnLogout.visibility = this
-                mbtnEdit.visibility = this
-            }
-            View.INVISIBLE.apply {
-                tfAddress.visibility = this
-                tfAddress.editText?.setText("")
-                tfFirstName.visibility = this
-                tfFirstName.editText?.setText("")
-                tfLastName.visibility = this
-                tfLastName.editText?.setText("")
-                tfPhoneNumber.visibility = this
-                tfPhoneNumber.editText?.setText("")
-                mbtnSave.visibility = this
-                mbtnCancel.visibility = this
+            AuthFormValidator.apply {
+                hideFieldError(
+                    arrayListOf(
+                        tfFirstName,
+                        tfLastName,
+                        tfEmail,
+                        tfAddress,
+                        tfPhoneNumber
+                    )
+                )
+
+
+                View.VISIBLE.apply {
+                    tvAddressContent.visibility = this
+                    tvFirstNameContent.visibility = this
+                    tvLastNameContent.visibility = this
+                    tvPhoneNumberContent.visibility = this
+                    mbtnLogout.visibility = this
+                    mbtnEdit.visibility = this
+                }
+                View.INVISIBLE.apply {
+                    tfEmail.visibility = this
+                    tfEmail.editText?.setText("")
+                    tfAddress.visibility = this
+                    tfAddress.editText?.setText("")
+                    tfFirstName.visibility = this
+                    tfFirstName.editText?.setText("")
+                    tfLastName.visibility = this
+                    tfLastName.editText?.setText("")
+                    tfPhoneNumber.visibility = this
+                    tfPhoneNumber.editText?.setText("")
+                    mbtnSave.visibility = this
+                    mbtnCancel.visibility = this
+                }
             }
         }
     }

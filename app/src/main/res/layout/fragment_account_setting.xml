@@ -48,6 +48,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_title_account_setting">
 
         <ImageView
+            android:id="@+id/iv_profile_picture"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/ic_user_avatar_male_square"
