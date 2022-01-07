@@ -99,7 +99,10 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
                             tvNoChildren.visibility = View.VISIBLE
                         }
 
-                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(getString(R.string.default_error_message))
+                        println("LIST STUDENT: ${event.message}")
+
+                        if (event.message.lowercase() != "no data available")
+                            noInternetAccessOrErrorHandler.onNoInternetAccessOrError(getString(R.string.default_error_message))
                     }
                     is ProgressViewModel.ProgressEvent.NameListGenerated -> {
                         initSpinner(event.result)
