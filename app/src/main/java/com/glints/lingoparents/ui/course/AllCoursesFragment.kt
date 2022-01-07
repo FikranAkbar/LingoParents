@@ -1,24 +1,22 @@
 package com.glints.lingoparents.ui.course
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.glints.lingoparents.R
-import com.glints.lingoparents.data.model.CourseItem
 import com.glints.lingoparents.data.model.response.AllCoursesResponse
 import com.glints.lingoparents.databinding.FragmentAllCoursesBinding
-import com.glints.lingoparents.databinding.FragmentTodayEventBinding
 import com.glints.lingoparents.ui.course.adapter.CourseAdapter
 import com.glints.lingoparents.utils.CustomViewModelFactory
+import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import kotlinx.coroutines.flow.collect
@@ -32,10 +30,12 @@ class AllCoursesFragment : Fragment(R.layout.fragment_all_courses),
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var viewModel: AllCoursesViewModel
 
+    private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentAllCoursesBinding.inflate(inflater)
 
@@ -44,11 +44,6 @@ class AllCoursesFragment : Fragment(R.layout.fragment_all_courses),
             ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this, arguments))[
                     AllCoursesViewModel::class.java
             ]
-        //amin
-//        viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences))[
-//                AllCoursesViewModel::class.java
-//
-//        ]
 
         binding.apply {
             rvCourse.apply {
@@ -77,6 +72,7 @@ class AllCoursesFragment : Fragment(R.layout.fragment_all_courses),
                     is AllCoursesViewModel.AllCoursesEvent.Error -> {
                         showLoading(false)
                         showEmptyWarning(true)
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(getString(R.string.default_error_message))
                     }
                     is AllCoursesViewModel.AllCoursesEvent.NavigateToDetailCourseFragment -> {
                         val action =
@@ -91,6 +87,15 @@ class AllCoursesFragment : Fragment(R.layout.fragment_all_courses),
         }
 
         return binding.root
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            noInternetAccessOrErrorHandler = context as NoInternetAccessOrErrorListener
+        } catch (e: ClassCastException) {
+            println("DEBUG: $context must be implement NoInternetAccessOrErrorListener")
+        }
     }
 
     override fun onDestroy() {

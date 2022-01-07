@@ -212,4 +212,5 @@
     <string name="_7_challenges_of_parenting_a_special_kid">7 Challenges of Parenting a Special Kid</string>
     <string name="_14th_october_2021">14th October 2021</string>
     <string name="back">Back</string>
+    <string name="default_error_message">Something went wrong..</string>
 </resources>

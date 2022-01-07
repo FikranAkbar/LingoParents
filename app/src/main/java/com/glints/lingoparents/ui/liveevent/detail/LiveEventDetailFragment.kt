@@ -2,10 +2,14 @@ package com.glints.lingoparents.ui.liveevent.detail
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.activity.OnBackPressedCallback
@@ -17,10 +21,7 @@ import coil.load
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FormRegisterEventBinding
 import com.glints.lingoparents.databinding.FragmentLiveEventDetailBinding
-import com.glints.lingoparents.utils.AuthFormValidator
-import com.glints.lingoparents.utils.CustomViewModelFactory
-import com.glints.lingoparents.utils.TokenPreferences
-import com.glints.lingoparents.utils.dataStore
+import com.glints.lingoparents.utils.*
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 
@@ -44,11 +45,13 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
     private var voucherCode: String? = null
     private var paymentMethod: String? = null
 
-    @SuppressLint("SetTextI18n")
+    private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
+
+    @SuppressLint("SetTextI18n", "NewApi")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentLiveEventDetailBinding.inflate(inflater)
 
@@ -151,7 +154,7 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                             "Register Live Event Success",
                             Snackbar.LENGTH_LONG
                         )
-                            .setBackgroundTint(Color.parseColor("#42ba96"))
+                            .setBackgroundTint(resources.getColor(R.color.success_color, null))
                             .setTextColor(Color.parseColor("#FFFFFF"))
                             .show()
 
@@ -161,14 +164,7 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                         showLoading(true)
                     }
                     is LiveEventDetailViewModel.LiveEventDetailEvent.Error -> {
-                        Snackbar.make(
-                            requireView(),
-                            "Error",
-                            Snackbar.LENGTH_SHORT
-                        )
-                            .setBackgroundTint(Color.parseColor("#F03738"))
-                            .setTextColor(Color.parseColor("#FFFFFF"))
-                            .show()
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(getString(R.string.default_error_message))
                         showLoading(false)
                     }
 
@@ -303,6 +299,15 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
             formRegisterEventBinding.root.apply {
                 setPadding(30, 80, 30, 80)
             }
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            noInternetAccessOrErrorHandler = context as NoInternetAccessOrErrorListener
+        } catch (e: ClassCastException) {
+            println("DEBUG: $context must be implement NoInternetAccessOrErrorListener")
         }
     }
 }

@@ -1,7 +1,9 @@
 package com.glints.lingoparents.ui.dashboard
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -17,13 +19,15 @@ import com.glints.lingoparents.data.api.interceptors.TokenAuthenticationIntercep
 import com.glints.lingoparents.databinding.ActivityDashboardBinding
 import com.glints.lingoparents.ui.MainActivity
 import com.glints.lingoparents.utils.CustomViewModelFactory
+import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 
-class DashboardActivity : AppCompatActivity(), Toolbar.OnMenuItemClickListener {
+class DashboardActivity : AppCompatActivity(), Toolbar.OnMenuItemClickListener, NoInternetAccessOrErrorListener {
 
     private lateinit var binding: ActivityDashboardBinding
     private lateinit var navController: NavController
@@ -79,9 +83,20 @@ class DashboardActivity : AppCompatActivity(), Toolbar.OnMenuItemClickListener {
                     is DashboardViewModel.DashboardEvent.Failed -> {
                         showLoading(false)
                     }
+                    is DashboardViewModel.DashboardEvent.NoInternetAccessOrSomethingError -> {
+                        showSnackbar(event.message)
+                    }
                 }
             }
         }
+    }
+
+    @SuppressLint("NewApi")
+    private fun showSnackbar(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+            .setBackgroundTint(resources.getColor(R.color.error_color, null))
+            .setTextColor(Color.parseColor("#FFFFFF"))
+            .show()
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
@@ -108,6 +123,7 @@ class DashboardActivity : AppCompatActivity(), Toolbar.OnMenuItemClickListener {
             }
         }
     }
+
     @Subscribe
     fun onRefreshTokenExpiredEvent(event: TokenAuthenticationInterceptor.TokenAuthenticationEvent.RefreshTokenExpiredEvent) {
         viewModel.onRefreshTokenExpired()
@@ -126,6 +142,10 @@ class DashboardActivity : AppCompatActivity(), Toolbar.OnMenuItemClickListener {
                 }
             }
         }
+    }
+
+    override fun onNoInternetAccessOrError(errorMessage: String) {
+        viewModel.onNoInternetAccessOrError(errorMessage)
     }
 }
 

@@ -1,5 +1,6 @@
 package com.glints.lingoparents.ui.progress
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -14,6 +15,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentProgressBinding
 import com.glints.lingoparents.utils.CustomViewModelFactory
+import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import com.google.android.material.tabs.TabLayout
@@ -38,6 +40,8 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
     private lateinit var selectedChildrenNameFromHome: String
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var viewModel: ProgressViewModel
+
+    private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -94,6 +98,8 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
                             ivNoChildren.visibility = View.VISIBLE
                             tvNoChildren.visibility = View.VISIBLE
                         }
+
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(getString(R.string.default_error_message))
                     }
                     is ProgressViewModel.ProgressEvent.NameListGenerated -> {
                         initSpinner(event.result)
@@ -179,6 +185,15 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
         super.onViewStateRestored(savedInstanceState)
 
         binding.spStudents.setSelection(viewModel.lastSelectedSpinnerItem)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            noInternetAccessOrErrorHandler = context as NoInternetAccessOrErrorListener
+        } catch (e: ClassCastException) {
+            println("DEBUG: $context must be implement NoInternetAccessOrErrorListener")
+        }
     }
 
     override fun onDestroy() {

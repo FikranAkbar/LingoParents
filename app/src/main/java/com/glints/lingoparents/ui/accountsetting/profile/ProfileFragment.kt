@@ -1,5 +1,6 @@
 package com.glints.lingoparents.ui.accountsetting.profile
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -12,10 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentProfileBinding
 import com.glints.lingoparents.ui.MainActivity
-import com.glints.lingoparents.utils.AuthFormValidator
-import com.glints.lingoparents.utils.CustomViewModelFactory
-import com.glints.lingoparents.utils.TokenPreferences
-import com.glints.lingoparents.utils.dataStore
+import com.glints.lingoparents.utils.*
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 
@@ -27,6 +25,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val binding get() = _binding!!
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var viewModel: ProfileViewModel
+
+    private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -155,10 +155,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
                     }
                     is ProfileViewModel.ProfileEvent.Error -> {
-                        Snackbar.make(requireView(), "Error", Snackbar.LENGTH_LONG)
-                            .setBackgroundTint(Color.parseColor("#F03738"))
-                            .setTextColor(Color.parseColor("#FFFFFF"))
-                            .show()
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(getString(R.string.default_error_message))
                     }
                     is ProfileViewModel.ProfileEvent.Loading -> {
 
@@ -232,6 +229,15 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     mbtnCancel.visibility = this
                 }
             }
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            noInternetAccessOrErrorHandler = context as NoInternetAccessOrErrorListener
+        } catch (e: ClassCastException) {
+            println("DEBUG: $context must be implement NoInternetAccessOrErrorListener")
         }
     }
 

@@ -1,5 +1,6 @@
 package com.glints.lingoparents.ui.course
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
@@ -15,6 +16,7 @@ import com.glints.lingoparents.data.model.response.TrxCourseCardsItem
 import com.glints.lingoparents.databinding.FragmentDetailCourseBinding
 import com.glints.lingoparents.ui.course.adapter.DetailCourseAdapter
 import com.glints.lingoparents.utils.CustomViewModelFactory
+import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import kotlinx.coroutines.flow.collect
@@ -27,6 +29,8 @@ class DetailCourseFragment : Fragment(R.layout.fragment_detail_course),
     private lateinit var detailCourseAdapter: DetailCourseAdapter
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var viewModel: DetailCourseViewModel
+
+    private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -83,12 +87,22 @@ class DetailCourseFragment : Fragment(R.layout.fragment_detail_course),
                     is DetailCourseViewModel.CourseDetail.Error -> {
                         showLoading(false)
                         showEmptyWarning(true)
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(getString(R.string.default_error_message))
                     }
                 }
             }
         }
 
         return binding.root
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            noInternetAccessOrErrorHandler = context as NoInternetAccessOrErrorListener
+        } catch (e: ClassCastException) {
+            println("DEBUG: $context must be implement NoInternetAccessOrErrorListener")
+        }
     }
 
     override fun onDestroy() {

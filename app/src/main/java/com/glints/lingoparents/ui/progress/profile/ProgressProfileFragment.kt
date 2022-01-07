@@ -2,6 +2,7 @@ package com.glints.lingoparents.ui.progress.profile
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -17,6 +18,7 @@ import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentProgressProfileBinding
 import com.glints.lingoparents.ui.progress.ProgressViewModel
 import com.glints.lingoparents.utils.CustomViewModelFactory
+import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import kotlinx.coroutines.flow.collect
@@ -29,6 +31,8 @@ class ProgressProfileFragment : Fragment(R.layout.fragment_progress_profile) {
 
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var viewModel: ProgressProfileViewModel
+
+    private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
 
     override fun onStart() {
         super.onStart()
@@ -81,6 +85,7 @@ class ProgressProfileFragment : Fragment(R.layout.fragment_progress_profile) {
                     }
                     is ProgressProfileViewModel.ProgressProfileEvent.Error -> {
                         showLoading(false)
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(getString(R.string.default_error_message))
                     }
                 }
             }
@@ -124,6 +129,15 @@ class ProgressProfileFragment : Fragment(R.layout.fragment_progress_profile) {
     override fun onStop() {
         super.onStop()
         EventBus.getDefault().unregister(this)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            noInternetAccessOrErrorHandler = context as NoInternetAccessOrErrorListener
+        } catch (e: ClassCastException) {
+            println("DEBUG: $context must be implement NoInternetAccessOrErrorListener")
+        }
     }
 
     override fun onDestroy() {
