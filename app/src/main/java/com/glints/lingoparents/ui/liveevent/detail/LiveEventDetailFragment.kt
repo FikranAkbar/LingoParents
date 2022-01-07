@@ -67,6 +67,11 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
             mbtnRegister.setOnClickListener {
                 showDialog(inflater)
             }
+            arguments?.get("category")?.apply {
+                if (this == "completed") {
+                    mbtnRegister.visibility = View.GONE
+                }
+            }
         }
 
         viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->

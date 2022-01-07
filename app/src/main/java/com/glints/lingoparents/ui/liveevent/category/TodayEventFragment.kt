@@ -50,7 +50,9 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
             rvTodayEvent.apply {
                 setHasFixedSize(true)
                 layoutManager = LinearLayoutManager(activity)
-                liveEventListAdapter = LiveEventListAdapter(this@TodayEventFragment)
+                liveEventListAdapter = LiveEventListAdapter(
+                    this@TodayEventFragment,
+                    TodayLiveEventViewModel.TODAY_TYPE)
                 adapter = liveEventListAdapter
             }
         }
@@ -108,12 +110,12 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
         Log.d("IDEvent", item.id.toString())
     }
 
-    @Subscribe
+    @Subscribe(sticky = true)
     fun onBlankQuerySent(event: LiveEventListViewModel.LiveEventListEvent.SendBlankQueryToEventListFragment) {
         viewModel.loadTodayLiveEventList()
     }
 
-    @Subscribe
+    @Subscribe(sticky = true)
     fun onSearchViewDoneEditing(event: LiveEventListViewModel.LiveEventListEvent.SendQueryToEventListFragment) {
         viewModel.searchTodayLiveEventList(event.query)
     }

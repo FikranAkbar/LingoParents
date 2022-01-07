@@ -47,7 +47,9 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
             rvUpcomingEvent.apply {
                 setHasFixedSize(true)
                 layoutManager = LinearLayoutManager(activity)
-                liveEventListAdapter = LiveEventListAdapter(this@UpcomingEventFragment)
+                liveEventListAdapter = LiveEventListAdapter(
+                    this@UpcomingEventFragment,
+                    UpcomingLiveEventViewModel.UPCOMING_TYPE)
                 adapter = liveEventListAdapter
             }
         }
@@ -105,12 +107,12 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
         Log.d("IDEvent", item.id.toString())
     }
 
-    @Subscribe
+    @Subscribe(sticky = true)
     fun onBlankQuerySent(event: LiveEventListViewModel.LiveEventListEvent.SendBlankQueryToEventListFragment) {
         viewModel.loadUpcomingLiveEventList()
     }
 
-    @Subscribe
+    @Subscribe(sticky = true)
     fun onSearchViewDoneEditing(event: LiveEventListViewModel.LiveEventListEvent.SendQueryToEventListFragment) {
         viewModel.searchUpcomingLiveEventList(event.query)
     }

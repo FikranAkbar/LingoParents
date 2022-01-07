@@ -5,12 +5,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.glints.lingoparents.data.model.response.LiveEventListResponse
 import com.glints.lingoparents.databinding.ItemLiveEventBinding
 
-class LiveEventListAdapter(private val listener: OnItemClickCallback) :
+class LiveEventListAdapter(
+    private val listener: OnItemClickCallback,
+    private val category: String,
+) :
     RecyclerView.Adapter<LiveEventListAdapter.CustomViewHolder>() {
 
     private val liveEventList = ArrayList<LiveEventListResponse.LiveEventItemResponse>()
@@ -22,11 +23,14 @@ class LiveEventListAdapter(private val listener: OnItemClickCallback) :
         notifyDataSetChanged()
     }
 
-    inner class CustomViewHolder(private val itemLiveEventBinding: ItemLiveEventBinding) :
+    inner class CustomViewHolder(
+        private val itemLiveEventBinding: ItemLiveEventBinding,
+        private val category: String,
+    ) :
         RecyclerView.ViewHolder(itemLiveEventBinding.root) {
         fun bind(
             holder: CustomViewHolder,
-            item: LiveEventListResponse.LiveEventItemResponse
+            item: LiveEventListResponse.LiveEventItemResponse,
         ) {
             holder.itemView.setOnClickListener {
                 listener.onItemClicked(item)
@@ -37,6 +41,10 @@ class LiveEventListAdapter(private val listener: OnItemClickCallback) :
                 tvLiveEventDate.text = item.date
 
                 ivImage.load(item.speaker_photo)
+
+                detailText.text =
+                    if (category.lowercase() == "completed") "Completed" else "Show more"
+
             }
         }
     }
@@ -44,7 +52,7 @@ class LiveEventListAdapter(private val listener: OnItemClickCallback) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         val itemLiveEventBinding =
             ItemLiveEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CustomViewHolder(itemLiveEventBinding)
+        return CustomViewHolder(itemLiveEventBinding, category)
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {

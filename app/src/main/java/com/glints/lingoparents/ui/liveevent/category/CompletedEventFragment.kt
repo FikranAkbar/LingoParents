@@ -34,7 +34,7 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentCompletedEventBinding.inflate(inflater)
 
@@ -48,7 +48,9 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
             rvCompletedEvent.apply {
                 setHasFixedSize(true)
                 layoutManager = LinearLayoutManager(activity)
-                liveEventListAdapter = LiveEventListAdapter(this@CompletedEventFragment)
+                liveEventListAdapter = LiveEventListAdapter(
+                    this@CompletedEventFragment,
+                    CompletedLiveEventViewModel.COMPLETED_TYPE)
                 adapter = liveEventListAdapter
             }
         }
@@ -74,7 +76,8 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
                     is CompletedLiveEventViewModel.CompletedLiveEventListEvent.NavigateToDetailLiveEventFragment -> {
                         val action =
                             LiveEventListFragmentDirections.actionLiveEventListFragmentToLiveEventDetailFragment(
-                                event.id
+                                event.id,
+                                CompletedLiveEventViewModel.COMPLETED_TYPE
                             )
                         findNavController().navigate(action)
                     }
@@ -105,12 +108,12 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
         Log.d("IDEvent", item.id.toString())
     }
 
-    @Subscribe
+    @Subscribe(sticky = true)
     fun onBlankQuerySent(event: LiveEventListViewModel.LiveEventListEvent.SendBlankQueryToEventListFragment) {
         viewModel.loadCompletedLiveEventList()
     }
 
-    @Subscribe
+    @Subscribe(sticky = true)
     fun onQuerySent(event: LiveEventListViewModel.LiveEventListEvent.SendQueryToEventListFragment) {
         viewModel.searchCompletedLiveEventList(event.query)
     }
