@@ -1,5 +1,6 @@
 package com.glints.lingoparents.ui.resetpassword
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentResetPasswordBinding
 import com.glints.lingoparents.utils.AuthFormValidator
+import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 
@@ -19,6 +21,8 @@ class ResetPasswordFragment : Fragment(R.layout.fragment_reset_password) {
     private var _binding: FragmentResetPasswordBinding? = null
     private val binding get() = _binding!!
     private val viewModel: ResetPasswordViewModel by viewModels()
+
+    private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _binding = FragmentResetPasswordBinding.bind(view)
@@ -55,7 +59,7 @@ class ResetPasswordFragment : Fragment(R.layout.fragment_reset_password) {
                     }
                     is ResetPasswordViewModel.ResetPasswordEvent.Error -> {
                         showLoading(false)
-                        Snackbar.make(binding.root, event.message, Snackbar.LENGTH_LONG).show()
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(getString(R.string.default_error_message))
                     }
                     is ResetPasswordViewModel.ResetPasswordEvent.NavigateToLogin -> {
                         val action = ResetPasswordFragmentDirections.actionGlobalLoginFragment()
@@ -115,6 +119,15 @@ class ResetPasswordFragment : Fragment(R.layout.fragment_reset_password) {
                     vLoadingProgress.visibility = View.GONE
                 }
             }
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            noInternetAccessOrErrorHandler = context as NoInternetAccessOrErrorListener
+        } catch (e: ClassCastException) {
+            println("DEBUG: $context must be implement NoInternetAccessOrErrorListener")
         }
     }
 

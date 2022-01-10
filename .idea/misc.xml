@@ -3,23 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/drawable/ic_user.xml" value="0.290625" />
-        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_account_setting.xml" value="0.27447916666666666" />
-        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_change_password.xml" value="0.1962962962962963" />
-        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_detail_insight.xml" value="0.264" />
-        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_insight_list.xml" value="0.264" />
-        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_live_event_detail.xml" value="0.264" />
-        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_live_event_list.xml" value="0.22314814814814815" />
-        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_login.xml" value="0.22314814814814815" />
-        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_parenting_insight.xml" value="0.27447916666666666" />
-        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_register.xml" value="0.22314814814814815" />
-        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/item_insight_comment.xml" value="0.264" />
-        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/layout_or_divider.xml" value="0.27447916666666666" />
-        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/shimmer_item_insight_comment.xml" value="0.27447916666666666" />
+        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_detail_insight.xml" value="0.1" />
+        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/item_insight_comment.xml" value="0.22962962962962963" />
         <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/shimmer_item_insight_detail.xml" value="0.2212962962962963" />
-        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/shimmer_item_live_event_detail.xml" value="0.264" />
-        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/menu/dashboard_app_bar_menu.xml" value="0.264" />
-        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/menu/dashboard_bottom_nav_menu.xml" value="0.264" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/drawable/shadow_border.xml" value="0.290625" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_all_insight.xml" value="0.23333333333333334" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/layout/fragment_detail_insight.xml" value="0.27447916666666666" />
@@ -82,7 +68,7 @@
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_forgot_password.xml" value="0.33" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_header.xml" value="0.22" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_home.xml" value="0.22" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_insight_list.xml" value="0.2" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_insight_list.xml" value="0.9" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_live_event_detail.xml" value="0.33" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_live_event_list.xml" value="0.33" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_login.xml" value="0.33" />
@@ -122,7 +108,7 @@
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/carousel_item_insight.xml" value="0.18" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/carousel_item_live_event.xml" value="0.25" />
-        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/form_register_event.xml" value="0.2" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/form_register_event.xml" value="0.12" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_account_setting.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_all_courses.xml" value="0.209375" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_all_insight.xml" value="0.209375" />
@@ -138,7 +124,7 @@
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_live_event_list.xml" value="0.33" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_login.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_parenting_insight.xml" value="0.1" />
-        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_profile.xml" value="0.4791418355184744" />
+        <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_profile.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_progress.xml" value="0.15" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_progress_learning.xml" value="0.1" />
         <entry key="..\:/Users/Amin/AndroidStudioProjects/glints/project/mobile-lingoparent/app/src/main/res/layout/fragment_progress_learning_course.xml" value="0.1" />

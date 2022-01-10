@@ -160,6 +160,11 @@
             android:name="id"
             android:defaultValue="-1"
             app:argType="integer" />
+        <argument
+            android:name="category"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true" />
     </fragment>
 
     <fragment

@@ -1,10 +1,10 @@
 package com.glints.lingoparents.ui.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +19,7 @@ import com.glints.lingoparents.ui.home.adapter.ChildrenAdapter
 import com.glints.lingoparents.ui.home.adapter.InsightSliderAdapter
 import com.glints.lingoparents.ui.home.adapter.LiveEventSliderAdapter
 import com.glints.lingoparents.utils.CustomViewModelFactory
+import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import com.opensooq.pluto.base.PlutoAdapter
@@ -37,10 +38,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
     private lateinit var childrenAdapter: ChildrenAdapter
     private lateinit var insightSliderAdapter: InsightSliderAdapter
 
+    private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
 
         _binding = FragmentHomeBinding.inflate(inflater)
@@ -120,6 +123,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
                     is HomeViewModel.StudentList.Error -> {
                         showLoading(HomeViewModel.STUDENTLIST_TYPE, false)
                         showEmptyData(HomeViewModel.STUDENTLIST_TYPE, true)
+
+                        if (student.message.lowercase() != "failed")
+                            noInternetAccessOrErrorHandler.onNoInternetAccessOrError(student.message)
                     }
 
                 }
@@ -149,7 +155,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
                             setOnSlideChangeListener(object : OnSlideChangeListener {
                                 override fun onSlideChange(
                                     adapter: PlutoAdapter<*, *>,
-                                    position: Int
+                                    position: Int,
                                 ) {
 
                                 }
@@ -169,6 +175,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
                     is HomeViewModel.AllEvent.Error -> {
                         showLoading(HomeViewModel.EVENT_TYPE, false)
                         showEmptyData(HomeViewModel.EVENT_TYPE, true)
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
                     }
 
                 }
@@ -192,7 +199,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
                             object : OnItemClickListener<RecentInsightItem> {
                                 override fun onItemClicked(
                                     item: RecentInsightItem?,
-                                    position: Int
+                                    position: Int,
                                 ) {
                                     viewModel.goToDetailPage(HomeViewModel.INSIGHT_TYPE, item!!.id)
 
@@ -205,7 +212,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
                             setOnSlideChangeListener(object : OnSlideChangeListener {
                                 override fun onSlideChange(
                                     adapter: PlutoAdapter<*, *>,
-                                    position: Int
+                                    position: Int,
                                 ) {
 
                                 }
@@ -226,6 +233,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
                     is HomeViewModel.RecentInsight.Error -> {
                         showLoading(HomeViewModel.INSIGHT_TYPE, false)
                         showEmptyData(HomeViewModel.INSIGHT_TYPE, true)
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(insight.message)
                     }
 
                 }
@@ -311,6 +319,14 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
     override fun onItemClicked(children: StudentListResponse.DataItem) {
         val action = HomeFragmentDirections.actionHomeFragmentToProgressFragment(children.name)
         findNavController().navigate(action)
+    }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            noInternetAccessOrErrorHandler = context as NoInternetAccessOrErrorListener
+        } catch (e: ClassCastException) {
+            println("DEBUG: $context must be implement NoInternetAccessOrErrorListener")
+        }
     }
 }

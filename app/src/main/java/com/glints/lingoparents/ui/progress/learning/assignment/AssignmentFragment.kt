@@ -1,8 +1,8 @@
 package com.glints.lingoparents.ui.progress.learning.assignment
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
@@ -10,15 +10,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSnapHelper
-import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.SnapHelper
 import coil.load
 import com.glints.lingoparents.R
 import com.glints.lingoparents.data.model.QuestionItem
 import com.glints.lingoparents.databinding.FragmentAssignmentBinding
 import com.glints.lingoparents.ui.progress.adapter.QuestionAdapter
 import com.glints.lingoparents.utils.CustomViewModelFactory
+import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import kotlinx.coroutines.flow.collect
@@ -30,6 +28,8 @@ class AssignmentFragment : Fragment(R.layout.fragment_assignment) {
 
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var viewModel: AssignmentViewModel
+
+    private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -90,7 +90,7 @@ class AssignmentFragment : Fragment(R.layout.fragment_assignment) {
                         }
                     }
                     is AssignmentViewModel.AssignmentEvent.Error -> {
-                        Log.d("ERROR:", event.message)
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
                     }
                 }
             }
@@ -114,6 +114,15 @@ class AssignmentFragment : Fragment(R.layout.fragment_assignment) {
                 QuestionAdapter.OnItemClickCallback {
                 override fun onItemClicked(question: QuestionItem) {}
             })
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            noInternetAccessOrErrorHandler = context as NoInternetAccessOrErrorListener
+        } catch (e: ClassCastException) {
+            println("DEBUG: $context must be implement NoInternetAccessOrErrorListener")
         }
     }
 

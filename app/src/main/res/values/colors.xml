@@ -23,4 +23,6 @@
     <color name="line_divider_color">#33000000</color>
     <color name="green">#4FE34E</color>
     <color name="bright_grey">#E8EAF2</color>
+    <color name="error_color">#F03738</color>
+    <color name="success_color">#42BA96</color>
 </resources>

@@ -1,6 +1,7 @@
 package com.glints.lingoparents.ui.progress.learning
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -26,6 +27,7 @@ import com.glints.lingoparents.databinding.FragmentProgressLearningCourseBinding
 import com.glints.lingoparents.ui.progress.ProgressFragmentDirections
 import com.glints.lingoparents.ui.progress.adapter.SessionAdapter
 import com.glints.lingoparents.utils.CustomViewModelFactory
+import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import com.google.android.material.card.MaterialCardView
@@ -40,6 +42,8 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
 
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var viewModel: ProgressLearningCourseViewModel
+
+    private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
 
     @SuppressLint("UseCompatLoadingForDrawables", "SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -246,6 +250,7 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
                         showLoading(false)
                     }
                     is ProgressLearningCourseViewModel.ProgressLearningCourseEvent.Error -> {
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
                         showLoading(false)
                     }
                 }
@@ -348,4 +353,14 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
             }
         }
     }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            noInternetAccessOrErrorHandler = context as NoInternetAccessOrErrorListener
+        } catch (e: ClassCastException) {
+            println("DEBUG: $context must be implement NoInternetAccessOrErrorListener")
+        }
+    }
+
 }

@@ -80,6 +80,7 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginVertical="20dp"
         app:cardElevation="8dp"
+        app:cardCornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -93,11 +94,12 @@
                 android:id="@+id/tv_category_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:padding="18dp"
                 android:fontFamily="@font/poppins_w700"
                 android:text="@string/live_event"
                 android:textAlignment="center"
                 android:textSize="24sp"
+                android:textAppearance="@style/Typography.Headline5"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <View

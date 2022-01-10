@@ -50,8 +50,9 @@ class AllCoursesViewModel(private val tokenPreferences: TokenPreferences) : View
                     if (response.isSuccessful) {
                         onApiCallSuccess(response.body()?.data!!)
                     } else {
-                        val apiError = ErrorUtils.parseError(response)
-                        onApiCallError(apiError.message())
+                        //val apiError = ErrorUtils.parseError(response)
+                        //onApiCallError(apiError.message())
+                        onApiCallError("")
                     }
                 }
 

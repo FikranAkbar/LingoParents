@@ -1,5 +1,6 @@
 package com.glints.lingoparents.ui.liveevent.category
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import com.glints.lingoparents.databinding.FragmentUpcomingEventBinding
 import com.glints.lingoparents.ui.liveevent.LiveEventListFragmentDirections
 import com.glints.lingoparents.ui.liveevent.LiveEventListViewModel
 import com.glints.lingoparents.utils.CustomViewModelFactory
+import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import kotlinx.coroutines.flow.collect
@@ -30,6 +32,9 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
     private lateinit var liveEventListAdapter: LiveEventListAdapter
     private lateinit var viewModel: UpcomingLiveEventViewModel
     private lateinit var tokenPreferences: TokenPreferences
+
+    private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +52,9 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
             rvUpcomingEvent.apply {
                 setHasFixedSize(true)
                 layoutManager = LinearLayoutManager(activity)
-                liveEventListAdapter = LiveEventListAdapter(this@UpcomingEventFragment)
+                liveEventListAdapter = LiveEventListAdapter(
+                    this@UpcomingEventFragment,
+                    UpcomingLiveEventViewModel.UPCOMING_TYPE)
                 adapter = liveEventListAdapter
             }
         }
@@ -69,6 +76,9 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
                         liveEventListAdapter.submitList(listOf())
                         showLoading(false)
                         showEmptyWarning(true)
+
+                        if (event.message.lowercase() != "not found")
+                            noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
                     }
                     is UpcomingLiveEventViewModel.UpcomingLiveEventListEvent.NavigateToDetailLiveEventFragment -> {
                         val action =
@@ -100,17 +110,26 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
         _binding = null
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            noInternetAccessOrErrorHandler = context as NoInternetAccessOrErrorListener
+        } catch (e: ClassCastException) {
+            println("DEBUG: $context must be implement NoInternetAccessOrErrorListener")
+        }
+    }
+
     override fun onItemClicked(item: LiveEventListResponse.LiveEventItemResponse) {
         viewModel.onUpcomingLiveEventItemClick(item.id)
         Log.d("IDEvent", item.id.toString())
     }
 
-    @Subscribe
+    @Subscribe(sticky = true)
     fun onBlankQuerySent(event: LiveEventListViewModel.LiveEventListEvent.SendBlankQueryToEventListFragment) {
         viewModel.loadUpcomingLiveEventList()
     }
 
-    @Subscribe
+    @Subscribe(sticky = true)
     fun onSearchViewDoneEditing(event: LiveEventListViewModel.LiveEventListEvent.SendQueryToEventListFragment) {
         viewModel.searchUpcomingLiveEventList(event.query)
     }

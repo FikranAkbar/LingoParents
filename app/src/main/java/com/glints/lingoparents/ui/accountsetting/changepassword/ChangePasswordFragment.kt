@@ -1,24 +1,18 @@
 package com.glints.lingoparents.ui.accountsetting.changepassword
 
-import android.content.Intent
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentChangePasswordBinding
-import com.glints.lingoparents.ui.MainActivity
-import com.glints.lingoparents.ui.accountsetting.profile.ProfileViewModel
 import com.glints.lingoparents.utils.CustomViewModelFactory
+import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import com.google.android.material.snackbar.Snackbar
@@ -30,10 +24,12 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var viewModel: PasswordSettingViewModel
 
+    private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentChangePasswordBinding.inflate(inflater)
 
@@ -52,8 +48,6 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
             }
             mbtnCancel.setOnClickListener {
                 clearPasswordValue()
-                findNavController().navigate(R.id.accountSettingFragment)
-
             }
         }
 
@@ -72,8 +66,8 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
 
                                 if (currentPassword.isNotEmpty() && newPassword.isNotEmpty() && confirmPassword.isNotEmpty()) {
                                     if (currentPassword.length >= 8 && newPassword.length >= 8 && confirmPassword.length >= 8) {
-                                        if (newPassword.equals(confirmPassword)) {
-                                            if (!(currentPassword == newPassword)) {
+                                        if (newPassword == confirmPassword) {
+                                            if (currentPassword != newPassword) {
                                                 viewModel.changePassword(
                                                     accessToken,
                                                     currentPassword,
@@ -147,10 +141,10 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
 
                     }
                     is PasswordSettingViewModel.PasswordSettingEvent.Error -> {
-                        Snackbar.make(requireView(), "Wrong Password", Snackbar.LENGTH_SHORT)
-                            .setBackgroundTint(Color.parseColor("#F03738"))
-                            .setTextColor(Color.parseColor("#FFFFFF"))
-                            .show()
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
+                    }
+                    PasswordSettingViewModel.PasswordSettingEvent.Loading -> {
+
                     }
                 }
             }
@@ -163,6 +157,15 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
             tfCurrentPassword.editText?.setText("")
             tfNewPassword.editText?.setText("")
             tfConfirmPassword.editText?.setText("")
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            noInternetAccessOrErrorHandler = context as NoInternetAccessOrErrorListener
+        } catch (e: ClassCastException) {
+            println("DEBUG: $context must be implement NoInternetAccessOrErrorListener")
         }
     }
 
