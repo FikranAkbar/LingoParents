@@ -124,7 +124,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
                         showLoading(HomeViewModel.STUDENTLIST_TYPE, false)
                         showEmptyData(HomeViewModel.STUDENTLIST_TYPE, true)
 
-                        println("LIST STUDENT: ${student.message}")
                         if (student.message.lowercase() != "failed")
                             noInternetAccessOrErrorHandler.onNoInternetAccessOrError(getString(R.string.default_error_message))
                     }
