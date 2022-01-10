@@ -141,7 +141,7 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
 
                     }
                     is PasswordSettingViewModel.PasswordSettingEvent.Error -> {
-                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(getString(R.string.default_error_message))
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
                     }
                     PasswordSettingViewModel.PasswordSettingEvent.Loading -> {
 

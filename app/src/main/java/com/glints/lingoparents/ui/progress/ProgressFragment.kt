@@ -100,7 +100,7 @@ class ProgressFragment : Fragment(R.layout.fragment_progress) {
                         }
 
                         if (event.message.lowercase() != "no data available")
-                            noInternetAccessOrErrorHandler.onNoInternetAccessOrError(getString(R.string.default_error_message))
+                            noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
                     }
                     is ProgressViewModel.ProgressEvent.NameListGenerated -> {
                         initSpinner(event.result)

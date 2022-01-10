@@ -90,7 +90,7 @@ class AssignmentFragment : Fragment(R.layout.fragment_assignment) {
                         }
                     }
                     is AssignmentViewModel.AssignmentEvent.Error -> {
-                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(getString(R.string.default_error_message))
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
                     }
                 }
             }

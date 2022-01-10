@@ -72,7 +72,7 @@ class AllCoursesFragment : Fragment(R.layout.fragment_all_courses),
                     is AllCoursesViewModel.AllCoursesEvent.Error -> {
                         showLoading(false)
                         showEmptyWarning(true)
-                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(getString(R.string.default_error_message))
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
                     }
                     is AllCoursesViewModel.AllCoursesEvent.NavigateToDetailCourseFragment -> {
                         val action =

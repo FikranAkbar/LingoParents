@@ -155,7 +155,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
                     }
                     is ProfileViewModel.ProfileEvent.Error -> {
-                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(getString(R.string.default_error_message))
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
                     }
                     is ProfileViewModel.ProfileEvent.Loading -> {
 

@@ -80,7 +80,7 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
                         showEmptyWarning(true)
 
                         if (event.message.lowercase() != "not found")
-                            noInternetAccessOrErrorHandler.onNoInternetAccessOrError(getString(R.string.default_error_message))
+                            noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
                     }
                     is TodayLiveEventViewModel.TodayLiveEventListEvent.NavigateToDetailLiveEventFragment -> {
                         val action =

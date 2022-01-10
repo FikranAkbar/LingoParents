@@ -1,6 +1,5 @@
 package com.glints.lingoparents.ui.accountsetting.changepassword
 
-import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -17,7 +16,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class PasswordSettingViewModel(
-    private val tokenPref: TokenPreferences
+    private val tokenPref: TokenPreferences,
 ) : ViewModel() {
     private val passwordSettingChannel = Channel<PasswordSettingEvent>()
     val passwordSettingEvent = passwordSettingChannel.receiveAsFlow()
@@ -43,7 +42,7 @@ class PasswordSettingViewModel(
         data class TryToChangePassword(
             val currentPassword: String,
             val newPassword: String,
-            val confirmPassword: String
+            val confirmPassword: String,
         ) : PasswordSettingEvent()
     }
 
@@ -51,7 +50,7 @@ class PasswordSettingViewModel(
     fun onSaveButtonClick(
         currentPassword: String,
         newPassword: String,
-        confirmPassword: String
+        confirmPassword: String,
     ) = viewModelScope.launch {
         passwordSettingChannel.send(
             PasswordSettingEvent.TryToChangePassword(
@@ -67,7 +66,7 @@ class PasswordSettingViewModel(
         accessToken: String,
         currentPassword: String,
         newPassword: String,
-        confirmPassword: String
+        confirmPassword: String,
     ) = viewModelScope.launch {
         onApiCallStarted()
         APIClient
@@ -76,7 +75,7 @@ class PasswordSettingViewModel(
             .enqueue(object : Callback<ChangePasswordResponse> {
                 override fun onResponse(
                     call: Call<ChangePasswordResponse>,
-                    response: Response<ChangePasswordResponse>
+                    response: Response<ChangePasswordResponse>,
                 ) {
                     if (response.isSuccessful) {
                         onApiCallSuccess()

@@ -87,7 +87,7 @@ class DetailCourseFragment : Fragment(R.layout.fragment_detail_course),
                     is DetailCourseViewModel.CourseDetail.Error -> {
                         showLoading(false)
                         showEmptyWarning(true)
-                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(getString(R.string.default_error_message))
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
                     }
                 }
             }

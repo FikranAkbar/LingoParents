@@ -85,7 +85,7 @@ class ProgressProfileFragment : Fragment(R.layout.fragment_progress_profile) {
                     }
                     is ProgressProfileViewModel.ProgressProfileEvent.Error -> {
                         showLoading(false)
-                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(getString(R.string.default_error_message))
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
                     }
                 }
             }
