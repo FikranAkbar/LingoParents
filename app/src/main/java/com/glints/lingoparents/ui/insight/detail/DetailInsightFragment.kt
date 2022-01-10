@@ -2,13 +2,13 @@ package com.glints.lingoparents.ui.insight.detail
 
 import android.app.AlertDialog
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -22,6 +22,7 @@ import com.glints.lingoparents.databinding.FragmentDetailInsightBinding
 import com.glints.lingoparents.ui.insight.detail.adapter.CommentRepliesAdapter
 import com.glints.lingoparents.ui.insight.detail.adapter.CommentsAdapter
 import com.glints.lingoparents.utils.CustomViewModelFactory
+import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import com.google.android.material.snackbar.Snackbar
@@ -38,6 +39,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
     private lateinit var commentsAdapter: CommentsAdapter
     private lateinit var commentRepliesAdapter: CommentRepliesAdapter
     private lateinit var tokenPreferences: TokenPreferences
+    private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
 
     companion object {
         val report_body = arrayOf("Spam", "Harassment", "Rules Violation", "Other")
@@ -94,7 +96,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
                                 }
                                 tvInsightTitle.text = title
                                 tvInsightDate.text =
-                                    SimpleDateFormat("EEE, MMM d", Locale.getDefault())
+                                    SimpleDateFormat("d MMMM yyy", Locale.getDefault())
                                         .format(date)
                                 tvInsightBody.text = content
                                 tvInsightLike.text = total_like.toString()
@@ -110,6 +112,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
                     }
                     is DetailInsightViewModel.InsightDetail.Error -> {
                         showLoading(false)
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(insight.message)
                     }
                 }
             }
@@ -128,11 +131,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
                     is DetailInsightViewModel.LikeDislikeInsight.Loading -> {
                     }
                     is DetailInsightViewModel.LikeDislikeInsight.Error -> {
-                        Snackbar.make(
-                            requireView(),
-                            insight.message,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(insight.message)
                     }
                 }
             }
@@ -156,10 +155,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
 
                     }
                     is DetailInsightViewModel.CreateComment.Error -> {
-                        Snackbar.make(requireView(), "Something's Wrong", Snackbar.LENGTH_LONG)
-                            .setBackgroundTint(Color.parseColor("#FF0000"))
-                            .setTextColor(Color.parseColor("#FFFFFF"))
-                            .show()
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(insight.message)
                     }
                 }
             }
@@ -177,10 +173,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
                         commentsAdapter.showCommentReplies(commentRepliesAdapter)
                     }
                     is DetailInsightViewModel.GetCommentReplies.Error -> {
-                        Snackbar.make(requireView(), insight.message, Snackbar.LENGTH_LONG)
-                            .setBackgroundTint(Color.parseColor("#FF0000"))
-                            .setTextColor(Color.parseColor("#FFFFFF"))
-                            .show()
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(insight.message)
                     }
                 }
             }
@@ -200,11 +193,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
                         ).show()
                     }
                     is DetailInsightViewModel.ReportInsight.Error -> {
-                        Snackbar.make(
-                            requireView(),
-                            "Something went wrong...",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(insight.message)
                     }
                 }
             }
@@ -224,11 +213,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
                         ).show()
                     }
                     is DetailInsightViewModel.DeleteComment.Error -> {
-                        Snackbar.make(
-                            requireView(),
-                            insight.message,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(insight.message)
                     }
                 }
             }
@@ -248,11 +233,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
                         ).show()
                     }
                     is DetailInsightViewModel.UpdateComment.Error -> {
-                        Snackbar.make(
-                            requireView(),
-                            insight.message,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(insight.message)
                     }
                 }
             }
@@ -261,13 +242,8 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
 
     private fun showLoading(b: Boolean) {
         binding.apply {
-            if (b) {
-                shimmerLayout.visibility = View.VISIBLE
-                mainContent.visibility = View.GONE
-            } else {
-                shimmerLayout.visibility = View.GONE
-                mainContent.visibility = View.VISIBLE
-            }
+            shimmerLayout.isVisible = b
+            mainContent.isVisible = !b
         }
     }
 
@@ -357,6 +333,15 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
             dateFormat.parse(this)
         } catch (e: ParseException) {
             null
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            noInternetAccessOrErrorHandler = context as NoInternetAccessOrErrorListener
+        } catch (e: ClassCastException) {
+            println("DEBUG: $context must be implement NoInternetAccessOrErrorListener")
         }
     }
 
