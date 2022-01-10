@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -103,26 +104,16 @@ class LifestyleInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
 
     private fun showLoading(b: Boolean) {
         binding.apply {
-            if (b) {
-                rvLifestyleInsight.visibility = View.GONE
-                shimmerLayout.visibility = View.VISIBLE
-            } else {
-                rvLifestyleInsight.visibility = View.VISIBLE
-                shimmerLayout.visibility = View.GONE
-            }
+            shimmerLayout.isVisible = b
+            rvLifestyleInsight.isVisible = !b
         }
     }
 
     private fun showEmptyWarning(b: Boolean) {
         binding.apply {
-            if (b) {
-                rvLifestyleInsight.visibility = View.GONE
-                ivNoLifestyleInsight.visibility = View.VISIBLE
-                tvNoLifestyleInsight.visibility = View.VISIBLE
-            } else {
-                ivNoLifestyleInsight.visibility = View.GONE
-                tvNoLifestyleInsight.visibility = View.GONE
-            }
+            rvLifestyleInsight.isVisible = !b
+            ivNoLifestyleInsight.isVisible = b
+            tvNoLifestyleInsight.isVisible = b
         }
     }
 

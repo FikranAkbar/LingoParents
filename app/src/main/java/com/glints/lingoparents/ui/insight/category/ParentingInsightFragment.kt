@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -103,26 +104,16 @@ class ParentingInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
 
     private fun showLoading(b: Boolean) {
         binding.apply {
-            if (b) {
-                rvParentingInsight.visibility = View.GONE
-                shimmerLayout.visibility = View.VISIBLE
-            } else {
-                rvParentingInsight.visibility = View.VISIBLE
-                shimmerLayout.visibility = View.GONE
-            }
+            shimmerLayout.isVisible = b
+            rvParentingInsight.isVisible = !b
         }
     }
 
     private fun showEmptyWarning(b: Boolean) {
         binding.apply {
-            if (b) {
-                rvParentingInsight.visibility = View.GONE
-                ivNoParentingInsight.visibility = View.VISIBLE
-                tvNoParentingInsight.visibility = View.VISIBLE
-            } else {
-                ivNoParentingInsight.visibility = View.GONE
-                tvNoParentingInsight.visibility = View.GONE
-            }
+            rvParentingInsight.isVisible = !b
+            ivNoParentingInsight.isVisible = b
+            tvNoParentingInsight.isVisible = b
         }
     }
 
