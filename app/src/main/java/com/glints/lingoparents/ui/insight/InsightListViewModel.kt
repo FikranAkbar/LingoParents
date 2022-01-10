@@ -93,7 +93,7 @@ class InsightListViewModel(private val tokenPref: TokenPreferences) : ViewModel(
             .enqueue(object : Callback<AllInsightsListResponse> {
                 override fun onResponse(
                     call: Call<AllInsightsListResponse>,
-                    response: Response<AllInsightsListResponse>
+                    response: Response<AllInsightsListResponse>,
                 ) {
                     if (response.isSuccessful) {
                         onApiCallSuccess(tag, response.body()?.message!!)
@@ -136,12 +136,12 @@ class InsightListViewModel(private val tokenPref: TokenPreferences) : ViewModel(
 
     fun sendKeywordToInsightListFragment(keyword: String) = viewModelScope.launch {
         EventBus.getDefault()
-            .post(InsightSearchList.SendKeywordToInsightListFragment(keyword))
+            .postSticky(InsightSearchList.SendKeywordToInsightListFragment(keyword))
     }
 
     fun sendBlankKeywordToInsightListFragment() = viewModelScope.launch {
         EventBus.getDefault()
-            .post(InsightSearchList.SendBlankKeywordToInsightListFragment)
+            .postSticky(InsightSearchList.SendBlankKeywordToInsightListFragment)
     }
 
     sealed class InsightSearchList {

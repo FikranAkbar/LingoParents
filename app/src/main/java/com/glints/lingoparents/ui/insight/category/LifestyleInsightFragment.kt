@@ -1,5 +1,6 @@
 package com.glints.lingoparents.ui.insight.category
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.glints.lingoparents.databinding.FragmentLifestyleInsightBinding
 import com.glints.lingoparents.ui.insight.InsightListFragmentDirections
 import com.glints.lingoparents.ui.insight.InsightListViewModel
 import com.glints.lingoparents.utils.CustomViewModelFactory
+import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import kotlinx.coroutines.flow.collect
@@ -27,10 +29,11 @@ class LifestyleInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
     private lateinit var viewModel: InsightListViewModel
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var insightListAdapter: CategoriesAdapter
+    private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentLifestyleInsightBinding.inflate(inflater, container, false)
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
@@ -76,6 +79,7 @@ class LifestyleInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
                     is InsightListViewModel.LifestyleInsightList.Error -> {
                         showLoading(false)
                         showEmptyWarning(true)
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(insight.message)
                     }
                     is InsightListViewModel.LifestyleInsightList.NavigateToDetailInsightFragment -> {
                         val action = InsightListFragmentDirections
@@ -87,12 +91,12 @@ class LifestyleInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
         }
     }
 
-    @Subscribe
+    @Subscribe(sticky = true)
     fun onBlankKeywordSent(insight: InsightListViewModel.InsightSearchList.SendBlankKeywordToInsightListFragment) {
         viewModel.loadInsightList(InsightListViewModel.LIFESTYLE_TAG)
     }
 
-    @Subscribe
+    @Subscribe(sticky = true)
     fun onKeywordSent(insight: InsightListViewModel.InsightSearchList.SendKeywordToInsightListFragment) {
         viewModel.getInsightSearchList(InsightListViewModel.LIFESTYLE_TAG, insight.keyword)
     }
@@ -125,6 +129,15 @@ class LifestyleInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            noInternetAccessOrErrorHandler = context as NoInternetAccessOrErrorListener
+        } catch (e: ClassCastException) {
+            println("DEBUG: $context must be implement NoInternetAccessOrErrorListener")
+        }
     }
 
     override fun onStop() {

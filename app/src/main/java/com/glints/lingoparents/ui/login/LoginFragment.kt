@@ -119,6 +119,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     is LoginViewModel.LoginEvent.Error -> {
                         showLoading(false)
                         event.message.let { message ->
+                            event.idToken?.let { idToken ->
+                                val action =
+                                    LoginFragmentDirections.actionLoginFragmentToRegisterFragment(
+                                        idToken)
+                                findNavController().navigate(action)
+                            }
                             when {
                                 message.contains("email", ignoreCase = true) -> {
                                     AuthFormValidator.showFieldError(binding.tilEmail, message)
@@ -126,12 +132,13 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                                 message.contains("password", ignoreCase = true) -> {
                                     AuthFormValidator.showFieldError(binding.tilPassword, message)
                                 }
-                                else -> {
-                                    event.idToken?.let { idToken ->
-                                        val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment(idToken)
-                                        findNavController().navigate(action)
-                                    }
-                                }
+                                else -> Snackbar.make(requireView(),
+                                    event.message,
+                                    Snackbar.LENGTH_SHORT
+                                )
+                                    .setBackgroundTint(Color.RED)
+                                    .setTextColor(Color.WHITE)
+                                    .show()
                             }
                         }
                     }
