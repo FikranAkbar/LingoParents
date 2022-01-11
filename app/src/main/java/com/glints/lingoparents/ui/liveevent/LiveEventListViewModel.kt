@@ -7,28 +7,31 @@ import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 
 class LiveEventListViewModel : ViewModel() {
-    fun sendStickyEventQueryToLiveEventListFragment(query: String) = viewModelScope.launch {
-        EventBus.getDefault()
-            .postSticky(LiveEventListEvent.SendQueryToEventListFragment(query))
-    }
 
-    fun sendStickyEventBlankQueryToLiveEventListFragment() = viewModelScope.launch {
+    fun sendBlankQueryToLiveEventListFragment() = viewModelScope.launch {
         EventBus.getDefault()
-            .postSticky(LiveEventListEvent.SendBlankQueryToEventListFragment)
+            .post(LiveEventListEvent.SendBlankQueryToTodayEventList)
+        EventBus.getDefault()
+            .postSticky(LiveEventListEvent.SendBlankQueryToUpcomingEventList)
+        EventBus.getDefault()
+            .postSticky(LiveEventListEvent.SendBlankQueryToCompletedEventList)
     }
 
     fun sendQueryToLiveEventListFragment(query: String) = viewModelScope.launch {
         EventBus.getDefault()
-            .post(LiveEventListEvent.SendQueryToEventListFragment(query))
-    }
-
-    fun sendBlankQueryToLiveEventListFragment() = viewModelScope.launch {
+            .post(LiveEventListEvent.SendQueryToTodayEventList(query))
         EventBus.getDefault()
-            .post(LiveEventListEvent.SendBlankQueryToEventListFragment)
+            .postSticky(LiveEventListEvent.SendQueryToUpcomingEventList(query))
+        EventBus.getDefault()
+            .postSticky(LiveEventListEvent.SendQueryToCompletedEventList(query))
     }
 
     sealed class LiveEventListEvent {
-        data class SendQueryToEventListFragment(val query: String) : LiveEventListEvent()
-        object SendBlankQueryToEventListFragment : LiveEventListEvent()
+        object SendBlankQueryToTodayEventList : LiveEventListEvent()
+        object SendBlankQueryToUpcomingEventList : LiveEventListEvent()
+        object SendBlankQueryToCompletedEventList : LiveEventListEvent()
+        data class SendQueryToTodayEventList(val query: String) : LiveEventListEvent()
+        data class SendQueryToUpcomingEventList(val query: String) : LiveEventListEvent()
+        data class SendQueryToCompletedEventList(val query: String) : LiveEventListEvent()
     }
 }

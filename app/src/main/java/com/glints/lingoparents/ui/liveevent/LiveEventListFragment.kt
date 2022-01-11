@@ -16,6 +16,7 @@ import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import com.google.android.material.tabs.TabLayoutMediator
+import org.greenrobot.eventbus.EventBus
 
 class LiveEventListFragment : Fragment(R.layout.fragment_live_event_list) {
 
@@ -55,11 +56,9 @@ class LiveEventListFragment : Fragment(R.layout.fragment_live_event_list) {
                         if (query.isBlank()) {
                             println("SEARCH BLANK EVENT")
                             viewModel.sendBlankQueryToLiveEventListFragment()
-                            viewModel.sendStickyEventBlankQueryToLiveEventListFragment()
                         } else {
                             println("SEARCH QUERY EVENT")
                             viewModel.sendQueryToLiveEventListFragment(query)
-                            viewModel.sendStickyEventQueryToLiveEventListFragment(query)
                         }
 
                         val imm =

@@ -129,12 +129,12 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
     }
 
     @Subscribe
-    fun onBlankQuerySent(event: LiveEventListViewModel.LiveEventListEvent.SendBlankQueryToEventListFragment) {
+    fun onBlankQuerySent(event: LiveEventListViewModel.LiveEventListEvent.SendBlankQueryToTodayEventList) {
         viewModel.loadTodayLiveEventList()
     }
 
     @Subscribe
-    fun onSearchViewDoneEditing(event: LiveEventListViewModel.LiveEventListEvent.SendQueryToEventListFragment) {
+    fun onSearchViewDoneEditing(event: LiveEventListViewModel.LiveEventListEvent.SendQueryToTodayEventList) {
         viewModel.searchTodayLiveEventList(event.query)
     }
 
