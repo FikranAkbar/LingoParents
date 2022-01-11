@@ -69,15 +69,17 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
                         showEmptyWarning(false)
                     }
                     is UpcomingLiveEventViewModel.UpcomingLiveEventListEvent.Success -> {
+                        println("Upcoming Live Event: ${event.list}")
                         liveEventListAdapter.submitList(event.list)
                         showLoading(false)
+                        showEmptyWarning(false)
                     }
                     is UpcomingLiveEventViewModel.UpcomingLiveEventListEvent.Error -> {
                         liveEventListAdapter.submitList(listOf())
                         showLoading(false)
                         showEmptyWarning(true)
 
-                        if (event.message.lowercase() != "not found")
+                        if (!event.message.lowercase().contains("not found"))
                             noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
                     }
                     is UpcomingLiveEventViewModel.UpcomingLiveEventListEvent.NavigateToDetailLiveEventFragment -> {
@@ -127,11 +129,13 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
     @Subscribe(sticky = true)
     fun onBlankQuerySent(event: LiveEventListViewModel.LiveEventListEvent.SendBlankQueryToEventListFragment) {
         viewModel.loadUpcomingLiveEventList()
+        EventBus.getDefault().removeStickyEvent(event)
     }
 
     @Subscribe(sticky = true)
     fun onSearchViewDoneEditing(event: LiveEventListViewModel.LiveEventListEvent.SendQueryToEventListFragment) {
         viewModel.searchUpcomingLiveEventList(event.query)
+        EventBus.getDefault().removeStickyEvent(event)
     }
 
     private fun showLoading(bool: Boolean) {

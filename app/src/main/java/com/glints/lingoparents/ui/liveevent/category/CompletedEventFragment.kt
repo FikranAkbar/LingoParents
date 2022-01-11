@@ -69,15 +69,17 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
                         showEmptyWarning(false)
                     }
                     is CompletedLiveEventViewModel.CompletedLiveEventListEvent.Success -> {
+                        println("Completed Live Event: ${event.list}")
                         liveEventListAdapter.submitList(event.list)
                         showLoading(false)
+                        showEmptyWarning(false)
                     }
                     is CompletedLiveEventViewModel.CompletedLiveEventListEvent.Error -> {
                         liveEventListAdapter.submitList(listOf())
                         showLoading(false)
                         showEmptyWarning(true)
 
-                        if (event.message.lowercase() != "not found")
+                        if (!event.message.lowercase().contains("not found"))
                             noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
                     }
                     is CompletedLiveEventViewModel.CompletedLiveEventListEvent.NavigateToDetailLiveEventFragment -> {
@@ -127,11 +129,13 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
     @Subscribe(sticky = true)
     fun onBlankQuerySent(event: LiveEventListViewModel.LiveEventListEvent.SendBlankQueryToEventListFragment) {
         viewModel.loadCompletedLiveEventList()
+        EventBus.getDefault().removeStickyEvent(event)
     }
 
     @Subscribe(sticky = true)
     fun onQuerySent(event: LiveEventListViewModel.LiveEventListEvent.SendQueryToEventListFragment) {
         viewModel.searchCompletedLiveEventList(event.query)
+        EventBus.getDefault().removeStickyEvent(event)
     }
 
     private fun showLoading(bool: Boolean) {

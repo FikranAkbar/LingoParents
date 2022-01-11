@@ -3,6 +3,8 @@ package com.glints.lingoparents.ui.liveevent.category
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.glints.lingoparents.data.model.response.LiveEventListResponse
@@ -16,11 +18,26 @@ class LiveEventListAdapter(
 
     private val liveEventList = ArrayList<LiveEventListResponse.LiveEventItemResponse>()
 
-    @SuppressLint("NotifyDataSetChanged")
+    private val DIFF_CALLBACK = object: DiffUtil.ItemCallback<LiveEventListResponse.LiveEventItemResponse>() {
+        override fun areItemsTheSame(
+            oldItem: LiveEventListResponse.LiveEventItemResponse,
+            newItem: LiveEventListResponse.LiveEventItemResponse,
+        ): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(
+            oldItem: LiveEventListResponse.LiveEventItemResponse,
+            newItem: LiveEventListResponse.LiveEventItemResponse,
+        ): Boolean {
+            return oldItem == newItem
+        }
+    }
+
+    private val differ = AsyncListDiffer(this, DIFF_CALLBACK)
+
     fun submitList(list: List<LiveEventListResponse.LiveEventItemResponse>) {
-        liveEventList.clear()
-        liveEventList.addAll(list)
-        notifyDataSetChanged()
+        differ.submitList(list)
     }
 
     inner class CustomViewHolder(
@@ -56,11 +73,10 @@ class LiveEventListAdapter(
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-        val liveEventItem = liveEventList[position]
-        holder.bind(holder, liveEventItem)
+        holder.bind(holder, differ.currentList[position])
     }
 
-    override fun getItemCount(): Int = liveEventList.size
+    override fun getItemCount(): Int = differ.currentList.size
 
     interface OnItemClickCallback {
         fun onItemClicked(item: LiveEventListResponse.LiveEventItemResponse)

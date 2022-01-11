@@ -53,9 +53,13 @@ class LiveEventListFragment : Fragment(R.layout.fragment_live_event_list) {
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                         val query = textView.text.toString()
                         if (query.isBlank()) {
-                            viewModel.sendBlackQueryToLiveEventListFragment()
+                            println("SEARCH BLANK EVENT")
+                            viewModel.sendBlankQueryToLiveEventListFragment()
+                            viewModel.sendStickyEventBlankQueryToLiveEventListFragment()
                         } else {
+                            println("SEARCH QUERY EVENT")
                             viewModel.sendQueryToLiveEventListFragment(query)
+                            viewModel.sendStickyEventQueryToLiveEventListFragment(query)
                         }
 
                         val imm =

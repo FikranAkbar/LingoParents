@@ -71,15 +71,17 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
                         showEmptyWarning(false)
                     }
                     is TodayLiveEventViewModel.TodayLiveEventListEvent.Success -> {
+                        println("Today Live Event: ${event.list}")
                         liveEventListAdapter.submitList(event.list)
                         showLoading(false)
+                        showEmptyWarning(false)
                     }
                     is TodayLiveEventViewModel.TodayLiveEventListEvent.Error -> {
                         liveEventListAdapter.submitList(listOf())
                         showLoading(false)
                         showEmptyWarning(true)
 
-                        if (event.message.lowercase() != "not found")
+                        if (!event.message.lowercase().contains("not found"))
                             noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
                     }
                     is TodayLiveEventViewModel.TodayLiveEventListEvent.NavigateToDetailLiveEventFragment -> {
@@ -126,12 +128,12 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
         Log.d("IDEvent", item.id.toString())
     }
 
-    @Subscribe(sticky = true)
+    @Subscribe
     fun onBlankQuerySent(event: LiveEventListViewModel.LiveEventListEvent.SendBlankQueryToEventListFragment) {
         viewModel.loadTodayLiveEventList()
     }
 
-    @Subscribe(sticky = true)
+    @Subscribe
     fun onSearchViewDoneEditing(event: LiveEventListViewModel.LiveEventListEvent.SendQueryToEventListFragment) {
         viewModel.searchTodayLiveEventList(event.query)
     }
