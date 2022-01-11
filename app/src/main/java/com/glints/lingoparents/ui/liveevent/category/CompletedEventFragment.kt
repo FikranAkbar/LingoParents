@@ -130,18 +130,12 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
     fun onBlankQuerySent(event: LiveEventListViewModel.LiveEventListEvent.SendBlankQueryToCompletedEventList) {
         println("EVENT RECEIVED (COMPLETED): ${event::class.java}")
         viewModel.loadCompletedLiveEventList()
-        EventBus.getDefault().removeStickyEvent(
-            event
-        )
     }
 
     @Subscribe(sticky = true)
     fun onQuerySent(event: LiveEventListViewModel.LiveEventListEvent.SendQueryToCompletedEventList) {
         println("EVENT RECEIVED (COMPLETED): ${event::class.java}")
         viewModel.searchCompletedLiveEventList(event.query)
-        EventBus.getDefault().removeStickyEvent(
-            event
-        )
     }
 
     private fun showLoading(bool: Boolean) {

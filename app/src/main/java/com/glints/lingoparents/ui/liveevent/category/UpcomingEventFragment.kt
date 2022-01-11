@@ -130,18 +130,12 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
     fun onBlankQuerySent(event: LiveEventListViewModel.LiveEventListEvent.SendBlankQueryToUpcomingEventList) {
         println("EVENT RECEIVED (UPCOMING): ${event::class.java}")
         viewModel.loadUpcomingLiveEventList()
-        EventBus.getDefault().removeStickyEvent(
-            event
-        )
     }
 
     @Subscribe(sticky = true)
     fun onSearchViewDoneEditing(event: LiveEventListViewModel.LiveEventListEvent.SendQueryToUpcomingEventList) {
         println("EVENT RECEIVED (UPCOMING): ${event::class.java}")
         viewModel.searchUpcomingLiveEventList(event.query)
-        EventBus.getDefault().removeStickyEvent(
-            event
-        )
     }
 
     private fun showLoading(bool: Boolean) {
