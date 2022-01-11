@@ -112,28 +112,9 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.likeDislikeInsight.collect { insight ->
+            viewModel.actionInsight.collect { insight ->
                 when (insight) {
-                    is DetailInsightViewModel.LikeDislikeInsight.Success -> {
-                        Snackbar.make(
-                            binding.root,
-                            insight.result.message,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
-                    is DetailInsightViewModel.LikeDislikeInsight.Loading -> {
-                    }
-                    is DetailInsightViewModel.LikeDislikeInsight.Error -> {
-                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(insight.message)
-                    }
-                }
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.createComment.collect { insight ->
-                when (insight) {
-                    is DetailInsightViewModel.CreateComment.Success -> {
+                    is DetailInsightViewModel.InsightAction.SuccessCreateComment -> {
                         Snackbar.make(
                             requireView(),
                             "Add comment successfully",
@@ -144,88 +125,41 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
                             tfInsightComment.editText?.setText("")
                         }
                     }
-                    is DetailInsightViewModel.CreateComment.Loading -> {
-
+                    is DetailInsightViewModel.InsightAction.SuccessDeleteComment -> {
+                        Snackbar.make(
+                            requireView(),
+                            insight.result.message,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                     }
-                    is DetailInsightViewModel.CreateComment.Error -> {
-                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(insight.message)
-                    }
-                }
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.getCommentReplies.collect { insight ->
-                when (insight) {
-                    is DetailInsightViewModel.GetCommentReplies.Loading -> {
-                    }
-                    is DetailInsightViewModel.GetCommentReplies.Success -> {
+                    is DetailInsightViewModel.InsightAction.SuccessGetCommentReplies -> {
                         commentRepliesAdapter =
                             CommentRepliesAdapter(this@DetailInsightFragment, requireContext())
                         commentRepliesAdapter.submitList(insight.list)
                         commentsAdapter.showCommentReplies(commentRepliesAdapter)
                     }
-                    is DetailInsightViewModel.GetCommentReplies.Error -> {
-                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(insight.message)
+                    is DetailInsightViewModel.InsightAction.SuccessLikeDislike -> {
+                        Snackbar.make(
+                            binding.root,
+                            insight.result.message,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                     }
-                }
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.reportInsight.collect { insight ->
-                when (insight) {
-                    is DetailInsightViewModel.ReportInsight.Loading -> {
-
+                    is DetailInsightViewModel.InsightAction.SuccessUpdateComment -> {
+                        Snackbar.make(
+                            binding.root,
+                            insight.result.message,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                     }
-                    is DetailInsightViewModel.ReportInsight.Success -> {
+                    is DetailInsightViewModel.InsightAction.SuccessReport -> {
                         Snackbar.make(
                             requireView(),
                             "Reported successfully",
                             Snackbar.LENGTH_SHORT
                         ).show()
                     }
-                    is DetailInsightViewModel.ReportInsight.Error -> {
-                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(insight.message)
-                    }
-                }
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.deleteComment.collect { insight ->
-                when (insight) {
-                    is DetailInsightViewModel.DeleteComment.Loading -> {
-
-                    }
-                    is DetailInsightViewModel.DeleteComment.Success -> {
-                        Snackbar.make(
-                            requireView(),
-                            insight.result.message,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
-                    is DetailInsightViewModel.DeleteComment.Error -> {
-                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(insight.message)
-                    }
-                }
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.updateComment.collect { insight ->
-                when (insight) {
-                    is DetailInsightViewModel.UpdateComment.Loading -> {
-
-                    }
-                    is DetailInsightViewModel.UpdateComment.Success -> {
-                        Snackbar.make(
-                            requireView(),
-                            insight.result.message,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
-                    is DetailInsightViewModel.UpdateComment.Error -> {
+                    is DetailInsightViewModel.InsightAction.Error -> {
                         noInternetAccessOrErrorHandler.onNoInternetAccessOrError(insight.message)
                     }
                 }
