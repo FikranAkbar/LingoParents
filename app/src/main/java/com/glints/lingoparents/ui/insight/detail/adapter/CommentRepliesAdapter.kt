@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.glints.lingoparents.R
@@ -15,12 +17,29 @@ import com.glints.lingoparents.data.model.response.GetCommentRepliesResponse
 import com.glints.lingoparents.databinding.ItemInsightCommentBinding
 import com.glints.lingoparents.ui.insight.detail.DetailInsightFragment
 
-open class CommentRepliesAdapter(
+class CommentRepliesAdapter(
     private val listener: OnItemClickCallback,
     private val context: Context,
 ) :
     RecyclerView.Adapter<CommentRepliesAdapter.ChildAdapterHolder>() {
-    private val dataList = ArrayList<GetCommentRepliesResponse.Message>()
+
+    private val diffUtilCallback = object :
+        DiffUtil.ItemCallback<GetCommentRepliesResponse.Message>() {
+        override fun areItemsTheSame(
+            oldItem: GetCommentRepliesResponse.Message,
+            newItem: GetCommentRepliesResponse.Message,
+        ): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(
+            oldItem: GetCommentRepliesResponse.Message,
+            newItem: GetCommentRepliesResponse.Message,
+        ): Boolean {
+            return oldItem == newItem
+        }
+    }
+    private val differ = AsyncListDiffer(this, diffUtilCallback)
 
     inner class ChildAdapterHolder(private val binding: ItemInsightCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -161,10 +180,10 @@ open class CommentRepliesAdapter(
     }
 
     override fun onBindViewHolder(holder: CommentRepliesAdapter.ChildAdapterHolder, position: Int) {
-        holder.bind(dataList[position])
+        holder.bind(differ.currentList[position])
     }
 
-    override fun getItemCount(): Int = dataList.size
+    override fun getItemCount(): Int = differ.currentList.size
 
     interface OnItemClickCallback {
         fun onReportCommentClicked(
@@ -181,10 +200,7 @@ open class CommentRepliesAdapter(
         fun onUpdateCommentClicked(item: GetCommentRepliesResponse.Message, comment: String)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     fun submitList(list: List<GetCommentRepliesResponse.Message>) {
-        dataList.clear()
-        dataList.addAll(list)
-        notifyDataSetChanged()
+        differ.submitList(list)
     }
 }

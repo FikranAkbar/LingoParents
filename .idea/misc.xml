@@ -3,9 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_detail_course.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_detail_insight.xml" value="0.264" />
+        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_forgot_password.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_live_event_detail.xml" value="0.23981481481481481" />
         <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_login.xml" value="0.264" />
+        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_progress.xml" value="0.27447916666666666" />
+        <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/fragment_progress_learning_course.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/item_insight_comment.xml" value="0.22962962962962963" />
         <entry key="..\:/Android/LingoParentTrial/app/src/main/res/layout/shimmer_item_insight_detail.xml" value="0.2212962962962963" />
         <entry key="..\:/Android/mobile-lingoparent/app/src/main/res/drawable/shadow_border.xml" value="0.290625" />

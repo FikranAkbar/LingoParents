@@ -91,12 +91,12 @@ class AllInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
         }
     }
 
-    @Subscribe(sticky = true)
+    @Subscribe
     fun onBlankKeywordSent(insight: InsightListViewModel.InsightSearchList.SendBlankKeywordToInsightListFragment) {
         viewModel.loadInsightList(InsightListViewModel.ALL_TAG)
     }
 
-    @Subscribe(sticky = true)
+    @Subscribe
     fun onKeywordSent(insight: InsightListViewModel.InsightSearchList.SendKeywordToInsightListFragment) {
         viewModel.getInsightSearchList(InsightListViewModel.ALL_TAG, insight.keyword)
     }

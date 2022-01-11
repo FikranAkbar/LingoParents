@@ -54,13 +54,6 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
 
         initViews()
 
-        binding.rvInsightComment.apply {
-            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(requireContext())
-            commentsAdapter = CommentsAdapter(this@DetailInsightFragment, requireContext())
-            adapter = commentsAdapter
-        }
-
         return binding.root
     }
 
@@ -97,7 +90,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
                                 tvInsightTitle.text = title
                                 tvInsightDate.text =
                                     SimpleDateFormat("d MMMM yyy", Locale.getDefault())
-                                        .format(date)
+                                        .format(date!!)
                                 tvInsightBody.text = content
                                 tvInsightLike.text = total_like.toString()
                                 tvInsightDislike.text = total_dislike.toString()
@@ -249,6 +242,13 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
 
     private fun initViews() {
         binding.apply {
+            rvInsightComment.apply {
+                setHasFixedSize(true)
+                layoutManager = LinearLayoutManager(requireContext())
+                commentsAdapter = CommentsAdapter(this@DetailInsightFragment, requireContext())
+                adapter = commentsAdapter
+            }
+
             ivBackButton.setOnClickListener {
                 findNavController().popBackStack()
             }
@@ -324,7 +324,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
     }
 
 
-    fun String.getDateWithServerTimeStamp(): Date? {
+    private fun String.getDateWithServerTimeStamp(): Date? {
         val dateFormat = SimpleDateFormat(
             "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
             Locale.getDefault()

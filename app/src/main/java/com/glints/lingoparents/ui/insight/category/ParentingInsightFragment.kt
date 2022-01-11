@@ -95,11 +95,13 @@ class ParentingInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
     @Subscribe(sticky = true)
     fun onBlankKeywordSent(insight: InsightListViewModel.InsightSearchList.SendBlankKeywordToInsightListFragment) {
         viewModel.loadInsightList(InsightListViewModel.PARENTING_TAG)
+        EventBus.getDefault().removeStickyEvent(insight)
     }
 
     @Subscribe(sticky = true)
     fun onKeywordSent(insight: InsightListViewModel.InsightSearchList.SendKeywordToInsightListFragment) {
         viewModel.getInsightSearchList(InsightListViewModel.PARENTING_TAG, insight.keyword)
+        EventBus.getDefault().removeStickyEvent(insight)
     }
 
     private fun showLoading(b: Boolean) {
