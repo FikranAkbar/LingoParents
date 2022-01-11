@@ -16,8 +16,6 @@ class LiveEventListAdapter(
 ) :
     RecyclerView.Adapter<LiveEventListAdapter.CustomViewHolder>() {
 
-    private val liveEventList = ArrayList<LiveEventListResponse.LiveEventItemResponse>()
-
     private val DIFF_CALLBACK = object: DiffUtil.ItemCallback<LiveEventListResponse.LiveEventItemResponse>() {
         override fun areItemsTheSame(
             oldItem: LiveEventListResponse.LiveEventItemResponse,
