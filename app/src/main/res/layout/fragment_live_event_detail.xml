@@ -183,6 +183,32 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_price_content_kurs" />
 
             <TextView
+                android:id="@+id/tv_user_has_been_registered"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/poppins_w600"
+                android:text="@string/event_has_been_registered"
+                android:textColor="@color/primary_orange"
+                android:textSize="14sp"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="@id/mbtn_register"
+                app:layout_constraintTop_toBottomOf="@id/tv_price_content_number" />
+
+            <TextView
+                android:id="@+id/tv_event_was_finished"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/poppins_w600"
+                android:text="@string/event_was_finished"
+                android:textColor="@color/primary_orange"
+                android:textSize="14sp"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="@id/mbtn_register"
+                app:layout_constraintTop_toBottomOf="@id/tv_price_content_number" />
+
+            <TextView
                 android:id="@+id/tv_speaker_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
