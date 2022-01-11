@@ -19,10 +19,10 @@ class LiveEventDetailResponse {
         val status: String,
         val started_at: String,
         val idUser_create: Int,
-        val Trx_event_participants: List<LiveEventParticipants>
+        val Trx_event_participants: List<LiveEventParticipants>?
     )
 
     data class LiveEventParticipants(
-        val id: Int
+        val id_user: Int
     )
 }

@@ -33,6 +33,7 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
 
     private var id_user: Int? = null
     private var id_event: Int? = null
+    private var eventType: String? = null
 
     private var fullname: String? = null
     private var phoneNumber: String? = null
@@ -71,8 +72,10 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                 showDialog(inflater)
             }
             arguments?.get("category")?.apply {
+                eventType = this as String?
                 if (this == "completed") {
-                    mbtnRegister.visibility = View.GONE
+                    mbtnRegister.visibility = View.INVISIBLE
+                    tvEventWasFinished.visibility = View.VISIBLE
                 }
             }
         }
@@ -97,6 +100,13 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                         showLoading(false)
                         binding.apply {
                             event.result.apply {
+                                if (eventType != "completed") {
+                                    Trx_event_participants?.find { it.id_user == id_user }?.let {
+                                        mbtnRegister.visibility = View.INVISIBLE
+                                        tvUserHasBeenRegistered.visibility = View.VISIBLE
+                                    }
+                                }
+
                                 cover?.let {
                                     ivDetailEventPoster.load(it)
                                 }
@@ -158,7 +168,10 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                             .setTextColor(Color.parseColor("#FFFFFF"))
                             .show()
 
-
+                        binding.apply {
+                            mbtnRegister.visibility = View.INVISIBLE
+                            tvUserHasBeenRegistered.visibility = View.VISIBLE
+                        }
                     }
                     is LiveEventDetailViewModel.LiveEventDetailEvent.Loading -> {
                         showLoading(true)

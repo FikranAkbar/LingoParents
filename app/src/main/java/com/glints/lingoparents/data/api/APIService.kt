@@ -67,7 +67,7 @@ interface APIService {
         @Path("title") title: String
     ): Call<LiveEventSearchListResponse>
 
-    @GET("api/v1/events/participants/{id}")
+    @GET("api/v1/events/parent/{id}")
     fun getLiveEventById(
         @Path("id") id: Int,
     ): Call<LiveEventDetailResponse>
