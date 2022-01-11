@@ -13,6 +13,7 @@ import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -195,13 +196,8 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
 
     private fun showLoading(bool: Boolean) {
         binding.apply {
-            if (bool) {
-                shimmerLayout.visibility = View.VISIBLE
-                mainContent.visibility = View.GONE
-            } else {
-                shimmerLayout.visibility = View.GONE
-                mainContent.visibility = View.VISIBLE
-            }
+            shimmerLayout.isVisible = bool
+            mainContent.isVisible = !bool
         }
     }
 

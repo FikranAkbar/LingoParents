@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -27,7 +28,8 @@ import kotlinx.coroutines.flow.collect
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 
-class DashboardActivity : AppCompatActivity(), Toolbar.OnMenuItemClickListener, NoInternetAccessOrErrorListener {
+class DashboardActivity : AppCompatActivity(), Toolbar.OnMenuItemClickListener,
+    NoInternetAccessOrErrorListener {
 
     private lateinit var binding: ActivityDashboardBinding
     private lateinit var navController: NavController
@@ -131,16 +133,8 @@ class DashboardActivity : AppCompatActivity(), Toolbar.OnMenuItemClickListener, 
 
     private fun showLoading(bool: Boolean) {
         binding.apply {
-            when (bool) {
-                true -> {
-                    vLoadingBackground.visibility = View.VISIBLE
-                    vLoadingProgress.visibility = View.VISIBLE
-                }
-                else -> {
-                    vLoadingBackground.visibility = View.GONE
-                    vLoadingProgress.visibility = View.GONE
-                }
-            }
+            vLoadingBackground.isVisible = bool
+            vLoadingProgress.isVisible = bool
         }
     }
 

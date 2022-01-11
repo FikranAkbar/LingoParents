@@ -1,24 +1,23 @@
 package com.glints.lingoparents.ui.register
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentRegisterBinding
-import com.glints.lingoparents.ui.progress.learning.ProgressLearningCourseViewModel
 import com.glints.lingoparents.utils.AuthFormValidator
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
@@ -154,6 +153,13 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                                 it.contains("phone", false) -> {
                                     AuthFormValidator.showFieldError(binding.tilPhone, it)
                                 }
+                                else -> Snackbar.make(requireView(),
+                                    event.message,
+                                    Snackbar.LENGTH_SHORT
+                                )
+                                    .setBackgroundTint(Color.RED)
+                                    .setTextColor(Color.WHITE)
+                                    .show()
                             }
                         }
                     }
@@ -164,32 +170,16 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
     private fun showLoading(bool: Boolean) {
         binding.apply {
-            when (bool) {
-                true -> {
-                    vLoadingBackground.visibility = View.VISIBLE
-                    vLoadingProgress.visibility = View.VISIBLE
-                    mbtnSubmit.isClickable = false
-                    mbtnLoginWithGoogle.isClickable = false
-                    mbtnLogin.isClickable = false
-                    tilFirstName.isEnabled = false
-                    tilLastName.isEnabled = false
-                    tilEmail.isEnabled = false
-                    tilPassword.isEnabled = false
-                    tilPhone.isEnabled = false
-                }
-                else -> {
-                    vLoadingBackground.visibility = View.GONE
-                    vLoadingProgress.visibility = View.GONE
-                    mbtnSubmit.isClickable = true
-                    mbtnLoginWithGoogle.isClickable = true
-                    mbtnLogin.isClickable = true
-                    tilFirstName.isEnabled = true
-                    tilLastName.isEnabled = true
-                    tilEmail.isEnabled = true
-                    tilPassword.isEnabled = true
-                    tilPhone.isEnabled = true
-                }
-            }
+            vLoadingBackground.isVisible = bool
+            vLoadingProgress.isVisible = bool
+            mbtnSubmit.isClickable = !bool
+            mbtnLoginWithGoogle.isClickable = !bool
+            mbtnLogin.isClickable = !bool
+            tilFirstName.isEnabled = !bool
+            tilLastName.isEnabled = !bool
+            tilEmail.isEnabled = !bool
+            tilPassword.isEnabled = !bool
+            tilPhone.isEnabled = !bool
         }
     }
 

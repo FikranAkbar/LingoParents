@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -92,7 +93,8 @@ class ResetPasswordFragment : Fragment(R.layout.fragment_reset_password) {
                                         showFieldError(tilConfirmPassword, PASSWORD_EMPTY_ERROR)
                                     }
                                     if (newPassword != confirmNewPassword) {
-                                        showFieldError(tilConfirmPassword, PASSWORD_DIFFERENCE_ERROR)
+                                        showFieldError(tilConfirmPassword,
+                                            PASSWORD_DIFFERENCE_ERROR)
                                     }
                                 }
                             }
@@ -109,16 +111,8 @@ class ResetPasswordFragment : Fragment(R.layout.fragment_reset_password) {
 
     private fun showLoading(bool: Boolean) {
         binding.apply {
-            when (bool) {
-                true -> {
-                    vLoadingBackground.visibility = View.VISIBLE
-                    vLoadingProgress.visibility = View.VISIBLE
-                }
-                else -> {
-                    vLoadingBackground.visibility = View.GONE
-                    vLoadingProgress.visibility = View.GONE
-                }
-            }
+            vLoadingBackground.isVisible = bool
+            vLoadingProgress.isVisible = bool
         }
     }
 

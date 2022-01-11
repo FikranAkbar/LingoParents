@@ -10,8 +10,10 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
 import com.glints.lingoparents.R
@@ -48,7 +50,7 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
         viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this))[
@@ -129,16 +131,9 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
 
     private fun showLoading(boolean: Boolean) {
         binding.apply {
-            if (boolean) {
-                ivProfilePicture.visibility = View.INVISIBLE
-                tvHello.visibility = View.INVISIBLE
-                tvParent.visibility = View.INVISIBLE
-            } else {
-                ivProfilePicture.visibility = View.VISIBLE
-                tvHello.visibility = View.VISIBLE
-                tvParent.visibility = View.VISIBLE
-
-            }
+            ivProfilePicture.isVisible = !boolean
+            tvHello.isVisible = !boolean
+            tvParent.isVisible = !boolean
         }
     }
 

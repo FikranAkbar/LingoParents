@@ -134,19 +134,13 @@ class InsightListViewModel(private val tokenPref: TokenPreferences) : ViewModel(
             })
     }
 
-    fun sendKeywordToInsightListFragment(keyword: String) = viewModelScope.launch {
+    fun sendStickyKeywordToInsightListFragment(keyword: String) = viewModelScope.launch {
         EventBus.getDefault()
             .postSticky(InsightSearchList.SendKeywordToInsightListFragment(keyword))
     }
 
-    fun sendBlankKeywordToInsightListFragment() = viewModelScope.launch {
-        EventBus.getDefault()
-            .postSticky(InsightSearchList.SendBlankKeywordToInsightListFragment)
-    }
-
     sealed class InsightSearchList {
         data class SendKeywordToInsightListFragment(val keyword: String) : InsightSearchList()
-        object SendBlankKeywordToInsightListFragment : InsightSearchList()
     }
 
     sealed class AllInsightList {
