@@ -40,6 +40,8 @@ class LiveEventListFragment : Fragment(R.layout.fragment_live_event_list) {
                 LiveEventListViewModel::class.java
         ]
 
+        EventBus.getDefault().removeAllStickyEvents()
+
         binding.apply {
             vpLiveEvent.apply {
                 adapter = LiveEventViewPagerAdapter(requireActivity() as AppCompatActivity)
