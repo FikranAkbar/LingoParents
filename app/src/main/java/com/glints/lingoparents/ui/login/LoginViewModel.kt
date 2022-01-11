@@ -68,6 +68,7 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
     }
 
     private fun saveToken(accessToken: String, refreshToken: String) = viewModelScope.launch {
+        tokenPreferences.resetToken()
         tokenPreferences.saveAccessToken(accessToken)
         tokenPreferences.saveRefreshToken(refreshToken)
     }
@@ -97,7 +98,6 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
                         val accessToken = response.body()?.data?.accessToken.toString()
                         val refreshToken = response.body()?.data?.refreshToken.toString()
                         val userId = JWTUtils.getIdFromAccessToken(accessToken)
-                        Log.d("TESTTOKEN", "ini accessToken $accessToken dan ini refreshToken $refreshToken")
                         saveToken(accessToken, refreshToken)
                         saveEmail(email)
                         saveUserId(userId)
