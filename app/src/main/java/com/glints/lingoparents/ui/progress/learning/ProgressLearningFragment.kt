@@ -67,7 +67,7 @@ class ProgressLearningFragment : Fragment(R.layout.fragment_progress_learning) {
                     }
                     is ProgressLearningViewModel.ProgressLearningEvent.Error -> {
                         showNoCourseRegistered(true)
-                        if (event.message.lowercase() != "student not joined any class yet")
+                        if (!event.message.lowercase().contains("not joined any class"))
                             noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
                     }
                 }

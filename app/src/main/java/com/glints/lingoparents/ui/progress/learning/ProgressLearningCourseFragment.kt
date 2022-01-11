@@ -250,8 +250,9 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
                         showLoading(false)
                     }
                     is ProgressLearningCourseViewModel.ProgressLearningCourseEvent.Error -> {
-                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
                         showLoading(false)
+                        if (!event.message.lowercase().contains("not joined any class"))
+                            noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
                     }
                 }
             }
