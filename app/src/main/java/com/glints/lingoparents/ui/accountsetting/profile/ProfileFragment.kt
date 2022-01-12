@@ -28,7 +28,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
 
         _binding = FragmentProfileBinding.inflate(inflater)
@@ -100,16 +100,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                                         address
                                     ) && isValidPhoneNumber(phonenumber)
                                 ) {
-                                    viewModel.getAccessToken()
-                                        .observe(viewLifecycleOwner) { accessToken ->
-                                            viewModel.editParentProfile(
-                                                accessToken,
-                                                event.firstname,
-                                                event.lastname,
-                                                event.address,
-                                                event.phone
-                                            )
-                                        }
+
+                                    viewModel.editParentProfile(
+                                        event.firstname,
+                                        event.lastname,
+                                        event.address,
+                                        event.phone
+                                    )
+
                                     exitEditState()
 
                                 } else {

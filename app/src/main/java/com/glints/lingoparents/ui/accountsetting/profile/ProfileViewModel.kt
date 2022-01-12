@@ -79,7 +79,6 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
     }
 
     fun editParentProfile(
-        accessToken: String,
         firstname: String,
         lastname: String,
         address: String,
@@ -88,7 +87,7 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
         onApiCallStarted()
         APIClient
             .service
-            .editParentProfile(accessToken, firstname, lastname, address, phone)
+            .editParentProfile(firstname, lastname, address, phone)
             .enqueue(object : Callback<EditParentProfileResponse> {
                 override fun onResponse(
                     call: Call<EditParentProfileResponse>,
