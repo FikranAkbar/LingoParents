@@ -50,9 +50,12 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
                     hideTextView(true)
                 else hideTextView(false)
 
-                ivComment.load(item.Master_user.Master_parent.photo)
+                item.Master_user.Master_parent?.photo?.let {
+                    ivComment.load(it)
+                }
+
                 tvUsernameComment.text =
-                    item.Master_user.Master_parent.firstname + " " + item.Master_user.Master_parent.lastname
+                    item.Master_user.Master_parent?.firstname + " " + item.Master_user.Master_parent?.lastname
                 tvCommentBody.text = item.comment
                 tvLikeComment.text = item.total_like.toString()
                 tvDislikeComment.text = item.total_dislike.toString()

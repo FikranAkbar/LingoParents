@@ -77,8 +77,8 @@ class InsightDetailResponse{
     )
 
     data class MasterUser(
-        val Master_parent: MasterParent,
-        val Master_student: MasterStudent,
+        val Master_parent: MasterParent?,
+        val Master_student: MasterStudent?,
         val Master_tutor: Any,
         val id: Int,
         val role: String
@@ -96,7 +96,7 @@ class InsightDetailResponse{
         val is_active: String,
         val lastname: String,
         val phone: String,
-        val photo: String,
+        val photo: String?,
         val referral_code: String,
         val updatedAt: String
     )
