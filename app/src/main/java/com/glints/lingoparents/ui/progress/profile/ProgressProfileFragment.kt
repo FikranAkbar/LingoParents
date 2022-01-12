@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.View
 import android.view.Window
@@ -62,9 +63,11 @@ class ProgressProfileFragment : Fragment(R.layout.fragment_progress_profile) {
             viewModel.progressProfileEvent.collect { event ->
                 when (event) {
                     is ProgressProfileViewModel.ProgressProfileEvent.Loading -> {
+                        showMainContent(true)
                         showLoading(true)
                     }
                     is ProgressProfileViewModel.ProgressProfileEvent.Success -> {
+                        showMainContent(true)
                         event.result.apply {
                             binding.apply {
                                 photo?.let {
@@ -85,7 +88,12 @@ class ProgressProfileFragment : Fragment(R.layout.fragment_progress_profile) {
                     }
                     is ProgressProfileViewModel.ProgressProfileEvent.Error -> {
                         showLoading(false)
-                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
+                        if (event.message.lowercase().contains("relation not found")) {
+                            showMainContent(false)
+                        } else {
+                            showMainContent(false)
+                            noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
+                        }
                     }
                 }
             }
@@ -121,6 +129,23 @@ class ProgressProfileFragment : Fragment(R.layout.fragment_progress_profile) {
                 false -> {
                     shimmerLayout.visibility = View.GONE
                     mainContent.visibility = View.VISIBLE
+                }
+            }
+        }
+    }
+
+    private fun showMainContent(b: Boolean) {
+        binding.apply {
+            when(b) {
+                true -> {
+                    cvEventContainer.visibility = View.VISIBLE
+                    ivChildrenRelationRemoved.visibility = View.GONE
+                    tvChildrenRelationRemoved.visibility = View.GONE
+                }
+                false -> {
+                    cvEventContainer.visibility = View.GONE
+                    ivChildrenRelationRemoved.visibility = View.VISIBLE
+                    tvChildrenRelationRemoved.visibility = View.VISIBLE
                 }
             }
         }

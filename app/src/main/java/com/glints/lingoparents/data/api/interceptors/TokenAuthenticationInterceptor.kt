@@ -2,7 +2,9 @@ package com.glints.lingoparents.data.api.interceptors
 
 import android.util.Log
 import com.glints.lingoparents.utils.TokenPreferences
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -18,14 +20,8 @@ class TokenAuthenticationInterceptor : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         runBlocking {
-            if (accessToken.isBlank()) {
-                accessToken = tokenPreferences.getAccessToken().first()
-                Log.d("AccessToken", accessToken)
-            }
-            if (refreshToken.isBlank()) {
-                refreshToken = tokenPreferences.getRefreshToken().first()
-                Log.d("RefreshToken", refreshToken)
-            }
+            accessToken = tokenPreferences.getAccessToken().first()
+            refreshToken = tokenPreferences.getRefreshToken().first()
         }
         val requestWithAccessToken =
             chain.request().newBuilder().addHeader("authorization", accessToken).build()

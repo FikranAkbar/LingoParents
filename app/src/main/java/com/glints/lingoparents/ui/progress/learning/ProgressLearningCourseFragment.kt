@@ -55,7 +55,7 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
             this, CustomViewModelFactory(
                 tokenPreferences, this,
                 studentId = arguments?.getInt(ProgressLearningCourseViewModel.STUDENT_ID_KEY),
-                courseId = arguments?.getInt(ProgressLearningCourseViewModel.COURSE_ID_KEY)
+                courseId =  arguments?.getInt(ProgressLearningCourseViewModel.COURSE_ID_KEY)
             )
         )[
                 ProgressLearningCourseViewModel::class.java
@@ -250,8 +250,10 @@ class ProgressLearningCourseFragment : Fragment(R.layout.fragment_progress_learn
                         showLoading(false)
                     }
                     is ProgressLearningCourseViewModel.ProgressLearningCourseEvent.Error -> {
-                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
                         showLoading(false)
+                        if (!event.message.lowercase().contains("not joined any class")) {
+                            noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
+                        }
                     }
                 }
             }

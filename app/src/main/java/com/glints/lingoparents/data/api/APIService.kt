@@ -67,7 +67,7 @@ interface APIService {
         @Path("title") title: String
     ): Call<LiveEventSearchListResponse>
 
-    @GET("api/v1/events/participants/{id}")
+    @GET("api/v1/events/parent/{id}")
     fun getLiveEventById(
         @Path("id") id: Int,
     ): Call<LiveEventDetailResponse>
@@ -134,14 +134,10 @@ interface APIService {
 
     //amin
     @GET("api/v1/courses")
-    fun getCourseList(
-        @Header("authorization") authorization: String
-    ): Call<AllCoursesResponse>
+    fun getCourseList(): Call<AllCoursesResponse>
 
     @GET("api/v1/parents/profile")
-    fun getParentProfile(
-        @Header("authorization") authorization: String
-    ): Call<ParentProfileResponse>
+    fun getParentProfile(): Call<ParentProfileResponse>
 
     @FormUrlEncoded
     @PUT("api/v1/parents/profile")
@@ -178,7 +174,6 @@ interface APIService {
     @GET("api/v1/courses/{id}")
     fun getCourseDetail(
         @Path("id") id: Int,
-        @Header("authorization") authorization: String
     ): Call<DetailCourseResponse>
 
     @GET("api/v1/students/list/{id}")

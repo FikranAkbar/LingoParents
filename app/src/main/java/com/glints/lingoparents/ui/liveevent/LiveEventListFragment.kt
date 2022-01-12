@@ -16,6 +16,7 @@ import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import com.google.android.material.tabs.TabLayoutMediator
+import org.greenrobot.eventbus.EventBus
 
 class LiveEventListFragment : Fragment(R.layout.fragment_live_event_list) {
 
@@ -39,6 +40,8 @@ class LiveEventListFragment : Fragment(R.layout.fragment_live_event_list) {
                 LiveEventListViewModel::class.java
         ]
 
+        EventBus.getDefault().removeAllStickyEvents()
+
         binding.apply {
             vpLiveEvent.apply {
                 adapter = LiveEventViewPagerAdapter(requireActivity() as AppCompatActivity)
@@ -53,8 +56,10 @@ class LiveEventListFragment : Fragment(R.layout.fragment_live_event_list) {
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                         val query = textView.text.toString()
                         if (query.isBlank()) {
-                            viewModel.sendBlackQueryToLiveEventListFragment()
+                            println("SEARCH BLANK EVENT")
+                            viewModel.sendBlankQueryToLiveEventListFragment()
                         } else {
+                            println("SEARCH QUERY EVENT")
                             viewModel.sendQueryToLiveEventListFragment(query)
                         }
 

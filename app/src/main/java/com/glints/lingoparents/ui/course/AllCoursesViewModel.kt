@@ -37,11 +37,11 @@ class AllCoursesViewModel(private val tokenPreferences: TokenPreferences) : View
     }
 
     fun getAccessToken(): LiveData<String> = tokenPreferences.getAccessToken().asLiveData()
-    fun getAllCourses(accessToken: String) = viewModelScope.launch {
+    fun getAllCourses() = viewModelScope.launch {
         onApiCallStarted()
         APIClient
             .service
-            .getCourseList(accessToken)
+            .getCourseList()
             .enqueue(object : Callback<AllCoursesResponse> {
                 override fun onResponse(
                     call: Call<AllCoursesResponse>,

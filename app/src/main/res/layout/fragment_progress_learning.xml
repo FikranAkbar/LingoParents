@@ -6,6 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".ui.progress.learning.ProgressLearningFragment">
 
+    <ImageView
+        android:id="@+id/iv_children_relation_removed"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/ic_round_people_24"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tv_children_relation_removed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_w500"
+        android:text="@string/relation_with_the_children_has_been_removed"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_children_relation_removed" />
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_event_container"
         android:layout_width="match_parent"

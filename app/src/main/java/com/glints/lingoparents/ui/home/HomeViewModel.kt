@@ -22,6 +22,8 @@ class HomeViewModel(private val tokenPreferences: TokenPreferences) : ViewModel(
         const val STUDENTLIST_TYPE = "studentList"
     }
 
+    var parentId: Int = 0
+
     private val recentInsightChannel = Channel<RecentInsight>()
     val recentInsight = recentInsightChannel.receiveAsFlow()
 

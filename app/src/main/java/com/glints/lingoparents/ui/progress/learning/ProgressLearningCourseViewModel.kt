@@ -50,6 +50,7 @@ class ProgressLearningCourseViewModel(
     }
 
     fun getCourseDetailByStudentId() = viewModelScope.launch {
+        println("COURSE ID: $courseId")
         onApiCallStarted()
         APIClient
             .service
@@ -60,7 +61,11 @@ class ProgressLearningCourseViewModel(
                     response: Response<CourseDetailByStudentIdResponse>
                 ) {
                     if (response.isSuccessful) {
-                        getSessionDetailBySessionId(response.body()?.data!!)
+                        if (!response.body()?.message!!.lowercase().contains("not completed any session")) {
+                            getSessionDetailBySessionId(response.body()?.data!!)
+                        } else {
+                            onApiCallSuccessWithNoSession(response.body()?.data!!)
+                        }
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallError(apiError.message())
@@ -84,12 +89,16 @@ class ProgressLearningCourseViewModel(
                         response: Response<SessionDetailBySessionIdResponse>
                     ) {
                         if (response.isSuccessful) {
-                            onApiCallSuccess(courseDetail, response.body()?.data!!, studentId)
+                            if (response.body()?.message!!.lowercase().contains("session detail not found")) {
+                                onApiCallSuccessWithNoSession(courseDetail)
+                            }
+                            else {
+                                onApiCallSuccess(courseDetail, response.body()?.data!!, studentId)
+                            }
                         }
                         else {
                             val apiError = ErrorUtils.parseError(response)
                             onApiCallError(apiError.message())
-                            onApiCallSuccessWithNoSession(courseDetail)
                         }
                     }
 

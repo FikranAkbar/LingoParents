@@ -213,4 +213,7 @@
     <string name="_14th_october_2021">14th October 2021</string>
     <string name="back">Back</string>
     <string name="default_error_message">Something went wrong..</string>
+    <string name="event_has_been_registered">Event has been registered!</string>
+    <string name="event_was_finished">Event was finished!</string>
+    <string name="relation_with_the_children_has_been_removed">Relation with the children has been removed</string>
 </resources>

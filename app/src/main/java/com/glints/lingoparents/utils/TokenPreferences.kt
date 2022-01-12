@@ -71,12 +71,6 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
         }
     }
 
-    suspend fun saveAccessEmail(email: String) {
-        dataStore.edit { preferences ->
-            preferences[EMAIL_KEY] = email
-        }
-    }
-
     suspend fun saveUserId(id: String) {
         dataStore.edit { preferences ->
             preferences[USER_ID_KEY] = id
@@ -86,7 +80,9 @@ class TokenPreferences private constructor(private val dataStore: DataStore<Pref
 
     suspend fun resetToken() {
         dataStore.edit { preferences ->
-            preferences.clear()
+            preferences[TOKEN_KEY] = ""
+            preferences[REFRESH_TOKEN_KEY] = ""
+            preferences[USER_ID_KEY] = ""
         }
     }
 }

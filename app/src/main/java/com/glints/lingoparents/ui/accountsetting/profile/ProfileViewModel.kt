@@ -49,11 +49,11 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
     fun getAccessEmail(): LiveData<String> = tokenPreferences.getAccessEmail().asLiveData()
 
 
-    fun getParentProfile(accessToken: String) = viewModelScope.launch {
+    fun getParentProfile() = viewModelScope.launch {
         onApiCallStarted()
         APIClient
             .service
-            .getParentProfile(accessToken)
+            .getParentProfile()
             .enqueue(object : Callback<ParentProfileResponse> {
                 override fun onResponse(
                     call: Call<ParentProfileResponse>,
@@ -63,8 +63,12 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
                         val result = response.body()!!
                         onApiCallSuccess(result)
                     } else {
-                        val apiError = ErrorUtils.parseError(response)
-                        onApiCallError(apiError.message())
+                        if (response.code() != 400) {
+                            val apiError = ErrorUtils.parseError(response)
+                            onApiCallError(apiError.message())
+                        } else {
+                            onApiCallError("Something went wrong...")
+                        }
                     }
                 }
 

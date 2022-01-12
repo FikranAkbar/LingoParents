@@ -7,18 +7,31 @@ import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 
 class LiveEventListViewModel : ViewModel() {
-    fun sendQueryToLiveEventListFragment(query: String) = viewModelScope.launch {
+
+    fun sendBlankQueryToLiveEventListFragment() = viewModelScope.launch {
         EventBus.getDefault()
-            .postSticky(LiveEventListEvent.SendQueryToEventListFragment(query))
+            .post(LiveEventListEvent.SendBlankQueryToTodayEventList)
+        EventBus.getDefault()
+            .postSticky(LiveEventListEvent.SendBlankQueryToUpcomingEventList)
+        EventBus.getDefault()
+            .postSticky(LiveEventListEvent.SendBlankQueryToCompletedEventList)
     }
 
-    fun sendBlackQueryToLiveEventListFragment() = viewModelScope.launch {
+    fun sendQueryToLiveEventListFragment(query: String) = viewModelScope.launch {
         EventBus.getDefault()
-            .postSticky(LiveEventListEvent.SendBlankQueryToEventListFragment)
+            .post(LiveEventListEvent.SendQueryToTodayEventList(query))
+        EventBus.getDefault()
+            .postSticky(LiveEventListEvent.SendQueryToUpcomingEventList(query))
+        EventBus.getDefault()
+            .postSticky(LiveEventListEvent.SendQueryToCompletedEventList(query))
     }
 
     sealed class LiveEventListEvent {
-        data class SendQueryToEventListFragment(val query: String) : LiveEventListEvent()
-        object SendBlankQueryToEventListFragment : LiveEventListEvent()
+        object SendBlankQueryToTodayEventList : LiveEventListEvent()
+        object SendBlankQueryToUpcomingEventList : LiveEventListEvent()
+        object SendBlankQueryToCompletedEventList : LiveEventListEvent()
+        data class SendQueryToTodayEventList(val query: String) : LiveEventListEvent()
+        data class SendQueryToUpcomingEventList(val query: String) : LiveEventListEvent()
+        data class SendQueryToCompletedEventList(val query: String) : LiveEventListEvent()
     }
 }

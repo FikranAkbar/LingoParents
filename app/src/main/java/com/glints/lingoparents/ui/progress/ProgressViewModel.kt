@@ -61,6 +61,7 @@ class ProgressViewModel(private val tokenPreferences: TokenPreferences) : ViewMo
                         if (response.body()?.data != null) {
                             val list = response.body()?.data!!
                             onApiCallSuccess(list)
+                            println("STUDENT DATA: $list")
                         }
                         else {
                             onApiCallError(response.body()?.message!!)
