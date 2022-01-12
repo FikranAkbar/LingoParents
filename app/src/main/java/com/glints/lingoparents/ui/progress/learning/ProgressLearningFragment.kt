@@ -60,15 +60,27 @@ class ProgressLearningFragment : Fragment(R.layout.fragment_progress_learning) {
                 when (event) {
                     is ProgressLearningViewModel.ProgressLearningEvent.Loading -> {
                         showNoCourseRegistered(true)
+                        showMainContent(true)
                     }
                     is ProgressLearningViewModel.ProgressLearningEvent.Success -> {
                         showNoCourseRegistered(false)
+                        showMainContent(true)
                         initViewPager(event.result, event.studentId)
                     }
                     is ProgressLearningViewModel.ProgressLearningEvent.Error -> {
                         showNoCourseRegistered(true)
-                        if (!event.message.lowercase().contains("not joined any class"))
-                            noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
+                        when {
+                            event.message.lowercase().contains("not joined any class") -> {
+                                showMainContent(true)
+                            }
+                            event.message.lowercase().contains("relation not found") -> {
+                                showMainContent(false)
+                            }
+                            else -> {
+                                showMainContent(false)
+                                noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
+                            }
+                        }
                     }
                 }
             }
@@ -149,6 +161,23 @@ class ProgressLearningFragment : Fragment(R.layout.fragment_progress_learning) {
     override fun onStop() {
         super.onStop()
         EventBus.getDefault().unregister(this)
+    }
+
+    private fun showMainContent(b: Boolean) {
+        binding.apply {
+            when(b) {
+                true -> {
+                    cvEventContainer.visibility = View.VISIBLE
+                    ivChildrenRelationRemoved.visibility = View.GONE
+                    tvChildrenRelationRemoved.visibility = View.GONE
+                }
+                false -> {
+                    cvEventContainer.visibility = View.GONE
+                    ivChildrenRelationRemoved.visibility = View.VISIBLE
+                    tvChildrenRelationRemoved.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
     override fun onAttach(context: Context) {

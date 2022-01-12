@@ -40,11 +40,11 @@ class DetailCourseViewModel(
 
     fun getCurrentCourseId(): Int = courseId
 
-    fun getCourseDetailById(id: Int, accessToken: String) = viewModelScope.launch {
+    fun getCourseDetailById(id: Int) = viewModelScope.launch {
         onApiCallStarted()
         APIClient
             .service
-            .getCourseDetail(id, accessToken)
+            .getCourseDetail(id)
             .enqueue(object : Callback<DetailCourseResponse> {
                 override fun onResponse(
                     call: Call<DetailCourseResponse>,

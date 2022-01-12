@@ -18,9 +18,6 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
-    private var emailValue: String? = null
-
-
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private lateinit var tokenPreferences: TokenPreferences
@@ -40,12 +37,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         viewModel = ViewModelProvider(this, CustomViewModelFactory(tokenPreferences, this))[
                 ProfileViewModel::class.java
         ]
-        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
-            viewModel.getParentProfile(accessToken)
-        }
-        viewModel.getAccessEmail().observe(viewLifecycleOwner) { email ->
-            emailValue = email
-        }
+
+        viewModel.getParentProfile()
 
         binding.apply {
             mbtnEdit.setOnClickListener {
@@ -81,9 +74,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                             event.parentProfile.apply {
                                 tvFirstNameContent.text = firstname
                                 tvLastNameContent.text = lastname
-                                tvEmailContent.text = emailValue
                                 tvAddressContent.text = address
                                 tvPhoneNumberContent.text = phone
+                                tvEmailContent.text = email
                             }
                         }
                     }
@@ -142,9 +135,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                             .setBackgroundTint(Color.parseColor("#42ba96"))
                             .setTextColor(Color.parseColor("#FFFFFF"))
                             .show()
-                        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
-                            viewModel.getParentProfile(accessToken)
-                        }
+
+                        viewModel.getParentProfile()
                     }
                     is ProfileViewModel.ProfileEvent.SendToAccountSetting -> {
                         val eventBusActionToAccountSetting =

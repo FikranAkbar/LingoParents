@@ -83,13 +83,13 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
 
         viewModel.getAccessUserId().observe(viewLifecycleOwner) { parentId ->
             if (parentId != "") {
+                viewModel.parentId = parentId.toInt()
                 viewModel.getStudentList(HomeViewModel.STUDENTLIST_TYPE, parentId.toInt())
             }
         }
 
         viewModel.getRecentInsight(HomeViewModel.INSIGHT_TYPE)
         viewModel.getAllEvent(HomeViewModel.EVENT_TYPE)
-
 
         binding.apply {
             rvChildren.apply {
@@ -124,8 +124,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
                         showLoading(HomeViewModel.STUDENTLIST_TYPE, false)
                         showEmptyData(HomeViewModel.STUDENTLIST_TYPE, true)
 
-                        if (student.message.lowercase() != "failed")
+                        if (student.message.lowercase().contains("invalid token")) {
+                            viewModel.getStudentList(HomeViewModel.STUDENTLIST_TYPE, viewModel.parentId)
+                        } else {
                             noInternetAccessOrErrorHandler.onNoInternetAccessOrError(student.message)
+                        }
                     }
 
                 }
@@ -175,7 +178,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
                     is HomeViewModel.AllEvent.Error -> {
                         showLoading(HomeViewModel.EVENT_TYPE, false)
                         showEmptyData(HomeViewModel.EVENT_TYPE, true)
-                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
+                        if (event.message.lowercase().contains("invalid token")) {
+                            viewModel.getAllEvent(HomeViewModel.EVENT_TYPE)
+                        } else {
+                            noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
+                        }
                     }
 
                 }
@@ -233,7 +240,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
                     is HomeViewModel.RecentInsight.Error -> {
                         showLoading(HomeViewModel.INSIGHT_TYPE, false)
                         showEmptyData(HomeViewModel.INSIGHT_TYPE, true)
-                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(insight.message)
+                        if (insight.message.lowercase().contains("invalid token")) {
+                            viewModel.getRecentInsight(HomeViewModel.INSIGHT_TYPE)
+                        } else {
+                            noInternetAccessOrErrorHandler.onNoInternetAccessOrError(insight.message)
+                        }
                     }
 
                 }

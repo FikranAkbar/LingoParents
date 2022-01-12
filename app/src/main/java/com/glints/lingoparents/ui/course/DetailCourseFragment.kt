@@ -56,9 +56,8 @@ class DetailCourseFragment : Fragment(R.layout.fragment_detail_course),
         )[
                 DetailCourseViewModel::class.java
         ]
-        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
-            viewModel.getCourseDetailById(viewModel.getCurrentCourseId(), accessToken)
-        }
+
+        viewModel.getCourseDetailById(viewModel.getCurrentCourseId())
 
         binding.apply {
             rvDetailCourse.apply {

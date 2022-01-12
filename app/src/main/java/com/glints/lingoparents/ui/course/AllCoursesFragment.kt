@@ -54,9 +54,7 @@ class AllCoursesFragment : Fragment(R.layout.fragment_all_courses),
             }
         }
 
-        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
-            viewModel.getAllCourses(accessToken)
-        }
+        viewModel.getAllCourses()
 
         lifecycleScope.launchWhenStarted {
             viewModel.allCoursesEvent.collect { event ->

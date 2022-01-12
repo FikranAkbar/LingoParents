@@ -80,13 +80,8 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
             }
         }
 
-        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
-            viewModel.getParentProfile(accessToken)
-        }
+        viewModel.getParentProfile()
 
-        viewModel.getAccessEmail().observe(viewLifecycleOwner) { userEmail ->
-            email = userEmail
-        }
         viewModel.getUserId().observe(viewLifecycleOwner) { userId ->
             id_user = userId.toInt()
         }
@@ -131,6 +126,7 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                         event.parentProfile.apply {
                             fullname = "$firstname $lastname"
                             phoneNumber = phone
+                            this@LiveEventDetailFragment.email = this.email
                         }
                     }
                     is LiveEventDetailViewModel.LiveEventDetailEvent.RegisterClick -> {

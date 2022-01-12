@@ -95,11 +95,11 @@ class LiveEventDetailViewModel(
             })
     }
 
-    fun getParentProfile(accessToken: String) = viewModelScope.launch {
+    fun getParentProfile() = viewModelScope.launch {
         onApiCallStarted()
         APIClient
             .service
-            .getParentProfile(accessToken)
+            .getParentProfile()
             .enqueue(object : Callback<ParentProfileResponse> {
                 override fun onResponse(
                     call: Call<ParentProfileResponse>,
