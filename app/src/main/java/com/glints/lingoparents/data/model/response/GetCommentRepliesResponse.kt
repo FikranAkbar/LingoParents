@@ -36,8 +36,8 @@ class GetCommentRepliesResponse{
     )
 
     data class MasterUser(
-        val Master_parent: MasterParent,
-        val Master_student: MasterStudent,
+        val Master_parent: MasterParent?,
+        val Master_student: MasterStudent?,
         val Master_tutor: Any,
         val id: Int,
         val role: String

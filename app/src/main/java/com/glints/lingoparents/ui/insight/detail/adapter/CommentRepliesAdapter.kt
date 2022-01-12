@@ -22,6 +22,7 @@ class CommentRepliesAdapter(
     private val context: Context,
 ) :
     RecyclerView.Adapter<CommentRepliesAdapter.ChildAdapterHolder>() {
+    private var parentId: Int = 0
 
     private val diffUtilCallback = object :
         DiffUtil.ItemCallback<GetCommentRepliesResponse.Message>() {
@@ -49,11 +50,16 @@ class CommentRepliesAdapter(
             binding: ItemInsightCommentBinding,
         ) {
             binding.apply {
-                val firstname: String = item.Master_user.Master_parent.firstname
-                val lastname: String = item.Master_user.Master_parent.lastname
+                if (parentId == item.id_user)
+                    hideTextView(true)
+                else hideTextView(false)
 
-                ivComment.load(item.Master_user.Master_parent.photo)
-                "$firstname $lastname".also { tvUsernameComment.text = it }
+                item.Master_user.Master_parent?.photo?.let {
+                    ivComment.load(it)
+                }
+
+                tvUsernameComment.text =
+                    item.Master_user.Master_parent?.firstname + " " + item.Master_user.Master_parent?.lastname
                 tvCommentBody.text = item.comment
                 tvLikeComment.text = item.total_like.toString()
                 tvDislikeComment.text = item.total_dislike.toString()
@@ -135,6 +141,13 @@ class CommentRepliesAdapter(
                         llReplies.isVisible = false
                     }
                 }
+            }
+        }
+
+        private fun hideTextView(b: Boolean) {
+            binding.apply {
+                tvDeleteComment.isVisible = b
+                tvUpdateComment.isVisible = b
             }
         }
 
