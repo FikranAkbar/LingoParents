@@ -57,50 +57,37 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
 
                     is PasswordSettingViewModel.PasswordSettingEvent.TryToChangePassword -> {
 
-                        viewModel.getAccessToken().observe(viewLifecycleOwner) { accessToken ->
 
-                            binding.apply {
-                                val currentPassword = event.currentPassword
-                                val newPassword = event.newPassword
-                                val confirmPassword = event.confirmPassword
+                        binding.apply {
+                            val currentPassword = event.currentPassword
+                            val newPassword = event.newPassword
+                            val confirmPassword = event.confirmPassword
 
-                                if (currentPassword.isNotEmpty() && newPassword.isNotEmpty() && confirmPassword.isNotEmpty()) {
-                                    if (currentPassword.length >= 8 && newPassword.length >= 8 && confirmPassword.length >= 8) {
-                                        if (newPassword == confirmPassword) {
-                                            if (currentPassword != newPassword) {
-                                                viewModel.changePassword(
-                                                    accessToken,
-                                                    currentPassword,
-                                                    newPassword,
-                                                    confirmPassword
-                                                )
-                                                //viewModel.savePassword(binding.tfNewPassword.editText?.text.toString())
-                                                //viewModel.savePassword(event.newPassword)
-                                            } else {
-                                                Snackbar.make(
-                                                    requireView(),
-                                                    "New password value must be different with current password value",
-                                                    Snackbar.LENGTH_SHORT
-                                                )
-                                                    .setBackgroundTint(Color.parseColor("#F03738"))
-                                                    .setTextColor(Color.parseColor("#FFFFFF"))
-                                                    .show()
-                                            }
+                            if (currentPassword.isNotEmpty() && newPassword.isNotEmpty() && confirmPassword.isNotEmpty()) {
+                                if (currentPassword.length >= 8 && newPassword.length >= 8 && confirmPassword.length >= 8) {
+                                    if (newPassword == confirmPassword) {
+                                        if (currentPassword != newPassword) {
+                                            viewModel.changePassword(
+                                                currentPassword,
+                                                newPassword,
+                                                confirmPassword
+                                            )
+                                            //viewModel.savePassword(binding.tfNewPassword.editText?.text.toString())
+                                            //viewModel.savePassword(event.newPassword)
                                         } else {
                                             Snackbar.make(
                                                 requireView(),
-                                                "New password value must be same with confimation password's",
+                                                "New password value must be different with current password value",
                                                 Snackbar.LENGTH_SHORT
                                             )
                                                 .setBackgroundTint(Color.parseColor("#F03738"))
                                                 .setTextColor(Color.parseColor("#FFFFFF"))
                                                 .show()
-
                                         }
                                     } else {
                                         Snackbar.make(
                                             requireView(),
-                                            "Minimum character for a password is 8",
+                                            "New password value must be same with confimation password's",
                                             Snackbar.LENGTH_SHORT
                                         )
                                             .setBackgroundTint(Color.parseColor("#F03738"))
@@ -108,12 +95,10 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
                                             .show()
 
                                     }
-
-
                                 } else {
                                     Snackbar.make(
                                         requireView(),
-                                        "Field(s) must be filled out",
+                                        "Minimum character for a password is 8",
                                         Snackbar.LENGTH_SHORT
                                     )
                                         .setBackgroundTint(Color.parseColor("#F03738"))
@@ -123,8 +108,21 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
                                 }
 
 
+                            } else {
+                                Snackbar.make(
+                                    requireView(),
+                                    "Field(s) must be filled out",
+                                    Snackbar.LENGTH_SHORT
+                                )
+                                    .setBackgroundTint(Color.parseColor("#F03738"))
+                                    .setTextColor(Color.parseColor("#FFFFFF"))
+                                    .show()
+
                             }
+
+
                         }
+
 
                     }
                     is PasswordSettingViewModel.PasswordSettingEvent.Success -> {
