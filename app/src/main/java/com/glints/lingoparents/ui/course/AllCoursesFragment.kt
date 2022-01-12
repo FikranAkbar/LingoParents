@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -107,25 +108,15 @@ class AllCoursesFragment : Fragment(R.layout.fragment_all_courses),
 
     private fun showLoading(bool: Boolean) {
         binding.apply {
-            if (bool) {
-                rvCourse.visibility = View.GONE
-                shimmerLayout.visibility = View.VISIBLE
-            } else {
-                rvCourse.visibility = View.VISIBLE
-                shimmerLayout.visibility = View.GONE
-            }
+            rvCourse.isVisible = !bool
+            shimmerLayout.isVisible = bool
         }
     }
 
     private fun showEmptyWarning(bool: Boolean) {
         binding.apply {
-            if (bool) {
-                ivNoCourse.visibility = View.VISIBLE
-                tvNoCourse.visibility = View.VISIBLE
-            } else {
-                ivNoCourse.visibility = View.GONE
-                tvNoCourse.visibility = View.GONE
-            }
+            ivNoCourse.isVisible = bool
+            tvNoCourse.isVisible = bool
         }
     }
 }

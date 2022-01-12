@@ -2,13 +2,13 @@ package com.glints.lingoparents.ui.insight.detail
 
 import android.app.AlertDialog
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -22,6 +22,7 @@ import com.glints.lingoparents.databinding.FragmentDetailInsightBinding
 import com.glints.lingoparents.ui.insight.detail.adapter.CommentRepliesAdapter
 import com.glints.lingoparents.ui.insight.detail.adapter.CommentsAdapter
 import com.glints.lingoparents.utils.CustomViewModelFactory
+import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import com.google.android.material.snackbar.Snackbar
@@ -38,6 +39,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
     private lateinit var commentsAdapter: CommentsAdapter
     private lateinit var commentRepliesAdapter: CommentRepliesAdapter
     private lateinit var tokenPreferences: TokenPreferences
+    private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
 
     companion object {
         val report_body = arrayOf("Spam", "Harassment", "Rules Violation", "Other")
@@ -51,13 +53,6 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
 
         initViews()
-
-        binding.rvInsightComment.apply {
-            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(requireContext())
-            commentsAdapter = CommentsAdapter(this@DetailInsightFragment, requireContext())
-            adapter = commentsAdapter
-        }
 
         return binding.root
     }
@@ -94,8 +89,8 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
                                 }
                                 tvInsightTitle.text = title
                                 tvInsightDate.text =
-                                    SimpleDateFormat("EEE, MMM d", Locale.getDefault())
-                                        .format(date)
+                                    SimpleDateFormat("d MMMM yyy", Locale.getDefault())
+                                        .format(date!!)
                                 tvInsightBody.text = content
                                 tvInsightLike.text = total_like.toString()
                                 tvInsightDislike.text = total_dislike.toString()
@@ -110,38 +105,16 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
                     }
                     is DetailInsightViewModel.InsightDetail.Error -> {
                         showLoading(false)
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(insight.message)
                     }
                 }
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.likeDislikeInsight.collect { insight ->
+            viewModel.actionInsight.collect { insight ->
                 when (insight) {
-                    is DetailInsightViewModel.LikeDislikeInsight.Success -> {
-                        Snackbar.make(
-                            binding.root,
-                            insight.result.message,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
-                    is DetailInsightViewModel.LikeDislikeInsight.Loading -> {
-                    }
-                    is DetailInsightViewModel.LikeDislikeInsight.Error -> {
-                        Snackbar.make(
-                            requireView(),
-                            insight.message,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.createComment.collect { insight ->
-                when (insight) {
-                    is DetailInsightViewModel.CreateComment.Success -> {
+                    is DetailInsightViewModel.InsightAction.SuccessCreateComment -> {
                         Snackbar.make(
                             requireView(),
                             "Add comment successfully",
@@ -152,107 +125,42 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
                             tfInsightComment.editText?.setText("")
                         }
                     }
-                    is DetailInsightViewModel.CreateComment.Loading -> {
-
+                    is DetailInsightViewModel.InsightAction.SuccessDeleteComment -> {
+                        Snackbar.make(
+                            requireView(),
+                            insight.result.message,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                     }
-                    is DetailInsightViewModel.CreateComment.Error -> {
-                        Snackbar.make(requireView(), "Something's Wrong", Snackbar.LENGTH_LONG)
-                            .setBackgroundTint(Color.parseColor("#FF0000"))
-                            .setTextColor(Color.parseColor("#FFFFFF"))
-                            .show()
-                    }
-                }
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.getCommentReplies.collect { insight ->
-                when (insight) {
-                    is DetailInsightViewModel.GetCommentReplies.Loading -> {
-                    }
-                    is DetailInsightViewModel.GetCommentReplies.Success -> {
+                    is DetailInsightViewModel.InsightAction.SuccessGetCommentReplies -> {
                         commentRepliesAdapter =
                             CommentRepliesAdapter(this@DetailInsightFragment, requireContext())
                         commentRepliesAdapter.submitList(insight.list)
                         commentsAdapter.showCommentReplies(commentRepliesAdapter)
                     }
-                    is DetailInsightViewModel.GetCommentReplies.Error -> {
-                        Snackbar.make(requireView(), insight.message, Snackbar.LENGTH_LONG)
-                            .setBackgroundTint(Color.parseColor("#FF0000"))
-                            .setTextColor(Color.parseColor("#FFFFFF"))
-                            .show()
+                    is DetailInsightViewModel.InsightAction.SuccessLikeDislike -> {
+                        Snackbar.make(
+                            binding.root,
+                            insight.result.message,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                     }
-                }
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.reportInsight.collect { insight ->
-                when (insight) {
-                    is DetailInsightViewModel.ReportInsight.Loading -> {
-
+                    is DetailInsightViewModel.InsightAction.SuccessUpdateComment -> {
+                        Snackbar.make(
+                            binding.root,
+                            insight.result.message,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                     }
-                    is DetailInsightViewModel.ReportInsight.Success -> {
+                    is DetailInsightViewModel.InsightAction.SuccessReport -> {
                         Snackbar.make(
                             requireView(),
                             "Reported successfully",
                             Snackbar.LENGTH_SHORT
                         ).show()
                     }
-                    is DetailInsightViewModel.ReportInsight.Error -> {
-                        Snackbar.make(
-                            requireView(),
-                            "Something went wrong...",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.deleteComment.collect { insight ->
-                when (insight) {
-                    is DetailInsightViewModel.DeleteComment.Loading -> {
-
-                    }
-                    is DetailInsightViewModel.DeleteComment.Success -> {
-                        Snackbar.make(
-                            requireView(),
-                            insight.result.message,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
-                    is DetailInsightViewModel.DeleteComment.Error -> {
-                        Snackbar.make(
-                            requireView(),
-                            insight.message,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.updateComment.collect { insight ->
-                when (insight) {
-                    is DetailInsightViewModel.UpdateComment.Loading -> {
-
-                    }
-                    is DetailInsightViewModel.UpdateComment.Success -> {
-                        Snackbar.make(
-                            requireView(),
-                            insight.result.message,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
-                    is DetailInsightViewModel.UpdateComment.Error -> {
-                        Snackbar.make(
-                            requireView(),
-                            insight.message,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
+                    is DetailInsightViewModel.InsightAction.Error -> {
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(insight.message)
                     }
                 }
             }
@@ -261,18 +169,20 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
 
     private fun showLoading(b: Boolean) {
         binding.apply {
-            if (b) {
-                shimmerLayout.visibility = View.VISIBLE
-                mainContent.visibility = View.GONE
-            } else {
-                shimmerLayout.visibility = View.GONE
-                mainContent.visibility = View.VISIBLE
-            }
+            shimmerLayout.isVisible = b
+            mainContent.isVisible = !b
         }
     }
 
     private fun initViews() {
         binding.apply {
+            rvInsightComment.apply {
+                setHasFixedSize(true)
+                layoutManager = LinearLayoutManager(requireContext())
+                commentsAdapter = CommentsAdapter(this@DetailInsightFragment, requireContext())
+                adapter = commentsAdapter
+            }
+
             ivBackButton.setOnClickListener {
                 findNavController().popBackStack()
             }
@@ -348,7 +258,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
     }
 
 
-    fun String.getDateWithServerTimeStamp(): Date? {
+    private fun String.getDateWithServerTimeStamp(): Date? {
         val dateFormat = SimpleDateFormat(
             "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
             Locale.getDefault()
@@ -357,6 +267,15 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
             dateFormat.parse(this)
         } catch (e: ParseException) {
             null
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            noInternetAccessOrErrorHandler = context as NoInternetAccessOrErrorListener
+        } catch (e: ClassCastException) {
+            println("DEBUG: $context must be implement NoInternetAccessOrErrorListener")
         }
     }
 

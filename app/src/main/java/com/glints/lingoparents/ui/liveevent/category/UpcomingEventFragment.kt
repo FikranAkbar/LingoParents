@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -140,25 +141,15 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
 
     private fun showLoading(bool: Boolean) {
         binding.apply {
-            if (bool) {
-                rvUpcomingEvent.visibility = View.GONE
-                shimmerLayout.visibility = View.VISIBLE
-            } else {
-                rvUpcomingEvent.visibility = View.VISIBLE
-                shimmerLayout.visibility = View.GONE
-            }
+            rvUpcomingEvent.isVisible = !bool
+            shimmerLayout.isVisible = bool
         }
     }
 
     private fun showEmptyWarning(bool: Boolean) {
         binding.apply {
-            if (bool) {
-                ivNoEvent.visibility = View.VISIBLE
-                tvNoEvent.visibility = View.VISIBLE
-            } else {
-                ivNoEvent.visibility = View.GONE
-                tvNoEvent.visibility = View.GONE
-            }
+            ivNoEvent.isVisible = bool
+            tvNoEvent.isVisible = bool
         }
     }
 }
