@@ -74,4 +74,9 @@ class LiveEventListFragment : Fragment(R.layout.fragment_live_event_list) {
 
         return binding.root
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.sendBlankQueryToLiveEventListFragment()
+    }
 }
