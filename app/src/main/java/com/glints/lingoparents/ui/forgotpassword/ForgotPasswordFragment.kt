@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -67,8 +68,7 @@ class ForgotPasswordFragment : Fragment(R.layout.fragment_forgot_password) {
                         showLoading(false)
                         if (event.message.contains("email not found", ignoreCase = true)) {
                             AuthFormValidator.showFieldError(binding.tilEmail, event.message)
-                        }
-                        else {
+                        } else {
                             noInternetAccessOrErrorHandler.onNoInternetAccessOrError(getString(R.string.default_error_message))
                         }
                     }
@@ -90,16 +90,8 @@ class ForgotPasswordFragment : Fragment(R.layout.fragment_forgot_password) {
 
     private fun showLoading(bool: Boolean) {
         binding.apply {
-            when (bool) {
-                true -> {
-                    vLoadingBackground.visibility = View.VISIBLE
-                    vLoadingProgress.visibility = View.VISIBLE
-                }
-                else -> {
-                    vLoadingBackground.visibility = View.GONE
-                    vLoadingProgress.visibility = View.GONE
-                }
-            }
+            vLoadingBackground.isVisible = bool
+            vLoadingProgress.isVisible = bool
         }
     }
 

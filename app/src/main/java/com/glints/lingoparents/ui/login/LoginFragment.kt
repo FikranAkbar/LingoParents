@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
@@ -119,6 +120,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     is LoginViewModel.LoginEvent.Error -> {
                         showLoading(false)
                         event.message.let { message ->
+                            event.idToken?.let { idToken ->
+                                val action =
+                                    LoginFragmentDirections.actionLoginFragmentToRegisterFragment(
+                                        idToken)
+                                findNavController().navigate(action)
+                            }
                             when {
                                 message.contains("email", ignoreCase = true) -> {
                                     AuthFormValidator.showFieldError(binding.tilEmail, message)
@@ -126,12 +133,13 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                                 message.contains("password", ignoreCase = true) -> {
                                     AuthFormValidator.showFieldError(binding.tilPassword, message)
                                 }
-                                else -> {
-                                    event.idToken?.let { idToken ->
-                                        val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment(idToken)
-                                        findNavController().navigate(action)
-                                    }
-                                }
+                                else -> Snackbar.make(requireView(),
+                                    event.message,
+                                    Snackbar.LENGTH_SHORT
+                                )
+                                    .setBackgroundTint(Color.RED)
+                                    .setTextColor(Color.WHITE)
+                                    .show()
                             }
                         }
                     }
@@ -259,26 +267,13 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun showLoading(bool: Boolean) {
         binding.apply {
-            when (bool) {
-                true -> {
-                    vLoadingBackground.visibility = View.VISIBLE
-                    vLoadingProgress.visibility = View.VISIBLE
-                    tilEmail.isEnabled = false
-                    tilPassword.isEnabled = false
-                    mbtnForgetPassword.isClickable = false
-                    mbtnLogin.isClickable = false
-                    mbtnLoginWithGoogle.isClickable = false
-                }
-                else -> {
-                    vLoadingBackground.visibility = View.GONE
-                    vLoadingProgress.visibility = View.GONE
-                    tilEmail.isEnabled = true
-                    tilPassword.isEnabled = true
-                    mbtnForgetPassword.isClickable = true
-                    mbtnLogin.isClickable = true
-                    mbtnLoginWithGoogle.isClickable = true
-                }
-            }
+            vLoadingBackground.isVisible = bool
+            vLoadingProgress.isVisible = bool
+            tilEmail.isEnabled = !bool
+            tilPassword.isEnabled = !bool
+            mbtnForgetPassword.isClickable = !bool
+            mbtnLogin.isClickable = !bool
+            mbtnLoginWithGoogle.isClickable = !bool
         }
     }
 

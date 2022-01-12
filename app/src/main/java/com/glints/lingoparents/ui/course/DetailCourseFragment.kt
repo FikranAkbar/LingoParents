@@ -3,10 +3,11 @@ package com.glints.lingoparents.ui.course
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -35,7 +36,7 @@ class DetailCourseFragment : Fragment(R.layout.fragment_detail_course),
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentDetailCourseBinding.inflate(inflater)
         binding.cvBackButton.setOnClickListener {
@@ -115,33 +116,19 @@ class DetailCourseFragment : Fragment(R.layout.fragment_detail_course),
 
     private fun showLoading(bool: Boolean) {
         binding.apply {
-            if (bool) {
-                tvCourse.visibility = View.GONE
-                rvDetailCourse.visibility = View.GONE
-                shimmerLayout.visibility = View.VISIBLE
-            } else {
-                tvCourse.visibility = View.VISIBLE
-                rvDetailCourse.visibility = View.VISIBLE
-                shimmerLayout.visibility = View.GONE
-            }
+            tvCourse.isVisible = !bool
+            rvDetailCourse.isVisible = !bool
+            shimmerLayout.isVisible = bool
         }
     }
 
     private fun showEmptyWarning(bool: Boolean) {
         binding.apply {
-            if (bool) {
-                cvBackButton.visibility = View.INVISIBLE
-                rvDetailCourse.visibility = View.INVISIBLE
-                tvCourse.visibility = View.INVISIBLE
-                ivNoDetailCourse.visibility = View.VISIBLE
-                tvNoDetailCourse.visibility = View.VISIBLE
-            } else {
-                cvBackButton.visibility = View.VISIBLE
-                rvDetailCourse.visibility = View.VISIBLE
-                tvCourse.visibility = View.VISIBLE
-                ivNoDetailCourse.visibility = View.GONE
-                tvNoDetailCourse.visibility = View.GONE
-            }
+            cvBackButton.isVisible = !bool
+            rvDetailCourse.isVisible = !bool
+            tvCourse.isVisible = !bool
+            ivNoDetailCourse.isVisible = bool
+            tvNoDetailCourse.isVisible = bool
         }
     }
 }

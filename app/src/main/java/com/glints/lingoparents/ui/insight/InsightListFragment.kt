@@ -23,7 +23,7 @@ class InsightListFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentInsightListBinding.inflate(inflater, container, false)
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
@@ -58,11 +58,7 @@ class InsightListFragment : Fragment() {
                 editText?.setOnEditorActionListener { textView, actionId, _ ->
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                         val query = textView.text.toString()
-                        if (query.isBlank()) {
-                            viewModel.sendBlankKeywordToInsightListFragment()
-                        } else {
-                            viewModel.sendKeywordToInsightListFragment(query)
-                        }
+                        viewModel.sendStickyKeywordToInsightListFragment(query)
 
                         val imm =
                             requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

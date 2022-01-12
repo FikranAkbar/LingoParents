@@ -1,9 +1,11 @@
 package com.glints.lingoparents.ui.insight.category
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -14,6 +16,7 @@ import com.glints.lingoparents.databinding.FragmentAllInsightBinding
 import com.glints.lingoparents.ui.insight.InsightListFragmentDirections
 import com.glints.lingoparents.ui.insight.InsightListViewModel
 import com.glints.lingoparents.utils.CustomViewModelFactory
+import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import kotlinx.coroutines.flow.collect
@@ -27,10 +30,11 @@ class AllInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
     private lateinit var viewModel: InsightListViewModel
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var insightListAdapter: CategoriesAdapter
+    private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentAllInsightBinding.inflate(inflater, container, false)
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
@@ -75,6 +79,7 @@ class AllInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
                     is InsightListViewModel.AllInsightList.Error -> {
                         showLoading(false)
                         showEmptyWarning(true)
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(insight.message)
                     }
                     is InsightListViewModel.AllInsightList.NavigateToDetailInsightFragment -> {
                         val action = InsightListFragmentDirections
@@ -87,43 +92,37 @@ class AllInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
     }
 
     @Subscribe
-    fun onBlankKeywordSent(insight: InsightListViewModel.InsightSearchList.SendBlankKeywordToInsightListFragment) {
-        viewModel.loadInsightList(InsightListViewModel.ALL_TAG)
-    }
-
-    @Subscribe
     fun onKeywordSent(insight: InsightListViewModel.InsightSearchList.SendKeywordToInsightListFragment) {
         viewModel.getInsightSearchList(InsightListViewModel.ALL_TAG, insight.keyword)
     }
 
     private fun showLoading(b: Boolean) {
         binding.apply {
-            if (b) {
-                rvAllInsight.visibility = View.GONE
-                shimmerLayout.visibility = View.VISIBLE
-            } else {
-                rvAllInsight.visibility = View.VISIBLE
-                shimmerLayout.visibility = View.GONE
-            }
+            shimmerLayout.isVisible = b
+            rvAllInsight.isVisible = !b
         }
     }
 
     private fun showEmptyWarning(b: Boolean) {
         binding.apply {
-            if (b) {
-                rvAllInsight.visibility = View.GONE
-                ivNoInsight.visibility = View.VISIBLE
-                tvNoInsight.visibility = View.VISIBLE
-            } else {
-                ivNoInsight.visibility = View.GONE
-                tvNoInsight.visibility = View.GONE
-            }
+            rvAllInsight.isVisible = !b
+            ivNoInsight.isVisible = b
+            tvNoInsight.isVisible = b
         }
     }
 
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            noInternetAccessOrErrorHandler = context as NoInternetAccessOrErrorListener
+        } catch (e: ClassCastException) {
+            println("DEBUG: $context must be implement NoInternetAccessOrErrorListener")
+        }
     }
 
     override fun onStop() {

@@ -8,37 +8,51 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import coil.load
 import com.glints.lingoparents.R
 import com.glints.lingoparents.data.model.response.InsightDetailResponse
 import com.glints.lingoparents.databinding.ItemInsightCommentBinding
 import com.glints.lingoparents.ui.insight.detail.DetailInsightFragment
-import java.util.*
 
 class CommentsAdapter(private val listener: OnItemClickCallback, private val context: Context) :
     RecyclerView.Adapter<CommentsAdapter.AdapterHolder>() {
-    private val dataList = ArrayList<InsightDetailResponse.MasterComment>()
     private lateinit var rvChild: RecyclerView
     private var parentId: Int = 0
+
+    private val diffUtilCallback = object :
+        DiffUtil.ItemCallback<InsightDetailResponse.MasterComment>() {
+        override fun areItemsTheSame(
+            oldItem: InsightDetailResponse.MasterComment,
+            newItem: InsightDetailResponse.MasterComment,
+        ): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(
+            oldItem: InsightDetailResponse.MasterComment,
+            newItem: InsightDetailResponse.MasterComment,
+        ): Boolean {
+            return oldItem == newItem
+        }
+    }
+    private val differ = AsyncListDiffer(this, diffUtilCallback)
 
     inner class AdapterHolder(private val binding: ItemInsightCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
-        fun bind(item: InsightDetailResponse.MasterComment, holder: AdapterHolder) {
+        fun bind(item: InsightDetailResponse.MasterComment) {
             binding.apply {
                 if (parentId == item.id_user)
                     hideTextView(true)
                 else hideTextView(false)
 
-                val firstname: String = item.Master_user.Master_parent.firstname
-                val lastname: String = item.Master_user.Master_parent.lastname
-                val totalReplies = item.replies
-
-                Glide.with(holder.itemView.context).load(item.Master_user.Master_parent.photo)
-                    .into(ivComment)
-                "$firstname $lastname".also { tvUsernameComment.text = it }
+                ivComment.load(item.Master_user.Master_parent.photo)
+                tvUsernameComment.text =
+                    item.Master_user.Master_parent.firstname + " " + item.Master_user.Master_parent.lastname
                 tvCommentBody.text = item.comment
                 tvLikeComment.text = item.total_like.toString()
                 tvDislikeComment.text = item.total_dislike.toString()
@@ -76,7 +90,7 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
                 }
 
                 if (item.replies > 0) tvShowReplyComment.visibility = View.VISIBLE
-                tvShowReplyComment.text = "Show $totalReplies Replies"
+                tvShowReplyComment.text = "Show ${item.replies} Replies"
                 tvShowReplyComment.setOnClickListener {
                     if (rvCommentReply.visibility == View.GONE) {
                         rvCommentReply.visibility = View.VISIBLE
@@ -85,7 +99,7 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
                         listener.onShowCommentRepliesClicked(item)
                     } else if (rvCommentReply.visibility == View.VISIBLE) {
                         rvCommentReply.visibility = View.GONE
-                        tvShowReplyComment.text = "Show $totalReplies Replies"
+                        tvShowReplyComment.text = "Show ${item.replies} Replies"
                     }
                 }
 
@@ -174,12 +188,10 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
     }
 
     override fun onBindViewHolder(holder: AdapterHolder, position: Int) {
-        holder.bind(dataList[position], holder)
+        holder.bind(differ.currentList[position])
     }
 
-    override fun getItemCount(): Int {
-        return dataList.size
-    }
+    override fun getItemCount(): Int = differ.currentList.size
 
     interface OnItemClickCallback : CommentRepliesAdapter.OnItemClickCallback {
         fun onReportCommentClicked(
@@ -196,11 +208,8 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
         fun onUpdateCommentClicked(item: InsightDetailResponse.MasterComment, comment: String)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     fun submitList(list: List<InsightDetailResponse.MasterComment>) {
-        dataList.clear()
-        dataList.addAll(list)
-        notifyDataSetChanged()
+        differ.submitList(list)
     }
 
     fun submitParentId(id: Int) {
