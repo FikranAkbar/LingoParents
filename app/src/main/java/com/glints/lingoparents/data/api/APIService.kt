@@ -132,7 +132,6 @@ interface APIService {
         @Field("comment") comment: String
     ): Call<UpdateCommentResponse>
 
-    //amin
     @GET("api/v1/courses")
     fun getCourseList(): Call<AllCoursesResponse>
 
@@ -142,7 +141,6 @@ interface APIService {
     @FormUrlEncoded
     @PUT("api/v1/parents/profile")
     fun editParentProfile(
-        @Header("authorization") authorization: String,
         @Field("firstname") firstname: String,
         @Field("lastname") lastname: String,
         @Field("address") address: String,
@@ -152,7 +150,6 @@ interface APIService {
     @FormUrlEncoded
     @PUT("api/v1/parents/profile/change-password")
     fun changePassword(
-        @Header("authorization") authorization: String,
         @Field("password") currentPassword: String,
         @Field("new_password") password: String,
         @Field("confirmpassword") confirmPassword: String,
