@@ -34,7 +34,6 @@ class CustomViewModelFactory(
     defaultArgs: Bundle? = null,
     private val eventId: Int? = null,
     private val insightId: Int? = null,
-    private val accountId: Int? = null,
     private val studentId: Int? = null,
     private val courseId: Int? = null,
     private val sessionId: Int? = null,
@@ -55,7 +54,7 @@ class CustomViewModelFactory(
                 LoginViewModel(tokenPref) as T
             }
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
-                RegisterViewModel(googleIdToken) as T
+                RegisterViewModel(tokenPref, googleIdToken = googleIdToken) as T
             }
             modelClass.isAssignableFrom(LiveEventListViewModel::class.java) -> {
                 LiveEventListViewModel() as T

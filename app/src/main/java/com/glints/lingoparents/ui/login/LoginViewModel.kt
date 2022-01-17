@@ -1,11 +1,10 @@
 package com.glints.lingoparents.ui.login
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.model.response.LoginUserResponse
-import com.glints.lingoparents.ui.REGISTER_USER_RESULT_OK
+import com.glints.lingoparents.ui.authentication.REGISTER_USER_RESULT_OK
 import com.glints.lingoparents.utils.ErrorUtils
 import com.glints.lingoparents.utils.JWTUtils
 import com.glints.lingoparents.utils.TokenPreferences
@@ -33,18 +32,8 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
         loginEventChannel.send(LoginEvent.NavigateToRegister)
     }
 
-    fun onRegisterUserSuccessful(result: Int) = viewModelScope.launch {
-        when (result) {
-            REGISTER_USER_RESULT_OK -> showSnackBarMessage("Register User Successful!")
-        }
-    }
-
     fun onLoginWithGoogleClick() = viewModelScope.launch {
         loginEventChannel.send(LoginEvent.TryToLoginWithGoogle)
-    }
-
-    fun onLoginWithGoogleSuccessful(account: GoogleSignInAccount) = viewModelScope.launch {
-        loginEventChannel.send(LoginEvent.LoginWithGoogleSuccess(account))
     }
 
     fun onLoginWithGoogleFailure(message: String) = viewModelScope.launch {
@@ -55,8 +44,8 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
         loginEventChannel.send(LoginEvent.Loading)
     }
 
-    private fun onApiCallSuccess(result: String) = viewModelScope.launch {
-        loginEventChannel.send(LoginEvent.Success(result))
+    private fun onApiCallSuccess() = viewModelScope.launch {
+        loginEventChannel.send(LoginEvent.Success)
     }
 
     private fun onApiCallError(message: String, idToken: String? = null) = viewModelScope.launch {
@@ -73,7 +62,7 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
         tokenPreferences.saveRefreshToken(refreshToken)
     }
 
-    fun saveUserId(id: String) = viewModelScope.launch {
+    private fun saveUserId(id: String) = viewModelScope.launch {
         tokenPreferences.saveUserId(id)
     }
 
@@ -85,15 +74,14 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
             .enqueue(object : Callback<LoginUserResponse> {
                 override fun onResponse(
                     call: Call<LoginUserResponse>,
-                    response: Response<LoginUserResponse>
+                    response: Response<LoginUserResponse>,
                 ) {
                     if (response.isSuccessful) {
-                        onApiCallSuccess("Login Successful")
+                        onApiCallSuccess()
 
                         val accessToken = response.body()?.data?.accessToken.toString()
                         val refreshToken = response.body()?.data?.refreshToken.toString()
-                        println("TOKEN $accessToken")
-                        println("REFRESH TOKEN $refreshToken")
+
                         val userId = JWTUtils.getIdFromAccessToken(accessToken)
                         saveToken(accessToken, refreshToken)
                         saveUserId(userId)
@@ -118,10 +106,10 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
             .enqueue(object : Callback<LoginUserResponse> {
                 override fun onResponse(
                     call: Call<LoginUserResponse>,
-                    response: Response<LoginUserResponse>
+                    response: Response<LoginUserResponse>,
                 ) {
                     if (response.isSuccessful) {
-                        onApiCallSuccess("Login Successful")
+                        onApiCallSuccess()
 
                         val accessToken = response.body()?.data?.accessToken.toString()
                         val refreshToken = response.body()?.data?.refreshToken.toString()
@@ -148,7 +136,7 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
         data class LoginWithGoogleSuccess(val account: GoogleSignInAccount) : LoginEvent()
         data class LoginWithGoogleFailure(val errorMessage: String) : LoginEvent()
         object Loading : LoginEvent()
-        data class Success(val result: String) : LoginEvent()
+        object Success : LoginEvent()
         data class Error(val message: String, val idToken: String?) : LoginEvent()
         data class ShowSnackBarMessage(val message: String) : LoginEvent()
     }

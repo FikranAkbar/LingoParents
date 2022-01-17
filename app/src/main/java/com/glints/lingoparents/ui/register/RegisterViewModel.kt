@@ -3,11 +3,16 @@ package com.glints.lingoparents.ui.register
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
+import com.glints.lingoparents.data.model.response.LoginUserResponse
 import com.glints.lingoparents.data.model.response.RegisterUserResponse
 import com.glints.lingoparents.ui.authentication.REGISTER_USER_RESULT_OK
 import com.glints.lingoparents.utils.ErrorUtils
 import com.glints.lingoparents.utils.JWTUtils
+import com.glints.lingoparents.utils.TokenPreferences
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -15,6 +20,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class RegisterViewModel(
+    private val tokenPreferences: TokenPreferences,
     googleIdToken: String? = null,
 ) : ViewModel() {
     companion object {
@@ -65,20 +71,34 @@ class RegisterViewModel(
         registerEventChannel.send(RegisterEvent.NavigateBackToLogin)
     }
 
-    fun onRegisterSuccessful() = viewModelScope.launch {
-        registerEventChannel.send(RegisterEvent.NavigateBackWithResult(REGISTER_USER_RESULT_OK))
-    }
-
     private fun onApiCallStarted() = viewModelScope.launch {
         registerEventChannel.send(RegisterEvent.Loading)
     }
 
-    private fun onApiCallSuccess() = viewModelScope.launch {
-        registerEventChannel.send(RegisterEvent.Success)
+    private fun onRegisterApiCallSuccess(email: String, password: String) = viewModelScope.launch {
+        registerEventChannel.send(RegisterEvent.RegisterSuccess(email, password))
     }
 
-    private fun onApiCallError(message: String) = viewModelScope.launch {
-        registerEventChannel.send(RegisterEvent.Error(message))
+    private fun onLoginApiCallSuccess() = viewModelScope.launch {
+        registerEventChannel.send(RegisterEvent.LoginSuccess)
+    }
+
+    private fun onRegisterApiCallError(message: String) = viewModelScope.launch {
+        registerEventChannel.send(RegisterEvent.RegisterError(message))
+    }
+
+    private fun onLoginApiCallError(message: String) = viewModelScope.launch {
+        registerEventChannel.send(RegisterEvent.LoginError(message))
+    }
+
+    private fun saveToken(accessToken: String, refreshToken: String) = viewModelScope.launch {
+        tokenPreferences.resetToken()
+        tokenPreferences.saveAccessToken(accessToken)
+        tokenPreferences.saveRefreshToken(refreshToken)
+    }
+
+    private fun saveUserId(id: String) = viewModelScope.launch {
+        tokenPreferences.saveUserId(id)
     }
 
     fun registerUser(
@@ -98,15 +118,15 @@ class RegisterViewModel(
                     response: Response<RegisterUserResponse>,
                 ) {
                     if (response.isSuccessful) {
-                        onApiCallSuccess()
+                        onRegisterApiCallSuccess(email, password)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
-                        onApiCallError(apiError.message())
+                        onRegisterApiCallError(apiError.message())
                     }
                 }
 
                 override fun onFailure(call: Call<RegisterUserResponse>, t: Throwable) {
-                    onApiCallError("Network Failed...")
+                    onRegisterApiCallError("Network Failed...")
                 }
             })
     }
@@ -116,7 +136,33 @@ class RegisterViewModel(
         password: String,
     ) = viewModelScope.launch {
         onApiCallStarted()
+        APIClient
+            .service
+            .loginUser(email, password)
+            .enqueue(object : Callback<LoginUserResponse> {
+                override fun onResponse(
+                    call: Call<LoginUserResponse>,
+                    response: Response<LoginUserResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val accessToken = response.body()?.data?.accessToken.toString()
+                        val refreshToken = response.body()?.data?.refreshToken.toString()
 
+                        val userId = JWTUtils.getIdFromAccessToken(accessToken)
+                        saveToken(accessToken, refreshToken)
+                        saveUserId(userId)
+
+                        onLoginApiCallSuccess()
+                    } else {
+                        val apiError = ErrorUtils.parseError(response)
+                        onLoginApiCallError(apiError.message())
+                    }
+                }
+
+                override fun onFailure(call: Call<LoginUserResponse>, t: Throwable) {
+                    onLoginApiCallError("Network Failed...")
+                }
+            })
     }
 
     sealed class RegisterEvent {
@@ -130,11 +176,10 @@ class RegisterViewModel(
             val phone: String,
             val role: String = "parent",
         ) : RegisterEvent()
-
         object Loading : RegisterEvent()
-        object Success : RegisterEvent()
+        data class RegisterSuccess(val email: String, val password: String) : RegisterEvent()
         object LoginSuccess : RegisterEvent()
-        data class Error(val message: String) : RegisterEvent()
+        data class RegisterError(val message: String) : RegisterEvent()
         data class LoginError(val message: String) : RegisterEvent()
     }
 }

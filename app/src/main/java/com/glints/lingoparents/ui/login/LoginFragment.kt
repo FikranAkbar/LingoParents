@@ -1,9 +1,9 @@
 package com.glints.lingoparents.ui.login
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
@@ -16,7 +16,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -49,7 +48,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private lateinit var googleSignInClient: GoogleSignInClient
 
-    @SuppressLint("NewApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _binding = FragmentLoginBinding.bind(view)
 
@@ -136,13 +134,22 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                                             findNavController().navigate(action)
                                         }
                                     } else {
-                                        Snackbar.make(requireView(),
-                                            event.message,
-                                            Snackbar.LENGTH_SHORT
-                                        )
-                                            .setBackgroundTint(resources.getColor(R.color.error_color))
-                                            .setTextColor(Color.WHITE)
-                                            .show()
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                            Snackbar.make(binding.root,
+                                                event.message,
+                                                Snackbar.LENGTH_SHORT)
+                                                .setBackgroundTint(resources.getColor(R.color.error_color,
+                                                    null))
+                                                .setTextColor(Color.WHITE)
+                                                .show()
+                                        } else {
+                                            Snackbar.make(binding.root,
+                                                event.message,
+                                                Snackbar.LENGTH_SHORT)
+                                                .setBackgroundTint(Color.RED)
+                                                .setTextColor(Color.WHITE)
+                                                .show()
+                                        }
                                     }
                                 }
                             }
@@ -171,7 +178,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                             event.account.email as CharSequence,
                             Snackbar.LENGTH_SHORT
                         ).show()
-                        event.account.printInformation()
                     }
                     is LoginViewModel.LoginEvent.LoginWithGoogleFailure -> {
                         Snackbar.make(binding.root, event.errorMessage, Snackbar.LENGTH_SHORT)
@@ -180,11 +186,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     }
                 }
             }
-        }
-
-        setFragmentResultListener("register_user") { _, bundle ->
-            val result = bundle.getInt("register_user")
-            viewModel.onRegisterUserSuccessful(result)
         }
     }
 
@@ -299,16 +300,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         } catch (e: ApiException) {
             viewModel.onLoginWithGoogleFailure("signInResult:failed code" + e.status)
         }
-    }
-
-    private fun GoogleSignInAccount.printInformation() {
-        println("""
-            account = ${this.account}
-            id = ${this.id}
-            idToken = ${this.idToken}
-            serverAuthCode = ${this.serverAuthCode}
-            givenName = ${this.givenName}
-        """.trimIndent())
     }
 
     override fun onDestroy() {
