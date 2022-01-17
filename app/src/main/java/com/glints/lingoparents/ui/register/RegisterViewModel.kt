@@ -87,12 +87,21 @@ class RegisterViewModel(
         registerEventChannel.send(RegisterEvent.LoginError(message))
     }
 
+    /**
+     * Method to save access token and refresh token in token preference, which is data store implementation
+     * @param accessToken Access Token that received from login api call
+     * @param refreshToken Refresh Token that received from login api call
+     */
     private fun saveToken(accessToken: String, refreshToken: String) = viewModelScope.launch {
         tokenPreferences.resetToken()
         tokenPreferences.saveAccessToken(accessToken)
         tokenPreferences.saveRefreshToken(refreshToken)
     }
 
+    /**
+     * Method to save user id in token preference, which is data store implementation
+     * @param id The user id you want to save in token preference
+     */
     private fun saveUserId(id: String) = viewModelScope.launch {
         tokenPreferences.saveUserId(id)
     }
