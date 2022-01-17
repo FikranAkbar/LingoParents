@@ -1,5 +1,6 @@
 package com.glints.lingoparents.ui.login
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -10,10 +11,9 @@ import android.text.Spanned
 import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -21,7 +21,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentLoginBinding
-import com.glints.lingoparents.ui.dashboard.DashboardActivity
+import com.glints.lingoparents.ui.authentication.AuthenticationActivity
 import com.glints.lingoparents.utils.AuthFormValidator
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
@@ -33,13 +33,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
-
-    companion object {
-        private const val RC_GOOGLE_SIGN_IN = 9001
-    }
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
@@ -47,6 +47,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private lateinit var viewModel: LoginViewModel
 
     private lateinit var googleSignInClient: GoogleSignInClient
+
+    private val loginWithGoogleIntentHandler =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
+                handleSignInResult(task)
+            }
+        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _binding = FragmentLoginBinding.bind(view)
@@ -82,110 +90,162 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             viewModel.loginEvent.collect { event ->
                 when (event) {
                     is LoginViewModel.LoginEvent.TryToLoginUser -> {
-                        binding.apply {
-                            AuthFormValidator.apply {
-                                hideFieldError(arrayListOf(tilEmail, tilPassword))
-
-                                val email = event.email
-                                val password = event.password
-
-                                if (isValidEmail(email) &&
-                                    isValidPassword(password)
-                                ) {
-                                    viewModel.loginUserByEmailPassword(email, password)
-                                } else {
-                                    if (!isValidEmail(email)) {
-                                        showFieldError(tilEmail, EMAIL_WRONG_FORMAT_ERROR)
-                                    }
-                                    if (!isValidPassword(password)) {
-                                        showFieldError(tilPassword, PASSWORD_EMPTY_ERROR)
-                                    }
-                                }
-                            }
-                        }
+                        handleOnTryToLoginUser(event)
                     }
                     is LoginViewModel.LoginEvent.Loading -> {
-                        showLoading(true)
+                        handleOnLoginLoading()
                     }
                     is LoginViewModel.LoginEvent.Success -> {
-                        val intent = Intent(
-                            this@LoginFragment.requireContext(),
-                            DashboardActivity::class.java
-                        )
-                        startActivity(intent)
-                        requireActivity().finish()
+                        handleOnLoginSuccess()
                     }
                     is LoginViewModel.LoginEvent.Error -> {
-                        showLoading(false)
-                        event.message.let { message ->
-                            when {
-                                message.contains("email", ignoreCase = true) -> {
-                                    AuthFormValidator.showFieldError(binding.tilEmail, message)
-                                }
-                                message.contains("password", ignoreCase = true) -> {
-                                    AuthFormValidator.showFieldError(binding.tilPassword, message)
-                                }
-                                else -> {
-                                    if (event.message.lowercase().contains("user not found")) {
-                                        event.idToken?.let { idToken ->
-                                            val action =
-                                                LoginFragmentDirections.actionLoginFragmentToRegisterFragment(
-                                                    idToken)
-                                            findNavController().navigate(action)
-                                        }
-                                    } else {
-                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                            Snackbar.make(binding.root,
-                                                event.message,
-                                                Snackbar.LENGTH_SHORT)
-                                                .setBackgroundTint(resources.getColor(R.color.error_color,
-                                                    null))
-                                                .setTextColor(Color.WHITE)
-                                                .show()
-                                        } else {
-                                            Snackbar.make(binding.root,
-                                                event.message,
-                                                Snackbar.LENGTH_SHORT)
-                                                .setBackgroundTint(Color.RED)
-                                                .setTextColor(Color.WHITE)
-                                                .show()
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        handleOnLoginError(event)
                     }
                     is LoginViewModel.LoginEvent.NavigateToForgotPassword -> {
-                        val action =
-                            LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment()
-                        findNavController().navigate(action)
+                        handleOnNavigateToForgotPassword()
                     }
                     is LoginViewModel.LoginEvent.NavigateToRegister -> {
-                        val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
-                        findNavController().navigate(action)
-                    }
-                    is LoginViewModel.LoginEvent.ShowSnackBarMessage -> {
-                        Snackbar.make(binding.root, event.message, Snackbar.LENGTH_SHORT).show()
+                        handleOnNavigateToRegister()
                     }
                     is LoginViewModel.LoginEvent.TryToLoginWithGoogle -> {
-                        googleSignInClient.signOut()
-                        val signInIntent = googleSignInClient.signInIntent
-                        startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN)
-                    }
-                    is LoginViewModel.LoginEvent.LoginWithGoogleSuccess -> {
-                        Snackbar.make(
-                            binding.root,
-                            event.account.email as CharSequence,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
+                        handleOnTryToLoginWithGoogle()
                     }
                     is LoginViewModel.LoginEvent.LoginWithGoogleFailure -> {
-                        Snackbar.make(binding.root, event.errorMessage, Snackbar.LENGTH_SHORT)
-                            .show()
-                        Log.d("Google Sign In Error:", event.errorMessage)
+                        handleOnLoginWithGoogleFailure(event)
                     }
                 }
             }
+        }
+    }
+
+    private fun handleOnTryToLoginUser(event: LoginViewModel.LoginEvent.TryToLoginUser) {
+        binding.apply {
+            AuthFormValidator.apply {
+                hideFieldError(arrayListOf(tilEmail, tilPassword))
+
+                val email = event.email
+                val password = event.password
+
+                if (isValidEmail(email) &&
+                    isValidPassword(password)
+                ) {
+                    viewModel.loginUserByEmailPassword(email, password)
+                } else {
+                    if (!isValidEmail(email)) {
+                        showFieldError(tilEmail, EMAIL_WRONG_FORMAT_ERROR)
+                    }
+                    if (!isValidPassword(password)) {
+                        showFieldError(tilPassword, PASSWORD_EMPTY_ERROR)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun handleOnLoginLoading() {
+        showLoading(true)
+    }
+
+    private fun handleOnLoginSuccess() {
+        CoroutineScope(Dispatchers.Unconfined).launch {
+            delay(100)
+
+            val intent = Intent(
+                this@LoginFragment.requireContext(),
+                AuthenticationActivity::class.java
+            )
+            startActivity(intent)
+            requireActivity().finish()
+        }
+    }
+
+    private fun handleOnLoginError(event: LoginViewModel.LoginEvent.Error) {
+        showLoading(false)
+        event.message.let { message ->
+            when {
+                message.contains("email", ignoreCase = true) -> {
+                    AuthFormValidator.showFieldError(binding.tilEmail, message)
+                }
+                message.contains("password", ignoreCase = true) -> {
+                    AuthFormValidator.showFieldError(binding.tilPassword, message)
+                }
+                else -> {
+                    if (event.message.lowercase().contains("user not found")) {
+                        event.idToken?.let { idToken ->
+                            val action =
+                                LoginFragmentDirections.actionLoginFragmentToRegisterFragment(
+                                    idToken)
+                            findNavController().navigate(action)
+                        }
+                    } else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            Snackbar.make(binding.root,
+                                event.message,
+                                Snackbar.LENGTH_SHORT)
+                                .setBackgroundTint(resources.getColor(R.color.error_color,
+                                    null))
+                                .setTextColor(Color.WHITE)
+                                .show()
+                        } else {
+                            Snackbar.make(binding.root,
+                                event.message,
+                                Snackbar.LENGTH_SHORT)
+                                .setBackgroundTint(Color.RED)
+                                .setTextColor(Color.WHITE)
+                                .show()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun handleOnNavigateToForgotPassword() {
+        val action =
+            LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun handleOnNavigateToRegister() {
+        val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun handleOnTryToLoginWithGoogle() {
+        googleSignInClient.signOut()
+        val signInIntent = googleSignInClient.signInIntent
+        loginWithGoogleIntentHandler.launch(signInIntent)
+    }
+
+    private fun handleOnLoginWithGoogleFailure(event: LoginViewModel.LoginEvent.LoginWithGoogleFailure) {
+        showErrorSnackbar(event.errorMessage)
+    }
+
+    private fun showSuccessSnackbar(message: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.success_color, null))
+                .setTextColor(Color.WHITE)
+                .show()
+        } else {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(Color.GREEN)
+                .setTextColor(Color.WHITE)
+                .show()
+        }
+    }
+
+    private fun showErrorSnackbar(message: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.error_color, null))
+                .setTextColor(Color.WHITE)
+                .show()
+        } else {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(Color.RED)
+                .setTextColor(Color.WHITE)
+                .show()
         }
     }
 
@@ -229,7 +289,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         val termClickableSpan = object : ClickableSpan() {
             override fun onClick(p0: View) {
-                Toast.makeText(activity, "Terms Clicked", Toast.LENGTH_SHORT).show()
+                showSuccessSnackbar("Terms & Condition Clicked")
             }
 
             override fun updateDrawState(ds: TextPaint) {
@@ -241,7 +301,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         val privacyClickableSpan = object : ClickableSpan() {
             override fun onClick(p0: View) {
-                Toast.makeText(activity, "Privacy Clicked", Toast.LENGTH_SHORT).show()
+                showSuccessSnackbar("Privacy Policy Clicked")
             }
 
             override fun updateDrawState(ds: TextPaint) {
@@ -283,22 +343,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == RC_GOOGLE_SIGN_IN) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            handleSignInResult(task)
-        }
-    }
-
     private fun handleSignInResult(task: Task<GoogleSignInAccount>?) {
         try {
             val account = task?.getResult(ApiException::class.java)
-            // viewModel.onLoginWithGoogleSuccessful(account as GoogleSignInAccount)
             viewModel.loginWithGoogleEmail(account!!.idToken!!)
         } catch (e: ApiException) {
-            viewModel.onLoginWithGoogleFailure("signInResult:failed code" + e.status)
+            e.localizedMessage?.let {
+                viewModel.onLoginWithGoogleFailure(it)
+            }
         }
     }
 
