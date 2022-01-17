@@ -5,14 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.model.response.LoginUserResponse
 import com.glints.lingoparents.data.model.response.RegisterUserResponse
-import com.glints.lingoparents.ui.authentication.REGISTER_USER_RESULT_OK
 import com.glints.lingoparents.utils.ErrorUtils
 import com.glints.lingoparents.utils.JWTUtils
 import com.glints.lingoparents.utils.TokenPreferences
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -142,7 +138,7 @@ class RegisterViewModel(
             .enqueue(object : Callback<LoginUserResponse> {
                 override fun onResponse(
                     call: Call<LoginUserResponse>,
-                    response: Response<LoginUserResponse>
+                    response: Response<LoginUserResponse>,
                 ) {
                     if (response.isSuccessful) {
                         val accessToken = response.body()?.data?.accessToken.toString()
@@ -176,6 +172,7 @@ class RegisterViewModel(
             val phone: String,
             val role: String = "parent",
         ) : RegisterEvent()
+
         object Loading : RegisterEvent()
         data class RegisterSuccess(val email: String, val password: String) : RegisterEvent()
         object LoginSuccess : RegisterEvent()
