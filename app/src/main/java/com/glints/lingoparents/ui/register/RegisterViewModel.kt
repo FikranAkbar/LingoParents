@@ -4,10 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.model.response.RegisterUserResponse
-import com.glints.lingoparents.ui.REGISTER_USER_RESULT_OK
+import com.glints.lingoparents.ui.authentication.REGISTER_USER_RESULT_OK
 import com.glints.lingoparents.utils.ErrorUtils
 import com.glints.lingoparents.utils.JWTUtils
-import com.google.android.gms.auth.api.credentials.IdToken
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -16,7 +15,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class RegisterViewModel(
-    private val googleIdToken: String? = null
+    googleIdToken: String? = null,
 ) : ViewModel() {
     companion object {
         const val GOOGLE_ID_TOKEN_KEY = "idToken"
@@ -28,23 +27,17 @@ class RegisterViewModel(
 
     init {
         if (googleIdToken != null && googleIdToken.isNotEmpty()) {
-            println("Google Id Token: $googleIdToken")
             val data = JWTUtils.getDataFromGoogleIdToken(googleIdToken)
             data.apply {
                 googleFirstName = given_name
                 googleLastName = family_name
                 googleEmail = email
             }
-        }
-        else {
+        } else {
             googleFirstName = ""
             googleLastName = ""
             googleEmail = ""
         }
-
-        println("Google First Name: $googleFirstName")
-        println("Google Last Name: $googleLastName")
-        println("Google Email: $googleEmail")
     }
 
     private val registerEventChannel = Channel<RegisterEvent>()
@@ -59,11 +52,11 @@ class RegisterViewModel(
     ) = viewModelScope.launch {
         registerEventChannel.send(
             RegisterEvent.TryToRegisterUser(
-                firstName= firstName,
-                lastName= lastName,
-                email= email,
-                password= password,
-                phone= phone
+                firstName = firstName,
+                lastName = lastName,
+                email = email,
+                password = password,
+                phone = phone
             )
         )
     }
@@ -102,7 +95,7 @@ class RegisterViewModel(
             .enqueue(object : Callback<RegisterUserResponse> {
                 override fun onResponse(
                     call: Call<RegisterUserResponse>,
-                    response: Response<RegisterUserResponse>
+                    response: Response<RegisterUserResponse>,
                 ) {
                     if (response.isSuccessful) {
                         onApiCallSuccess()
@@ -118,6 +111,14 @@ class RegisterViewModel(
             })
     }
 
+    fun loginAfterSuccessfulRegister(
+        email: String,
+        password: String,
+    ) = viewModelScope.launch {
+        onApiCallStarted()
+
+    }
+
     sealed class RegisterEvent {
         object NavigateBackToLogin : RegisterEvent()
         data class NavigateBackWithResult(val result: Int) : RegisterEvent()
@@ -127,10 +128,13 @@ class RegisterViewModel(
             val email: String,
             val password: String,
             val phone: String,
-            val role: String = "parent"
+            val role: String = "parent",
         ) : RegisterEvent()
+
         object Loading : RegisterEvent()
         object Success : RegisterEvent()
+        object LoginSuccess : RegisterEvent()
         data class Error(val message: String) : RegisterEvent()
+        data class LoginError(val message: String) : RegisterEvent()
     }
 }

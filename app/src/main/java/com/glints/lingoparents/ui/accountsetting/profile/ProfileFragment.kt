@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentProfileBinding
-import com.glints.lingoparents.ui.MainActivity
+import com.glints.lingoparents.ui.authentication.AuthenticationActivity
 import com.glints.lingoparents.utils.*
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
@@ -65,7 +65,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 when (event) {
                     ProfileViewModel.ProfileEvent.NavigateToAuthScreen -> {
                         val intent =
-                            Intent(this@ProfileFragment.requireContext(), MainActivity::class.java)
+                            Intent(this@ProfileFragment.requireContext(),
+                                AuthenticationActivity::class.java)
                         startActivity(intent)
                         requireActivity().finish()
                     }
