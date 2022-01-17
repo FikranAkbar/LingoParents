@@ -60,6 +60,11 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
         tokenPreferences.saveUserId(id)
     }
 
+    /**
+     * Method to login user with manually fill the email and password.
+     * @param email Email of user
+     * @param password Password from user's email
+     */
     fun loginUserByEmailPassword(email: String, password: String) = viewModelScope.launch {
         onApiCallStarted()
         APIClient
@@ -92,6 +97,12 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
             })
     }
 
+    /**
+     * Method to login user with google account.
+     * If user already has account created, user will be redirected to dashboard activity.
+     * Else, user will be redirected to register fragment with few fields already filled with the information from google id token
+     * @param idToken Json Web Token received from google sign in account
+     */
     fun loginWithGoogleEmail(idToken: String) = viewModelScope.launch {
         onApiCallStarted()
         APIClient

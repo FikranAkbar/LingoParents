@@ -97,6 +97,16 @@ class RegisterViewModel(
         tokenPreferences.saveUserId(id)
     }
 
+    /**
+     * Method to register user with email, password, name, and phone number.
+     * If register successful, it will auto call login api.
+     * Else, register fragment will display specific error message.
+     * @param email Email of the user
+     * @param password password for user account
+     * @param firstName first name of the user
+     * @param lastName last name of the user
+     * @param phone phone number of the user
+     */
     fun registerUser(
         email: String,
         password: String,
@@ -127,6 +137,11 @@ class RegisterViewModel(
             })
     }
 
+    /**
+     * Method for auto login after user register success.
+     * @param email Email of the user
+     * @param password password for the email
+     */
     fun loginAfterSuccessfulRegister(
         email: String,
         password: String,

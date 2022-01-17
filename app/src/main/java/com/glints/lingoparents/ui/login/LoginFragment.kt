@@ -48,7 +48,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private lateinit var googleSignInClient: GoogleSignInClient
 
-    private val loginWithGoogleIntentHandler =
+    /**
+     * Newer version of how to use startActivityForResult method, which is ActivityResultLauncher.
+     * This object is specifically used to handle google sign in intent.
+     */
+    private val loginWithGoogleIntentLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
@@ -214,7 +218,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private fun handleOnTryToLoginWithGoogle() {
         googleSignInClient.signOut()
         val signInIntent = googleSignInClient.signInIntent
-        loginWithGoogleIntentHandler.launch(signInIntent)
+        loginWithGoogleIntentLauncher.launch(signInIntent)
     }
 
     private fun handleOnLoginWithGoogleFailure(event: LoginViewModel.LoginEvent.LoginWithGoogleFailure) {
