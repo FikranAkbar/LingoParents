@@ -8,5 +8,5 @@ data class InsightCommentItem(
     val comment: String,
     val totalLike: Int,
     val totalDislike: Int,
-    val totalReplies: Int
+    val totalReply: Int
 )

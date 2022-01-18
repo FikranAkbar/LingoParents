@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.glints.lingoparents.R
-import com.glints.lingoparents.data.model.response.InsightDetailResponse
+import com.glints.lingoparents.data.model.InsightCommentItem
 import com.glints.lingoparents.databinding.ItemInsightCommentBinding
 import com.glints.lingoparents.ui.insight.detail.DetailInsightFragment
 
@@ -24,17 +24,17 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
     private var parentId: Int = 0
 
     private val diffUtilCallback = object :
-        DiffUtil.ItemCallback<InsightDetailResponse.MasterComment>() {
+        DiffUtil.ItemCallback<InsightCommentItem>() {
         override fun areItemsTheSame(
-            oldItem: InsightDetailResponse.MasterComment,
-            newItem: InsightDetailResponse.MasterComment,
+            oldItem: InsightCommentItem,
+            newItem: InsightCommentItem,
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.idComment == newItem.idComment
         }
 
         override fun areContentsTheSame(
-            oldItem: InsightDetailResponse.MasterComment,
-            newItem: InsightDetailResponse.MasterComment,
+            oldItem: InsightCommentItem,
+            newItem: InsightCommentItem,
         ): Boolean {
             return oldItem == newItem
         }
@@ -45,21 +45,18 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
     inner class AdapterHolder(private val binding: ItemInsightCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
-        fun bind(item: InsightDetailResponse.MasterComment) {
+        fun bind(item: InsightCommentItem) {
             binding.apply {
-                if (parentId == item.id_user)
+                if (parentId == item.idUser)
                     hideTextView(true)
                 else hideTextView(false)
 
-                item.Master_user.Master_parent?.photo?.let {
-                    ivComment.load(it)
-                }
+                ivComment.load(item.photo)
 
-                tvUsernameComment.text =
-                    item.Master_user.Master_parent?.firstname + " " + item.Master_user.Master_parent?.lastname
+                tvUsernameComment.text = item.name
                 tvCommentBody.text = item.comment
-                tvCommentLike.text = item.total_like.toString()
-                tvCommentDislike.text = item.total_dislike.toString()
+                tvCommentLike.text = item.totalLike.toString()
+                tvCommentDislike.text = item.totalDislike.toString()
 
                 tvCommentLike.setOnClickListener {
                     listener.onLikeCommentClicked(item)
@@ -70,7 +67,7 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
                 }
 
                 tvReportComment.setOnClickListener {
-                    showReportDialog(context, item, item.id)
+                    showReportDialog(context, item, item.idComment)
                 }
 
                 tvReplyComment.setOnClickListener {
@@ -93,8 +90,8 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
                     }
                 }
 
-                if (item.replies > 0) tvShowReplyComment.visibility = View.VISIBLE
-                tvShowReplyComment.text = "Show ${item.replies} Replies"
+                if (item.totalReply > 0) tvShowReplyComment.visibility = View.VISIBLE
+                tvShowReplyComment.text = "Show ${item.totalReply} Replies"
                 tvShowReplyComment.setOnClickListener {
                     if (rvCommentReply.visibility == View.GONE) {
                         rvCommentReply.visibility = View.VISIBLE
@@ -103,12 +100,12 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
                         listener.onShowCommentRepliesClicked(item)
                     } else if (rvCommentReply.visibility == View.VISIBLE) {
                         rvCommentReply.visibility = View.GONE
-                        tvShowReplyComment.text = "Show ${item.replies} Replies"
+                        tvShowReplyComment.text = "Show ${item.totalReply} Replies"
                     }
                 }
 
                 tvDeleteComment.setOnClickListener {
-                    listener.onDeleteCommentClicked(item, item.id)
+                    listener.onDeleteCommentClicked(item, item.idComment)
                 }
 
                 tvUpdateComment.setOnClickListener {
@@ -142,7 +139,7 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
 
         private fun showReportDialog(
             context: Context,
-            item: InsightDetailResponse.MasterComment,
+            item: InsightCommentItem,
             id: Int,
         ) {
             val builder = AlertDialog.Builder(context)
@@ -199,20 +196,20 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
 
     interface OnItemClickCallback : CommentRepliesAdapter.OnItemClickCallback {
         fun onReportCommentClicked(
-            item: InsightDetailResponse.MasterComment,
+            item: InsightCommentItem,
             id: Int,
             report_comment: String,
         )
 
-        fun onLikeCommentClicked(item: InsightDetailResponse.MasterComment)
-        fun onDislikeCommentClicked(item: InsightDetailResponse.MasterComment)
-        fun onReplyCommentClicked(item: InsightDetailResponse.MasterComment, comment: String)
-        fun onShowCommentRepliesClicked(item: InsightDetailResponse.MasterComment)
-        fun onDeleteCommentClicked(item: InsightDetailResponse.MasterComment, id: Int)
-        fun onUpdateCommentClicked(item: InsightDetailResponse.MasterComment, comment: String)
+        fun onLikeCommentClicked(item: InsightCommentItem)
+        fun onDislikeCommentClicked(item: InsightCommentItem)
+        fun onReplyCommentClicked(item: InsightCommentItem, comment: String)
+        fun onShowCommentRepliesClicked(item: InsightCommentItem)
+        fun onDeleteCommentClicked(item: InsightCommentItem, id: Int)
+        fun onUpdateCommentClicked(item: InsightCommentItem, comment: String)
     }
 
-    fun submitList(list: List<InsightDetailResponse.MasterComment>) {
+    fun submitList(list: List<InsightCommentItem>) {
         differ.submitList(list)
     }
 

@@ -131,25 +131,25 @@ class InsightDetailResponse{
         val tag_name: String,
         val updatedAt: Any
     )
+}
 
-    fun InsightDetailResponse.mapToInsightCommentItems(): List<InsightCommentItem>? {
-        val result = this.message?.Master_comments?.map {
-            InsightCommentItem(
-                idComment = it.id,
-                idUser = it.id_user,
-                photo = it.Master_user.Master_parent?.photo,
-                name = "${it.Master_user.Master_parent?.firstname} ${it.Master_user.Master_parent?.lastname}",
-                comment = it.comment,
-                totalLike = it.total_like,
-                totalDislike = it.total_dislike,
-                totalReplies = it.replies
-            )
-        }
-
-        result?.let {
-            return it
-        }
-
-        return null
+fun InsightDetailResponse.mapToInsightCommentItems(): List<InsightCommentItem>? {
+    val result = this.message?.Master_comments?.map {
+        InsightCommentItem(
+            idComment = it.id,
+            idUser = it.id_user,
+            photo = it.Master_user.Master_parent?.photo,
+            name = "${it.Master_user.Master_parent?.firstname} ${it.Master_user.Master_parent?.lastname}",
+            comment = it.comment,
+            totalLike = it.total_like,
+            totalDislike = it.total_dislike,
+            totalReply = it.replies
+        )
     }
+
+    result?.let {
+        return it
+    }
+
+    return null
 }

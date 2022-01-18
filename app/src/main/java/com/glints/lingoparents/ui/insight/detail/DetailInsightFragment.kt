@@ -13,12 +13,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.glints.lingoparents.R
+import com.glints.lingoparents.data.model.InsightCommentItem
 import com.glints.lingoparents.data.model.response.GetCommentRepliesResponse
-import com.glints.lingoparents.data.model.response.InsightDetailResponse
 import com.glints.lingoparents.databinding.FragmentDetailInsightBinding
 import com.glints.lingoparents.ui.insight.detail.adapter.CommentRepliesAdapter
 import com.glints.lingoparents.ui.insight.detail.adapter.CommentsAdapter
@@ -281,48 +280,48 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
     }
 
     override fun onReportCommentClicked(
-        item: InsightDetailResponse.MasterComment,
+        item: InsightCommentItem,
         id: Int,
         report_comment: String,
     ) {
         viewModel.reportInsight(id.toString(), DetailInsightViewModel.COMMENT_TYPE, report_comment)
     }
 
-    override fun onLikeCommentClicked(item: InsightDetailResponse.MasterComment) {
+    override fun onLikeCommentClicked(item: InsightCommentItem) {
         viewModel.sendLikeRequest(
-            item.id,
+            item.idComment,
             DetailInsightViewModel.COMMENT_TYPE
         )
     }
 
-    override fun onDislikeCommentClicked(item: InsightDetailResponse.MasterComment) {
+    override fun onDislikeCommentClicked(item: InsightCommentItem) {
         viewModel.sendDislikeRequest(
-            item.id,
+            item.idComment,
             DetailInsightViewModel.COMMENT_TYPE
         )
     }
 
-    override fun onReplyCommentClicked(item: InsightDetailResponse.MasterComment, comment: String) {
+    override fun onReplyCommentClicked(item: InsightCommentItem, comment: String) {
         viewModel.createComment(
-            item.id,
+            item.idComment,
             DetailInsightViewModel.COMMENT_TYPE,
             comment
         )
     }
 
-    override fun onShowCommentRepliesClicked(item: InsightDetailResponse.MasterComment) {
-        viewModel.getCommentReplies(item.id)
+    override fun onShowCommentRepliesClicked(item: InsightCommentItem) {
+        viewModel.getCommentReplies(item.idComment)
     }
 
-    override fun onDeleteCommentClicked(item: InsightDetailResponse.MasterComment, id: Int) {
+    override fun onDeleteCommentClicked(item: InsightCommentItem, id: Int) {
         viewModel.deleteComment(id)
     }
 
     override fun onUpdateCommentClicked(
-        item: InsightDetailResponse.MasterComment,
+        item: InsightCommentItem,
         comment: String,
     ) {
-        viewModel.updateComment(item.id, comment)
+        viewModel.updateComment(item.idComment, comment)
     }
 
     override fun onReportCommentClicked(

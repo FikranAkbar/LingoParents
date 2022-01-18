@@ -81,25 +81,25 @@ class GetCommentRepliesResponse{
         val referral_code: String,
         val updatedAt: String
     )
+}
 
-    fun GetCommentRepliesResponse.mapToInsightCommentItems(): List<InsightCommentItem>? {
-        val result = this.message?.map {
-            InsightCommentItem(
-                idComment = it.id,
-                idUser = it.id_user,
-                photo = it.Master_user.Master_parent?.photo,
-                name = "${it.Master_user.Master_parent?.firstname} ${it.Master_user.Master_parent?.lastname}",
-                comment = it.comment,
-                totalLike = it.total_like,
-                totalDislike = it.total_dislike,
-                totalReplies = it.replies
-            )
-        }
-
-        result?.let {
-            return it
-        }
-
-        return null
+fun GetCommentRepliesResponse.mapToInsightCommentItems(): List<InsightCommentItem>? {
+    val result = this.message?.map {
+        InsightCommentItem(
+            idComment = it.id,
+            idUser = it.id_user,
+            photo = it.Master_user.Master_parent?.photo,
+            name = "${it.Master_user.Master_parent?.firstname} ${it.Master_user.Master_parent?.lastname}",
+            comment = it.comment,
+            totalLike = it.total_like,
+            totalDislike = it.total_dislike,
+            totalReply = it.replies
+        )
     }
+
+    result?.let {
+        return it
+    }
+
+    return null
 }

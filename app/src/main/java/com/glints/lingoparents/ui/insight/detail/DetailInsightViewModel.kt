@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
+import com.glints.lingoparents.data.model.InsightCommentItem
 import com.glints.lingoparents.data.model.response.*
 import com.glints.lingoparents.utils.ErrorUtils
 import com.glints.lingoparents.utils.TokenPreferences
@@ -18,8 +19,6 @@ class DetailInsightViewModel(
     private val tokenPref: TokenPreferences,
     private val insightId: Int,
 ) : ViewModel() {
-    private var commentId: Int = 0
-
     companion object {
         const val INSIGHT_TYPE = "insight"
         const val COMMENT_TYPE = "comment"
@@ -37,7 +36,7 @@ class DetailInsightViewModel(
 
     private fun onApiCallSuccess(
         result: InsightDetailResponse.Message,
-        list: List<InsightDetailResponse.MasterComment>,
+        list: List<InsightCommentItem>,
     ) = viewModelScope.launch {
         insightDetailChannel.send(InsightDetail.Success(result))
         insightDetailChannel.send(InsightDetail.SuccessGetComment(list))
@@ -95,12 +94,11 @@ class DetailInsightViewModel(
                     response: Response<InsightDetailResponse>,
                 ) {
                     if (response.isSuccessful) {
-                        val result = response.body()?.message!!
-                        val commentId = result.Master_comments
-                        for (comment in commentId) {
-                            saveCommentId(comment.id)
-                        }
-                        onApiCallSuccess(result, result.Master_comments)
+                        val result = response.body()!!
+
+                        val comments = result.mapToInsightCommentItems()
+
+                        onApiCallSuccess(result.message!!, comments!!)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallError(apiError.message())
@@ -275,16 +273,13 @@ class DetailInsightViewModel(
     }
 
     fun getCurrentInsightId(): Int = insightId
-    fun saveCommentId(id: Int) = viewModelScope.launch {
-        commentId = id
-    }
 
     fun getParentId() = tokenPref.getUserId().asLiveData()
 
     sealed class InsightDetail {
         object Loading : InsightDetail()
         data class Success(val result: InsightDetailResponse.Message) : InsightDetail()
-        data class SuccessGetComment(val list: List<InsightDetailResponse.MasterComment>) :
+        data class SuccessGetComment(val list: List<InsightCommentItem>) :
             InsightDetail()
 
         data class Error(val message: String) : InsightDetail()
