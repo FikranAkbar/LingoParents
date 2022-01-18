@@ -177,7 +177,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
     private fun initViews() {
         binding.apply {
             rvInsightComment.apply {
-                setHasFixedSize(true)
+                setHasFixedSize(false)
                 layoutManager = LinearLayoutManager(requireContext())
                 commentsAdapter = CommentsAdapter(this@DetailInsightFragment, requireContext())
                 adapter = commentsAdapter

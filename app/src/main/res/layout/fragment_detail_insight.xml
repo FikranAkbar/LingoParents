@@ -246,6 +246,7 @@
                 android:id="@+id/rv_insight_comment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
                 android:layout_marginVertical="10dp"
                 app:layout_constraintEnd_toEndOf="@id/tv_insight_body"
                 app:layout_constraintStart_toStartOf="@id/tv_insight_body"
