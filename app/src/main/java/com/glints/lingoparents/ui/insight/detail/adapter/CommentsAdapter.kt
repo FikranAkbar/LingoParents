@@ -24,7 +24,10 @@ import com.glints.lingoparents.ui.insight.detail.DetailInsightFragment
 class CommentsAdapter(private val listener: OnItemClickCallback, private val context: Context, private val uniqueId: Double) :
     RecyclerView.Adapter<CommentsAdapter.AdapterHolder>() {
     private lateinit var rvChild: RecyclerView
-    private var parentId: Int = 0
+
+    companion object {
+        var parentId: Int = 0
+    }
 
     private val diffUtilCallback = object :
         DiffUtil.ItemCallback<InsightCommentItem>() {
@@ -50,6 +53,7 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
         @SuppressLint("SetTextI18n")
         fun bind(item: InsightCommentItem) {
             binding.apply {
+                println("Parent ID -> $parentId && User ID -> ${item.idUser}")
                 if (parentId == item.idUser)
                     hideTextView(true)
                 else hideTextView(false)
@@ -234,9 +238,5 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
 
     fun submitList(list: List<InsightCommentItem>) {
         differ.submitList(list)
-    }
-
-    fun submitParentId(id: Int) {
-        parentId = id
     }
 }

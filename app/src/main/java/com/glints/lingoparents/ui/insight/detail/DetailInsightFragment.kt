@@ -74,7 +74,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
         viewModel.loadInsightDetail(viewModel.getCurrentInsightId())
 
         viewModel.getParentId().observe(viewLifecycleOwner) { parentId ->
-            commentsAdapter.submitParentId(parentId.toInt())
+            CommentsAdapter.parentId = parentId.toInt()
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {

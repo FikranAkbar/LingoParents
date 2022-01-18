@@ -23,6 +23,7 @@
         android:layout_marginStart="12dp"
         android:layout_toEndOf="@+id/iv_comment"
         android:textColor="@color/grey_darker"
+        android:textIsSelectable="true"
         app:layout_constraintStart_toEndOf="@id/iv_comment"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/olivia_putri_rosmala" />
@@ -37,6 +38,7 @@
         android:layout_toEndOf="@+id/iv_comment"
         android:justificationMode="inter_word"
         android:text="@string/a_special_child_needs_constant_attention_and_support_they_require_assistance_even_for_trivial_things_it_is_essential_for_parents_to_feel_overwhelmed_and_exhausted_at_times"
+        android:textIsSelectable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/tv_username_comment"
         app:layout_constraintTop_toBottomOf="@id/tv_username_comment"
@@ -189,12 +191,12 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_reply_comment"
         style="@style/Typography.Button"
-        android:layout_width="70dp"
+        android:layout_width="82dp"
         android:layout_height="40dp"
         android:text="@string/reply"
         android:textAllCaps="false"
-        android:textSize="11sp"
         android:visibility="gone"
+        android:textSize="11sp"
         app:layout_constraintEnd_toEndOf="@id/tf_reply_comment"
         app:layout_constraintTop_toBottomOf="@id/tf_reply_comment" />
 
