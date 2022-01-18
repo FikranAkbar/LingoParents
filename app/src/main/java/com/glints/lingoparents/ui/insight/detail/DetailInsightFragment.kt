@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.glints.lingoparents.R
 import com.glints.lingoparents.data.model.InsightCommentItem
-import com.glints.lingoparents.data.model.response.GetCommentRepliesResponse
 import com.glints.lingoparents.databinding.FragmentDetailInsightBinding
 import com.glints.lingoparents.ui.insight.detail.adapter.CommentRepliesAdapter
 import com.glints.lingoparents.ui.insight.detail.adapter.CommentsAdapter
@@ -322,47 +321,5 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
         comment: String,
     ) {
         viewModel.updateComment(item.idComment, comment)
-    }
-
-    override fun onReportCommentClicked(
-        item: GetCommentRepliesResponse.Message,
-        id: Int,
-        report_comment: String,
-    ) {
-        viewModel.reportInsight(id.toString(), DetailInsightViewModel.COMMENT_TYPE, report_comment)
-    }
-
-    override fun onLikeCommentClicked(item: GetCommentRepliesResponse.Message) {
-        viewModel.sendLikeRequest(
-            item.id,
-            DetailInsightViewModel.COMMENT_TYPE
-        )
-    }
-
-    override fun onDislikeCommentClicked(item: GetCommentRepliesResponse.Message) {
-        viewModel.sendDislikeRequest(
-            item.id,
-            DetailInsightViewModel.COMMENT_TYPE
-        )
-    }
-
-    override fun onReplyCommentClicked(item: GetCommentRepliesResponse.Message, comment: String) {
-        viewModel.createComment(
-            item.id,
-            DetailInsightViewModel.COMMENT_TYPE,
-            comment
-        )
-    }
-
-    override fun onShowCommentRepliesClicked(item: GetCommentRepliesResponse.Message) {
-        viewModel.getCommentReplies(item.id)
-    }
-
-    override fun onDeleteCommentClicked(item: GetCommentRepliesResponse.Message, id: Int) {
-        viewModel.deleteComment(id)
-    }
-
-    override fun onUpdateCommentClicked(item: GetCommentRepliesResponse.Message, comment: String) {
-        viewModel.updateComment(item.id, comment)
     }
 }

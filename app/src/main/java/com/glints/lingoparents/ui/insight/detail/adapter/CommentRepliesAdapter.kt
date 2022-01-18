@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.glints.lingoparents.R
-import com.glints.lingoparents.data.model.response.GetCommentRepliesResponse
+import com.glints.lingoparents.data.model.InsightCommentItem
 import com.glints.lingoparents.databinding.ItemInsightCommentBinding
 import com.glints.lingoparents.ui.insight.detail.DetailInsightFragment
 
@@ -25,17 +25,17 @@ class CommentRepliesAdapter(
     private var parentId: Int = 0
 
     private val diffUtilCallback = object :
-        DiffUtil.ItemCallback<GetCommentRepliesResponse.Message>() {
+        DiffUtil.ItemCallback<InsightCommentItem>() {
         override fun areItemsTheSame(
-            oldItem: GetCommentRepliesResponse.Message,
-            newItem: GetCommentRepliesResponse.Message,
+            oldItem: InsightCommentItem,
+            newItem: InsightCommentItem,
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.idComment == newItem.idComment
         }
 
         override fun areContentsTheSame(
-            oldItem: GetCommentRepliesResponse.Message,
-            newItem: GetCommentRepliesResponse.Message,
+            oldItem: InsightCommentItem,
+            newItem: InsightCommentItem,
         ): Boolean {
             return oldItem == newItem
         }
@@ -46,23 +46,22 @@ class CommentRepliesAdapter(
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         private fun initBinding(
-            item: GetCommentRepliesResponse.Message,
+            item: InsightCommentItem,
             binding: ItemInsightCommentBinding,
         ) {
             binding.apply {
-                if (parentId == item.id_user)
+                if (parentId == item.idUser)
                     hideTextView(true)
                 else hideTextView(false)
 
-                item.Master_user.Master_parent?.photo?.let {
+                item.photo?.let {
                     ivComment.load(it)
                 }
 
-                tvUsernameComment.text =
-                    item.Master_user.Master_parent?.firstname + " " + item.Master_user.Master_parent?.lastname
+                tvUsernameComment.text = item.name
                 tvCommentBody.text = item.comment
-                tvCommentLike.text = item.total_like.toString()
-                tvCommentDislike.text = item.total_dislike.toString()
+                tvCommentLike.text = item.totalLike.toString()
+                tvCommentDislike.text = item.totalDislike.toString()
                 tvCommentLike.setOnClickListener {
                     listener.onLikeCommentClicked(item)
                 }
@@ -72,7 +71,7 @@ class CommentRepliesAdapter(
                 }
 
                 tvReportComment.setOnClickListener {
-                    showReportDialog(context, item, item.id)
+                    showReportDialog(context, item, item.idComment)
                 }
 
                 tvReplyComment.setOnClickListener {
@@ -88,7 +87,7 @@ class CommentRepliesAdapter(
                 }
 
                 tvDeleteComment.setOnClickListener {
-                    listener.onDeleteCommentClicked(item, item.id)
+                    listener.onDeleteCommentClicked(item, item.idComment)
                 }
 
                 tvUpdateComment.setOnClickListener {
@@ -111,20 +110,20 @@ class CommentRepliesAdapter(
                     }
                 }
 
-                if (item.replies > 0) createNestedComment(binding, item)
+                if (item.totalReply > 0) createNestedComment(binding, item)
             }
         }
 
-        fun bind(item: GetCommentRepliesResponse.Message) = initBinding(item, binding)
+        fun bind(item: InsightCommentItem) = initBinding(item, binding)
 
         @SuppressLint("SetTextI18n")
         private fun createNestedComment(
             binding: ItemInsightCommentBinding,
-            item: GetCommentRepliesResponse.Message,
+            item: InsightCommentItem,
         ) {
             binding.apply {
-                if (item.replies > 0) tvShowReplyComment.visibility = View.VISIBLE
-                tvShowReplyComment.text = "Show ${item.replies} Replies"
+                if (item.totalReply > 0) tvShowReplyComment.visibility = View.VISIBLE
+                tvShowReplyComment.text = "Show ${item.totalReply} Replies"
                 tvShowReplyComment.setOnClickListener {
                     if (llReplies.visibility == View.GONE) {
                         llReplies.isVisible = true
@@ -136,7 +135,7 @@ class CommentRepliesAdapter(
                         llReplies.addView(newBinding.root)
                         listener.onShowCommentRepliesClicked(item)
                     } else {
-                        tvShowReplyComment.text = "Show ${item.replies} Replies"
+                        tvShowReplyComment.text = "Show ${item.totalReply} Replies"
                         llReplies.removeAllViews()
                         llReplies.isVisible = false
                     }
@@ -153,7 +152,7 @@ class CommentRepliesAdapter(
 
         private fun showReportDialog(
             context: Context,
-            item: GetCommentRepliesResponse.Message,
+            item: InsightCommentItem,
             id: Int,
         ) {
             val builder = AlertDialog.Builder(context)
@@ -200,20 +199,20 @@ class CommentRepliesAdapter(
 
     interface OnItemClickCallback {
         fun onReportCommentClicked(
-            item: GetCommentRepliesResponse.Message,
+            item: InsightCommentItem,
             id: Int,
             report_comment: String,
         )
 
-        fun onLikeCommentClicked(item: GetCommentRepliesResponse.Message)
-        fun onDislikeCommentClicked(item: GetCommentRepliesResponse.Message)
-        fun onReplyCommentClicked(item: GetCommentRepliesResponse.Message, comment: String)
-        fun onShowCommentRepliesClicked(item: GetCommentRepliesResponse.Message)
-        fun onDeleteCommentClicked(item: GetCommentRepliesResponse.Message, id: Int)
-        fun onUpdateCommentClicked(item: GetCommentRepliesResponse.Message, comment: String)
+        fun onLikeCommentClicked(item: InsightCommentItem)
+        fun onDislikeCommentClicked(item: InsightCommentItem)
+        fun onReplyCommentClicked(item: InsightCommentItem, comment: String)
+        fun onShowCommentRepliesClicked(item: InsightCommentItem)
+        fun onDeleteCommentClicked(item: InsightCommentItem, id: Int)
+        fun onUpdateCommentClicked(item: InsightCommentItem, comment: String)
     }
 
-    fun submitList(list: List<GetCommentRepliesResponse.Message>) {
+    fun submitList(list: List<InsightCommentItem>) {
         differ.submitList(list)
     }
 }

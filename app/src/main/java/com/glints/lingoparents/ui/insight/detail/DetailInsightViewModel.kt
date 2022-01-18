@@ -56,7 +56,7 @@ class DetailInsightViewModel(
             actionInsightChannel.send(InsightAction.SuccessCreateComment(result))
         }
 
-    private fun onApiCallSuccessGetCommentReplies(list: List<GetCommentRepliesResponse.Message>) =
+    private fun onApiCallSuccessGetCommentReplies(list: List<InsightCommentItem>) =
         viewModelScope.launch {
             actionInsightChannel.send(InsightAction.SuccessGetCommentReplies(list))
         }
@@ -213,7 +213,8 @@ class DetailInsightViewModel(
                     response: Response<GetCommentRepliesResponse>,
                 ) {
                     if (response.isSuccessful) {
-                        onApiCallSuccessGetCommentReplies(response.body()?.message!!)
+                        val comments = response.body()?.mapToInsightCommentItems()
+                        onApiCallSuccessGetCommentReplies(comments!!)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallErrorAction(apiError.message())
@@ -288,7 +289,7 @@ class DetailInsightViewModel(
     sealed class InsightAction {
         data class SuccessCreateComment(val result: CreateCommentResponse) : InsightAction()
         data class SuccessDeleteComment(val result: DeleteCommentResponse) : InsightAction()
-        data class SuccessGetCommentReplies(val list: List<GetCommentRepliesResponse.Message>) :
+        data class SuccessGetCommentReplies(val list: List<InsightCommentItem>) :
             InsightAction()
 
         data class SuccessLikeDislike(val result: InsightLikeDislikeResponse) : InsightAction()
