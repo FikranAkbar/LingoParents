@@ -36,31 +36,37 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:id="@+id/iv_back_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_back_account_setting"
-                    tools:ignore="ContentDescription,SpeakableTextPresentCheck,TouchTargetSizeCheck,UnusedAttribute" />
-
                 <TextView
                     style="@style/Typography.Headline5"
+                    android:id="@+id/tv_title_insight_detail"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginVertical="18dp"
                     android:gravity="center"
                     android:text="@string/detail_insight" />
             </androidx.cardview.widget.CardView>
 
+            <ImageView
+                android:id="@+id/iv_back_button"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="24dp"
+                android:clickable="true"
+                android:elevation="2dp"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:padding="8dp"
+                android:src="@drawable/ic_back_account_setting"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/cardView"
+                app:layout_constraintBottom_toBottomOf="@id/cardView"
+                tools:ignore="ContentDescription,UnusedAttribute" />
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_detail_insight_cover"
                 android:layout_width="0dp"
-                android:layout_height="200dp"
-                android:layout_marginHorizontal="12dp"
+                android:layout_height="180dp"
+                android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="12dp"
                 app:cardCornerRadius="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -80,8 +86,8 @@
                 style="@style/Typography.Headline6"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="10dp"
-                android:paddingHorizontal="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cv_detail_insight_cover" />
@@ -101,53 +107,96 @@
                 style="@style/Typography.Caption"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16sp"
                 android:layout_marginTop="9dp"
+                android:fontFamily="@font/poppins_w400"
                 android:justificationMode="inter_word"
-                android:lineSpacingExtra="9sp"
+                android:letterSpacing="0"
+                android:lineSpacingExtra="6sp"
                 android:paddingVertical="10dp"
-                android:translationY="-4.5sp"
+                android:textColor="@color/grey_darker"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_insight_date"
                 tools:ignore="UnusedAttribute"
                 tools:text="@string/long_paragraph_lorem" />
 
+            <ImageView
+                android:id="@+id/iv_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_insight_like"
+                app:layout_constraintStart_toStartOf="@id/tv_insight_body"
+                app:layout_constraintTop_toBottomOf="@id/tv_insight_body"
+                tools:ignore="ContentDescription" />
+
             <TextView
                 android:id="@+id/tv_insight_like"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:drawableStartCompat="@drawable/ic_insight_like"
-                app:layout_constraintBottom_toBottomOf="@id/tv_insight_dislike"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/tv_insight_dislike" />
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/poppins_w700"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:textSize="11sp"
+                app:layout_constraintBottom_toBottomOf="@id/iv_like"
+                app:layout_constraintStart_toEndOf="@id/iv_like"
+                app:layout_constraintTop_toTopOf="@id/iv_like"
+                tools:ignore="UnusedAttribute"
+                tools:text="120" />
+
+            <ImageView
+                android:id="@+id/iv_dislike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_insight_dislike"
+                app:layout_constraintBottom_toBottomOf="@id/tv_insight_like"
+                app:layout_constraintStart_toEndOf="@id/tv_insight_like"
+                app:layout_constraintTop_toTopOf="@id/tv_insight_like"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/tv_insight_dislike"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:drawableStartCompat="@drawable/ic_insight_dislike"
-                app:layout_constraintStart_toEndOf="@id/tv_insight_like"
-                app:layout_constraintTop_toBottomOf="@id/tv_insight_body" />
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/poppins_w700"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:textSize="11sp"
+                app:layout_constraintBottom_toBottomOf="@id/iv_dislike"
+                app:layout_constraintStart_toEndOf="@id/iv_dislike"
+                app:layout_constraintTop_toTopOf="@id/iv_dislike"
+                tools:ignore="UnusedAttribute"
+                tools:text="120" />
 
             <TextView
                 android:id="@+id/tv_insight_report"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/poppins_w700"
+                android:foreground="?selectableItemBackgroundBorderless"
                 android:text="@string/report"
+                android:textSize="11sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/tv_insight_add_comment"
+                app:layout_constraintBottom_toBottomOf="@id/tv_insight_dislike"
                 app:layout_constraintEnd_toStartOf="@id/tv_insight_add_comment"
-                app:layout_constraintTop_toTopOf="@id/tv_insight_add_comment" />
+                app:layout_constraintTop_toTopOf="@id/tv_insight_dislike"
+                tools:ignore="UnusedAttribute" />
 
             <TextView
                 android:id="@+id/tv_insight_add_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_w700"
+                android:foreground="?selectableItemBackgroundBorderless"
                 android:text="@string/add_comment"
+                android:textSize="11sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_insight_body" />
+                app:layout_constraintBottom_toBottomOf="@id/tv_insight_report"
+                app:layout_constraintEnd_toEndOf="@id/tv_insight_body"
+                app:layout_constraintTop_toTopOf="@id/tv_insight_report"
+                tools:ignore="UnusedAttribute" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/materialTextView"
@@ -156,24 +205,23 @@
                 android:layout_marginVertical="8dp"
                 android:text="@string/comments"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_insight_like" />
+                app:layout_constraintStart_toStartOf="@id/iv_like"
+                app:layout_constraintTop_toBottomOf="@id/iv_like" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tf_insight_comment"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="8dp"
-                android:visibility="gone"
                 app:boxCornerRadiusBottomEnd="10dp"
                 app:boxCornerRadiusBottomStart="10dp"
                 app:boxCornerRadiusTopEnd="10dp"
                 app:boxCornerRadiusTopStart="10dp"
                 app:boxStrokeColor="@color/dark_silver"
                 app:hintEnabled="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/tv_insight_body"
+                app:layout_constraintStart_toStartOf="@id/tv_insight_body"
                 app:layout_constraintTop_toBottomOf="@+id/materialTextView">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -189,19 +237,26 @@
                 android:layout_height="wrap_content"
                 android:text="@string/post"
                 android:textAllCaps="false"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/tf_insight_comment"
                 app:layout_constraintTop_toBottomOf="@id/tf_insight_comment" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_insight_comment"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/tv_insight_body"
+                app:layout_constraintStart_toStartOf="@id/tv_insight_body"
                 app:layout_constraintTop_toBottomOf="@id/btn_comment"
                 tools:listitem="@layout/item_insight_comment" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rv_insight_comment" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </ScrollView>

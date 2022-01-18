@@ -49,7 +49,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         binding = FragmentDetailInsightBinding.inflate(inflater, container, false)
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
 
