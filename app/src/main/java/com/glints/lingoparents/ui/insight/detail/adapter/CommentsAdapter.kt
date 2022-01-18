@@ -39,6 +39,7 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
             return oldItem == newItem
         }
     }
+
     private val differ = AsyncListDiffer(this, diffUtilCallback)
 
     inner class AdapterHolder(private val binding: ItemInsightCommentBinding) :
@@ -73,9 +74,9 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
                 }
 
                 tvReplyComment.setOnClickListener {
-                    tfReplyComment.visibility = View.VISIBLE
+                    tfReplyComment.isVisible = !tfReplyComment.isVisible
                     tfReplyComment.requestFocus()
-                    btnReplyComment.visibility = View.VISIBLE
+                    btnReplyComment.isVisible = !btnReplyComment.isVisible
                     "Reply".also { btnReplyComment.text = it }
 
                     btnReplyComment.setOnClickListener {
@@ -111,9 +112,9 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
                 }
 
                 tvUpdateComment.setOnClickListener {
-                    tfReplyComment.visibility = View.VISIBLE
+                    tfReplyComment.isVisible = !tfReplyComment.isVisible
                     tfReplyComment.requestFocus()
-                    btnReplyComment.visibility = View.VISIBLE
+                    btnReplyComment.isVisible = !btnReplyComment.isVisible
                     "Update".also { btnReplyComment.text = it }
 
                     btnReplyComment.setOnClickListener {

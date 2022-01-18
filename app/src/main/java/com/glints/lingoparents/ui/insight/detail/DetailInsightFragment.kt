@@ -188,22 +188,22 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
                 findNavController().popBackStack()
             }
             tvInsightAddComment.setOnClickListener {
-                tfInsightComment.visibility = View.VISIBLE
+                tfInsightComment.isVisible = !tfInsightComment.isVisible
                 tfInsightComment.requestFocus()
-                btnComment.visibility = View.VISIBLE
+                btnComment.isVisible = !btnComment.isVisible
             }
 
             tvInsightReport.setOnClickListener {
                 showReportDialog(requireContext())
             }
 
-            tvInsightLike.setOnClickListener {
+            ivLike.setOnClickListener {
                 viewModel.sendLikeRequest(
                     viewModel.getCurrentInsightId(),
                     DetailInsightViewModel.INSIGHT_TYPE
                 )
             }
-            tvInsightDislike.setOnClickListener {
+            ivDislike.setOnClickListener {
                 viewModel.sendDislikeRequest(
                     viewModel.getCurrentInsightId(),
                     DetailInsightViewModel.INSIGHT_TYPE

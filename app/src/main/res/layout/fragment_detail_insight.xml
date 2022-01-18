@@ -37,8 +37,8 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    style="@style/Typography.Headline5"
                     android:id="@+id/tv_title_insight_detail"
+                    style="@style/Typography.Headline5"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginVertical="18dp"
@@ -57,10 +57,10 @@
                 android:foreground="?attr/selectableItemBackgroundBorderless"
                 android:padding="8dp"
                 android:src="@drawable/ic_back_account_setting"
+                app:layout_constraintBottom_toBottomOf="@id/cardView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/cardView"
-                app:layout_constraintBottom_toBottomOf="@id/cardView"
-                tools:ignore="ContentDescription,UnusedAttribute" />
+                tools:ignore="ContentDescription,UnusedAttribute,SpeakableTextPresentCheck,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_detail_insight_cover"
@@ -78,7 +78,8 @@
                     android:id="@+id/iv_insight_detail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerCrop"
+                    tools:ignore="ImageContrastCheck" />
             </androidx.cardview.widget.CardView>
 
             <TextView
@@ -118,7 +119,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_insight_date"
-                tools:ignore="UnusedAttribute"
+                tools:ignore="UnusedAttribute,TextContrastCheck"
                 tools:text="@string/long_paragraph_lorem" />
 
             <ImageView
@@ -126,9 +127,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_insight_like"
+                android:foreground="?selectableItemBackgroundBorderless"
                 app:layout_constraintStart_toStartOf="@id/tv_insight_body"
                 app:layout_constraintTop_toBottomOf="@id/tv_insight_body"
-                tools:ignore="ContentDescription" />
+                tools:ignore="ContentDescription,UnusedAttribute" />
 
             <TextView
                 android:id="@+id/tv_insight_like"
@@ -136,12 +138,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/poppins_w700"
-                android:foreground="?selectableItemBackgroundBorderless"
                 android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="@id/iv_like"
                 app:layout_constraintStart_toEndOf="@id/iv_like"
                 app:layout_constraintTop_toTopOf="@id/iv_like"
-                tools:ignore="UnusedAttribute"
                 tools:text="120" />
 
             <ImageView
@@ -150,10 +150,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:src="@drawable/ic_insight_dislike"
+                android:foreground="?selectableItemBackgroundBorderless"
                 app:layout_constraintBottom_toBottomOf="@id/tv_insight_like"
                 app:layout_constraintStart_toEndOf="@id/tv_insight_like"
                 app:layout_constraintTop_toTopOf="@id/tv_insight_like"
-                tools:ignore="ContentDescription" />
+                tools:ignore="ContentDescription,UnusedAttribute" />
 
             <TextView
                 android:id="@+id/tv_insight_dislike"
@@ -161,7 +162,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/poppins_w700"
-                android:foreground="?selectableItemBackgroundBorderless"
                 android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="@id/iv_dislike"
                 app:layout_constraintStart_toEndOf="@id/iv_dislike"
@@ -214,6 +214,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="8dp"
+                android:visibility="gone"
                 app:boxCornerRadiusBottomEnd="10dp"
                 app:boxCornerRadiusBottomStart="10dp"
                 app:boxCornerRadiusTopEnd="10dp"
@@ -237,6 +238,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/post"
                 android:textAllCaps="false"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@id/tf_insight_comment"
                 app:layout_constraintTop_toBottomOf="@id/tf_insight_comment" />
 
