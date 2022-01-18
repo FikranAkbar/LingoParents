@@ -18,7 +18,7 @@ import com.glints.lingoparents.databinding.ItemInsightCommentBinding
 import com.glints.lingoparents.ui.insight.detail.DetailInsightFragment
 
 class CommentRepliesAdapter(
-    private val listener: OnItemClickCallback,
+    private val listener: CommentsAdapter.OnItemClickCallback,
     private val context: Context,
 ) :
     RecyclerView.Adapter<CommentRepliesAdapter.ChildAdapterHolder>() {
@@ -196,21 +196,6 @@ class CommentRepliesAdapter(
     }
 
     override fun getItemCount(): Int = differ.currentList.size
-
-    interface OnItemClickCallback {
-        fun onReportCommentClicked(
-            item: InsightCommentItem,
-            id: Int,
-            report_comment: String,
-        )
-
-        fun onLikeCommentClicked(item: InsightCommentItem)
-        fun onDislikeCommentClicked(item: InsightCommentItem)
-        fun onReplyCommentClicked(item: InsightCommentItem, comment: String)
-        fun onShowCommentRepliesClicked(item: InsightCommentItem)
-        fun onDeleteCommentClicked(item: InsightCommentItem, id: Int)
-        fun onUpdateCommentClicked(item: InsightCommentItem, comment: String)
-    }
 
     fun submitList(list: List<InsightCommentItem>) {
         differ.submitList(list)
