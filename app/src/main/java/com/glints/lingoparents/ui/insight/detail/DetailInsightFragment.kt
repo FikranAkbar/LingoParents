@@ -18,7 +18,6 @@ import coil.load
 import com.glints.lingoparents.R
 import com.glints.lingoparents.data.model.InsightCommentItem
 import com.glints.lingoparents.databinding.FragmentDetailInsightBinding
-import com.glints.lingoparents.ui.insight.detail.adapter.CommentRepliesAdapter
 import com.glints.lingoparents.ui.insight.detail.adapter.CommentsAdapter
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
@@ -30,17 +29,20 @@ import kotlinx.coroutines.flow.collect
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.random.Random
 
 class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
     private lateinit var binding: FragmentDetailInsightBinding
     private lateinit var viewModel: DetailInsightViewModel
     private lateinit var commentsAdapter: CommentsAdapter
-    private lateinit var commentRepliesAdapter: CommentRepliesAdapter
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
 
+    private val randomGenerator = Random
+
     companion object {
         val report_body = arrayOf("Spam", "Harassment", "Rules Violation", "Other")
+        val childCommentAdapterMap: MutableMap<Double, CommentsAdapter> = mutableMapOf()
     }
 
     override fun onCreateView(
@@ -131,10 +133,24 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                         ).show()
                     }
                     is DetailInsightViewModel.InsightAction.SuccessGetCommentReplies -> {
+                        val uniqueId = randomGenerator.nextDouble()
+                        val newCommentsAdapter = CommentsAdapter(this@DetailInsightFragment, requireContext(), uniqueId)
+                        childCommentAdapterMap[uniqueId] = newCommentsAdapter
+                        newCommentsAdapter.submitList(insight.list)
+                        childCommentAdapterMap[insight.uniqueId]?.showCommentReplies(newCommentsAdapter)
+                        println("ADAPTER info = ${insight.uniqueId} -> ${childCommentAdapterMap[insight.uniqueId]}")
+
+                        CoroutineScope(Dispatchers.Unconfined).launch {
+                            delay(100)
+                            binding.rvInsightComment.invalidate()
+                        }
+
+                        /*
                         commentRepliesAdapter =
                             CommentRepliesAdapter(this@DetailInsightFragment, requireContext())
                         commentRepliesAdapter.submitList(insight.list)
                         commentsAdapter.showCommentReplies(commentRepliesAdapter)
+                         */
                     }
                     is DetailInsightViewModel.InsightAction.SuccessLikeDislike -> {
                         Snackbar.make(
@@ -177,7 +193,10 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
             rvInsightComment.apply {
                 setHasFixedSize(false)
                 layoutManager = LinearLayoutManager(requireContext())
-                commentsAdapter = CommentsAdapter(this@DetailInsightFragment, requireContext())
+                val uniqueId = randomGenerator.nextDouble()
+                commentsAdapter = CommentsAdapter(this@DetailInsightFragment, requireContext(), uniqueId)
+                childCommentAdapterMap[uniqueId] = commentsAdapter
+                println("ADAPTER info = ${uniqueId} -> ${childCommentAdapterMap[uniqueId]}")
                 adapter = commentsAdapter
             }
 
@@ -307,8 +326,8 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
         )
     }
 
-    override fun onShowCommentRepliesClicked(item: InsightCommentItem) {
-        viewModel.getCommentReplies(item.idComment)
+    override fun onShowCommentRepliesClicked(item: InsightCommentItem, uniqueId: Double) {
+        viewModel.getCommentReplies(item.idComment, uniqueId)
     }
 
     override fun onDeleteCommentClicked(item: InsightCommentItem, id: Int) {

@@ -18,7 +18,7 @@ import com.glints.lingoparents.data.model.InsightCommentItem
 import com.glints.lingoparents.databinding.ItemInsightCommentBinding
 import com.glints.lingoparents.ui.insight.detail.DetailInsightFragment
 
-class CommentsAdapter(private val listener: OnItemClickCallback, private val context: Context) :
+class CommentsAdapter(private val listener: OnItemClickCallback, private val context: Context, private val uniqueId: Double) :
     RecyclerView.Adapter<CommentsAdapter.AdapterHolder>() {
     private lateinit var rvChild: RecyclerView
     private var parentId: Int = 0
@@ -92,6 +92,12 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
                     }
                 }
 
+                rvCommentReply.apply {
+                    setHasFixedSize(false)
+                    layoutManager = LinearLayoutManager(context)
+
+                }
+
                 if (item.totalReply > 0) tvShowReplyComment.visibility = View.VISIBLE
                 tvShowReplyComment.text = "Show ${item.totalReply} Replies"
                 tvShowReplyComment.setOnClickListener {
@@ -99,7 +105,7 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
                         rvCommentReply.visibility = View.VISIBLE
                         tvShowReplyComment.text = "Hide Replies"
                         rvChild = rvCommentReply
-                        listener.onShowCommentRepliesClicked(item)
+                        listener.onShowCommentRepliesClicked(item, uniqueId)
                     } else if (rvCommentReply.visibility == View.VISIBLE) {
                         rvCommentReply.visibility = View.GONE
                         tvShowReplyComment.text = "Show ${item.totalReply} Replies"
@@ -167,10 +173,10 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
         }
     }
 
-    fun showCommentReplies(_adapter: CommentRepliesAdapter) {
+    fun showCommentReplies(_adapter: CommentsAdapter) {
         rvChild.apply {
             visibility = View.VISIBLE
-            setHasFixedSize(true)
+            setHasFixedSize(false)
 
             val linearLayoutManager = object : LinearLayoutManager(context) {
                 override fun canScrollVertically(): Boolean {
@@ -206,7 +212,7 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
         fun onLikeCommentClicked(item: InsightCommentItem)
         fun onDislikeCommentClicked(item: InsightCommentItem)
         fun onReplyCommentClicked(item: InsightCommentItem, comment: String)
-        fun onShowCommentRepliesClicked(item: InsightCommentItem)
+        fun onShowCommentRepliesClicked(item: InsightCommentItem, uniqueId: Double)
         fun onDeleteCommentClicked(item: InsightCommentItem, id: Int)
         fun onUpdateCommentClicked(item: InsightCommentItem, comment: String)
     }

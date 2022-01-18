@@ -48,10 +48,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:foreground="?selectableItemBackgroundBorderless"
         android:src="@drawable/ic_insight_like"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_comment_body"
-        android:foreground="?selectableItemBackgroundBorderless"
         tools:ignore="ContentDescription,UnusedAttribute" />
 
     <TextView
@@ -73,11 +73,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:foreground="?selectableItemBackgroundBorderless"
         android:src="@drawable/ic_insight_dislike"
         app:layout_constraintBottom_toBottomOf="@id/tv_comment_like"
         app:layout_constraintStart_toEndOf="@id/tv_comment_like"
         app:layout_constraintTop_toTopOf="@id/tv_comment_like"
-        android:foreground="?selectableItemBackgroundBorderless"
         tools:ignore="ContentDescription,UnusedAttribute" />
 
     <TextView
@@ -108,9 +108,9 @@
         android:textSize="11sp"
         android:textStyle="bold"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/iv_like"
         app:layout_constraintEnd_toStartOf="@id/tv_delete_comment"
         app:layout_constraintTop_toTopOf="@id/iv_like"
-        app:layout_constraintBottom_toBottomOf="@id/iv_like"
         tools:ignore="UnusedAttribute" />
 
     <TextView
@@ -126,9 +126,9 @@
         android:textSize="11sp"
         android:textStyle="bold"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/iv_like"
         app:layout_constraintEnd_toStartOf="@id/tv_reply_comment"
         app:layout_constraintTop_toTopOf="@id/iv_like"
-        app:layout_constraintBottom_toBottomOf="@id/iv_like"
         tools:ignore="UnusedAttribute" />
 
     <TextView
@@ -141,9 +141,9 @@
         android:textColor="@color/grey_darker"
         android:textSize="11sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/iv_like"
         app:layout_constraintEnd_toStartOf="@id/tv_report_comment"
         app:layout_constraintTop_toTopOf="@id/iv_like"
-        app:layout_constraintBottom_toBottomOf="@id/iv_like"
         tools:ignore="UnusedAttribute" />
 
     <TextView
@@ -155,9 +155,9 @@
         android:textColor="@color/grey_darker"
         android:textSize="11sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/iv_like"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/iv_like"
-        app:layout_constraintBottom_toBottomOf="@id/iv_like"
         tools:ignore="UnusedAttribute" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -179,18 +179,21 @@
         app:layout_constraintTop_toBottomOf="@id/iv_like">
 
         <com.google.android.material.textfield.TextInputEditText
+            style="@style/Typography.Caption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine"
+            android:textSize="11sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_reply_comment"
         style="@style/Typography.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
         android:text="@string/reply"
         android:textAllCaps="false"
+        android:textSize="11sp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@id/tf_reply_comment"
         app:layout_constraintTop_toBottomOf="@id/tf_reply_comment" />
@@ -201,34 +204,23 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/rv_comment_reply"
         android:layout_marginTop="8dp"
+        android:foreground="?selectableItemBackgroundBorderless"
         android:text="@string/show_replies"
         android:textStyle="bold"
         android:visibility="gone"
-        android:foreground="?selectableItemBackgroundBorderless"
         app:layout_constraintStart_toStartOf="@id/iv_like"
-        app:layout_constraintTop_toBottomOf="@id/tf_reply_comment"
+        app:layout_constraintTop_toBottomOf="@id/rv_comment_reply"
         tools:ignore="UnusedAttribute" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_comment_reply"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_show_reply_comment"
+        app:layout_constraintTop_toBottomOf="@id/btn_reply_comment"
         tools:listitem="@layout/item_insight_comment" />
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/ll_replies"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rv_comment_reply" />
 </androidx.constraintlayout.widget.ConstraintLayout>
