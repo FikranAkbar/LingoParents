@@ -47,10 +47,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:src="@drawable/ic_insight_like"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_comment_body"
-        tools:ignore="ContentDescription" />
+        android:foreground="?selectableItemBackgroundBorderless"
+        tools:ignore="ContentDescription,UnusedAttribute" />
 
     <TextView
         android:id="@+id/tv_comment_like"
@@ -75,7 +77,8 @@
         app:layout_constraintBottom_toBottomOf="@id/tv_comment_like"
         app:layout_constraintStart_toEndOf="@id/tv_comment_like"
         app:layout_constraintTop_toTopOf="@id/tv_comment_like"
-        tools:ignore="ContentDescription" />
+        android:foreground="?selectableItemBackgroundBorderless"
+        tools:ignore="ContentDescription,UnusedAttribute" />
 
     <TextView
         android:id="@+id/tv_comment_dislike"
@@ -106,7 +109,8 @@
         android:textStyle="bold"
         android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@id/tv_delete_comment"
-        app:layout_constraintTop_toBottomOf="@id/tv_comment_body"
+        app:layout_constraintTop_toTopOf="@id/iv_like"
+        app:layout_constraintBottom_toBottomOf="@id/iv_like"
         tools:ignore="UnusedAttribute" />
 
     <TextView
@@ -123,7 +127,8 @@
         android:textStyle="bold"
         android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@id/tv_reply_comment"
-        app:layout_constraintTop_toBottomOf="@id/tv_comment_body"
+        app:layout_constraintTop_toTopOf="@id/iv_like"
+        app:layout_constraintBottom_toBottomOf="@id/iv_like"
         tools:ignore="UnusedAttribute" />
 
     <TextView
@@ -137,7 +142,8 @@
         android:textSize="11sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/tv_report_comment"
-        app:layout_constraintTop_toBottomOf="@id/tv_comment_body"
+        app:layout_constraintTop_toTopOf="@id/iv_like"
+        app:layout_constraintBottom_toBottomOf="@id/iv_like"
         tools:ignore="UnusedAttribute" />
 
     <TextView
@@ -150,7 +156,8 @@
         android:textSize="11sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_comment_body"
+        app:layout_constraintTop_toTopOf="@id/iv_like"
+        app:layout_constraintBottom_toBottomOf="@id/iv_like"
         tools:ignore="UnusedAttribute" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -197,8 +204,10 @@
         android:text="@string/show_replies"
         android:textStyle="bold"
         android:visibility="gone"
+        android:foreground="?selectableItemBackgroundBorderless"
         app:layout_constraintStart_toStartOf="@id/iv_like"
-        app:layout_constraintTop_toBottomOf="@id/tf_reply_comment" />
+        app:layout_constraintTop_toBottomOf="@id/tf_reply_comment"
+        tools:ignore="UnusedAttribute" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_comment_reply"
