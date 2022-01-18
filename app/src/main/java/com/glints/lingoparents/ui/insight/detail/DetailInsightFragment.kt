@@ -180,7 +180,6 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
             rvInsightComment.apply {
                 setHasFixedSize(true)
                 layoutManager = LinearLayoutManager(requireContext())
-                addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
                 commentsAdapter = CommentsAdapter(this@DetailInsightFragment, requireContext())
                 adapter = commentsAdapter
             }

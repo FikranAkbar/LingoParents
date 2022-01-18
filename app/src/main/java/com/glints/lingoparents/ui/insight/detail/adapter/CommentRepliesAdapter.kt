@@ -61,13 +61,13 @@ class CommentRepliesAdapter(
                 tvUsernameComment.text =
                     item.Master_user.Master_parent?.firstname + " " + item.Master_user.Master_parent?.lastname
                 tvCommentBody.text = item.comment
-                tvLikeComment.text = item.total_like.toString()
-                tvDislikeComment.text = item.total_dislike.toString()
-                tvLikeComment.setOnClickListener {
+                tvCommentLike.text = item.total_like.toString()
+                tvCommentDislike.text = item.total_dislike.toString()
+                tvCommentLike.setOnClickListener {
                     listener.onLikeCommentClicked(item)
                 }
 
-                tvDislikeComment.setOnClickListener {
+                tvCommentDislike.setOnClickListener {
                     listener.onDislikeCommentClicked(item)
                 }
 
