@@ -18,6 +18,8 @@ import coil.load
 import com.glints.lingoparents.R
 import com.glints.lingoparents.data.model.InsightCommentItem
 import com.glints.lingoparents.databinding.FragmentDetailInsightBinding
+import com.glints.lingoparents.ui.dashboard.hideKeyboard
+import com.glints.lingoparents.ui.dashboard.openKeyboard
 import com.glints.lingoparents.ui.insight.detail.adapter.CommentsAdapter
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
@@ -39,10 +41,10 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
     private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
 
     private val randomGenerator = Random
+    private val childCommentAdapterMap: MutableMap<Double, CommentsAdapter> = mutableMapOf()
 
     companion object {
         val report_body = arrayOf("Spam", "Harassment", "Rules Violation", "Other")
-        val childCommentAdapterMap: MutableMap<Double, CommentsAdapter> = mutableMapOf()
     }
 
     override fun onCreateView(
@@ -138,19 +140,6 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                         childCommentAdapterMap[uniqueId] = newCommentsAdapter
                         newCommentsAdapter.submitList(insight.list)
                         childCommentAdapterMap[insight.uniqueId]?.showCommentReplies(newCommentsAdapter)
-                        println("ADAPTER info = ${insight.uniqueId} -> ${childCommentAdapterMap[insight.uniqueId]}")
-
-                        CoroutineScope(Dispatchers.Unconfined).launch {
-                            delay(100)
-                            binding.rvInsightComment.invalidate()
-                        }
-
-                        /*
-                        commentRepliesAdapter =
-                            CommentRepliesAdapter(this@DetailInsightFragment, requireContext())
-                        commentRepliesAdapter.submitList(insight.list)
-                        commentsAdapter.showCommentReplies(commentRepliesAdapter)
-                         */
                     }
                     is DetailInsightViewModel.InsightAction.SuccessLikeDislike -> {
                         Snackbar.make(
@@ -196,7 +185,6 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                 val uniqueId = randomGenerator.nextDouble()
                 commentsAdapter = CommentsAdapter(this@DetailInsightFragment, requireContext(), uniqueId)
                 childCommentAdapterMap[uniqueId] = commentsAdapter
-                println("ADAPTER info = ${uniqueId} -> ${childCommentAdapterMap[uniqueId]}")
                 adapter = commentsAdapter
             }
 
@@ -205,8 +193,15 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
             }
             tvInsightAddComment.setOnClickListener {
                 tfInsightComment.isVisible = !tfInsightComment.isVisible
-                tfInsightComment.requestFocus()
                 btnComment.isVisible = !btnComment.isVisible
+                if (tfInsightComment.isVisible) {
+                    tfInsightComment.requestFocus()
+                    requireActivity().openKeyboard()
+                } else {
+                    requireActivity().hideKeyboard()
+                }
+
+
             }
 
             tvInsightReport.setOnClickListener {

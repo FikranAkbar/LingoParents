@@ -1,6 +1,7 @@
 package com.glints.lingoparents.ui.insight.detail.adapter
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.text.TextUtils
@@ -16,6 +17,8 @@ import coil.load
 import com.glints.lingoparents.R
 import com.glints.lingoparents.data.model.InsightCommentItem
 import com.glints.lingoparents.databinding.ItemInsightCommentBinding
+import com.glints.lingoparents.ui.dashboard.hideKeyboard
+import com.glints.lingoparents.ui.dashboard.openKeyboard
 import com.glints.lingoparents.ui.insight.detail.DetailInsightFragment
 
 class CommentsAdapter(private val listener: OnItemClickCallback, private val context: Context, private val uniqueId: Double) :
@@ -60,11 +63,11 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
                 tvCommentLike.text = item.totalLike.toString()
                 tvCommentDislike.text = item.totalDislike.toString()
 
-                tvCommentLike.setOnClickListener {
+                ivCommentLike.setOnClickListener {
                     listener.onLikeCommentClicked(item)
                 }
 
-                tvCommentDislike.setOnClickListener {
+                ivCommentDislike.setOnClickListener {
                     listener.onDislikeCommentClicked(item)
                 }
 
@@ -74,21 +77,27 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
 
                 tvReplyComment.setOnClickListener {
                     tfReplyComment.isVisible = !tfReplyComment.isVisible
-                    tfReplyComment.requestFocus()
                     btnReplyComment.isVisible = !btnReplyComment.isVisible
-                    "Reply".also { btnReplyComment.text = it }
 
-                    btnReplyComment.setOnClickListener {
-                        if (TextUtils.isEmpty(tfReplyComment.editText?.text)) {
-                            tfReplyComment.requestFocus()
-                            tfReplyComment.error = "Please enter your comment"
-                        } else {
-                            listener.onReplyCommentClicked(
-                                item,
-                                tfReplyComment.editText?.text.toString()
-                            )
-                            tfReplyComment.editText?.setText("")
+                    if (tfReplyComment.isVisible) {
+                        tfReplyComment.requestFocus()
+                        (context as Activity).openKeyboard()
+                        "Reply".also { btnReplyComment.text = it }
+
+                        btnReplyComment.setOnClickListener {
+                            if (TextUtils.isEmpty(tfReplyComment.editText?.text)) {
+                                tfReplyComment.requestFocus()
+                                tfReplyComment.error = "Please enter your comment"
+                            } else {
+                                listener.onReplyCommentClicked(
+                                    item,
+                                    tfReplyComment.editText?.text.toString()
+                                )
+                                tfReplyComment.editText?.setText("")
+                            }
                         }
+                    } else {
+                        (context as Activity).hideKeyboard()
                     }
                 }
 
@@ -118,21 +127,27 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
 
                 tvUpdateComment.setOnClickListener {
                     tfReplyComment.isVisible = !tfReplyComment.isVisible
-                    tfReplyComment.requestFocus()
                     btnReplyComment.isVisible = !btnReplyComment.isVisible
-                    "Update".also { btnReplyComment.text = it }
 
-                    btnReplyComment.setOnClickListener {
-                        if (TextUtils.isEmpty(tfReplyComment.editText?.text)) {
-                            tfReplyComment.requestFocus()
-                            tfReplyComment.error = "Please enter your comment"
-                        } else {
-                            listener.onUpdateCommentClicked(
-                                item,
-                                tfReplyComment.editText?.text.toString()
-                            )
-                            tfReplyComment.editText?.setText("")
+                    if (tfReplyComment.isVisible) {
+                        tfReplyComment.requestFocus()
+                        (context as Activity).openKeyboard()
+                        "Update".also { btnReplyComment.text = it }
+
+                        btnReplyComment.setOnClickListener {
+                            if (TextUtils.isEmpty(tfReplyComment.editText?.text)) {
+                                tfReplyComment.requestFocus()
+                                tfReplyComment.error = "Please enter your comment"
+                            } else {
+                                listener.onUpdateCommentClicked(
+                                    item,
+                                    tfReplyComment.editText?.text.toString()
+                                )
+                                tfReplyComment.editText?.setText("")
+                            }
                         }
+                    } else {
+                        (context as Activity).hideKeyboard()
                     }
                 }
             }

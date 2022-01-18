@@ -9,6 +9,8 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -148,6 +150,14 @@ class DashboardActivity : AppCompatActivity(), Toolbar.OnMenuItemClickListener,
     override fun onNoInternetAccessOrError(errorMessage: String) {
         viewModel.onNoInternetAccessOrError(errorMessage)
     }
+}
+
+fun Activity.openKeyboard() {
+    WindowInsetsControllerCompat(window, window.decorView).show(WindowInsetsCompat.Type.ime())
+}
+
+fun Activity.hideKeyboard() {
+    WindowInsetsControllerCompat(window, window.decorView).hide(WindowInsetsCompat.Type.ime())
 }
 
 const val TOKEN_EXPIRED_FLAG = Activity.RESULT_FIRST_USER + 10

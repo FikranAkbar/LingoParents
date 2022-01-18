@@ -43,7 +43,7 @@
         tools:ignore="UnusedAttribute" />
 
     <ImageView
-        android:id="@+id/iv_like"
+        android:id="@+id/iv_comment_like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -62,14 +62,14 @@
         android:fontFamily="@font/poppins_w700"
         android:foreground="?selectableItemBackgroundBorderless"
         android:textSize="11sp"
-        app:layout_constraintBottom_toBottomOf="@id/iv_like"
-        app:layout_constraintStart_toEndOf="@id/iv_like"
-        app:layout_constraintTop_toTopOf="@id/iv_like"
+        app:layout_constraintBottom_toBottomOf="@id/iv_comment_like"
+        app:layout_constraintStart_toEndOf="@id/iv_comment_like"
+        app:layout_constraintTop_toTopOf="@id/iv_comment_like"
         tools:ignore="UnusedAttribute"
         tools:text="120" />
 
     <ImageView
-        android:id="@+id/iv_dislike"
+        android:id="@+id/iv_comment_dislike"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -88,9 +88,9 @@
         android:fontFamily="@font/poppins_w700"
         android:foreground="?selectableItemBackgroundBorderless"
         android:textSize="11sp"
-        app:layout_constraintBottom_toBottomOf="@id/iv_dislike"
-        app:layout_constraintStart_toEndOf="@id/iv_dislike"
-        app:layout_constraintTop_toTopOf="@id/iv_dislike"
+        app:layout_constraintBottom_toBottomOf="@id/iv_comment_dislike"
+        app:layout_constraintStart_toEndOf="@id/iv_comment_dislike"
+        app:layout_constraintTop_toTopOf="@id/iv_comment_dislike"
         tools:ignore="UnusedAttribute"
         tools:text="120" />
 
@@ -108,9 +108,9 @@
         android:textSize="11sp"
         android:textStyle="bold"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/iv_like"
+        app:layout_constraintBottom_toBottomOf="@id/iv_comment_like"
         app:layout_constraintEnd_toStartOf="@id/tv_delete_comment"
-        app:layout_constraintTop_toTopOf="@id/iv_like"
+        app:layout_constraintTop_toTopOf="@id/iv_comment_like"
         tools:ignore="UnusedAttribute" />
 
     <TextView
@@ -126,9 +126,9 @@
         android:textSize="11sp"
         android:textStyle="bold"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/iv_like"
+        app:layout_constraintBottom_toBottomOf="@id/iv_comment_like"
         app:layout_constraintEnd_toStartOf="@id/tv_reply_comment"
-        app:layout_constraintTop_toTopOf="@id/iv_like"
+        app:layout_constraintTop_toTopOf="@id/iv_comment_like"
         tools:ignore="UnusedAttribute" />
 
     <TextView
@@ -141,9 +141,9 @@
         android:textColor="@color/grey_darker"
         android:textSize="11sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/iv_like"
+        app:layout_constraintBottom_toBottomOf="@id/iv_comment_like"
         app:layout_constraintEnd_toStartOf="@id/tv_report_comment"
-        app:layout_constraintTop_toTopOf="@id/iv_like"
+        app:layout_constraintTop_toTopOf="@id/iv_comment_like"
         tools:ignore="UnusedAttribute" />
 
     <TextView
@@ -155,9 +155,9 @@
         android:textColor="@color/grey_darker"
         android:textSize="11sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/iv_like"
+        app:layout_constraintBottom_toBottomOf="@id/iv_comment_like"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/iv_like"
+        app:layout_constraintTop_toTopOf="@id/iv_comment_like"
         tools:ignore="UnusedAttribute" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -176,7 +176,7 @@
         app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_like">
+        app:layout_constraintTop_toBottomOf="@id/iv_comment_like">
 
         <com.google.android.material.textfield.TextInputEditText
             style="@style/Typography.Caption"
@@ -208,7 +208,7 @@
         android:text="@string/show_replies"
         android:textStyle="bold"
         android:visibility="gone"
-        app:layout_constraintStart_toStartOf="@id/iv_like"
+        app:layout_constraintStart_toStartOf="@id/iv_comment_like"
         app:layout_constraintTop_toBottomOf="@id/rv_comment_reply"
         tools:ignore="UnusedAttribute" />
 
