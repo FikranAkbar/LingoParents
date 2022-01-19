@@ -186,7 +186,7 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
             builder.create().show()
         }
 
-        fun setPostCommentListener(item: InsightCommentItem) {
+        private fun setPostCommentListener(item: InsightCommentItem) {
             binding.apply {
                 btnReplyComment.setOnClickListener {
                     if (TextUtils.isEmpty(tfReplyComment.editText?.text)) {
@@ -198,12 +198,15 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
                             tfReplyComment.editText?.text.toString()
                         )
                         tfReplyComment.editText?.setText("")
+                        tfReplyComment.isVisible = false
+                        btnReplyComment.isVisible = false
+                        (context as Activity).hideKeyboard()
                     }
                 }
             }
         }
 
-        fun setUpdateCommentListener(item: InsightCommentItem) {
+        private fun setUpdateCommentListener(item: InsightCommentItem) {
             binding.apply {
                 btnReplyComment.setOnClickListener {
                     if (TextUtils.isEmpty(tfReplyComment.editText?.text)) {
@@ -215,6 +218,9 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
                             tfReplyComment.editText?.text.toString()
                         )
                         tfReplyComment.editText?.setText("")
+                        tfReplyComment.isVisible = false
+                        btnReplyComment.isVisible = false
+                        (context as Activity).hideKeyboard()
                     }
                 }
             }

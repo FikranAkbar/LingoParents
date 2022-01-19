@@ -228,19 +228,24 @@
                 app:layout_constraintTop_toBottomOf="@+id/materialTextView">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    style="@style/Typography.Caption"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textMultiLine" />
+                    android:layout_height="70dp"
+                    android:gravity="start|top"
+                    android:inputType="textMultiLine"
+                    android:paddingVertical="10dp"
+                    android:textSize="11sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_comment"
                 style="@style/Typography.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="82dp"
+                android:layout_height="40dp"
                 android:text="@string/post"
                 android:textAllCaps="false"
                 android:visibility="gone"
+                android:textSize="11sp"
                 app:layout_constraintEnd_toEndOf="@id/tf_insight_comment"
                 app:layout_constraintTop_toBottomOf="@id/tf_insight_comment" />
 

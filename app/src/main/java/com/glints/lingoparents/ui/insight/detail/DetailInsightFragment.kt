@@ -200,8 +200,6 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                 } else {
                     requireActivity().hideKeyboard()
                 }
-
-
             }
 
             tvInsightReport.setOnClickListener {
@@ -231,6 +229,9 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                         DetailInsightViewModel.INSIGHT_TYPE,
                         tfInsightComment.editText?.text.toString()
                     )
+                    requireActivity().hideKeyboard()
+                    tfInsightComment.isVisible = false
+                    btnComment.isVisible = false
                 }
             }
         }
