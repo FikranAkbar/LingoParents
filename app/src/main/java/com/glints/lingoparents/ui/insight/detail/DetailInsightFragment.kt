@@ -2,6 +2,8 @@ package com.glints.lingoparents.ui.insight.detail
 
 import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.glints.lingoparents.R
 import com.glints.lingoparents.data.model.InsightCommentItem
+import com.glints.lingoparents.data.model.response.mapToInsightCommentItem
 import com.glints.lingoparents.databinding.FragmentDetailInsightBinding
 import com.glints.lingoparents.ui.dashboard.hideKeyboard
 import com.glints.lingoparents.ui.dashboard.openKeyboard
@@ -41,7 +44,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
     private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
 
     private val randomGenerator = Random
-    private val childCommentAdapterMap: MutableMap<Double, CommentsAdapter> = mutableMapOf()
+    private val commentAdapterMap: MutableMap<Double, CommentsAdapter> = mutableMapOf()
 
     companion object {
         val report_body = arrayOf("Spam", "Harassment", "Rules Violation", "Other")
@@ -76,6 +79,8 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
         viewModel.getParentId().observe(viewLifecycleOwner) { parentId ->
             CommentsAdapter.parentId = parentId.toInt()
         }
+
+        viewModel.getParentProfile()
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.insightDetail.collect { insight ->
@@ -117,50 +122,34 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
             viewModel.actionInsight.collect { insight ->
                 when (insight) {
                     is DetailInsightViewModel.InsightAction.SuccessCreateComment -> {
-                        Snackbar.make(
-                            requireView(),
-                            "Add comment successfully",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
+                        showSuccessSnackbar("Add comment succesfully")
+
+                        val newCommentItem = insight.result.message?.mapToInsightCommentItem(viewModel.parentProfile)!!
+                        commentAdapterMap[insight.uniqueAdapterId]?.addNewCommentItem(newCommentItem)
 
                         binding.apply {
                             tfInsightComment.editText?.setText("")
                         }
                     }
                     is DetailInsightViewModel.InsightAction.SuccessDeleteComment -> {
-                        Snackbar.make(
-                            requireView(),
-                            insight.result.message,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
+                        showSuccessSnackbar(insight.result.message)
+                        commentsAdapter.deleteCommentItem(insight.item)
                     }
                     is DetailInsightViewModel.InsightAction.SuccessGetCommentReplies -> {
                         val uniqueId = randomGenerator.nextDouble()
                         val newCommentsAdapter = CommentsAdapter(this@DetailInsightFragment, requireContext(), uniqueId)
-                        childCommentAdapterMap[uniqueId] = newCommentsAdapter
+                        commentAdapterMap[uniqueId] = newCommentsAdapter
                         newCommentsAdapter.submitList(insight.list)
-                        childCommentAdapterMap[insight.uniqueId]?.showCommentReplies(newCommentsAdapter)
+                        commentAdapterMap[insight.uniqueId]?.showCommentReplies(newCommentsAdapter)
                     }
                     is DetailInsightViewModel.InsightAction.SuccessLikeDislike -> {
-                        Snackbar.make(
-                            binding.root,
-                            insight.result.message,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
+                        showSuccessSnackbar(insight.result.message)
                     }
                     is DetailInsightViewModel.InsightAction.SuccessUpdateComment -> {
-                        Snackbar.make(
-                            binding.root,
-                            insight.result.message,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
+                        showSuccessSnackbar(insight.result.message)
                     }
                     is DetailInsightViewModel.InsightAction.SuccessReport -> {
-                        Snackbar.make(
-                            requireView(),
-                            "Reported successfully",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
+                        showSuccessSnackbar("Reported successfully")
                     }
                     is DetailInsightViewModel.InsightAction.Error -> {
                         noInternetAccessOrErrorHandler.onNoInternetAccessOrError(insight.message)
@@ -184,7 +173,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                 layoutManager = LinearLayoutManager(requireContext())
                 val uniqueId = randomGenerator.nextDouble()
                 commentsAdapter = CommentsAdapter(this@DetailInsightFragment, requireContext(), uniqueId)
-                childCommentAdapterMap[uniqueId] = commentsAdapter
+                commentAdapterMap[uniqueId] = commentsAdapter
                 adapter = commentsAdapter
             }
 
@@ -226,6 +215,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                 } else {
                     viewModel.createComment(
                         viewModel.getCurrentInsightId(),
+                        commentsAdapter.getUniqueAdapterId(),
                         DetailInsightViewModel.INSIGHT_TYPE,
                         tfInsightComment.editText?.text.toString()
                     )
@@ -283,6 +273,34 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
         }
     }
 
+    private fun showSuccessSnackbar(message: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.success_color, null))
+                .setTextColor(Color.WHITE)
+                .show()
+        } else {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(Color.GREEN)
+                .setTextColor(Color.WHITE)
+                .show()
+        }
+    }
+
+    private fun showErrorSnackbar(message: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.error_color, null))
+                .setTextColor(Color.WHITE)
+                .show()
+        } else {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(Color.RED)
+                .setTextColor(Color.WHITE)
+                .show()
+        }
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
@@ -314,20 +332,21 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
         )
     }
 
-    override fun onReplyCommentClicked(item: InsightCommentItem, comment: String) {
+    override fun onReplyCommentClicked(item: InsightCommentItem, comment: String, uniqueAdapterId: Double) {
         viewModel.createComment(
             item.idComment,
+            uniqueAdapterId,
             DetailInsightViewModel.COMMENT_TYPE,
             comment
         )
     }
 
-    override fun onShowCommentRepliesClicked(item: InsightCommentItem, uniqueId: Double) {
-        viewModel.getCommentReplies(item.idComment, uniqueId)
+    override fun onShowCommentRepliesClicked(item: InsightCommentItem, uniqueAdapterId: Double) {
+        viewModel.getCommentReplies(item.idComment, uniqueAdapterId)
     }
 
     override fun onDeleteCommentClicked(item: InsightCommentItem, id: Int) {
-        viewModel.deleteComment(id)
+        viewModel.deleteComment(item, id)
     }
 
     override fun onUpdateCommentClicked(

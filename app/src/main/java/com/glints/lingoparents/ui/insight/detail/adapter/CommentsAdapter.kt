@@ -21,7 +21,11 @@ import com.glints.lingoparents.ui.dashboard.hideKeyboard
 import com.glints.lingoparents.ui.dashboard.openKeyboard
 import com.glints.lingoparents.ui.insight.detail.DetailInsightFragment
 
-class CommentsAdapter(private val listener: OnItemClickCallback, private val context: Context, private val uniqueId: Double) :
+class CommentsAdapter(
+    private val listener: OnItemClickCallback,
+    private val context: Context,
+    private val uniqueAdapterId: Double,
+) :
     RecyclerView.Adapter<CommentsAdapter.AdapterHolder>() {
     private lateinit var rvChild: RecyclerView
 
@@ -115,7 +119,7 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
                         rvCommentReply.visibility = View.VISIBLE
                         tvShowReplyComment.text = "Hide Replies"
                         rvChild = rvCommentReply
-                        listener.onShowCommentRepliesClicked(item, uniqueId)
+                        listener.onShowCommentRepliesClicked(item, uniqueAdapterId)
                     } else if (rvCommentReply.visibility == View.VISIBLE) {
                         rvCommentReply.visibility = View.GONE
                         tvShowReplyComment.text = "Show ${item.totalReply} Replies"
@@ -195,7 +199,8 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
                     } else {
                         listener.onReplyCommentClicked(
                             item,
-                            tfReplyComment.editText?.text.toString()
+                            tfReplyComment.editText?.text.toString(),
+                            uniqueAdapterId
                         )
                         tfReplyComment.editText?.setText("")
                         tfReplyComment.isVisible = false
@@ -265,13 +270,29 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
 
         fun onLikeCommentClicked(item: InsightCommentItem)
         fun onDislikeCommentClicked(item: InsightCommentItem)
-        fun onReplyCommentClicked(item: InsightCommentItem, comment: String)
-        fun onShowCommentRepliesClicked(item: InsightCommentItem, uniqueId: Double)
+        fun onReplyCommentClicked(item: InsightCommentItem, comment: String, uniqueAdapterId: Double)
+        fun onShowCommentRepliesClicked(item: InsightCommentItem, uniqueAdapterId: Double)
         fun onDeleteCommentClicked(item: InsightCommentItem, id: Int)
         fun onUpdateCommentClicked(item: InsightCommentItem, comment: String)
     }
 
+    fun getUniqueAdapterId() = uniqueAdapterId
+
     fun submitList(list: List<InsightCommentItem>) {
         differ.submitList(list)
+    }
+
+    fun addNewCommentItem(item: InsightCommentItem) {
+        val currentList = differ.currentList.map {
+            it.copy()
+        }
+        differ.submitList(listOf(item) + currentList)
+    }
+
+    fun deleteCommentItem(item: InsightCommentItem) {
+        val newList = differ.currentList.filter {
+            it.idComment != item.idComment
+        }
+        differ.submitList(newList)
     }
 }
