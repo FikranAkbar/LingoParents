@@ -143,7 +143,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                     }
                     is DetailInsightViewModel.InsightAction.SuccessDeleteComment -> {
                         showSuccessSnackbar(insight.result.message)
-                        commentsAdapter.deleteCommentItem(insight.item)
+                        commentAdapterMap[insight.uniqueAdapterId]?.deleteCommentItem(insight.item)
                     }
                     is DetailInsightViewModel.InsightAction.SuccessGetCommentReplies -> {
                         val uniqueAdapterId = randomGenerator.nextDouble()
@@ -357,8 +357,8 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
         viewModel.getCommentReplies(item.idComment, uniqueAdapterId)
     }
 
-    override fun onDeleteCommentClicked(item: InsightCommentItem, id: Int) {
-        viewModel.deleteComment(item, id)
+    override fun onDeleteCommentClicked(item: InsightCommentItem, id: Int, uniqueAdapterId: Double) {
+        viewModel.deleteComment(item, id, uniqueAdapterId)
     }
 
     override fun onUpdateCommentClicked(

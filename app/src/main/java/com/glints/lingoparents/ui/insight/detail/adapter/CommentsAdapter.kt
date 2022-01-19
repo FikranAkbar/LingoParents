@@ -147,7 +147,7 @@ class CommentsAdapter(
                 }
 
                 tvDeleteComment.setOnClickListener {
-                    listener.onDeleteCommentClicked(item, item.idComment)
+                    listener.onDeleteCommentClicked(item, item.idComment, uniqueAdapterId)
                 }
 
                 tvUpdateComment.setOnClickListener {
@@ -302,7 +302,7 @@ class CommentsAdapter(
         )
 
         fun onShowCommentRepliesClicked(item: InsightCommentItem, uniqueAdapterId: Double)
-        fun onDeleteCommentClicked(item: InsightCommentItem, id: Int)
+        fun onDeleteCommentClicked(item: InsightCommentItem, id: Int, uniqueAdapterId: Double)
         fun onUpdateCommentClicked(item: InsightCommentItem, comment: String)
     }
 

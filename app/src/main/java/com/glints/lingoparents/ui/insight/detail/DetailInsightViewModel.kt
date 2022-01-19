@@ -63,9 +63,9 @@ class DetailInsightViewModel(
             actionInsightChannel.send(InsightAction.SuccessGetCommentReplies(list, uniqueAdapterId))
         }
 
-    private fun onApiCallSuccessDeleteComment(result: DeleteCommentResponse, item: InsightCommentItem) =
+    private fun onApiCallSuccessDeleteComment(result: DeleteCommentResponse, item: InsightCommentItem, uniqueAdapterId: Double) =
         viewModelScope.launch {
-            actionInsightChannel.send(InsightAction.SuccessDeleteComment(result, item))
+            actionInsightChannel.send(InsightAction.SuccessDeleteComment(result, item, uniqueAdapterId))
         }
 
     private fun onApiCallSuccessUpdateComment(result: UpdateCommentResponse) =
@@ -229,7 +229,7 @@ class DetailInsightViewModel(
             })
     }
 
-    fun deleteComment(item: InsightCommentItem, id: Int) = viewModelScope.launch {
+    fun deleteComment(item: InsightCommentItem, id: Int, uniqueAdapterId: Double) = viewModelScope.launch {
         APIClient
             .service
             .deleteComment(id)
@@ -239,7 +239,7 @@ class DetailInsightViewModel(
                     response: Response<DeleteCommentResponse>,
                 ) {
                     if (response.isSuccessful) {
-                        onApiCallSuccessDeleteComment(response.body()!!, item)
+                        onApiCallSuccessDeleteComment(response.body()!!, item, uniqueAdapterId)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallErrorAction(apiError.message())
@@ -318,7 +318,7 @@ class DetailInsightViewModel(
 
     sealed class InsightAction {
         data class SuccessCreateComment(val result: CreateCommentResponse, val uniqueAdapterId: Double) : InsightAction()
-        data class SuccessDeleteComment(val result: DeleteCommentResponse, val item: InsightCommentItem) : InsightAction()
+        data class SuccessDeleteComment(val result: DeleteCommentResponse, val item: InsightCommentItem, val uniqueAdapterId: Double) : InsightAction()
         data class SuccessGetCommentReplies(val list: List<InsightCommentItem>, val uniqueAdapterId: Double) :
             InsightAction()
 
