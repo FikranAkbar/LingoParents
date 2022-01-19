@@ -164,6 +164,8 @@ class CommentsAdapter(
                             tfReplyComment.requestFocus()
                             (context as Activity).openKeyboard()
                             "Update".also { btnReplyComment.text = it }
+                            tfReplyComment.editText?.setText(item.comment)
+                            tfReplyComment.editText?.selectAll()
 
                             setUpdateCommentListener(item)
                         } else {

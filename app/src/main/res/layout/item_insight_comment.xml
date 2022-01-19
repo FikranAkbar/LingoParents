@@ -209,12 +209,12 @@
         android:layout_below="@id/rv_comment_reply"
         android:layout_marginTop="8dp"
         android:foreground="?selectableItemBackgroundBorderless"
-        android:text="@string/show_replies"
         android:textStyle="bold"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="@id/iv_comment_like"
         app:layout_constraintTop_toBottomOf="@id/rv_comment_reply"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="UnusedAttribute"
+        tools:text="@string/show_replies" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_comment_reply"
