@@ -1,15 +1,12 @@
 package com.glints.lingoparents.ui.login
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.model.response.LoginUserResponse
-import com.glints.lingoparents.ui.REGISTER_USER_RESULT_OK
 import com.glints.lingoparents.utils.ErrorUtils
 import com.glints.lingoparents.utils.JWTUtils
 import com.glints.lingoparents.utils.TokenPreferences
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -33,18 +30,8 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
         loginEventChannel.send(LoginEvent.NavigateToRegister)
     }
 
-    fun onRegisterUserSuccessful(result: Int) = viewModelScope.launch {
-        when (result) {
-            REGISTER_USER_RESULT_OK -> showSnackBarMessage("Register User Successful!")
-        }
-    }
-
     fun onLoginWithGoogleClick() = viewModelScope.launch {
         loginEventChannel.send(LoginEvent.TryToLoginWithGoogle)
-    }
-
-    fun onLoginWithGoogleSuccessful(account: GoogleSignInAccount) = viewModelScope.launch {
-        loginEventChannel.send(LoginEvent.LoginWithGoogleSuccess(account))
     }
 
     fun onLoginWithGoogleFailure(message: String) = viewModelScope.launch {
@@ -55,28 +42,38 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
         loginEventChannel.send(LoginEvent.Loading)
     }
 
-    private fun onApiCallSuccess(result: String) = viewModelScope.launch {
-        loginEventChannel.send(LoginEvent.Success(result))
+    private fun onApiCallSuccess() = viewModelScope.launch {
+        loginEventChannel.send(LoginEvent.Success)
     }
 
     private fun onApiCallError(message: String, idToken: String? = null) = viewModelScope.launch {
         loginEventChannel.send(LoginEvent.Error(message, idToken))
     }
 
-    private fun showSnackBarMessage(message: String) = viewModelScope.launch {
-        loginEventChannel.send(LoginEvent.ShowSnackBarMessage(message))
-    }
-
+    /**
+     * Method to save access token and refresh token in token preference, which is data store implementation
+     * @param accessToken Access Token that received from login api call
+     * @param refreshToken Refresh Token that received from login api call
+     */
     private fun saveToken(accessToken: String, refreshToken: String) = viewModelScope.launch {
         tokenPreferences.resetToken()
         tokenPreferences.saveAccessToken(accessToken)
         tokenPreferences.saveRefreshToken(refreshToken)
     }
 
-    fun saveUserId(id: String) = viewModelScope.launch {
+    /**
+     * Method to save user id in token preference, which is data store implementation
+     * @param id The user id you want to save in token preference
+     */
+    private fun saveUserId(id: String) = viewModelScope.launch {
         tokenPreferences.saveUserId(id)
     }
 
+    /**
+     * Method to login user with manually fill the email and password.
+     * @param email Email of user
+     * @param password Password from user's email
+     */
     fun loginUserByEmailPassword(email: String, password: String) = viewModelScope.launch {
         onApiCallStarted()
         APIClient
@@ -85,15 +82,14 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
             .enqueue(object : Callback<LoginUserResponse> {
                 override fun onResponse(
                     call: Call<LoginUserResponse>,
-                    response: Response<LoginUserResponse>
+                    response: Response<LoginUserResponse>,
                 ) {
                     if (response.isSuccessful) {
-                        onApiCallSuccess("Login Successful")
+                        onApiCallSuccess()
 
                         val accessToken = response.body()?.data?.accessToken.toString()
                         val refreshToken = response.body()?.data?.refreshToken.toString()
-                        println("TOKEN $accessToken")
-                        println("REFRESH TOKEN $refreshToken")
+
                         val userId = JWTUtils.getIdFromAccessToken(accessToken)
                         saveToken(accessToken, refreshToken)
                         saveUserId(userId)
@@ -110,6 +106,12 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
             })
     }
 
+    /**
+     * Method to login user with google account.
+     * If user already has account created, user will be redirected to dashboard activity.
+     * Else, user will be redirected to register fragment with few fields already filled with the information from google id token
+     * @param idToken Json Web Token received from google sign in account
+     */
     fun loginWithGoogleEmail(idToken: String) = viewModelScope.launch {
         onApiCallStarted()
         APIClient
@@ -118,10 +120,10 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
             .enqueue(object : Callback<LoginUserResponse> {
                 override fun onResponse(
                     call: Call<LoginUserResponse>,
-                    response: Response<LoginUserResponse>
+                    response: Response<LoginUserResponse>,
                 ) {
                     if (response.isSuccessful) {
-                        onApiCallSuccess("Login Successful")
+                        onApiCallSuccess()
 
                         val accessToken = response.body()?.data?.accessToken.toString()
                         val refreshToken = response.body()?.data?.refreshToken.toString()
@@ -145,11 +147,9 @@ class LoginViewModel(private val tokenPreferences: TokenPreferences) : ViewModel
         object NavigateToRegister : LoginEvent()
         data class TryToLoginUser(val email: String, val password: String) : LoginEvent()
         object TryToLoginWithGoogle : LoginEvent()
-        data class LoginWithGoogleSuccess(val account: GoogleSignInAccount) : LoginEvent()
         data class LoginWithGoogleFailure(val errorMessage: String) : LoginEvent()
         object Loading : LoginEvent()
-        data class Success(val result: String) : LoginEvent()
+        object Success : LoginEvent()
         data class Error(val message: String, val idToken: String?) : LoginEvent()
-        data class ShowSnackBarMessage(val message: String) : LoginEvent()
     }
 }

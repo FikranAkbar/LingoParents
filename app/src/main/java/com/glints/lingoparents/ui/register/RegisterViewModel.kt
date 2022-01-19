@@ -3,11 +3,11 @@ package com.glints.lingoparents.ui.register
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
+import com.glints.lingoparents.data.model.response.LoginUserResponse
 import com.glints.lingoparents.data.model.response.RegisterUserResponse
-import com.glints.lingoparents.ui.REGISTER_USER_RESULT_OK
 import com.glints.lingoparents.utils.ErrorUtils
 import com.glints.lingoparents.utils.JWTUtils
-import com.google.android.gms.auth.api.credentials.IdToken
+import com.glints.lingoparents.utils.TokenPreferences
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -16,7 +16,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class RegisterViewModel(
-    private val googleIdToken: String? = null
+    private val tokenPreferences: TokenPreferences,
+    googleIdToken: String? = null,
 ) : ViewModel() {
     companion object {
         const val GOOGLE_ID_TOKEN_KEY = "idToken"
@@ -28,23 +29,17 @@ class RegisterViewModel(
 
     init {
         if (googleIdToken != null && googleIdToken.isNotEmpty()) {
-            println("Google Id Token: $googleIdToken")
             val data = JWTUtils.getDataFromGoogleIdToken(googleIdToken)
             data.apply {
                 googleFirstName = given_name
                 googleLastName = family_name
                 googleEmail = email
             }
-        }
-        else {
+        } else {
             googleFirstName = ""
             googleLastName = ""
             googleEmail = ""
         }
-
-        println("Google First Name: $googleFirstName")
-        println("Google Last Name: $googleLastName")
-        println("Google Email: $googleEmail")
     }
 
     private val registerEventChannel = Channel<RegisterEvent>()
@@ -59,11 +54,11 @@ class RegisterViewModel(
     ) = viewModelScope.launch {
         registerEventChannel.send(
             RegisterEvent.TryToRegisterUser(
-                firstName= firstName,
-                lastName= lastName,
-                email= email,
-                password= password,
-                phone= phone
+                firstName = firstName,
+                lastName = lastName,
+                email = email,
+                password = password,
+                phone = phone
             )
         )
     }
@@ -72,22 +67,55 @@ class RegisterViewModel(
         registerEventChannel.send(RegisterEvent.NavigateBackToLogin)
     }
 
-    fun onRegisterSuccessful() = viewModelScope.launch {
-        registerEventChannel.send(RegisterEvent.NavigateBackWithResult(REGISTER_USER_RESULT_OK))
-    }
-
     private fun onApiCallStarted() = viewModelScope.launch {
         registerEventChannel.send(RegisterEvent.Loading)
     }
 
-    private fun onApiCallSuccess() = viewModelScope.launch {
-        registerEventChannel.send(RegisterEvent.Success)
+    private fun onRegisterApiCallSuccess(email: String, password: String) = viewModelScope.launch {
+        registerEventChannel.send(RegisterEvent.RegisterSuccess(email, password))
     }
 
-    private fun onApiCallError(message: String) = viewModelScope.launch {
-        registerEventChannel.send(RegisterEvent.Error(message))
+    private fun onLoginApiCallSuccess() = viewModelScope.launch {
+        registerEventChannel.send(RegisterEvent.LoginSuccess)
     }
 
+    private fun onRegisterApiCallError(message: String) = viewModelScope.launch {
+        registerEventChannel.send(RegisterEvent.RegisterError(message))
+    }
+
+    private fun onLoginApiCallError(message: String) = viewModelScope.launch {
+        registerEventChannel.send(RegisterEvent.LoginError(message))
+    }
+
+    /**
+     * Method to save access token and refresh token in token preference, which is data store implementation
+     * @param accessToken Access Token that received from login api call
+     * @param refreshToken Refresh Token that received from login api call
+     */
+    private fun saveToken(accessToken: String, refreshToken: String) = viewModelScope.launch {
+        tokenPreferences.resetToken()
+        tokenPreferences.saveAccessToken(accessToken)
+        tokenPreferences.saveRefreshToken(refreshToken)
+    }
+
+    /**
+     * Method to save user id in token preference, which is data store implementation
+     * @param id The user id you want to save in token preference
+     */
+    private fun saveUserId(id: String) = viewModelScope.launch {
+        tokenPreferences.saveUserId(id)
+    }
+
+    /**
+     * Method to register user with email, password, name, and phone number.
+     * If register successful, it will auto call login api.
+     * Else, register fragment will display specific error message.
+     * @param email Email of the user
+     * @param password password for user account
+     * @param firstName first name of the user
+     * @param lastName last name of the user
+     * @param phone phone number of the user
+     */
     fun registerUser(
         email: String,
         password: String,
@@ -102,18 +130,57 @@ class RegisterViewModel(
             .enqueue(object : Callback<RegisterUserResponse> {
                 override fun onResponse(
                     call: Call<RegisterUserResponse>,
-                    response: Response<RegisterUserResponse>
+                    response: Response<RegisterUserResponse>,
                 ) {
                     if (response.isSuccessful) {
-                        onApiCallSuccess()
+                        onRegisterApiCallSuccess(email, password)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
-                        onApiCallError(apiError.message())
+                        onRegisterApiCallError(apiError.message())
                     }
                 }
 
                 override fun onFailure(call: Call<RegisterUserResponse>, t: Throwable) {
-                    onApiCallError("Network Failed...")
+                    onRegisterApiCallError("Network Failed...")
+                }
+            })
+    }
+
+    /**
+     * Method for auto login after user register success.
+     * @param email Email of the user
+     * @param password password for the email
+     */
+    fun loginAfterSuccessfulRegister(
+        email: String,
+        password: String,
+    ) = viewModelScope.launch {
+        onApiCallStarted()
+        APIClient
+            .service
+            .loginUser(email, password)
+            .enqueue(object : Callback<LoginUserResponse> {
+                override fun onResponse(
+                    call: Call<LoginUserResponse>,
+                    response: Response<LoginUserResponse>,
+                ) {
+                    if (response.isSuccessful) {
+                        val accessToken = response.body()?.data?.accessToken.toString()
+                        val refreshToken = response.body()?.data?.refreshToken.toString()
+
+                        val userId = JWTUtils.getIdFromAccessToken(accessToken)
+                        saveToken(accessToken, refreshToken)
+                        saveUserId(userId)
+
+                        onLoginApiCallSuccess()
+                    } else {
+                        val apiError = ErrorUtils.parseError(response)
+                        onLoginApiCallError(apiError.message())
+                    }
+                }
+
+                override fun onFailure(call: Call<LoginUserResponse>, t: Throwable) {
+                    onLoginApiCallError("Network Failed...")
                 }
             })
     }
@@ -127,10 +194,13 @@ class RegisterViewModel(
             val email: String,
             val password: String,
             val phone: String,
-            val role: String = "parent"
+            val role: String = "parent",
         ) : RegisterEvent()
+
         object Loading : RegisterEvent()
-        object Success : RegisterEvent()
-        data class Error(val message: String) : RegisterEvent()
+        data class RegisterSuccess(val email: String, val password: String) : RegisterEvent()
+        object LoginSuccess : RegisterEvent()
+        data class RegisterError(val message: String) : RegisterEvent()
+        data class LoginError(val message: String) : RegisterEvent()
     }
 }
