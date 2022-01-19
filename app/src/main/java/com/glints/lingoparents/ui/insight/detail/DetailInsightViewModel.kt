@@ -58,9 +58,9 @@ class DetailInsightViewModel(
             actionInsightChannel.send(InsightAction.SuccessCreateComment(result, uniqueAdapterId))
         }
 
-    private fun onApiCallSuccessGetCommentReplies(list: List<InsightCommentItem>, uniqueId: Double) =
+    private fun onApiCallSuccessGetCommentReplies(list: List<InsightCommentItem>, uniqueAdapterId: Double) =
         viewModelScope.launch {
-            actionInsightChannel.send(InsightAction.SuccessGetCommentReplies(list, uniqueId))
+            actionInsightChannel.send(InsightAction.SuccessGetCommentReplies(list, uniqueAdapterId))
         }
 
     private fun onApiCallSuccessDeleteComment(result: DeleteCommentResponse, item: InsightCommentItem) =
@@ -319,7 +319,7 @@ class DetailInsightViewModel(
     sealed class InsightAction {
         data class SuccessCreateComment(val result: CreateCommentResponse, val uniqueAdapterId: Double) : InsightAction()
         data class SuccessDeleteComment(val result: DeleteCommentResponse, val item: InsightCommentItem) : InsightAction()
-        data class SuccessGetCommentReplies(val list: List<InsightCommentItem>, val uniqueId: Double) :
+        data class SuccessGetCommentReplies(val list: List<InsightCommentItem>, val uniqueAdapterId: Double) :
             InsightAction()
 
         data class SuccessLikeDislike(val result: InsightLikeDislikeResponse) : InsightAction()

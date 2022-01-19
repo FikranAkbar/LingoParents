@@ -43,11 +43,14 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
 
-    private val randomGenerator = Random
-    private val commentAdapterMap: MutableMap<Double, CommentsAdapter> = mutableMapOf()
-
     companion object {
         val report_body = arrayOf("Spam", "Harassment", "Rules Violation", "Other")
+        val commentAdapterMap: MutableMap<Double, CommentsAdapter> = mutableMapOf()
+        val randomGenerator = Random
+    }
+
+    init {
+        commentAdapterMap.clear()
     }
 
     override fun onCreateView(
@@ -127,6 +130,13 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                         val newCommentItem = insight.result.message?.mapToInsightCommentItem(viewModel.parentProfile)!!
                         commentAdapterMap[insight.uniqueAdapterId]?.addNewCommentItem(newCommentItem)
 
+                        if (commentsAdapter.getUniqueAdapterId() == insight.uniqueAdapterId) {
+                            CoroutineScope(Dispatchers.Unconfined).launch {
+                                delay(200)
+                                binding.rvInsightComment.smoothScrollToPosition(0)
+                            }
+                        }
+
                         binding.apply {
                             tfInsightComment.editText?.setText("")
                         }
@@ -136,11 +146,11 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                         commentsAdapter.deleteCommentItem(insight.item)
                     }
                     is DetailInsightViewModel.InsightAction.SuccessGetCommentReplies -> {
-                        val uniqueId = randomGenerator.nextDouble()
-                        val newCommentsAdapter = CommentsAdapter(this@DetailInsightFragment, requireContext(), uniqueId)
-                        commentAdapterMap[uniqueId] = newCommentsAdapter
+                        val uniqueAdapterId = randomGenerator.nextDouble()
+                        val newCommentsAdapter = CommentsAdapter(this@DetailInsightFragment, requireContext(), uniqueAdapterId)
+                        commentAdapterMap[uniqueAdapterId] = newCommentsAdapter
                         newCommentsAdapter.submitList(insight.list)
-                        commentAdapterMap[insight.uniqueId]?.showCommentReplies(newCommentsAdapter)
+                        commentAdapterMap[insight.uniqueAdapterId]?.showCommentReplies(newCommentsAdapter)
                     }
                     is DetailInsightViewModel.InsightAction.SuccessLikeDislike -> {
                         showSuccessSnackbar(insight.result.message)
@@ -171,10 +181,12 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
             rvInsightComment.apply {
                 setHasFixedSize(false)
                 layoutManager = LinearLayoutManager(requireContext())
-                val uniqueId = randomGenerator.nextDouble()
-                commentsAdapter = CommentsAdapter(this@DetailInsightFragment, requireContext(), uniqueId)
-                commentAdapterMap[uniqueId] = commentsAdapter
+                val uniqueAdapterId = randomGenerator.nextDouble()
+                commentsAdapter = CommentsAdapter(this@DetailInsightFragment, requireContext(), uniqueAdapterId)
+                commentAdapterMap[uniqueAdapterId] = commentsAdapter
                 adapter = commentsAdapter
+
+                println("ADAPTER ID = $uniqueAdapterId (Level one)")
             }
 
             ivBackButton.setOnClickListener {

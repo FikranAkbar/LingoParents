@@ -57,7 +57,6 @@ class CommentsAdapter(
         @SuppressLint("SetTextI18n")
         fun bind(item: InsightCommentItem) {
             binding.apply {
-                println("Parent ID -> $parentId && User ID -> ${item.idUser}")
                 if (parentId == item.idUser)
                     hideTextView(true)
                 else hideTextView(false)
@@ -108,7 +107,13 @@ class CommentsAdapter(
 
                 rvCommentReply.apply {
                     setHasFixedSize(false)
-                    layoutManager = LinearLayoutManager(context)
+
+                    val linearLayoutManager = object : LinearLayoutManager(context) {
+                        override fun canScrollVertically(): Boolean {
+                            return false
+                        }
+                    }
+                    layoutManager = linearLayoutManager
 
                 }
 
@@ -190,6 +195,7 @@ class CommentsAdapter(
             builder.create().show()
         }
 
+        @SuppressLint("SetTextI18n")
         private fun setPostCommentListener(item: InsightCommentItem) {
             binding.apply {
                 btnReplyComment.setOnClickListener {
@@ -197,11 +203,24 @@ class CommentsAdapter(
                         tfReplyComment.requestFocus()
                         tfReplyComment.error = "Please enter your comment"
                     } else {
-                        listener.onReplyCommentClicked(
-                            item,
-                            tfReplyComment.editText?.text.toString(),
-                            uniqueAdapterId
-                        )
+                        if (rvCommentReply.adapter != null) {
+                            listener.onReplyCommentClicked(
+                                item,
+                                tfReplyComment.editText?.text.toString(),
+                                (rvCommentReply.adapter as CommentsAdapter).getUniqueAdapterId()
+                            )
+                        } else {
+                            val newCommentsAdapter = createNewAdapter()
+                            rvCommentReply.adapter = newCommentsAdapter
+                            rvCommentReply.visibility = View.VISIBLE
+                            listener.onReplyCommentClicked(
+                                item,
+                                tfReplyComment.editText?.text.toString(),
+                                newCommentsAdapter.getUniqueAdapterId()
+                            )
+                            setShowCommentRepliesListener(item)
+                        }
+
                         tfReplyComment.editText?.setText("")
                         tfReplyComment.isVisible = false
                         btnReplyComment.isVisible = false
@@ -230,19 +249,29 @@ class CommentsAdapter(
                 }
             }
         }
+
+        @SuppressLint("SetTextI18n")
+        private fun setShowCommentRepliesListener(item: InsightCommentItem) {
+            binding.apply {
+                val adapter = rvCommentReply.adapter as CommentsAdapter
+                tvShowReplyComment.setOnClickListener {
+                    if (rvCommentReply.visibility == View.GONE) {
+                        rvCommentReply.visibility = View.VISIBLE
+                        tvShowReplyComment.text = "Hide Replies"
+                        rvChild = rvCommentReply
+                        listener.onShowCommentRepliesClicked(item, uniqueAdapterId)
+                    } else if (rvCommentReply.visibility == View.VISIBLE) {
+                        rvCommentReply.visibility = View.GONE
+                        tvShowReplyComment.text = "Show ${adapter.itemCount} Replies"
+                    }
+                }
+            }
+        }
     }
 
     fun showCommentReplies(_adapter: CommentsAdapter) {
         rvChild.apply {
             visibility = View.VISIBLE
-            setHasFixedSize(false)
-
-            val linearLayoutManager = object : LinearLayoutManager(context) {
-                override fun canScrollVertically(): Boolean {
-                    return false
-                }
-            }
-            layoutManager = linearLayoutManager
             adapter = _adapter
         }
     }
@@ -270,7 +299,12 @@ class CommentsAdapter(
 
         fun onLikeCommentClicked(item: InsightCommentItem)
         fun onDislikeCommentClicked(item: InsightCommentItem)
-        fun onReplyCommentClicked(item: InsightCommentItem, comment: String, uniqueAdapterId: Double)
+        fun onReplyCommentClicked(
+            item: InsightCommentItem,
+            comment: String,
+            uniqueAdapterId: Double,
+        )
+
         fun onShowCommentRepliesClicked(item: InsightCommentItem, uniqueAdapterId: Double)
         fun onDeleteCommentClicked(item: InsightCommentItem, id: Int)
         fun onUpdateCommentClicked(item: InsightCommentItem, comment: String)
@@ -294,5 +328,13 @@ class CommentsAdapter(
             it.idComment != item.idComment
         }
         differ.submitList(newList)
+    }
+
+    private fun createNewAdapter(): CommentsAdapter {
+        val uniqueAdapterId = DetailInsightFragment.randomGenerator.nextDouble()
+        val newCommentsAdapter = CommentsAdapter(listener, context, uniqueAdapterId)
+        DetailInsightFragment.commentAdapterMap[uniqueAdapterId] = newCommentsAdapter
+
+        return newCommentsAdapter
     }
 }
