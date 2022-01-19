@@ -183,8 +183,10 @@
         <com.google.android.material.textfield.TextInputEditText
             style="@style/Typography.Caption"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
+            android:gravity="start|top"
             android:inputType="textMultiLine"
+            android:paddingVertical="10dp"
             android:textSize="11sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -195,8 +197,8 @@
         android:layout_height="40dp"
         android:text="@string/reply"
         android:textAllCaps="false"
-        android:visibility="gone"
         android:textSize="11sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@id/tf_reply_comment"
         app:layout_constraintTop_toBottomOf="@id/tf_reply_comment" />
 

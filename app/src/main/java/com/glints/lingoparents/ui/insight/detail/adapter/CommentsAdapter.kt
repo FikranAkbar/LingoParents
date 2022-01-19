@@ -80,28 +80,25 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
                 }
 
                 tvReplyComment.setOnClickListener {
-                    tfReplyComment.isVisible = !tfReplyComment.isVisible
-                    btnReplyComment.isVisible = !btnReplyComment.isVisible
-
-                    if (tfReplyComment.isVisible) {
-                        tfReplyComment.requestFocus()
-                        (context as Activity).openKeyboard()
-                        "Reply".also { btnReplyComment.text = it }
-
-                        btnReplyComment.setOnClickListener {
-                            if (TextUtils.isEmpty(tfReplyComment.editText?.text)) {
-                                tfReplyComment.requestFocus()
-                                tfReplyComment.error = "Please enter your comment"
-                            } else {
-                                listener.onReplyCommentClicked(
-                                    item,
-                                    tfReplyComment.editText?.text.toString()
-                                )
-                                tfReplyComment.editText?.setText("")
-                            }
-                        }
+                    if (btnReplyComment.text == "Update") {
+                        btnReplyComment.text = "Reply"
+                        tfReplyComment.editText?.setText("")
+                        setPostCommentListener(item)
                     } else {
-                        (context as Activity).hideKeyboard()
+                        tfReplyComment.isVisible = !tfReplyComment.isVisible
+                        btnReplyComment.isVisible = !btnReplyComment.isVisible
+
+                        if (tfReplyComment.isVisible) {
+                            tfReplyComment.requestFocus()
+                            (context as Activity).openKeyboard()
+                            "Reply".also { btnReplyComment.text = it }
+
+                            setPostCommentListener(item)
+                        } else {
+                            (context as Activity).hideKeyboard()
+                            btnReplyComment.text = ""
+                            tfReplyComment.editText?.setText("")
+                        }
                     }
                 }
 
@@ -130,28 +127,26 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
                 }
 
                 tvUpdateComment.setOnClickListener {
-                    tfReplyComment.isVisible = !tfReplyComment.isVisible
-                    btnReplyComment.isVisible = !btnReplyComment.isVisible
-
-                    if (tfReplyComment.isVisible) {
-                        tfReplyComment.requestFocus()
-                        (context as Activity).openKeyboard()
-                        "Update".also { btnReplyComment.text = it }
-
-                        btnReplyComment.setOnClickListener {
-                            if (TextUtils.isEmpty(tfReplyComment.editText?.text)) {
-                                tfReplyComment.requestFocus()
-                                tfReplyComment.error = "Please enter your comment"
-                            } else {
-                                listener.onUpdateCommentClicked(
-                                    item,
-                                    tfReplyComment.editText?.text.toString()
-                                )
-                                tfReplyComment.editText?.setText("")
-                            }
-                        }
+                    if (btnReplyComment.text == "Reply") {
+                        btnReplyComment.text = "Update"
+                        tfReplyComment.editText?.setText(item.comment)
+                        tfReplyComment.editText?.selectAll()
+                        setUpdateCommentListener(item)
                     } else {
-                        (context as Activity).hideKeyboard()
+                        tfReplyComment.isVisible = !tfReplyComment.isVisible
+                        btnReplyComment.isVisible = !btnReplyComment.isVisible
+
+                        if (tfReplyComment.isVisible) {
+                            tfReplyComment.requestFocus()
+                            (context as Activity).openKeyboard()
+                            "Update".also { btnReplyComment.text = it }
+
+                            setUpdateCommentListener(item)
+                        } else {
+                            (context as Activity).hideKeyboard()
+                            btnReplyComment.text = ""
+                            tfReplyComment.editText?.setText("")
+                        }
                     }
                 }
             }
@@ -189,6 +184,40 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
                 }
             }
             builder.create().show()
+        }
+
+        fun setPostCommentListener(item: InsightCommentItem) {
+            binding.apply {
+                btnReplyComment.setOnClickListener {
+                    if (TextUtils.isEmpty(tfReplyComment.editText?.text)) {
+                        tfReplyComment.requestFocus()
+                        tfReplyComment.error = "Please enter your comment"
+                    } else {
+                        listener.onReplyCommentClicked(
+                            item,
+                            tfReplyComment.editText?.text.toString()
+                        )
+                        tfReplyComment.editText?.setText("")
+                    }
+                }
+            }
+        }
+
+        fun setUpdateCommentListener(item: InsightCommentItem) {
+            binding.apply {
+                btnReplyComment.setOnClickListener {
+                    if (TextUtils.isEmpty(tfReplyComment.editText?.text)) {
+                        tfReplyComment.requestFocus()
+                        tfReplyComment.error = "Please enter your comment"
+                    } else {
+                        listener.onUpdateCommentClicked(
+                            item,
+                            tfReplyComment.editText?.text.toString()
+                        )
+                        tfReplyComment.editText?.setText("")
+                    }
+                }
+            }
         }
     }
 
