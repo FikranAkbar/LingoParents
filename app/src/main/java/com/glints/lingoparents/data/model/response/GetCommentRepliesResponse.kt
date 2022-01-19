@@ -86,7 +86,6 @@ class GetCommentRepliesResponse{
 fun GetCommentRepliesResponse.mapToInsightCommentItems(): List<InsightCommentItem>? {
     val sortedByCreatedDateDescending = this.message?.reversed()
     val result = sortedByCreatedDateDescending?.map {
-        println("Comment Date Created: ${it.createdAt}")
         return@map InsightCommentItem(
             idComment = it.id,
             idUser = it.id_user,
