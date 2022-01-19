@@ -50,7 +50,7 @@ class CommentsAdapter(
         }
     }
 
-    private val differ = AsyncListDiffer(this, diffUtilCallback)
+    val differ = AsyncListDiffer(this, diffUtilCallback)
 
     inner class AdapterHolder(private val binding: ItemInsightCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -91,6 +91,15 @@ class CommentsAdapter(
                         tfReplyComment.isVisible = !tfReplyComment.isVisible
                         btnReplyComment.isVisible = !btnReplyComment.isVisible
 
+                        if (tvShowReplyComment.text.toString().lowercase().contains("show") &&
+                            tfReplyComment.isVisible
+                        ) {
+                            rvCommentReply.visibility = View.VISIBLE
+                            tvShowReplyComment.text = "Hide Replies"
+                            rvChild = rvCommentReply
+                            listener.onShowCommentRepliesClicked(item, uniqueAdapterId)
+                        }
+
                         if (tfReplyComment.isVisible) {
                             tfReplyComment.requestFocus()
                             (context as Activity).openKeyboard()
@@ -117,8 +126,12 @@ class CommentsAdapter(
 
                 }
 
-                if (item.totalReply > 0) tvShowReplyComment.visibility = View.VISIBLE
-                tvShowReplyComment.text = "Show ${item.totalReply} Replies"
+                if (item.totalReply > 0) {
+                    tvShowReplyComment.visibility = View.VISIBLE
+                    tvShowReplyComment.text = "Show ${item.totalReply} Replies"
+                    val newCommentsAdapter = createNewAdapter()
+                    binding.rvCommentReply.adapter = newCommentsAdapter
+                }
                 tvShowReplyComment.setOnClickListener {
                     if (rvCommentReply.visibility == View.GONE) {
                         rvCommentReply.visibility = View.VISIBLE
@@ -127,7 +140,9 @@ class CommentsAdapter(
                         listener.onShowCommentRepliesClicked(item, uniqueAdapterId)
                     } else if (rvCommentReply.visibility == View.VISIBLE) {
                         rvCommentReply.visibility = View.GONE
-                        tvShowReplyComment.text = "Show ${item.totalReply} Replies"
+                        val childRvDiffer = (binding.rvCommentReply.adapter as CommentsAdapter).differ
+                        tvShowReplyComment.text = "Show ${childRvDiffer.currentList.size} Replies"
+                        println("Differ List Size: ${childRvDiffer.currentList.size}")
                     }
                 }
 
@@ -218,7 +233,6 @@ class CommentsAdapter(
                                 tfReplyComment.editText?.text.toString(),
                                 newCommentsAdapter.getUniqueAdapterId()
                             )
-                            setShowCommentRepliesListener(item)
                         }
 
                         tfReplyComment.editText?.setText("")
@@ -245,24 +259,6 @@ class CommentsAdapter(
                         tfReplyComment.isVisible = false
                         btnReplyComment.isVisible = false
                         (context as Activity).hideKeyboard()
-                    }
-                }
-            }
-        }
-
-        @SuppressLint("SetTextI18n")
-        private fun setShowCommentRepliesListener(item: InsightCommentItem) {
-            binding.apply {
-                val adapter = rvCommentReply.adapter as CommentsAdapter
-                tvShowReplyComment.setOnClickListener {
-                    if (rvCommentReply.visibility == View.GONE) {
-                        rvCommentReply.visibility = View.VISIBLE
-                        tvShowReplyComment.text = "Hide Replies"
-                        rvChild = rvCommentReply
-                        listener.onShowCommentRepliesClicked(item, uniqueAdapterId)
-                    } else if (rvCommentReply.visibility == View.VISIBLE) {
-                        rvCommentReply.visibility = View.GONE
-                        tvShowReplyComment.text = "Show ${adapter.itemCount} Replies"
                     }
                 }
             }

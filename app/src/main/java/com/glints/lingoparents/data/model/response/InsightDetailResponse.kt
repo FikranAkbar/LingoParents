@@ -135,7 +135,8 @@ class InsightDetailResponse{
 
 fun InsightDetailResponse.mapToInsightCommentItems(): List<InsightCommentItem>? {
     val result = this.message?.Master_comments?.map {
-        InsightCommentItem(
+        println("Comment Date Created: ${it.createdAt}")
+        return@map InsightCommentItem(
             idComment = it.id,
             idUser = it.id_user,
             photo = it.Master_user.Master_parent?.photo,
