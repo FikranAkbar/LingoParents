@@ -20,6 +20,9 @@ import com.glints.lingoparents.databinding.ItemInsightCommentBinding
 import com.glints.lingoparents.ui.dashboard.hideKeyboard
 import com.glints.lingoparents.ui.dashboard.openKeyboard
 import com.glints.lingoparents.ui.insight.detail.DetailInsightFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CommentsAdapter(
     private val listener: OnItemClickCallback,
@@ -132,22 +135,34 @@ class CommentsAdapter(
                     val newCommentsAdapter = createNewAdapter()
                     binding.rvCommentReply.adapter = newCommentsAdapter
                 }
+
                 tvShowReplyComment.setOnClickListener {
-                    if (rvCommentReply.visibility == View.GONE) {
-                        rvCommentReply.visibility = View.VISIBLE
+                    if (!rvCommentReply.isVisible) {
+                        rvCommentReply.isVisible = true
                         tvShowReplyComment.text = "Hide Replies"
                         rvChild = rvCommentReply
                         listener.onShowCommentRepliesClicked(item, uniqueAdapterId)
-                    } else if (rvCommentReply.visibility == View.VISIBLE) {
-                        rvCommentReply.visibility = View.GONE
-                        val childRvDiffer = (binding.rvCommentReply.adapter as CommentsAdapter).differ
-                        tvShowReplyComment.text = "Show ${childRvDiffer.currentList.size} Replies"
-                        println("Differ List Size: ${childRvDiffer.currentList.size}")
+                    } else {
+                        rvCommentReply.isVisible = false
+                        val childRvDiffer =
+                            (binding.rvCommentReply.adapter as CommentsAdapter).differ
+                        if (childRvDiffer.currentList.size > 0) {
+                            tvShowReplyComment.text =
+                                "Show ${childRvDiffer.currentList.size} Replies"
+                            tvShowReplyComment.isVisible = true
+                        } else {
+                            tvShowReplyComment.isVisible = false
+                        }
+
                     }
                 }
 
                 tvDeleteComment.setOnClickListener {
-                    listener.onDeleteCommentClicked(item, item.idComment, uniqueAdapterId)
+                    listener.onDeleteCommentClicked(item, item.idComment, uniqueAdapterId, binding)
+                    if (differ.currentList.size <= 0) {
+                        rvCommentReply.isVisible = false
+                        tvShowReplyComment.isVisible = false
+                    }
                 }
 
                 tvUpdateComment.setOnClickListener {
@@ -229,13 +244,17 @@ class CommentsAdapter(
                         } else {
                             val newCommentsAdapter = createNewAdapter()
                             rvCommentReply.adapter = newCommentsAdapter
-                            rvCommentReply.visibility = View.VISIBLE
+
                             listener.onReplyCommentClicked(
                                 item,
                                 tfReplyComment.editText?.text.toString(),
                                 newCommentsAdapter.getUniqueAdapterId()
                             )
                         }
+
+                        tvShowReplyComment.text = "Hide Replies"
+                        tvShowReplyComment.isVisible = true
+                        rvCommentReply.isVisible = true
 
                         tfReplyComment.editText?.setText("")
                         tfReplyComment.isVisible = false
@@ -304,7 +323,7 @@ class CommentsAdapter(
         )
 
         fun onShowCommentRepliesClicked(item: InsightCommentItem, uniqueAdapterId: Double)
-        fun onDeleteCommentClicked(item: InsightCommentItem, id: Int, uniqueAdapterId: Double)
+        fun onDeleteCommentClicked(item: InsightCommentItem, id: Int, uniqueAdapterId: Double, binding: ItemInsightCommentBinding)
         fun onUpdateCommentClicked(item: InsightCommentItem, comment: String)
     }
 

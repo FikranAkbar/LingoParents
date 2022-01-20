@@ -21,6 +21,7 @@ import com.glints.lingoparents.R
 import com.glints.lingoparents.data.model.InsightCommentItem
 import com.glints.lingoparents.data.model.response.mapToInsightCommentItem
 import com.glints.lingoparents.databinding.FragmentDetailInsightBinding
+import com.glints.lingoparents.databinding.ItemInsightCommentBinding
 import com.glints.lingoparents.ui.dashboard.hideKeyboard
 import com.glints.lingoparents.ui.dashboard.openKeyboard
 import com.glints.lingoparents.ui.insight.detail.adapter.CommentsAdapter
@@ -143,7 +144,11 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                     }
                     is DetailInsightViewModel.InsightAction.SuccessDeleteComment -> {
                         showSuccessSnackbar(insight.result.message)
-                        commentAdapterMap[insight.uniqueAdapterId]?.deleteCommentItem(insight.item)
+                        commentAdapterMap[insight.uniqueAdapterId]?.apply {
+                            deleteCommentItem(insight.item)
+                            println("PRINT Show Comment: ${insight.binding.tvShowReplyComment.text}")
+                            insight.binding.tvShowReplyComment.isVisible = false
+                        }
                     }
                     is DetailInsightViewModel.InsightAction.SuccessGetCommentReplies -> {
                         val uniqueAdapterId = randomGenerator.nextDouble()
@@ -357,8 +362,8 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
         viewModel.getCommentReplies(item.idComment, uniqueAdapterId)
     }
 
-    override fun onDeleteCommentClicked(item: InsightCommentItem, id: Int, uniqueAdapterId: Double) {
-        viewModel.deleteComment(item, id, uniqueAdapterId)
+    override fun onDeleteCommentClicked(item: InsightCommentItem, id: Int, uniqueAdapterId: Double, binding: ItemInsightCommentBinding) {
+        viewModel.deleteComment(item, id, uniqueAdapterId, binding)
     }
 
     override fun onUpdateCommentClicked(
