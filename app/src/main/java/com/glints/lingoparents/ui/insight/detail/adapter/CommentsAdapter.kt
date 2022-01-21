@@ -8,7 +8,6 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -99,7 +98,7 @@ class CommentsAdapter(
                             rvCommentReply.visibility = View.VISIBLE
                             tvShowReplyComment.text = "Hide Replies"
                             rvChild = rvCommentReply
-                            listener.onShowCommentRepliesClicked(item, uniqueAdapterId)
+                            listener.onShowCommentRepliesClicked(item, uniqueAdapterId, binding)
                         }
 
                         if (tfReplyComment.isVisible) {
@@ -132,19 +131,26 @@ class CommentsAdapter(
                     tvShowReplyComment.visibility = View.VISIBLE
                     tvShowReplyComment.text = "Show ${item.totalReply} Replies"
                     val newCommentsAdapter = createNewAdapter()
-                    binding.rvCommentReply.adapter = newCommentsAdapter
+                    rvCommentReply.adapter = newCommentsAdapter
+
+                    newCommentsAdapter.apply {
+                        this.differ.removeListListener(onRvChildDifferListChangedListener)
+                        this.differ.addListListener(onRvChildDifferListChangedListener)
+                    }
                 }
 
                 tvShowReplyComment.setOnClickListener {
                     if (!rvCommentReply.isVisible) {
                         rvCommentReply.isVisible = true
+
                         tvShowReplyComment.text = "Hide Replies"
                         rvChild = rvCommentReply
-                        listener.onShowCommentRepliesClicked(item, uniqueAdapterId)
+                        listener.onShowCommentRepliesClicked(item, uniqueAdapterId, binding)
                     } else {
                         rvCommentReply.isVisible = false
                         val childRvDiffer =
                             (binding.rvCommentReply.adapter as CommentsAdapter).differ
+
                         if (childRvDiffer.currentList.size > 0) {
                             tvShowReplyComment.text =
                                 "Show ${childRvDiffer.currentList.size} Replies"
@@ -152,13 +158,16 @@ class CommentsAdapter(
                         } else {
                             tvShowReplyComment.isVisible = false
                         }
-
                     }
                 }
 
                 tvDeleteComment.setOnClickListener {
-                    val tvShowReplyComment = binding.tvShowReplyComment
-                    listener.onDeleteCommentClicked(item, item.idComment, uniqueAdapterId, tvShowReplyComment)
+                    listener.onDeleteCommentClicked(
+                        item,
+                        item.idComment,
+                        uniqueAdapterId,
+                        tvShowReplyComment
+                    )
                 }
 
                 tvUpdateComment.setOnClickListener {
@@ -185,6 +194,10 @@ class CommentsAdapter(
                             tfReplyComment.editText?.setText("")
                         }
                     }
+                }
+
+                differ.addListListener { _, currentList ->
+                    // Show empty comment when currentList is empty
                 }
             }
         }
@@ -241,11 +254,16 @@ class CommentsAdapter(
                             val newCommentsAdapter = createNewAdapter()
                             rvCommentReply.adapter = newCommentsAdapter
 
-                            listener.onReplyCommentClicked(
-                                item,
-                                tfReplyComment.editText?.text.toString(),
-                                newCommentsAdapter.getUniqueAdapterId()
-                            )
+                            newCommentsAdapter.apply {
+                                listener.onReplyCommentClicked(
+                                    item,
+                                    tfReplyComment.editText?.text.toString(),
+                                    this.getUniqueAdapterId()
+                                )
+
+                                this.differ.removeListListener(onRvChildDifferListChangedListener)
+                                this.differ.addListListener(onRvChildDifferListChangedListener)
+                            }
                         }
 
                         tvShowReplyComment.text = "Hide Replies"
@@ -270,7 +288,8 @@ class CommentsAdapter(
                     } else {
                         listener.onUpdateCommentClicked(
                             item,
-                            tfReplyComment.editText?.text.toString()
+                            tfReplyComment.editText?.text.toString(),
+                            binding.tvCommentBody
                         )
                         tfReplyComment.editText?.setText("")
                         tfReplyComment.isVisible = false
@@ -280,6 +299,14 @@ class CommentsAdapter(
                 }
             }
         }
+
+        private val onRvChildDifferListChangedListener =
+            AsyncListDiffer.ListListener<InsightCommentItem> { _, currentList ->
+                if (currentList.size <= 0) {
+                    binding.rvCommentReply.isVisible = false
+                    binding.tvShowReplyComment.isVisible = false
+                }
+            }
     }
 
     fun showCommentReplies(_adapter: CommentsAdapter) {
@@ -310,15 +337,25 @@ class CommentsAdapter(
             report_comment: String,
         )
 
-        fun onLikeCommentClicked(item: InsightCommentItem, tvLikeCount: TextView, tvDislikeCount: TextView)
-        fun onDislikeCommentClicked(item: InsightCommentItem, tvDislikeCount: TextView, tvLikeCount: TextView)
+        fun onLikeCommentClicked(
+            item: InsightCommentItem,
+            tvLikeCount: TextView,
+            tvDislikeCount: TextView,
+        )
+
+        fun onDislikeCommentClicked(
+            item: InsightCommentItem,
+            tvDislikeCount: TextView,
+            tvLikeCount: TextView,
+        )
+
         fun onReplyCommentClicked(
             item: InsightCommentItem,
             comment: String,
             uniqueAdapterId: Double,
         )
 
-        fun onShowCommentRepliesClicked(item: InsightCommentItem, uniqueAdapterId: Double)
+        fun onShowCommentRepliesClicked(item: InsightCommentItem, uniqueAdapterId: Double, binding: ItemInsightCommentBinding)
         fun onDeleteCommentClicked(
             item: InsightCommentItem,
             id: Int,
@@ -326,7 +363,11 @@ class CommentsAdapter(
             tvShowReplyComment: TextView,
         )
 
-        fun onUpdateCommentClicked(item: InsightCommentItem, comment: String)
+        fun onUpdateCommentClicked(
+            item: InsightCommentItem,
+            comment: String,
+            tvCommentBody: TextView,
+        )
     }
 
     fun getUniqueAdapterId() = uniqueAdapterId
@@ -348,7 +389,6 @@ class CommentsAdapter(
         }
 
         if (newList.isNotEmpty()) {
-            println("TEST TEST OE")
             tvShowReplyComment.isVisible = false
         }
 

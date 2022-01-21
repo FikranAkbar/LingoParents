@@ -127,7 +127,7 @@
         android:textSize="11sp"
         android:textStyle="bold"
         android:visibility="gone"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="@id/tv_report_comment"
         app:layout_constraintTop_toBottomOf="@id/tv_report_comment"
         tools:ignore="UnusedAttribute" />

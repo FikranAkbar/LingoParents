@@ -72,9 +72,10 @@ class DetailInsightViewModel(
     private fun onApiCallSuccessGetCommentReplies(
         list: List<InsightCommentItem>,
         uniqueAdapterId: Double,
+        binding: ItemInsightCommentBinding
     ) =
         viewModelScope.launch {
-            actionInsightChannel.send(InsightAction.SuccessGetCommentReplies(list, uniqueAdapterId))
+            actionInsightChannel.send(InsightAction.SuccessGetCommentReplies(list, uniqueAdapterId, binding))
         }
 
     private fun onApiCallSuccessDeleteComment(
@@ -92,9 +93,9 @@ class DetailInsightViewModel(
             ))
         }
 
-    private fun onApiCallSuccessUpdateComment(result: UpdateCommentResponse) =
+    private fun onApiCallSuccessUpdateComment(result: UpdateCommentResponse, tvCommentBody: TextView, comment: String) =
         viewModelScope.launch {
-            actionInsightChannel.send(InsightAction.SuccessUpdateComment(result))
+            actionInsightChannel.send(InsightAction.SuccessUpdateComment(result, tvCommentBody, comment))
         }
 
     private fun onApiCallError(message: String) = viewModelScope.launch {
@@ -236,7 +237,7 @@ class DetailInsightViewModel(
                 })
         }
 
-    fun getCommentReplies(id: Int, uniqueId: Double) = viewModelScope.launch {
+    fun getCommentReplies(id: Int, uniqueId: Double, binding: ItemInsightCommentBinding) = viewModelScope.launch {
         APIClient
             .service
             .getCommentReplies(id)
@@ -247,7 +248,7 @@ class DetailInsightViewModel(
                 ) {
                     if (response.isSuccessful) {
                         val comments = response.body()?.mapToInsightCommentItems()
-                        onApiCallSuccessGetCommentReplies(comments!!, uniqueId)
+                        onApiCallSuccessGetCommentReplies(comments!!, uniqueId, binding)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallErrorAction(apiError.message())
@@ -291,7 +292,7 @@ class DetailInsightViewModel(
             })
     }
 
-    fun updateComment(id: Int, comment: String) = viewModelScope.launch {
+    fun updateComment(id: Int, comment: String, tvCommentBody: TextView) = viewModelScope.launch {
         APIClient
             .service
             .updateComment(id, comment)
@@ -301,7 +302,7 @@ class DetailInsightViewModel(
                     response: Response<UpdateCommentResponse>,
                 ) {
                     if (response.isSuccessful) {
-                        onApiCallSuccessUpdateComment(response.body()!!)
+                        onApiCallSuccessUpdateComment(response.body()!!, tvCommentBody, comment)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallErrorAction(apiError.message())
@@ -371,6 +372,7 @@ class DetailInsightViewModel(
         data class SuccessGetCommentReplies(
             val list: List<InsightCommentItem>,
             val uniqueAdapterId: Double,
+            val binding: ItemInsightCommentBinding
         ) :
             InsightAction()
 
@@ -380,7 +382,7 @@ class DetailInsightViewModel(
             val tvOtherCount: TextView,
         ) : InsightAction()
 
-        data class SuccessUpdateComment(val result: UpdateCommentResponse) : InsightAction()
+        data class SuccessUpdateComment(val result: UpdateCommentResponse, val tvCommentBody: TextView, val comment: String) : InsightAction()
         data class SuccessReport(val result: ReportResponse) : InsightAction()
         data class Error(val message: String) : InsightAction()
     }

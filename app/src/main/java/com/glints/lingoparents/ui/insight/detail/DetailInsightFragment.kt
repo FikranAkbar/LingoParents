@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.glints.lingoparents.R
@@ -155,6 +156,22 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                         commentAdapterMap[uniqueAdapterId] = newCommentsAdapter
                         newCommentsAdapter.submitList(insight.list)
                         commentAdapterMap[insight.uniqueAdapterId]?.showCommentReplies(newCommentsAdapter)
+
+                        val onRvChildDifferListListener =
+                            AsyncListDiffer.ListListener<InsightCommentItem> { _, currentList ->
+                                if (currentList.size <= 0) {
+                                    insight.binding.apply {
+                                        rvCommentReply.isVisible = false
+                                        tvShowReplyComment.isVisible = false
+                                    }
+                                }
+                            }
+
+                        newCommentsAdapter.differ.apply {
+                            removeListListener(onRvChildDifferListListener)
+                            addListListener(onRvChildDifferListListener)
+                        }
+
                     }
                     is DetailInsightViewModel.InsightAction.SuccessLikeDislike -> {
                         insight.result.message.let { message ->
@@ -180,6 +197,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                     }
                     is DetailInsightViewModel.InsightAction.SuccessUpdateComment -> {
                         showSuccessSnackbar(insight.result.message)
+                        insight.tvCommentBody.text = insight.comment
                     }
                     is DetailInsightViewModel.InsightAction.SuccessReport -> {
                         showSuccessSnackbar("Reported successfully")
@@ -384,8 +402,8 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
         )
     }
 
-    override fun onShowCommentRepliesClicked(item: InsightCommentItem, uniqueAdapterId: Double) {
-        viewModel.getCommentReplies(item.idComment, uniqueAdapterId)
+    override fun onShowCommentRepliesClicked(item: InsightCommentItem, uniqueAdapterId: Double, binding: ItemInsightCommentBinding) {
+        viewModel.getCommentReplies(item.idComment, uniqueAdapterId, binding)
     }
 
     override fun onDeleteCommentClicked(item: InsightCommentItem, id: Int, uniqueAdapterId: Double, tvShowReplyComment: TextView) {
@@ -395,7 +413,8 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
     override fun onUpdateCommentClicked(
         item: InsightCommentItem,
         comment: String,
+        tvCommentBody: TextView
     ) {
-        viewModel.updateComment(item.idComment, comment)
+        viewModel.updateComment(item.idComment, comment, tvCommentBody)
     }
 }
