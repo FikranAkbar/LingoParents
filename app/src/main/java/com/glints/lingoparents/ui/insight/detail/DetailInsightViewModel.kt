@@ -50,9 +50,9 @@ class DetailInsightViewModel(
         actionInsightChannel.send(InsightAction.SuccessReport(result))
     }
 
-    private fun onApiCallSuccessLikeDislike(result: InsightLikeDislikeResponse) =
+    private fun onApiCallSuccessLikeDislike(result: InsightLikeDislikeResponse, tvCount: TextView) =
         viewModelScope.launch {
-            actionInsightChannel.send(InsightAction.SuccessLikeDislike(result))
+            actionInsightChannel.send(InsightAction.SuccessLikeDislike(result, tvCount))
         }
 
     private fun onApiCallSuccessCreateComment(
@@ -163,7 +163,7 @@ class DetailInsightViewModel(
                     response: Response<InsightLikeDislikeResponse>,
                 ) {
                     if (response.isSuccessful) {
-                        onApiCallSuccessLikeDislike(response.body()!!)
+                        onApiCallSuccessLikeDislike(response.body()!!, tvLikeCount)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallErrorAction(apiError.message())
@@ -186,7 +186,7 @@ class DetailInsightViewModel(
                     response: Response<InsightLikeDislikeResponse>,
                 ) {
                     if (response.isSuccessful) {
-                        onApiCallSuccessLikeDislike(response.body()!!)
+                        onApiCallSuccessLikeDislike(response.body()!!, tvDislikeCount)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallErrorAction(apiError.message())
@@ -361,7 +361,7 @@ class DetailInsightViewModel(
         ) :
             InsightAction()
 
-        data class SuccessLikeDislike(val result: InsightLikeDislikeResponse) : InsightAction()
+        data class SuccessLikeDislike(val result: InsightLikeDislikeResponse, val tvCount: TextView) : InsightAction()
         data class SuccessUpdateComment(val result: UpdateCommentResponse) : InsightAction()
         data class SuccessReport(val result: ReportResponse) : InsightAction()
         data class Error(val message: String) : InsightAction()

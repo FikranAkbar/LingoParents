@@ -159,7 +159,20 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                         commentAdapterMap[insight.uniqueAdapterId]?.showCommentReplies(newCommentsAdapter)
                     }
                     is DetailInsightViewModel.InsightAction.SuccessLikeDislike -> {
-                        showSuccessSnackbar(insight.result.message)
+                        insight.result.message.let { message ->
+                            showSuccessSnackbar(message)
+                            insight.tvCount.apply {
+                                if (message.lowercase().contains("unlike") ||
+                                    message.lowercase().contains("undislike")) {
+                                    val count = text.toString().toInt() - 1
+                                    text = count.toString()
+                                } else if (message.lowercase().contains("like") ||
+                                    message.lowercase().contains("dislike")) {
+                                    val count = text.toString().toInt() + 1
+                                    text = count.toString()
+                                }
+                            }
+                        }
                     }
                     is DetailInsightViewModel.InsightAction.SuccessUpdateComment -> {
                         showSuccessSnackbar(insight.result.message)
