@@ -172,8 +172,7 @@ class CommentsAdapter(
                     listener.onDeleteCommentClicked(
                         item,
                         item.idComment,
-                        uniqueAdapterId,
-                        tvShowReplyComment
+                        uniqueAdapterId
                     )
                 }
 
@@ -201,10 +200,6 @@ class CommentsAdapter(
                             tfReplyComment.editText?.setText("")
                         }
                     }
-                }
-
-                differ.addListListener { _, currentList ->
-                    // Show empty comment when currentList is empty
                 }
             }
         }
@@ -366,8 +361,7 @@ class CommentsAdapter(
         fun onDeleteCommentClicked(
             item: InsightCommentItem,
             id: Int,
-            uniqueAdapterId: Double,
-            tvShowReplyComment: TextView,
+            uniqueAdapterId: Double
         )
 
         fun onUpdateCommentClicked(
@@ -390,13 +384,9 @@ class CommentsAdapter(
         differ.submitList(listOf(item) + currentList)
     }
 
-    fun deleteCommentItem(item: InsightCommentItem, tvShowReplyComment: TextView) {
+    fun deleteCommentItem(item: InsightCommentItem) {
         val newList = differ.currentList.filter {
             it.idComment != item.idComment
-        }
-
-        if (newList.isEmpty()) {
-            _tvShowReplyComment.isVisible = false
         }
 
         differ.submitList(newList)
