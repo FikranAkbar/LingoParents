@@ -28,7 +28,9 @@ class CommentsAdapter(
     private val uniqueAdapterId: Double,
 ) :
     RecyclerView.Adapter<CommentsAdapter.AdapterHolder>() {
-    private lateinit var rvChild: RecyclerView
+    private lateinit var _rvCommentReply: RecyclerView
+    private lateinit var _tvShowReplyComment: TextView
+    private lateinit var _tvCommentBody: TextView
 
     companion object {
         var parentId: Int = 0
@@ -97,7 +99,7 @@ class CommentsAdapter(
                         ) {
                             rvCommentReply.visibility = View.VISIBLE
                             tvShowReplyComment.text = "Hide Replies"
-                            rvChild = rvCommentReply
+                            _rvCommentReply = rvCommentReply
                             listener.onShowCommentRepliesClicked(item, uniqueAdapterId, binding)
                         }
 
@@ -115,6 +117,9 @@ class CommentsAdapter(
                     }
                 }
 
+                _tvShowReplyComment = tvShowReplyComment
+                _tvCommentBody = tvCommentBody
+
                 rvCommentReply.apply {
                     setHasFixedSize(false)
 
@@ -124,10 +129,10 @@ class CommentsAdapter(
                         }
                     }
                     layoutManager = linearLayoutManager
-
                 }
 
                 if ((rvCommentReply.adapter as CommentsAdapter?) == null) {
+                    _rvCommentReply = rvCommentReply
                     if (item.totalReply > 0) {
                         tvShowReplyComment.visibility = View.VISIBLE
                         tvShowReplyComment.text = "Show ${item.totalReply} Replies"
@@ -146,7 +151,7 @@ class CommentsAdapter(
                         rvCommentReply.isVisible = true
 
                         tvShowReplyComment.text = "Hide Replies"
-                        rvChild = rvCommentReply
+                        _rvCommentReply = rvCommentReply
                         listener.onShowCommentRepliesClicked(item, uniqueAdapterId, binding)
                     } else {
                         rvCommentReply.isVisible = false
@@ -312,7 +317,7 @@ class CommentsAdapter(
     }
 
     fun showCommentReplies(_adapter: CommentsAdapter) {
-        rvChild.apply {
+        _rvCommentReply.apply {
             visibility = View.VISIBLE
             adapter = _adapter
         }
@@ -390,8 +395,8 @@ class CommentsAdapter(
             it.idComment != item.idComment
         }
 
-        if (newList.isNotEmpty()) {
-            tvShowReplyComment.isVisible = false
+        if (newList.isEmpty()) {
+            _tvShowReplyComment.isVisible = false
         }
 
         differ.submitList(newList)
