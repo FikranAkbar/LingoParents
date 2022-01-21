@@ -161,15 +161,22 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                     is DetailInsightViewModel.InsightAction.SuccessLikeDislike -> {
                         insight.result.message.let { message ->
                             showSuccessSnackbar(message)
-                            insight.tvCount.apply {
-                                if (message.lowercase().contains("unlike") ||
-                                    message.lowercase().contains("undislike")) {
-                                    val count = text.toString().toInt() - 1
-                                    text = count.toString()
-                                } else if (message.lowercase().contains("like") ||
-                                    message.lowercase().contains("dislike")) {
-                                    val count = text.toString().toInt() + 1
-                                    text = count.toString()
+                            val tvCount = insight.tvCount
+                            val tvOtherCount = insight.tvOtherCount
+                            when {
+                                message.lowercase().contains("unlike") ||
+                                        message.lowercase().contains("undislike")-> {
+                                    val count = tvCount.text.toString().toInt() - 1
+                                    tvCount.text = count.toString()
+                                }
+                                message.lowercase().contains("like") ||
+                                        message.lowercase().contains("dislike") -> {
+                                    val count = tvCount.text.toString().toInt() + 1
+                                    tvCount.text = count.toString()
+                                    if (tvOtherCount.text.toString().toInt() > 0) {
+                                        val otherCount = tvOtherCount.text.toString().toInt() - 1
+                                        tvOtherCount.text = otherCount.toString()
+                                    }
                                 }
                             }
                         }
@@ -230,14 +237,16 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                 viewModel.sendLikeRequest(
                     viewModel.getCurrentInsightId(),
                     DetailInsightViewModel.INSIGHT_TYPE,
-                    tvInsightLike
+                    tvInsightLike,
+                    tvInsightDislike,
                 )
             }
             ivDislike.setOnClickListener {
                 viewModel.sendDislikeRequest(
                     viewModel.getCurrentInsightId(),
                     DetailInsightViewModel.INSIGHT_TYPE,
-                    tvInsightDislike
+                    tvInsightDislike,
+                    tvInsightLike,
                 )
             }
 
@@ -351,19 +360,21 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
         viewModel.reportInsight(id.toString(), DetailInsightViewModel.COMMENT_TYPE, report_comment)
     }
 
-    override fun onLikeCommentClicked(item: InsightCommentItem, tvLikeCount: TextView) {
+    override fun onLikeCommentClicked(item: InsightCommentItem, tvLikeCount: TextView, tvDislikeCount: TextView) {
         viewModel.sendLikeRequest(
             item.idComment,
             DetailInsightViewModel.COMMENT_TYPE,
-            tvLikeCount
+            tvLikeCount,
+            tvDislikeCount
         )
     }
 
-    override fun onDislikeCommentClicked(item: InsightCommentItem, tvDislikeCount: TextView) {
+    override fun onDislikeCommentClicked(item: InsightCommentItem, tvDislikeCount: TextView, tvLikeCount: TextView) {
         viewModel.sendDislikeRequest(
             item.idComment,
             DetailInsightViewModel.COMMENT_TYPE,
-            tvDislikeCount
+            tvDislikeCount,
+            tvLikeCount
         )
     }
 

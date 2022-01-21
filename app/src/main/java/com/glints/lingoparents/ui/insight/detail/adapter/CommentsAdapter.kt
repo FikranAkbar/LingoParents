@@ -8,6 +8,7 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -72,11 +73,11 @@ class CommentsAdapter(
                 tvDislikeCount.text = item.totalDislike.toString()
 
                 ivCommentLike.setOnClickListener {
-                    listener.onLikeCommentClicked(item, tvLikeCount)
+                    listener.onLikeCommentClicked(item, tvLikeCount, tvDislikeCount)
                 }
 
                 ivCommentDislike.setOnClickListener {
-                    listener.onDislikeCommentClicked(item, tvDislikeCount)
+                    listener.onDislikeCommentClicked(item, tvDislikeCount, tvLikeCount)
                 }
 
                 tvReportComment.setOnClickListener {
@@ -312,8 +313,8 @@ class CommentsAdapter(
             report_comment: String,
         )
 
-        fun onLikeCommentClicked(item: InsightCommentItem, tvLikeCount: TextView)
-        fun onDislikeCommentClicked(item: InsightCommentItem, tvDislikeCount: TextView)
+        fun onLikeCommentClicked(item: InsightCommentItem, tvLikeCount: TextView, tvDislikeCount: TextView)
+        fun onDislikeCommentClicked(item: InsightCommentItem, tvDislikeCount: TextView, tvLikeCount: TextView)
         fun onReplyCommentClicked(
             item: InsightCommentItem,
             comment: String,
