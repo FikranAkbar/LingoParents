@@ -62,7 +62,7 @@ class DetailInsightViewModel(
         }
 
     private fun onApiCallSuccessCreateComment(
-        result: CreateCommentResponse,
+        result: InsightCommentItem,
         uniqueAdapterId: Double,
     ) =
         viewModelScope.launch {
@@ -222,7 +222,8 @@ class DetailInsightViewModel(
                         response: Response<CreateCommentResponse>,
                     ) {
                         if (response.isSuccessful) {
-                            onApiCallSuccessCreateComment(response.body()!!, uniqueAdapterId)
+                            val result = response.body()!!.message!!.mapToInsightCommentItem(parentProfile)
+                            onApiCallSuccessCreateComment(result, uniqueAdapterId)
                         } else {
                             val apiError = ErrorUtils.parseError(response)
                             onApiCallErrorAction(apiError.message())
@@ -354,7 +355,7 @@ class DetailInsightViewModel(
 
     sealed class InsightAction {
         data class SuccessCreateComment(
-            val result: CreateCommentResponse,
+            val result: InsightCommentItem,
             val uniqueAdapterId: Double,
         ) : InsightAction()
 

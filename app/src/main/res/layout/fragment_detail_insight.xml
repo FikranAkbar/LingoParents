@@ -9,7 +9,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="19dp"
+        android:layout_margin="8dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="8dp">
 
@@ -26,7 +26,7 @@
             android:id="@+id/main_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="9dp">
+            android:paddingHorizontal="4dp">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView"
@@ -66,7 +66,7 @@
                 android:id="@+id/cv_detail_insight_cover"
                 android:layout_width="0dp"
                 android:layout_height="180dp"
-                android:layout_marginHorizontal="16dp"
+                android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="12dp"
                 app:cardCornerRadius="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -87,11 +87,10 @@
                 style="@style/Typography.Headline6"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/cv_detail_insight_cover"
+                app:layout_constraintStart_toStartOf="@id/cv_detail_insight_cover"
                 app:layout_constraintTop_toBottomOf="@+id/cv_detail_insight_cover" />
 
             <TextView
@@ -111,11 +110,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="16dp"
                 android:justificationMode="inter_word"
                 android:lineSpacingExtra="6sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/cv_detail_insight_cover"
+                app:layout_constraintStart_toStartOf="@id/cv_detail_insight_cover"
                 app:layout_constraintTop_toBottomOf="@id/tv_insight_date"
                 tools:ignore="UnusedAttribute"
                 tools:text="@string/long_paragraph_lorem" />
@@ -255,8 +253,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="20dp"
-                app:layout_constraintEnd_toEndOf="@id/tv_insight_body"
-                app:layout_constraintStart_toStartOf="@id/tv_insight_body"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btn_comment"
                 app:layout_constraintBottom_toBottomOf="parent"
                 tools:listitem="@layout/item_insight_comment" />

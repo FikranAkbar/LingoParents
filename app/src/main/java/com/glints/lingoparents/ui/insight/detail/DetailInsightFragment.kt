@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.glints.lingoparents.R
@@ -48,7 +49,10 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
 
     companion object {
         val report_body = arrayOf("Spam", "Harassment", "Rules Violation", "Other")
+
+        // Save all generated comment adapter and needs unique adapter id to access
         val commentAdapterMap: MutableMap<Double, CommentsAdapter> = mutableMapOf()
+        // Only build random generator once
         val randomGenerator = Random
     }
 
@@ -86,6 +90,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
             CommentsAdapter.parentId = parentId.toInt()
         }
 
+        // only needed for mapping CreateCommentResponse to InsightCommentItem
         viewModel.getParentProfile()
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
@@ -130,15 +135,16 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                     is DetailInsightViewModel.InsightAction.SuccessCreateComment -> {
                         showSuccessSnackbar("Add comment succesfully")
 
-                        val newCommentItem = insight.result.message?.mapToInsightCommentItem(viewModel.parentProfile)!!
-                        commentAdapterMap[insight.uniqueAdapterId]?.addNewCommentItem(newCommentItem)
+                        commentAdapterMap[insight.uniqueAdapterId]?.addNewCommentItem(insight.result)
 
+                        //region Scroll recycler view to comment position after few delay
                         if (commentsAdapter.getUniqueAdapterId() == insight.uniqueAdapterId) {
                             CoroutineScope(Dispatchers.Unconfined).launch {
                                 delay(200)
                                 binding.rvInsightComment.smoothScrollToPosition(0)
                             }
                         }
+                        //endregion
 
                         binding.apply {
                             tfInsightComment.editText?.setText("")
@@ -151,12 +157,15 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                         }
                     }
                     is DetailInsightViewModel.InsightAction.SuccessGetCommentReplies -> {
+                        //region Generate CommentsAdapter
                         val uniqueAdapterId = randomGenerator.nextDouble()
                         val newCommentsAdapter = CommentsAdapter(this@DetailInsightFragment, requireContext(), uniqueAdapterId)
                         commentAdapterMap[uniqueAdapterId] = newCommentsAdapter
                         newCommentsAdapter.submitList(insight.list)
                         commentAdapterMap[insight.uniqueAdapterId]?.showCommentReplies(newCommentsAdapter)
+                        //endregion
 
+                        //region set adapter's differ list listener
                         val onRvChildDifferListListener =
                             AsyncListDiffer.ListListener<InsightCommentItem> { _, currentList ->
                                 if (currentList.size <= 0) {
@@ -171,7 +180,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                             removeListListener(onRvChildDifferListListener)
                             addListListener(onRvChildDifferListListener)
                         }
-
+                        //endregion
                     }
                     is DetailInsightViewModel.InsightAction.SuccessLikeDislike -> {
                         insight.result.message.let { message ->
@@ -222,12 +231,12 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
             rvInsightComment.apply {
                 setHasFixedSize(false)
                 layoutManager = LinearLayoutManager(requireContext())
+                //region Generate CommentsAdapter
                 val uniqueAdapterId = randomGenerator.nextDouble()
                 commentsAdapter = CommentsAdapter(this@DetailInsightFragment, requireContext(), uniqueAdapterId)
                 commentAdapterMap[uniqueAdapterId] = commentsAdapter
                 adapter = commentsAdapter
-
-                println("ADAPTER ID = $uniqueAdapterId (Level one)")
+                //endregion
             }
 
             ivBackButton.setOnClickListener {
@@ -339,20 +348,6 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
         } else {
             Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(Color.GREEN)
-                .setTextColor(Color.WHITE)
-                .show()
-        }
-    }
-
-    private fun showErrorSnackbar(message: String) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(resources.getColor(R.color.error_color, null))
-                .setTextColor(Color.WHITE)
-                .show()
-        } else {
-            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(Color.RED)
                 .setTextColor(Color.WHITE)
                 .show()
         }

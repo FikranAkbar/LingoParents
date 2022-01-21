@@ -10,10 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.AsyncListDiffer
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import coil.load
 import com.glints.lingoparents.R
 import com.glints.lingoparents.data.model.InsightCommentItem
@@ -29,8 +26,6 @@ class CommentsAdapter(
 ) :
     RecyclerView.Adapter<CommentsAdapter.AdapterHolder>() {
     private lateinit var _rvCommentReply: RecyclerView
-    private lateinit var _tvShowReplyComment: TextView
-    private lateinit var _tvCommentBody: TextView
 
     companion object {
         var parentId: Int = 0
@@ -57,12 +52,21 @@ class CommentsAdapter(
 
     inner class AdapterHolder(private val binding: ItemInsightCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        private val onRvChildDifferListChangedListener =
+            AsyncListDiffer.ListListener<InsightCommentItem> { _, currentList ->
+                if (currentList.size <= 0) {
+                    binding.rvCommentReply.isVisible = false
+                    binding.tvShowReplyComment.isVisible = false
+                }
+            }
+
         @SuppressLint("SetTextI18n")
         fun bind(item: InsightCommentItem) {
             binding.apply {
+                //region Initialize views value
                 if (parentId == item.idUser)
-                    hideTextView(true)
-                else hideTextView(false)
+                    showDeleteAndUpdateTextView(true)
+                else showDeleteAndUpdateTextView(false)
 
                 item.photo?.let {
                     ivComment.load(it)
@@ -73,18 +77,53 @@ class CommentsAdapter(
                 tvLikeCount.text = item.totalLike.toString()
                 tvDislikeCount.text = item.totalDislike.toString()
 
+                rvCommentReply.apply {
+                    setHasFixedSize(false)
+
+                    val linearLayoutManager = object : LinearLayoutManager(context) {
+                        override fun canScrollVertically(): Boolean {
+                            return false
+                        }
+                    }
+
+                    layoutManager = linearLayoutManager
+
+                    if ((adapter as CommentsAdapter?) == null) {
+                        _rvCommentReply = this
+                        if (item.totalReply > 0) {
+                            tvShowReplyComment.visibility = View.VISIBLE
+                            tvShowReplyComment.text = "Show ${item.totalReply} Replies"
+                            val newCommentsAdapter = createNewAdapter()
+                            adapter = newCommentsAdapter
+
+                            newCommentsAdapter.apply {
+                                this.differ.removeListListener(onRvChildDifferListChangedListener)
+                                this.differ.addListListener(onRvChildDifferListChangedListener)
+                            }
+                        }
+                    }
+                }
+                //endregion
+
+                //region Set like button onClickListener
                 ivCommentLike.setOnClickListener {
                     listener.onLikeCommentClicked(item, tvLikeCount, tvDislikeCount)
                 }
+                //endregion
 
+                //region Set dislike button onClickListener
                 ivCommentDislike.setOnClickListener {
                     listener.onDislikeCommentClicked(item, tvDislikeCount, tvLikeCount)
                 }
+                //endregion
 
+                //region Set report button onClickListener
                 tvReportComment.setOnClickListener {
                     showReportDialog(context, item, item.idComment)
                 }
+                //endregion
 
+                //region Set reply button onClickListener
                 tvReplyComment.setOnClickListener {
                     if (btnReplyComment.text == "Update") {
                         btnReplyComment.text = "Reply"
@@ -116,36 +155,9 @@ class CommentsAdapter(
                         }
                     }
                 }
+                //endregion
 
-                _tvShowReplyComment = tvShowReplyComment
-                _tvCommentBody = tvCommentBody
-
-                rvCommentReply.apply {
-                    setHasFixedSize(false)
-
-                    val linearLayoutManager = object : LinearLayoutManager(context) {
-                        override fun canScrollVertically(): Boolean {
-                            return false
-                        }
-                    }
-                    layoutManager = linearLayoutManager
-                }
-
-                if ((rvCommentReply.adapter as CommentsAdapter?) == null) {
-                    _rvCommentReply = rvCommentReply
-                    if (item.totalReply > 0) {
-                        tvShowReplyComment.visibility = View.VISIBLE
-                        tvShowReplyComment.text = "Show ${item.totalReply} Replies"
-                        val newCommentsAdapter = createNewAdapter()
-                        rvCommentReply.adapter = newCommentsAdapter
-
-                        newCommentsAdapter.apply {
-                            this.differ.removeListListener(onRvChildDifferListChangedListener)
-                            this.differ.addListListener(onRvChildDifferListChangedListener)
-                        }
-                    }
-                }
-
+                //region Set show replies button onClickListener
                 tvShowReplyComment.setOnClickListener {
                     if (!rvCommentReply.isVisible) {
                         rvCommentReply.isVisible = true
@@ -167,7 +179,9 @@ class CommentsAdapter(
                         }
                     }
                 }
+                //endregion
 
+                //region Set delete button onClickListener
                 tvDeleteComment.setOnClickListener {
                     listener.onDeleteCommentClicked(
                         item,
@@ -175,7 +189,9 @@ class CommentsAdapter(
                         uniqueAdapterId
                     )
                 }
+                //endregion
 
+                //region Set update button onClickListener
                 tvUpdateComment.setOnClickListener {
                     if (btnReplyComment.text == "Reply") {
                         btnReplyComment.text = "Update"
@@ -201,21 +217,18 @@ class CommentsAdapter(
                         }
                     }
                 }
+                //endregion
             }
         }
 
-        private fun hideTextView(b: Boolean) {
+        private fun showDeleteAndUpdateTextView(b: Boolean) {
             binding.apply {
                 tvDeleteComment.isVisible = b
                 tvUpdateComment.isVisible = b
             }
         }
 
-        private fun showReportDialog(
-            context: Context,
-            item: InsightCommentItem,
-            id: Int,
-        ) {
+        private fun showReportDialog(context: Context, item: InsightCommentItem, id: Int) {
             val builder = AlertDialog.Builder(context)
             var text = ""
             builder.apply {
@@ -301,14 +314,6 @@ class CommentsAdapter(
                 }
             }
         }
-
-        private val onRvChildDifferListChangedListener =
-            AsyncListDiffer.ListListener<InsightCommentItem> { _, currentList ->
-                if (currentList.size <= 0) {
-                    binding.rvCommentReply.isVisible = false
-                    binding.tvShowReplyComment.isVisible = false
-                }
-            }
     }
 
     fun showCommentReplies(_adapter: CommentsAdapter) {
@@ -357,11 +362,16 @@ class CommentsAdapter(
             uniqueAdapterId: Double,
         )
 
-        fun onShowCommentRepliesClicked(item: InsightCommentItem, uniqueAdapterId: Double, binding: ItemInsightCommentBinding)
+        fun onShowCommentRepliesClicked(
+            item: InsightCommentItem,
+            uniqueAdapterId: Double,
+            binding: ItemInsightCommentBinding,
+        )
+
         fun onDeleteCommentClicked(
             item: InsightCommentItem,
             id: Int,
-            uniqueAdapterId: Double
+            uniqueAdapterId: Double,
         )
 
         fun onUpdateCommentClicked(

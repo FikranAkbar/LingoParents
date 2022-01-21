@@ -1,229 +1,236 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="18dp">
+    android:layout_marginVertical="12dp"
+    android:layout_marginHorizontal="6dp"
+    app:cardElevation="8dp"
+    app:cardCornerRadius="12dp">
 
-    <ImageView
-        android:id="@+id/iv_comment"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/ic_user_avatar_female"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
-
-    <TextView
-        android:id="@+id/tv_username_comment"
-        style="@style/Typography.Body1"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_toEndOf="@+id/iv_comment"
-        android:textColor="@color/grey_darker"
-        android:textIsSelectable="true"
-        app:layout_constraintStart_toEndOf="@id/iv_comment"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/olivia_putri_rosmala" />
+        android:padding="12dp">
 
-    <TextView
-        android:id="@+id/tv_comment_body"
-        style="@style/Typography.Caption"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_username_comment"
-        android:layout_marginVertical="4dp"
-        android:layout_toEndOf="@+id/iv_comment"
-        android:justificationMode="inter_word"
-        android:text="@string/a_special_child_needs_constant_attention_and_support_they_require_assistance_even_for_trivial_things_it_is_essential_for_parents_to_feel_overwhelmed_and_exhausted_at_times"
-        android:textIsSelectable="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/tv_username_comment"
-        app:layout_constraintTop_toBottomOf="@id/tv_username_comment"
-        tools:ignore="UnusedAttribute" />
+        <ImageView
+            android:id="@+id/iv_comment"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_user_avatar_female"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
 
-    <ImageView
-        android:id="@+id/iv_comment_like"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:foreground="?selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_insight_like"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_comment_body"
-        tools:ignore="ContentDescription,UnusedAttribute" />
+        <TextView
+            android:id="@+id/tv_username_comment"
+            style="@style/Typography.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_toEndOf="@+id/iv_comment"
+            android:textColor="@color/grey_darker"
+            android:textIsSelectable="true"
+            app:layout_constraintStart_toEndOf="@id/iv_comment"
+            app:layout_constraintTop_toTopOf="@id/iv_comment"
+            tools:text="@string/olivia_putri_rosmala" />
 
-    <TextView
-        android:id="@+id/tv_like_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:fontFamily="@font/poppins_w700"
-        android:foreground="?selectableItemBackgroundBorderless"
-        android:textSize="11sp"
-        app:layout_constraintBottom_toBottomOf="@id/iv_comment_like"
-        app:layout_constraintStart_toEndOf="@id/iv_comment_like"
-        app:layout_constraintTop_toTopOf="@id/iv_comment_like"
-        tools:ignore="UnusedAttribute"
-        tools:text="120" />
-
-    <ImageView
-        android:id="@+id/iv_comment_dislike"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:foreground="?selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_insight_dislike"
-        app:layout_constraintBottom_toBottomOf="@id/tv_like_count"
-        app:layout_constraintStart_toEndOf="@id/tv_like_count"
-        app:layout_constraintTop_toTopOf="@id/tv_like_count"
-        tools:ignore="ContentDescription,UnusedAttribute" />
-
-    <TextView
-        android:id="@+id/tv_dislike_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:fontFamily="@font/poppins_w700"
-        android:foreground="?selectableItemBackgroundBorderless"
-        android:textSize="11sp"
-        app:layout_constraintBottom_toBottomOf="@id/iv_comment_dislike"
-        app:layout_constraintStart_toEndOf="@id/iv_comment_dislike"
-        app:layout_constraintTop_toTopOf="@id/iv_comment_dislike"
-        tools:ignore="UnusedAttribute"
-        tools:text="120" />
-
-    <TextView
-        android:id="@+id/tv_update_comment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_comment_body"
-        android:layout_marginHorizontal="4dp"
-        android:layout_marginEnd="8dp"
-        android:layout_toStartOf="@id/tv_delete_comment"
-        android:foreground="?selectableItemBackgroundBorderless"
-        android:text="@string/update"
-        android:textColor="@color/grey_darker"
-        android:textSize="11sp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/tv_delete_comment"
-        app:layout_constraintEnd_toStartOf="@id/tv_delete_comment"
-        app:layout_constraintTop_toTopOf="@id/tv_delete_comment"
-        tools:ignore="UnusedAttribute" />
-
-    <TextView
-        android:id="@+id/tv_delete_comment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_comment_body"
-        android:layout_toStartOf="@id/tv_reply_comment"
-        android:foreground="?selectableItemBackgroundBorderless"
-        android:text="@string/delete"
-        android:textColor="@color/grey_darker"
-        android:textSize="11sp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="@id/tv_report_comment"
-        app:layout_constraintTop_toBottomOf="@id/tv_report_comment"
-        tools:ignore="UnusedAttribute" />
-
-    <TextView
-        android:id="@+id/tv_reply_comment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:foreground="?selectableItemBackgroundBorderless"
-        android:text="@string/reply"
-        android:textColor="@color/grey_darker"
-        android:textSize="11sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/iv_comment_like"
-        app:layout_constraintEnd_toStartOf="@id/tv_report_comment"
-        app:layout_constraintTop_toTopOf="@id/iv_comment_like"
-        tools:ignore="UnusedAttribute" />
-
-    <TextView
-        android:id="@+id/tv_report_comment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:foreground="?selectableItemBackgroundBorderless"
-        android:text="@string/report"
-        android:textColor="@color/grey_darker"
-        android:textSize="11sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/iv_comment_like"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/iv_comment_like"
-        tools:ignore="UnusedAttribute" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tf_reply_comment"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
-        android:layout_marginTop="8dp"
-        android:visibility="gone"
-        app:boxCornerRadiusBottomEnd="10dp"
-        app:boxCornerRadiusBottomStart="10dp"
-        app:boxCornerRadiusTopEnd="10dp"
-        app:boxCornerRadiusTopStart="10dp"
-        app:boxStrokeColor="@color/dark_silver"
-        app:hintEnabled="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_update_comment">
-
-        <com.google.android.material.textfield.TextInputEditText
+        <TextView
+            android:id="@+id/tv_comment_body"
             style="@style/Typography.Caption"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:gravity="start|top"
-            android:inputType="textMultiLine"
-            android:paddingVertical="10dp"
-            android:textSize="11sp" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_username_comment"
+            android:layout_marginVertical="4dp"
+            android:layout_toEndOf="@+id/iv_comment"
+            android:justificationMode="inter_word"
+            android:text="@string/a_special_child_needs_constant_attention_and_support_they_require_assistance_even_for_trivial_things_it_is_essential_for_parents_to_feel_overwhelmed_and_exhausted_at_times"
+            android:textIsSelectable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tv_username_comment"
+            app:layout_constraintTop_toBottomOf="@id/tv_username_comment"
+            tools:ignore="UnusedAttribute" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_reply_comment"
-        style="@style/Typography.Button"
-        android:layout_width="82dp"
-        android:layout_height="40dp"
-        android:text="@string/reply"
-        android:textAllCaps="false"
-        android:textSize="11sp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@id/tf_reply_comment"
-        app:layout_constraintTop_toBottomOf="@id/tf_reply_comment" />
+        <ImageView
+            android:id="@+id/iv_comment_like"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="8dp"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_insight_like"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_comment_body"
+            tools:ignore="ContentDescription,UnusedAttribute" />
 
-    <TextView
-        android:id="@+id/tv_show_reply_comment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/rv_comment_reply"
-        android:layout_marginTop="8dp"
-        android:foreground="?selectableItemBackgroundBorderless"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="@id/iv_comment_like"
-        app:layout_constraintTop_toBottomOf="@id/rv_comment_reply"
-        tools:ignore="UnusedAttribute"
-        tools:text="@string/show_replies" />
+        <TextView
+            android:id="@+id/tv_like_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/poppins_w700"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_comment_like"
+            app:layout_constraintStart_toEndOf="@id/iv_comment_like"
+            app:layout_constraintTop_toTopOf="@id/iv_comment_like"
+            tools:ignore="UnusedAttribute"
+            tools:text="120" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_comment_reply"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_reply_comment"
-        tools:listitem="@layout/item_insight_comment" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/iv_comment_dislike"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="8dp"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_insight_dislike"
+            app:layout_constraintBottom_toBottomOf="@id/tv_like_count"
+            app:layout_constraintStart_toEndOf="@id/tv_like_count"
+            app:layout_constraintTop_toTopOf="@id/tv_like_count"
+            tools:ignore="ContentDescription,UnusedAttribute" />
+
+        <TextView
+            android:id="@+id/tv_dislike_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/poppins_w700"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_comment_dislike"
+            app:layout_constraintStart_toEndOf="@id/iv_comment_dislike"
+            app:layout_constraintTop_toTopOf="@id/iv_comment_dislike"
+            tools:ignore="UnusedAttribute"
+            tools:text="120" />
+
+        <TextView
+            android:id="@+id/tv_update_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_comment_body"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@id/tv_delete_comment"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:text="@string/update"
+            android:textColor="@color/grey_darker"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/tv_delete_comment"
+            app:layout_constraintEnd_toStartOf="@id/tv_delete_comment"
+            app:layout_constraintTop_toTopOf="@id/tv_delete_comment"
+            tools:ignore="UnusedAttribute" />
+
+        <TextView
+            android:id="@+id/tv_delete_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_comment_body"
+            android:layout_marginTop="12dp"
+            android:layout_toStartOf="@id/tv_reply_comment"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:text="@string/delete"
+            android:textColor="@color/grey_darker"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/tv_report_comment"
+            app:layout_constraintTop_toBottomOf="@id/tv_report_comment"
+            tools:ignore="UnusedAttribute" />
+
+        <TextView
+            android:id="@+id/tv_reply_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:text="@string/reply"
+            android:textColor="@color/grey_darker"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/iv_comment_like"
+            app:layout_constraintEnd_toStartOf="@id/tv_report_comment"
+            app:layout_constraintTop_toTopOf="@id/iv_comment_like"
+            tools:ignore="UnusedAttribute" />
+
+        <TextView
+            android:id="@+id/tv_report_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:text="@string/report"
+            android:textColor="@color/grey_darker"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/iv_comment_like"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_comment_like"
+            tools:ignore="UnusedAttribute" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tf_reply_comment"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+            app:boxStrokeColor="@color/dark_silver"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_update_comment">
+
+            <com.google.android.material.textfield.TextInputEditText
+                style="@style/Typography.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:gravity="start|top"
+                android:inputType="textMultiLine"
+                android:paddingVertical="10dp"
+                android:textSize="11sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_reply_comment"
+            style="@style/Typography.Button"
+            android:layout_width="82dp"
+            android:layout_height="40dp"
+            android:text="@string/reply"
+            android:textAllCaps="false"
+            android:textSize="11sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/tf_reply_comment"
+            app:layout_constraintTop_toBottomOf="@id/tf_reply_comment" />
+
+        <TextView
+            android:id="@+id/tv_show_reply_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rv_comment_reply"
+            android:layout_marginTop="8dp"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@id/iv_comment_like"
+            app:layout_constraintTop_toBottomOf="@id/rv_comment_reply"
+            tools:ignore="UnusedAttribute"
+            tools:text="@string/show_replies" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_comment_reply"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_reply_comment"
+            tools:listitem="@layout/item_insight_comment" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
