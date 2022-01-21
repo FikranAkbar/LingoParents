@@ -127,15 +127,17 @@ class CommentsAdapter(
 
                 }
 
-                if (item.totalReply > 0) {
-                    tvShowReplyComment.visibility = View.VISIBLE
-                    tvShowReplyComment.text = "Show ${item.totalReply} Replies"
-                    val newCommentsAdapter = createNewAdapter()
-                    rvCommentReply.adapter = newCommentsAdapter
+                if ((rvCommentReply.adapter as CommentsAdapter?) == null) {
+                    if (item.totalReply > 0) {
+                        tvShowReplyComment.visibility = View.VISIBLE
+                        tvShowReplyComment.text = "Show ${item.totalReply} Replies"
+                        val newCommentsAdapter = createNewAdapter()
+                        rvCommentReply.adapter = newCommentsAdapter
 
-                    newCommentsAdapter.apply {
-                        this.differ.removeListListener(onRvChildDifferListChangedListener)
-                        this.differ.addListListener(onRvChildDifferListChangedListener)
+                        newCommentsAdapter.apply {
+                            this.differ.removeListListener(onRvChildDifferListChangedListener)
+                            this.differ.addListListener(onRvChildDifferListChangedListener)
+                        }
                     }
                 }
 
