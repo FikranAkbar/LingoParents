@@ -6,6 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".ui.progress.learning.ProgressLearningFragment">
 
+    <View
+        android:id="@+id/v_loading_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent_black"
+        android:elevation="10dp"
+        android:visibility="gone" />
+
+    <com.tuyenmonkey.mkloader.MKLoader
+        android:id="@+id/v_loading_progress"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:elevation="10dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:mk_color="@color/primary_orange"
+        app:mk_type="FishSpinner" />
+
     <ImageView
         android:id="@+id/iv_children_relation_removed"
         android:layout_width="150dp"

@@ -8,10 +8,10 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvCharacter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="12dp"
+        android:layout_width="310dp"
+        android:layout_height="450dp"
         app:cardBackgroundColor="@color/transparent"
+        app:cardCornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -26,11 +26,12 @@
                 android:id="@+id/ivCharacter"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:scaleType="centerCrop"
                 android:src="@drawable/captain"
+                android:tint="@color/transparent_black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="0dp"
-                tools:ignore="ContentDescription" />
+                tools:ignore="ContentDescription,UseAppTint" />
 
             <TextView
                 android:id="@+id/tvName"
@@ -67,7 +68,7 @@
                 android:text="@string/lorem_ipsum_dolor_sit_amet_consectetur_adipiscing_elit_aenean_rhoncus_quam_eu_malesuada_consectetur_morbi_auctor_tellus_gravida_nibh_luctus_eget_scelerisque_ipsum"
                 android:textColor="@color/white"
                 android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@id/ivCharacter"
+                app:layout_constraintBottom_toTopOf="@id/ivLogoLingoParents"
                 app:layout_constraintEnd_toEndOf="@id/ivCharacter"
                 app:layout_constraintStart_toStartOf="@id/ivCharacter" />
 
@@ -75,15 +76,15 @@
                 android:id="@+id/tvPersonalityTraits"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
                 android:layout_marginVertical="16dp"
                 android:fontFamily="@font/poppins_w700"
                 android:text="@string/personality_traits_honest_and_straight_forward"
                 android:textColor="@color/white"
                 android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginHorizontal="16dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/tvDesc"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/ivCharacter" />
 
 
@@ -91,15 +92,26 @@
                 android:id="@+id/tvSuperheroName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="16dp"
                 android:fontFamily="@font/poppins_w700"
                 android:text="@string/captain_america"
                 android:textColor="@color/white"
                 android:textSize="25sp"
-                android:layout_margin="16dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/tvPersonalityTraits"
                 app:layout_constraintEnd_toEndOf="@+id/ivCharacter"
                 app:layout_constraintStart_toStartOf="@id/ivCharacter" />
+
+            <ImageView
+                android:id="@+id/ivLogoLingoParents"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="16dp"
+                android:src="@drawable/ic_logo_lingo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="ContentDescription" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

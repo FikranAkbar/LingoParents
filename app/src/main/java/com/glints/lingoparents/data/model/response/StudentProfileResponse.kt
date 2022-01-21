@@ -12,7 +12,7 @@ data class StudentProfileResponse(
         val sublevel_name: Any? = null,
         val logo: String? = null,
         val photo: String? = null,
-        val idCharacter: Int? = null,
+        val id_character: Int? = null,
         val id: Int? = null,
         val fullname: String? = null,
         val email: String? = null

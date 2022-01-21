@@ -194,6 +194,11 @@ interface APIService {
         @Path("courseId") courseId: Int
     ): Call<CourseDetailByStudentIdResponse>
 
+    @GET("api/v1/students/characters/{characterId}")
+    fun getStudentCharacter(
+        @Path("characterId") characterId: Int
+    ): Call<StudentCharacterResponse>
+
     @GET("api/v1/students/{studentId}/session-detail/{sessionId}")
     fun getSessionDetailBySessionId(
         @Path("studentId") studentId: Int,
