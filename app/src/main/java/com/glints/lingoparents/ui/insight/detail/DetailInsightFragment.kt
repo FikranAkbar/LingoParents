@@ -146,9 +146,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                     is DetailInsightViewModel.InsightAction.SuccessDeleteComment -> {
                         showSuccessSnackbar(insight.result.message)
                         commentAdapterMap[insight.uniqueAdapterId]?.apply {
-                            deleteCommentItem(insight.item)
-                            println("PRINT Show Comment: ${insight.binding.tvShowReplyComment.text}")
-                            insight.binding.tvShowReplyComment.isVisible = false
+                            deleteCommentItem(insight.item, insight.tvShowReplyComment)
                         }
                     }
                     is DetailInsightViewModel.InsightAction.SuccessGetCommentReplies -> {
@@ -160,7 +158,6 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                     }
                     is DetailInsightViewModel.InsightAction.SuccessLikeDislike -> {
                         insight.result.message.let { message ->
-                            showSuccessSnackbar(message)
                             val tvCount = insight.tvCount
                             val tvOtherCount = insight.tvOtherCount
                             when {
@@ -391,8 +388,8 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
         viewModel.getCommentReplies(item.idComment, uniqueAdapterId)
     }
 
-    override fun onDeleteCommentClicked(item: InsightCommentItem, id: Int, uniqueAdapterId: Double, binding: ItemInsightCommentBinding) {
-        viewModel.deleteComment(item, id, uniqueAdapterId, binding)
+    override fun onDeleteCommentClicked(item: InsightCommentItem, id: Int, uniqueAdapterId: Double, tvShowReplyComment: TextView) {
+        viewModel.deleteComment(item, id, uniqueAdapterId, tvShowReplyComment)
     }
 
     override fun onUpdateCommentClicked(

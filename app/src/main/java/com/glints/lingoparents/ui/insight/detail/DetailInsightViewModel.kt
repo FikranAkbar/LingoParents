@@ -81,14 +81,14 @@ class DetailInsightViewModel(
         result: DeleteCommentResponse,
         item: InsightCommentItem,
         uniqueAdapterId: Double,
-        binding: ItemInsightCommentBinding,
+        tvShowReplyComment: TextView,
     ) =
         viewModelScope.launch {
             actionInsightChannel.send(InsightAction.SuccessDeleteComment(
                 result,
                 item,
                 uniqueAdapterId,
-                binding,
+                tvShowReplyComment,
             ))
         }
 
@@ -264,7 +264,7 @@ class DetailInsightViewModel(
         item: InsightCommentItem,
         id: Int,
         uniqueAdapterId: Double,
-        binding: ItemInsightCommentBinding,
+        tvShowReplyComment: TextView,
     ) = viewModelScope.launch {
         APIClient
             .service
@@ -278,7 +278,7 @@ class DetailInsightViewModel(
                         onApiCallSuccessDeleteComment(response.body()!!,
                             item,
                             uniqueAdapterId,
-                            binding)
+                            tvShowReplyComment)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallErrorAction(apiError.message())
@@ -365,7 +365,7 @@ class DetailInsightViewModel(
             val result: DeleteCommentResponse,
             val item: InsightCommentItem,
             val uniqueAdapterId: Double,
-            val binding: ItemInsightCommentBinding,
+            val tvShowReplyComment: TextView,
         ) : InsightAction()
 
         data class SuccessGetCommentReplies(

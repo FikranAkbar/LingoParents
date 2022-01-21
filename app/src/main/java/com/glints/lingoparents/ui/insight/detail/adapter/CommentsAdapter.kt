@@ -157,11 +157,8 @@ class CommentsAdapter(
                 }
 
                 tvDeleteComment.setOnClickListener {
-                    listener.onDeleteCommentClicked(item, item.idComment, uniqueAdapterId, binding)
-                    if (differ.currentList.size <= 0) {
-                        rvCommentReply.isVisible = false
-                        tvShowReplyComment.isVisible = false
-                    }
+                    val tvShowReplyComment = binding.tvShowReplyComment
+                    listener.onDeleteCommentClicked(item, item.idComment, uniqueAdapterId, tvShowReplyComment)
                 }
 
                 tvUpdateComment.setOnClickListener {
@@ -326,7 +323,7 @@ class CommentsAdapter(
             item: InsightCommentItem,
             id: Int,
             uniqueAdapterId: Double,
-            binding: ItemInsightCommentBinding,
+            tvShowReplyComment: TextView,
         )
 
         fun onUpdateCommentClicked(item: InsightCommentItem, comment: String)
@@ -345,10 +342,16 @@ class CommentsAdapter(
         differ.submitList(listOf(item) + currentList)
     }
 
-    fun deleteCommentItem(item: InsightCommentItem) {
+    fun deleteCommentItem(item: InsightCommentItem, tvShowReplyComment: TextView) {
         val newList = differ.currentList.filter {
             it.idComment != item.idComment
         }
+
+        if (newList.isNotEmpty()) {
+            println("TEST TEST OE")
+            tvShowReplyComment.isVisible = false
+        }
+
         differ.submitList(newList)
     }
 
