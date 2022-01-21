@@ -8,6 +8,7 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -20,9 +21,6 @@ import com.glints.lingoparents.databinding.ItemInsightCommentBinding
 import com.glints.lingoparents.ui.dashboard.hideKeyboard
 import com.glints.lingoparents.ui.dashboard.openKeyboard
 import com.glints.lingoparents.ui.insight.detail.DetailInsightFragment
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class CommentsAdapter(
     private val listener: OnItemClickCallback,
@@ -70,15 +68,15 @@ class CommentsAdapter(
 
                 tvUsernameComment.text = item.name
                 tvCommentBody.text = item.comment
-                tvCommentLike.text = item.totalLike.toString()
-                tvCommentDislike.text = item.totalDislike.toString()
+                tvLikeCount.text = item.totalLike.toString()
+                tvDislikeCount.text = item.totalDislike.toString()
 
                 ivCommentLike.setOnClickListener {
-                    listener.onLikeCommentClicked(item)
+                    listener.onLikeCommentClicked(item, tvLikeCount)
                 }
 
                 ivCommentDislike.setOnClickListener {
-                    listener.onDislikeCommentClicked(item)
+                    listener.onDislikeCommentClicked(item, tvDislikeCount)
                 }
 
                 tvReportComment.setOnClickListener {
@@ -314,8 +312,8 @@ class CommentsAdapter(
             report_comment: String,
         )
 
-        fun onLikeCommentClicked(item: InsightCommentItem)
-        fun onDislikeCommentClicked(item: InsightCommentItem)
+        fun onLikeCommentClicked(item: InsightCommentItem, tvLikeCount: TextView)
+        fun onDislikeCommentClicked(item: InsightCommentItem, tvDislikeCount: TextView)
         fun onReplyCommentClicked(
             item: InsightCommentItem,
             comment: String,
@@ -323,7 +321,13 @@ class CommentsAdapter(
         )
 
         fun onShowCommentRepliesClicked(item: InsightCommentItem, uniqueAdapterId: Double)
-        fun onDeleteCommentClicked(item: InsightCommentItem, id: Int, uniqueAdapterId: Double, binding: ItemInsightCommentBinding)
+        fun onDeleteCommentClicked(
+            item: InsightCommentItem,
+            id: Int,
+            uniqueAdapterId: Double,
+            binding: ItemInsightCommentBinding,
+        )
+
         fun onUpdateCommentClicked(item: InsightCommentItem, comment: String)
     }
 

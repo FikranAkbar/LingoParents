@@ -9,6 +9,7 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -215,13 +216,15 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
             ivLike.setOnClickListener {
                 viewModel.sendLikeRequest(
                     viewModel.getCurrentInsightId(),
-                    DetailInsightViewModel.INSIGHT_TYPE
+                    DetailInsightViewModel.INSIGHT_TYPE,
+                    tvInsightLike
                 )
             }
             ivDislike.setOnClickListener {
                 viewModel.sendDislikeRequest(
                     viewModel.getCurrentInsightId(),
-                    DetailInsightViewModel.INSIGHT_TYPE
+                    DetailInsightViewModel.INSIGHT_TYPE,
+                    tvInsightDislike
                 )
             }
 
@@ -335,17 +338,19 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
         viewModel.reportInsight(id.toString(), DetailInsightViewModel.COMMENT_TYPE, report_comment)
     }
 
-    override fun onLikeCommentClicked(item: InsightCommentItem) {
+    override fun onLikeCommentClicked(item: InsightCommentItem, tvLikeCount: TextView) {
         viewModel.sendLikeRequest(
             item.idComment,
-            DetailInsightViewModel.COMMENT_TYPE
+            DetailInsightViewModel.COMMENT_TYPE,
+            tvLikeCount
         )
     }
 
-    override fun onDislikeCommentClicked(item: InsightCommentItem) {
+    override fun onDislikeCommentClicked(item: InsightCommentItem, tvDislikeCount: TextView) {
         viewModel.sendDislikeRequest(
             item.idComment,
-            DetailInsightViewModel.COMMENT_TYPE
+            DetailInsightViewModel.COMMENT_TYPE,
+            tvDislikeCount
         )
     }
 

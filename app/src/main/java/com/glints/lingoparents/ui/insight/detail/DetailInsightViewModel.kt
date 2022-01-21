@@ -1,5 +1,6 @@
 package com.glints.lingoparents.ui.insight.detail
 
+import android.widget.TextView
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
@@ -152,7 +153,7 @@ class DetailInsightViewModel(
             })
     }
 
-    fun sendLikeRequest(id: Int, type: String) = viewModelScope.launch {
+    fun sendLikeRequest(id: Int, type: String, tvLikeCount: TextView) = viewModelScope.launch {
         APIClient
             .service
             .likeInsightDetail(id, type)
@@ -175,7 +176,7 @@ class DetailInsightViewModel(
             })
     }
 
-    fun sendDislikeRequest(id: Int, type: String) = viewModelScope.launch {
+    fun sendDislikeRequest(id: Int, type: String, tvDislikeCount: TextView) = viewModelScope.launch {
         APIClient
             .service
             .dislikeInsightDetail(id, type)

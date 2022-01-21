@@ -57,7 +57,7 @@
         tools:ignore="ContentDescription,UnusedAttribute" />
 
     <TextView
-        android:id="@+id/tv_comment_like"
+        android:id="@+id/tv_like_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
@@ -77,13 +77,13 @@
         android:layout_marginStart="8dp"
         android:foreground="?selectableItemBackgroundBorderless"
         android:src="@drawable/ic_insight_dislike"
-        app:layout_constraintBottom_toBottomOf="@id/tv_comment_like"
-        app:layout_constraintStart_toEndOf="@id/tv_comment_like"
-        app:layout_constraintTop_toTopOf="@id/tv_comment_like"
+        app:layout_constraintBottom_toBottomOf="@id/tv_like_count"
+        app:layout_constraintStart_toEndOf="@id/tv_like_count"
+        app:layout_constraintTop_toTopOf="@id/tv_like_count"
         tools:ignore="ContentDescription,UnusedAttribute" />
 
     <TextView
-        android:id="@+id/tv_comment_dislike"
+        android:id="@+id/tv_dislike_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
