@@ -46,7 +46,7 @@ class CommentsAdapter(
             oldItem: InsightCommentItem,
             newItem: InsightCommentItem,
         ): Boolean {
-            return oldItem == newItem
+            return oldItem.comment == newItem.comment
         }
     }
 
@@ -100,7 +100,6 @@ class CommentsAdapter(
                         tvShowReplyComment.isVisible = true
                         tvShowReplyComment.text = "Show ${item.totalReply} Replies"
                         val newCommentsAdapter = createNewAdapter(item.idComment)
-                        newCommentsAdapter.assignParentCommentListener(item.idComment, this@CommentsAdapter)
                         adapter = newCommentsAdapter
 
                         newCommentsAdapter.apply {
@@ -274,7 +273,6 @@ class CommentsAdapter(
                             item.totalReply = rvCommentReply.adapter!!.itemCount + 1
                         } else {
                             val newCommentsAdapter = createNewAdapter(item.idComment)
-                            newCommentsAdapter.assignParentCommentListener(item.idComment, this@CommentsAdapter)
                             rvCommentReply.adapter = newCommentsAdapter
 
                             listener.onReplyCommentClicked(
