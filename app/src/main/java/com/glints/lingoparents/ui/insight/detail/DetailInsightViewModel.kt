@@ -8,6 +8,7 @@ import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.model.InsightCommentItem
 import com.glints.lingoparents.data.model.response.*
 import com.glints.lingoparents.databinding.ItemInsightCommentBinding
+import com.glints.lingoparents.ui.insight.detail.adapter.CommentsAdapter
 import com.glints.lingoparents.utils.ErrorUtils
 import com.glints.lingoparents.utils.TokenPreferences
 import kotlinx.coroutines.channels.Channel
@@ -72,10 +73,11 @@ class DetailInsightViewModel(
     private fun onApiCallSuccessGetCommentReplies(
         list: List<InsightCommentItem>,
         uniqueAdapterId: Double,
-        binding: ItemInsightCommentBinding
+        binding: ItemInsightCommentBinding,
+        itemCommentId: Int
     ) =
         viewModelScope.launch {
-            actionInsightChannel.send(InsightAction.SuccessGetCommentReplies(list, uniqueAdapterId, binding))
+            actionInsightChannel.send(InsightAction.SuccessGetCommentReplies(list, uniqueAdapterId, binding, itemCommentId))
         }
 
     private fun onApiCallSuccessDeleteComment(
@@ -247,7 +249,7 @@ class DetailInsightViewModel(
                 ) {
                     if (response.isSuccessful) {
                         val comments = response.body()?.mapToInsightCommentItems()
-                        onApiCallSuccessGetCommentReplies(comments!!, uniqueId, binding)
+                        onApiCallSuccessGetCommentReplies(comments!!, uniqueId, binding, id)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallErrorAction(apiError.message())
@@ -368,7 +370,8 @@ class DetailInsightViewModel(
         data class SuccessGetCommentReplies(
             val list: List<InsightCommentItem>,
             val uniqueAdapterId: Double,
-            val binding: ItemInsightCommentBinding
+            val binding: ItemInsightCommentBinding,
+            val itemCommentId: Int
         ) :
             InsightAction()
 

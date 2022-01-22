@@ -163,9 +163,12 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                             uniqueAdapterId)
                         commentAdapterMap[uniqueAdapterId] = newCommentsAdapter
                         newCommentsAdapter.submitList(insight.list)
-                        commentAdapterMap[insight.uniqueAdapterId]?.showCommentReplies(
-                            newCommentsAdapter,
-                            insight.binding)
+                        commentAdapterMap[insight.uniqueAdapterId]?.apply {
+                            newCommentsAdapter.assignParentCommentListener(insight.itemCommentId, this)
+                            showCommentReplies(
+                                newCommentsAdapter,
+                                insight.binding)
+                        }
                         //endregion
 
                         //region set adapter's differ list listener
@@ -416,7 +419,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
     override fun onShowCommentRepliesClicked(
         item: InsightCommentItem,
         uniqueAdapterId: Double,
-        binding: ItemInsightCommentBinding,
+        binding: ItemInsightCommentBinding
     ) {
         viewModel.getCommentReplies(item.idComment, uniqueAdapterId, binding)
     }

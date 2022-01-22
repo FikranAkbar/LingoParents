@@ -26,6 +26,7 @@ class CommentsAdapter(
     private val listener: OnItemClickCallback,
     private val context: Context,
     private var uniqueAdapterId: Double,
+    var parentCommentListener: ParentCommentListener? = null
 ) :
     RecyclerView.Adapter<CommentsAdapter.AdapterHolder>() {
     companion object {
@@ -98,7 +99,8 @@ class CommentsAdapter(
                         rvCommentReply.isVisible = false
                         tvShowReplyComment.isVisible = true
                         tvShowReplyComment.text = "Show ${item.totalReply} Replies"
-                        val newCommentsAdapter = createNewAdapter()
+                        val newCommentsAdapter = createNewAdapter(item.idComment)
+                        newCommentsAdapter.assignParentCommentListener(item.idComment, this@CommentsAdapter)
                         adapter = newCommentsAdapter
 
                         newCommentsAdapter.apply {
@@ -185,6 +187,7 @@ class CommentsAdapter(
 
                 //region Set delete button onClickListener
                 tvDeleteComment.setOnClickListener {
+                    parentCommentListener?.onChildCommentDelete()
                     listener.onDeleteCommentClicked(
                         item,
                         item.idComment,
@@ -267,17 +270,20 @@ class CommentsAdapter(
                                 tfReplyComment.editText?.text.toString(),
                                 (rvCommentReply.adapter as CommentsAdapter).getUniqueAdapterId()
                             )
+                            (rvCommentReply.adapter as CommentsAdapter).assignParentCommentListener(item.idComment, this@CommentsAdapter)
                             item.totalReply = rvCommentReply.adapter!!.itemCount + 1
                         } else {
-                            val newCommentsAdapter = createNewAdapter()
+                            val newCommentsAdapter = createNewAdapter(item.idComment)
+                            newCommentsAdapter.assignParentCommentListener(item.idComment, this@CommentsAdapter)
                             rvCommentReply.adapter = newCommentsAdapter
 
+                            listener.onReplyCommentClicked(
+                                item,
+                                tfReplyComment.editText?.text.toString(),
+                                newCommentsAdapter.getUniqueAdapterId()
+                            )
+
                             newCommentsAdapter.apply {
-                                listener.onReplyCommentClicked(
-                                    item,
-                                    tfReplyComment.editText?.text.toString(),
-                                    this.getUniqueAdapterId()
-                                )
 
                                 val onRvChildDifferListChangedListener =
                                     AsyncListDiffer.ListListener<InsightCommentItem> { _, currentList ->
@@ -350,6 +356,10 @@ class CommentsAdapter(
 
     override fun getItemCount(): Int = differ.currentList.size
 
+    interface ParentCommentListener {
+        fun onChildCommentDelete()
+    }
+
     interface OnItemClickCallback {
         fun onReportCommentClicked(
             item: InsightCommentItem,
@@ -372,7 +382,7 @@ class CommentsAdapter(
         fun onReplyCommentClicked(
             item: InsightCommentItem,
             comment: String,
-            uniqueAdapterId: Double,
+            uniqueAdapterId: Double
         )
 
         fun onShowCommentRepliesClicked(
@@ -415,11 +425,27 @@ class CommentsAdapter(
         differ.submitList(newList)
     }
 
-    private fun createNewAdapter(): CommentsAdapter {
+    private fun createNewAdapter(itemCommentId: Int): CommentsAdapter {
         val uniqueAdapterId = DetailInsightFragment.randomGenerator.nextDouble()
         val newCommentsAdapter = CommentsAdapter(listener, context, uniqueAdapterId)
         DetailInsightFragment.commentAdapterMap[uniqueAdapterId] = newCommentsAdapter
+        newCommentsAdapter.assignParentCommentListener(itemCommentId, this)
 
         return newCommentsAdapter
     }
+
+    fun assignParentCommentListener(itemCommentId: Int, parentAdapter: CommentsAdapter) {
+        this.parentCommentListener = object : ParentCommentListener {
+            override fun onChildCommentDelete() {
+                parentAdapter.differ.submitList(parentAdapter.differ.currentList.map {
+                    if (it.idComment == itemCommentId) {
+                        it.copy(totalReply = it.totalReply - 1)
+                    } else {
+                        it.copy()
+                    }
+                })
+            }
+        }
+    }
+
 }
