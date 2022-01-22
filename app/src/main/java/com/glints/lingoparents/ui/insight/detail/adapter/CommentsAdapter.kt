@@ -10,7 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.*
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.glints.lingoparents.R
 import com.glints.lingoparents.data.model.InsightCommentItem
@@ -50,16 +53,23 @@ class CommentsAdapter(
 
     inner class AdapterHolder(private val binding: ItemInsightCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        private val onRvChildDifferListChangedListener =
-            AsyncListDiffer.ListListener<InsightCommentItem> { _, currentList ->
-                if (currentList.size <= 0) {
-                    binding.rvCommentReply.isVisible = false
-                    binding.tvShowReplyComment.isVisible = false
-                }
+
+        private val linearLayoutManager = object : LinearLayoutManager(context) {
+            override fun canScrollVertically(): Boolean {
+                return false
             }
+        }
 
         @SuppressLint("SetTextI18n")
         fun bind(item: InsightCommentItem) {
+            val onRvChildDifferListChangedListener =
+                AsyncListDiffer.ListListener<InsightCommentItem> { _, currentList ->
+                    if (currentList.size <= 0) {
+                        binding.rvCommentReply.isVisible = false
+                        binding.tvShowReplyComment.isVisible = false
+                    }
+                }
+
             binding.apply {
                 //region Initialize views value
                 if (parentId == item.idUser)
@@ -82,48 +92,18 @@ class CommentsAdapter(
                     setHasFixedSize(false)
                     isVisible = false
 
-                    val linearLayoutManager = object : LinearLayoutManager(context) {
-                        override fun canScrollVertically(): Boolean {
-                            return false
-                        }
-                    }
-
                     layoutManager = linearLayoutManager
 
-                    val currentAdapter = (adapter as CommentsAdapter?)
-                    if (currentAdapter == null) {
-                        if (item.totalReply > 0) {
-                            rvCommentReply.isVisible = false
-                            tvShowReplyComment.isVisible = true
-                            tvShowReplyComment.text = "Show ${item.totalReply} Replies"
-                            val newCommentsAdapter = createNewAdapter()
-                            adapter = newCommentsAdapter
+                    if (item.totalReply > 0) {
+                        rvCommentReply.isVisible = false
+                        tvShowReplyComment.isVisible = true
+                        tvShowReplyComment.text = "Show ${item.totalReply} Replies"
+                        val newCommentsAdapter = createNewAdapter()
+                        adapter = newCommentsAdapter
 
-                            newCommentsAdapter.apply {
-                                this.differ.removeListListener(onRvChildDifferListChangedListener)
-                                this.differ.addListListener(onRvChildDifferListChangedListener)
-                            }
-                        } else {
-                            rvCommentReply.isVisible = false
-                            tvShowReplyComment.text = ""
-                            tvShowReplyComment.isVisible = false
-                        }
-                    } else {
-                        if (currentAdapter.differ.currentList.size > 0) {
-                            rvCommentReply.isVisible = false
-                            tvShowReplyComment.isVisible = true
-                            tvShowReplyComment.text = "Show ${currentAdapter.differ.currentList.size} Replies"
-                            val newCommentsAdapter = createNewAdapter()
-                            adapter = newCommentsAdapter
-
-                            newCommentsAdapter.apply {
-                                this.differ.removeListListener(onRvChildDifferListChangedListener)
-                                this.differ.addListListener(onRvChildDifferListChangedListener)
-                            }
-                        } else {
-                            rvCommentReply.isVisible = false
-                            tvShowReplyComment.text = ""
-                            tvShowReplyComment.isVisible = false
+                        newCommentsAdapter.apply {
+                            this.differ.removeListListener(onRvChildDifferListChangedListener)
+                            this.differ.addListListener(onRvChildDifferListChangedListener)
                         }
                     }
                 }
@@ -287,6 +267,7 @@ class CommentsAdapter(
                                 tfReplyComment.editText?.text.toString(),
                                 (rvCommentReply.adapter as CommentsAdapter).getUniqueAdapterId()
                             )
+                            item.totalReply = rvCommentReply.adapter!!.itemCount + 1
                         } else {
                             val newCommentsAdapter = createNewAdapter()
                             rvCommentReply.adapter = newCommentsAdapter
@@ -298,9 +279,19 @@ class CommentsAdapter(
                                     this.getUniqueAdapterId()
                                 )
 
+                                val onRvChildDifferListChangedListener =
+                                    AsyncListDiffer.ListListener<InsightCommentItem> { _, currentList ->
+                                        if (currentList.size <= 0) {
+                                            binding.rvCommentReply.isVisible = false
+                                            binding.tvShowReplyComment.isVisible = false
+                                        }
+                                    }
+
                                 this.differ.removeListListener(onRvChildDifferListChangedListener)
                                 this.differ.addListListener(onRvChildDifferListChangedListener)
                             }
+
+                            item.totalReply += 1
                         }
 
                         tvShowReplyComment.text = "Hide Replies"

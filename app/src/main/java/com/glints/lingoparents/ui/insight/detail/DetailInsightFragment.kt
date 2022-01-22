@@ -17,12 +17,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.AsyncListDiffer
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.glints.lingoparents.R
 import com.glints.lingoparents.data.model.InsightCommentItem
-import com.glints.lingoparents.data.model.response.mapToInsightCommentItem
 import com.glints.lingoparents.databinding.FragmentDetailInsightBinding
 import com.glints.lingoparents.databinding.ItemInsightCommentBinding
 import com.glints.lingoparents.ui.dashboard.hideKeyboard
@@ -52,6 +50,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
 
         // Save all generated comment adapter and needs unique adapter id to access
         val commentAdapterMap: MutableMap<Double, CommentsAdapter> = mutableMapOf()
+
         // Only build random generator once
         val randomGenerator = Random
     }
@@ -133,7 +132,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
             viewModel.actionInsight.collect { insight ->
                 when (insight) {
                     is DetailInsightViewModel.InsightAction.SuccessCreateComment -> {
-                        showSuccessSnackbar("Add comment succesfully")
+                        showSuccessSnackbar("Add comment successfully")
 
                         commentAdapterMap[insight.uniqueAdapterId]?.addNewCommentItem(insight.result)
 
@@ -159,10 +158,14 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                     is DetailInsightViewModel.InsightAction.SuccessGetCommentReplies -> {
                         //region Generate CommentsAdapter
                         val uniqueAdapterId = randomGenerator.nextDouble()
-                        val newCommentsAdapter = CommentsAdapter(this@DetailInsightFragment, requireContext(), uniqueAdapterId)
+                        val newCommentsAdapter = CommentsAdapter(this@DetailInsightFragment,
+                            requireContext(),
+                            uniqueAdapterId)
                         commentAdapterMap[uniqueAdapterId] = newCommentsAdapter
                         newCommentsAdapter.submitList(insight.list)
-                        commentAdapterMap[insight.uniqueAdapterId]?.showCommentReplies(newCommentsAdapter, insight.binding)
+                        commentAdapterMap[insight.uniqueAdapterId]?.showCommentReplies(
+                            newCommentsAdapter,
+                            insight.binding)
                         //endregion
 
                         //region set adapter's differ list listener
@@ -188,7 +191,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                             val tvOtherCount = insight.tvOtherCount
                             when {
                                 message.lowercase().contains("unlike") ||
-                                        message.lowercase().contains("undislike")-> {
+                                        message.lowercase().contains("undislike") -> {
                                     val count = tvCount.text.toString().toInt() - 1
                                     tvCount.text = count.toString()
                                 }
@@ -233,7 +236,8 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                 layoutManager = LinearLayoutManager(requireContext())
                 //region Generate CommentsAdapter
                 val uniqueAdapterId = randomGenerator.nextDouble()
-                commentsAdapter = CommentsAdapter(this@DetailInsightFragment, requireContext(), uniqueAdapterId)
+                commentsAdapter =
+                    CommentsAdapter(this@DetailInsightFragment, requireContext(), uniqueAdapterId)
                 commentAdapterMap[uniqueAdapterId] = commentsAdapter
                 adapter = commentsAdapter
                 //endregion
@@ -370,7 +374,11 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
         viewModel.reportInsight(id.toString(), DetailInsightViewModel.COMMENT_TYPE, report_comment)
     }
 
-    override fun onLikeCommentClicked(item: InsightCommentItem, tvLikeCount: TextView, tvDislikeCount: TextView) {
+    override fun onLikeCommentClicked(
+        item: InsightCommentItem,
+        tvLikeCount: TextView,
+        tvDislikeCount: TextView,
+    ) {
         viewModel.sendLikeRequest(
             item.idComment,
             DetailInsightViewModel.COMMENT_TYPE,
@@ -379,7 +387,11 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
         )
     }
 
-    override fun onDislikeCommentClicked(item: InsightCommentItem, tvDislikeCount: TextView, tvLikeCount: TextView) {
+    override fun onDislikeCommentClicked(
+        item: InsightCommentItem,
+        tvDislikeCount: TextView,
+        tvLikeCount: TextView,
+    ) {
         viewModel.sendDislikeRequest(
             item.idComment,
             DetailInsightViewModel.COMMENT_TYPE,
@@ -388,7 +400,11 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
         )
     }
 
-    override fun onReplyCommentClicked(item: InsightCommentItem, comment: String, uniqueAdapterId: Double) {
+    override fun onReplyCommentClicked(
+        item: InsightCommentItem,
+        comment: String,
+        uniqueAdapterId: Double,
+    ) {
         viewModel.createComment(
             item.idComment,
             uniqueAdapterId,
@@ -397,18 +413,26 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
         )
     }
 
-    override fun onShowCommentRepliesClicked(item: InsightCommentItem, uniqueAdapterId: Double, binding: ItemInsightCommentBinding) {
+    override fun onShowCommentRepliesClicked(
+        item: InsightCommentItem,
+        uniqueAdapterId: Double,
+        binding: ItemInsightCommentBinding,
+    ) {
         viewModel.getCommentReplies(item.idComment, uniqueAdapterId, binding)
     }
 
-    override fun onDeleteCommentClicked(item: InsightCommentItem, id: Int, uniqueAdapterId: Double) {
+    override fun onDeleteCommentClicked(
+        item: InsightCommentItem,
+        id: Int,
+        uniqueAdapterId: Double,
+    ) {
         viewModel.deleteComment(item, id, uniqueAdapterId)
     }
 
     override fun onUpdateCommentClicked(
         item: InsightCommentItem,
         comment: String,
-        tvCommentBody: TextView
+        tvCommentBody: TextView,
     ) {
         viewModel.updateComment(item.idComment, comment, tvCommentBody)
     }
