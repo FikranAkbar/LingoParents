@@ -1,22 +1,22 @@
 package com.glints.lingoparents.ui.progress.profile
 
 import android.annotation.SuppressLint
-import android.app.Dialog
+import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.opengl.Visibility
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
-import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentProgressProfileBinding
+import com.glints.lingoparents.databinding.ItemPopupCharacterBinding
 import com.glints.lingoparents.ui.progress.ProgressViewModel
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
@@ -30,10 +30,16 @@ class ProgressProfileFragment : Fragment(R.layout.fragment_progress_profile) {
     private var _binding: FragmentProgressProfileBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var dialogBinding: ItemPopupCharacterBinding
+    private lateinit var customDialog: AlertDialog
+
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var viewModel: ProgressProfileViewModel
 
     private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
+
+    private var studentName = ""
+    private var studentLevel = ""
 
     override fun onStart() {
         super.onStart()
@@ -53,12 +59,6 @@ class ProgressProfileFragment : Fragment(R.layout.fragment_progress_profile) {
 
         showLoading(false)
 
-        binding.apply {
-            ivCharacterBadge.setOnClickListener {
-                showDialog()
-            }
-        }
-
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.progressProfileEvent.collect { event ->
                 when (event) {
@@ -69,19 +69,26 @@ class ProgressProfileFragment : Fragment(R.layout.fragment_progress_profile) {
                     is ProgressProfileViewModel.ProgressProfileEvent.Success -> {
                         showMainContent(true)
                         event.result.apply {
+                            studentName = fullname!!
+                            studentLevel =
+                                "${level_name ?: "No Level"} - ${sublevel_name ?: "No Sub Level"}"
                             binding.apply {
                                 photo?.let {
                                     imageView.load(it)
                                 }
-                                tvProfileName.text = fullname
-                                tvProfileLevel.text =
-                                    "${level_name ?: "No Level"} - ${sublevel_name ?: "No Sub Level"}"
+                                tvProfileName.text = studentName
+                                tvProfileLevel.text = studentLevel
                                 logo?.let {
                                     ivCharacterBadge.load(it)
                                 }
                                 tvPhoneNumberValue.text = phone
                                 tvEmailValue.text = email
                                 tvAddressValue.text = address
+
+                                ivCharacterBadge.setOnClickListener {
+                                    viewModel.getStudentCharacter(id_character!!)
+                                    showDialog()
+                                }
                             }
                         }
                         showLoading(false)
@@ -98,19 +105,59 @@ class ProgressProfileFragment : Fragment(R.layout.fragment_progress_profile) {
                 }
             }
         }
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.studentCharacterEvent.collect { event ->
+                when (event) {
+                    is ProgressProfileViewModel.StudentCharacterEvent.Loading -> {
+                        showLoadingCharacter(true)
+                    }
+                    is ProgressProfileViewModel.StudentCharacterEvent.Success -> {
+                        showLoadingCharacter(false)
+                        event.result.apply {
+                            dialogBinding.apply {
+                                photo.let {
+                                    ivCharacter.load(it)
+                                }
+                                tvName.text = studentName
+                                tvCourseLevel.text = studentLevel
+                                tvSuperheroName.text = character
+                                tvPersonalityTraits.text = "Personality Traits: $personality_traits"
+                                tvDesc.text = description
+                            }
+                        }
+                    }
+                    is ProgressProfileViewModel.StudentCharacterEvent.Error -> {
+                        showLoadingCharacter(false)
+                        customDialog.dismiss()
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
+                    }
+                }
+            }
+        }
     }
 
     private fun showDialog() {
-        val dialog = Dialog(activity as AppCompatActivity)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(false)
-        dialog.setContentView(R.layout.item_popup_character)
-        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val closeIcon = dialog.findViewById(R.id.ivClose) as ImageView
-        closeIcon.setOnClickListener {
-            dialog.dismiss()
+        dialogBinding = ItemPopupCharacterBinding.inflate(
+            LayoutInflater.from(requireContext()), null, false)
+        customDialog = AlertDialog.Builder(requireContext(), 0).create()
+
+        customDialog.apply {
+            setView(dialogBinding.root)
+            setCancelable(false)
+            requestWindowFeature(Window.FEATURE_NO_TITLE)
+            window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }.show()
+
+        dialogBinding.ivClose.setOnClickListener {
+            customDialog.dismiss()
         }
-        dialog.show()
+    }
+
+    private fun showLoadingCharacter(b: Boolean) {
+        binding.apply {
+            vLoadingBackground.isVisible = b
+            vLoadingProgress.isVisible = b
+        }
     }
 
     @Subscribe
@@ -121,33 +168,16 @@ class ProgressProfileFragment : Fragment(R.layout.fragment_progress_profile) {
 
     private fun showLoading(b: Boolean) {
         binding.apply {
-            when (b) {
-                true -> {
-                    shimmerLayout.visibility = View.VISIBLE
-                    mainContent.visibility = View.GONE
-                }
-                false -> {
-                    shimmerLayout.visibility = View.GONE
-                    mainContent.visibility = View.VISIBLE
-                }
-            }
+            shimmerLayout.isVisible = b
+            mainContent.isVisible = !b
         }
     }
 
     private fun showMainContent(b: Boolean) {
         binding.apply {
-            when(b) {
-                true -> {
-                    cvEventContainer.visibility = View.VISIBLE
-                    ivChildrenRelationRemoved.visibility = View.GONE
-                    tvChildrenRelationRemoved.visibility = View.GONE
-                }
-                false -> {
-                    cvEventContainer.visibility = View.GONE
-                    ivChildrenRelationRemoved.visibility = View.VISIBLE
-                    tvChildrenRelationRemoved.visibility = View.VISIBLE
-                }
-            }
+            cvEventContainer.isVisible = b
+            ivChildrenRelationRemoved.isVisible = !b
+            tvChildrenRelationRemoved.isVisible = !b
         }
     }
 
