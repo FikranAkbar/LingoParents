@@ -22,7 +22,7 @@ import com.glints.lingoparents.ui.insight.detail.DetailInsightFragment
 class CommentsAdapter(
     private val listener: OnItemClickCallback,
     private val context: Context,
-    private val uniqueAdapterId: Double,
+    private var uniqueAdapterId: Double,
 ) :
     RecyclerView.Adapter<CommentsAdapter.AdapterHolder>() {
     companion object {
@@ -75,8 +75,12 @@ class CommentsAdapter(
                 tvLikeCount.text = item.totalLike.toString()
                 tvDislikeCount.text = item.totalDislike.toString()
 
+                tvShowReplyComment.text = ""
+                tvShowReplyComment.isVisible = false
+
                 rvCommentReply.apply {
                     setHasFixedSize(false)
+                    isVisible = false
 
                     val linearLayoutManager = object : LinearLayoutManager(context) {
                         override fun canScrollVertically(): Boolean {
@@ -86,9 +90,11 @@ class CommentsAdapter(
 
                     layoutManager = linearLayoutManager
 
-                    if ((adapter as CommentsAdapter?) == null) {
+                    val currentAdapter = (adapter as CommentsAdapter?)
+                    if (currentAdapter == null) {
                         if (item.totalReply > 0) {
-                            tvShowReplyComment.visibility = View.VISIBLE
+                            rvCommentReply.isVisible = false
+                            tvShowReplyComment.isVisible = true
                             tvShowReplyComment.text = "Show ${item.totalReply} Replies"
                             val newCommentsAdapter = createNewAdapter()
                             adapter = newCommentsAdapter
@@ -97,6 +103,27 @@ class CommentsAdapter(
                                 this.differ.removeListListener(onRvChildDifferListChangedListener)
                                 this.differ.addListListener(onRvChildDifferListChangedListener)
                             }
+                        } else {
+                            rvCommentReply.isVisible = false
+                            tvShowReplyComment.text = ""
+                            tvShowReplyComment.isVisible = false
+                        }
+                    } else {
+                        if (currentAdapter.differ.currentList.size > 0) {
+                            rvCommentReply.isVisible = false
+                            tvShowReplyComment.isVisible = true
+                            tvShowReplyComment.text = "Show ${currentAdapter.differ.currentList.size} Replies"
+                            val newCommentsAdapter = createNewAdapter()
+                            adapter = newCommentsAdapter
+
+                            newCommentsAdapter.apply {
+                                this.differ.removeListListener(onRvChildDifferListChangedListener)
+                                this.differ.addListListener(onRvChildDifferListChangedListener)
+                            }
+                        } else {
+                            rvCommentReply.isVisible = false
+                            tvShowReplyComment.text = ""
+                            tvShowReplyComment.isVisible = false
                         }
                     }
                 }
