@@ -25,8 +25,6 @@ class CommentsAdapter(
     private val uniqueAdapterId: Double,
 ) :
     RecyclerView.Adapter<CommentsAdapter.AdapterHolder>() {
-    private lateinit var _rvCommentReply: RecyclerView
-
     companion object {
         var parentId: Int = 0
     }
@@ -89,7 +87,6 @@ class CommentsAdapter(
                     layoutManager = linearLayoutManager
 
                     if ((adapter as CommentsAdapter?) == null) {
-                        _rvCommentReply = this
                         if (item.totalReply > 0) {
                             tvShowReplyComment.visibility = View.VISIBLE
                             tvShowReplyComment.text = "Show ${item.totalReply} Replies"
@@ -138,7 +135,6 @@ class CommentsAdapter(
                         ) {
                             rvCommentReply.visibility = View.VISIBLE
                             tvShowReplyComment.text = "Hide Replies"
-                            _rvCommentReply = rvCommentReply
                             listener.onShowCommentRepliesClicked(item, uniqueAdapterId, binding)
                         }
 
@@ -163,7 +159,6 @@ class CommentsAdapter(
                         rvCommentReply.isVisible = true
 
                         tvShowReplyComment.text = "Hide Replies"
-                        _rvCommentReply = rvCommentReply
                         listener.onShowCommentRepliesClicked(item, uniqueAdapterId, binding)
                     } else {
                         rvCommentReply.isVisible = false
@@ -316,9 +311,9 @@ class CommentsAdapter(
         }
     }
 
-    fun showCommentReplies(_adapter: CommentsAdapter) {
-        _rvCommentReply.apply {
-            visibility = View.VISIBLE
+    fun showCommentReplies(_adapter: CommentsAdapter, binding: ItemInsightCommentBinding) {
+        binding.rvCommentReply.apply {
+            isVisible = true
             adapter = _adapter
         }
     }

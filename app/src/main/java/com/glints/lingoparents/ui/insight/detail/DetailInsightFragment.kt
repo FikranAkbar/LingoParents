@@ -162,7 +162,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                         val newCommentsAdapter = CommentsAdapter(this@DetailInsightFragment, requireContext(), uniqueAdapterId)
                         commentAdapterMap[uniqueAdapterId] = newCommentsAdapter
                         newCommentsAdapter.submitList(insight.list)
-                        commentAdapterMap[insight.uniqueAdapterId]?.showCommentReplies(newCommentsAdapter)
+                        commentAdapterMap[insight.uniqueAdapterId]?.showCommentReplies(newCommentsAdapter, insight.binding)
                         //endregion
 
                         //region set adapter's differ list listener

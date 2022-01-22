@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginVertical="12dp"
     android:layout_marginHorizontal="6dp"
-    app:cardElevation="8dp"
-    app:cardCornerRadius="12dp">
+    android:layout_marginVertical="12dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -26,12 +26,16 @@
         <TextView
             android:id="@+id/tv_username_comment"
             style="@style/Typography.Body1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_toEndOf="@+id/iv_comment"
+            android:ellipsize="end"
+            android:maxHeight="16dp"
             android:textColor="@color/grey_darker"
             android:textIsSelectable="true"
+            app:flow_wrapMode="none"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_comment"
             app:layout_constraintTop_toTopOf="@id/iv_comment"
             tools:text="@string/olivia_putri_rosmala" />
