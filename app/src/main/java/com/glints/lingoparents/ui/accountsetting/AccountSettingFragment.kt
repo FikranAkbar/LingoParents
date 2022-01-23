@@ -1,10 +1,14 @@
 package com.glints.lingoparents.ui.accountsetting
 
+import android.app.AlertDialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.LinearLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.StringRes
@@ -22,6 +26,8 @@ import com.canhub.cropper.PickImageContractOptions
 import com.canhub.cropper.options
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentAccountSettingBinding
+import com.glints.lingoparents.databinding.ItemPopupCharacterBinding
+import com.glints.lingoparents.databinding.ItemProfilePictureDialogBinding
 import com.glints.lingoparents.ui.accountsetting.profile.ProfileViewModel
 import com.glints.lingoparents.ui.dashboard.DashboardActivity
 import com.glints.lingoparents.utils.CustomViewModelFactory
@@ -35,6 +41,11 @@ import org.greenrobot.eventbus.Subscribe
 class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var viewModel: AccountSettingViewModel
+
+    private lateinit var dialogBinding: ItemProfilePictureDialogBinding
+
+    //    private lateinit var dialogBinding: ItemViewProfilePictureBinding
+    private lateinit var customDialog: AlertDialog
 
     private val cropImage = registerForActivityResult(CropImageContract()) { result ->
         if (result.isSuccessful) {
@@ -133,7 +144,7 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
                 (activity as DashboardActivity).showBottomNav(true)
             }
             ivProfilePicture.setOnClickListener {
-                startCrop()
+                showProfilePictureDialog()
             }
 
         }
@@ -162,6 +173,30 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
                 }
             }
         }
+    }
+
+    private fun showProfilePictureDialog() {
+//        dialogBinding = ItemViewProfilePictureBinding.inflate(
+        dialogBinding = ItemProfilePictureDialogBinding.inflate(
+            LayoutInflater.from(requireContext()), null, false)
+        customDialog = AlertDialog.Builder(requireContext(), 0).create()
+
+        customDialog.apply {
+            setView(dialogBinding.root)
+            setCancelable(true)
+            requestWindowFeature(Window.FEATURE_NO_TITLE)
+            window!!.setBackgroundDrawable(ColorDrawable(Color.WHITE))
+        }.show()
+
+        dialogBinding.tvUpdate.setOnClickListener {
+            startCrop()
+            customDialog.dismiss()
+        }
+//        binding.apply {
+//            dialogBinding.apply {
+//                ivViewProfilePicture.setBackgroundResource(R.drawable.img_course_english)
+//            }
+//        }
     }
 
     private fun showLoading(boolean: Boolean) {
