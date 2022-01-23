@@ -26,7 +26,6 @@ import com.canhub.cropper.PickImageContractOptions
 import com.canhub.cropper.options
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentAccountSettingBinding
-import com.glints.lingoparents.databinding.ItemPopupCharacterBinding
 import com.glints.lingoparents.databinding.ItemProfilePictureDialogBinding
 import com.glints.lingoparents.ui.accountsetting.profile.ProfileViewModel
 import com.glints.lingoparents.ui.dashboard.DashboardActivity
@@ -89,6 +88,7 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
     private val binding get() = _binding!!
     override fun onStart() {
         super.onStart()
+        (activity as DashboardActivity).showBottomNav(false)
         EventBus.getDefault().register(this)
     }
 
@@ -131,17 +131,16 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    findNavController().popBackStack()
                     (activity as DashboardActivity).showBottomNav(true)
+                    findNavController().popBackStack()
                 }
             })
 
-        (activity as DashboardActivity).showBottomNav(false)
 
         binding.apply {
             ivBackButton.setOnClickListener {
-                findNavController().popBackStack()
                 (activity as DashboardActivity).showBottomNav(true)
+                findNavController().popBackStack()
             }
             ivProfilePicture.setOnClickListener {
                 showProfilePictureDialog()
