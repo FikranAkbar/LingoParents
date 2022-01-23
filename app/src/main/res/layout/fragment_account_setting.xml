@@ -51,6 +51,7 @@
             android:id="@+id/iv_profile_picture"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="?android:attr/selectableItemBackground"
             android:src="@drawable/ic_baseline_person_24"
             tools:ignore="ContentDescription" />
     </androidx.cardview.widget.CardView>

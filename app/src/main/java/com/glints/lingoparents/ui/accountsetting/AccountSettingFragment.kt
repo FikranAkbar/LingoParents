@@ -16,6 +16,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
+import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageView
+import com.canhub.cropper.PickImageContractOptions
+import com.canhub.cropper.options
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentAccountSettingBinding
 import com.glints.lingoparents.ui.accountsetting.profile.ProfileViewModel
@@ -31,6 +35,36 @@ import org.greenrobot.eventbus.Subscribe
 class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var viewModel: AccountSettingViewModel
+
+    private val cropImage = registerForActivityResult(CropImageContract()) { result ->
+        if (result.isSuccessful) {
+            // use the returned uri
+
+            val uriContent = result.uriContent
+            uriContent.let {
+                binding.ivProfilePicture.setImageURI(it)
+            }
+            val uriFilePath = result.getUriFilePath(requireContext()) // optional usage
+        } else {
+            val exception = result.error
+        }
+    }
+
+    private fun startCrop() {
+        // start picker to get image for cropping and then use the image in cropping activity
+        cropImage.launch(
+            options {
+                setGuidelines(CropImageView.Guidelines.ON)
+                setAspectRatio(1, 1)
+                setCropShape(CropImageView.CropShape.OVAL)
+                setImagePickerContractOptions(
+                    PickImageContractOptions(includeGallery = true, includeCamera = true)
+                )
+
+            }
+        )
+
+    }
 
     companion object {
         @StringRes
@@ -98,6 +132,10 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
                 findNavController().popBackStack()
                 (activity as DashboardActivity).showBottomNav(true)
             }
+            ivProfilePicture.setOnClickListener {
+                startCrop()
+            }
+
         }
         lifecycleScope.launchWhenStarted {
             viewModel.accountSettingEvent.collect { event ->
