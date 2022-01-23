@@ -121,10 +121,7 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
                 tvParent.text = name
                 if (photo != null) {
                     ivProfilePicture.load(photo)
-                } else {
-                    ivProfilePicture.load(R.drawable.ic_user_avatar_male_square)
                 }
-
             }
         }
     }
