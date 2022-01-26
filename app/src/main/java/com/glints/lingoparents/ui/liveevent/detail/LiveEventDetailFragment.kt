@@ -18,7 +18,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import coil.imageLoader
 import coil.load
+import coil.request.ImageRequest
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FormRegisterEventBinding
 import com.glints.lingoparents.databinding.FragmentLiveEventDetailBinding
@@ -96,6 +98,7 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                         showLoading(false)
                         binding.apply {
                             event.result.apply {
+                                println("Event Detail: $this")
                                 if (eventType != "completed") {
                                     Trx_event_participants?.find { it.id_user == id_user }?.let {
                                         mbtnRegister.visibility = View.INVISIBLE
@@ -103,15 +106,21 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                                     }
                                 }
 
-                                cover?.let {
-                                    ivDetailEventPoster.load(it)
-                                }
-
                                 tvDetailEventTitle.text = title
                                 tvDateAndTimeContent.text = "$date, $started_at"
                                 tvPriceContentNumber.text = price
 
-                                ivPhotoContent.load(speaker_photo)
+                                val imageLoader = requireContext().imageLoader
+
+                                cover?.let {
+                                    ivDetailEventPoster.load(it, imageLoader)
+                                }
+
+                                speaker_photo?.let {
+                                    ivPhotoContent.load(it, imageLoader)
+                                }
+
+
 
                                 tvSpeakerName.text = speaker
                                 tvSpeakerProfession.text = speaker_profession
