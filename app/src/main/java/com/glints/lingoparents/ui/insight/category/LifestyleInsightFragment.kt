@@ -93,10 +93,9 @@ class LifestyleInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
         }
     }
 
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    @Subscribe
     fun onKeywordSent(insight: InsightListViewModel.InsightSearchList.SendKeywordToInsightListFragment) {
         viewModel.getInsightSearchList(InsightListViewModel.LIFESTYLE_TAG, insight.keyword)
-        EventBus.getDefault().removeStickyEvent(insight)
     }
 
     private fun showLoading(b: Boolean) {

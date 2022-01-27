@@ -136,9 +136,9 @@ class InsightListViewModel(private val tokenPref: TokenPreferences) : ViewModel(
             })
     }
 
-    fun sendStickyKeywordToInsightListFragment(keyword: String) = CoroutineScope(Dispatchers.Main).launch {
+    fun sendStickyKeywordToInsightListFragment(keyword: String) = viewModelScope.launch {
         EventBus.getDefault()
-            .postSticky(InsightSearchList.SendKeywordToInsightListFragment(keyword))
+            .post(InsightSearchList.SendKeywordToInsightListFragment(keyword))
     }
 
     sealed class InsightSearchList {
