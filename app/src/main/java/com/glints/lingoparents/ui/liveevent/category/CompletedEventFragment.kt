@@ -127,15 +127,13 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
         Log.d("IDEvent", item.id.toString())
     }
 
-    @Subscribe(sticky = true)
-    fun onBlankQuerySent(event: LiveEventListViewModel.LiveEventListEvent.SendBlankQueryToCompletedEventList) {
-        println("EVENT RECEIVED (COMPLETED): ${event::class.java}")
+    @Subscribe
+    fun onBlankQuerySent(event: LiveEventListViewModel.LiveEventListEvent.SendBlankQueryToEventList) {
         viewModel.loadCompletedLiveEventList()
     }
 
-    @Subscribe(sticky = true)
-    fun onQuerySent(event: LiveEventListViewModel.LiveEventListEvent.SendQueryToCompletedEventList) {
-        println("EVENT RECEIVED (COMPLETED): ${event::class.java}")
+    @Subscribe
+    fun onQuerySent(event: LiveEventListViewModel.LiveEventListEvent.SendQueryToEventList) {
         viewModel.searchCompletedLiveEventList(event.query)
     }
 
@@ -148,6 +146,7 @@ class CompletedEventFragment : Fragment(R.layout.fragment_completed_event),
 
     private fun showEmptyWarning(bool: Boolean) {
         binding.apply {
+            rvCompletedEvent.isVisible = !bool
             ivNoEvent.isVisible = bool
             tvNoEvent.isVisible = bool
         }
