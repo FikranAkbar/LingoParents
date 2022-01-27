@@ -22,6 +22,7 @@ import com.glints.lingoparents.utils.dataStore
 import kotlinx.coroutines.flow.collect
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class AllInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
 
@@ -91,7 +92,7 @@ class AllInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
         }
     }
 
-    @Subscribe
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     fun onKeywordSent(insight: InsightListViewModel.InsightSearchList.SendKeywordToInsightListFragment) {
         viewModel.getInsightSearchList(InsightListViewModel.ALL_TAG, insight.keyword)
     }

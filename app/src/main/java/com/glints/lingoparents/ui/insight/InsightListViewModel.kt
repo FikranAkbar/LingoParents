@@ -6,6 +6,8 @@ import com.glints.lingoparents.data.api.APIClient
 import com.glints.lingoparents.data.model.response.AllInsightsListResponse
 import com.glints.lingoparents.utils.ErrorUtils
 import com.glints.lingoparents.utils.TokenPreferences
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -134,7 +136,7 @@ class InsightListViewModel(private val tokenPref: TokenPreferences) : ViewModel(
             })
     }
 
-    fun sendStickyKeywordToInsightListFragment(keyword: String) = viewModelScope.launch {
+    fun sendStickyKeywordToInsightListFragment(keyword: String) = CoroutineScope(Dispatchers.Main).launch {
         EventBus.getDefault()
             .postSticky(InsightSearchList.SendKeywordToInsightListFragment(keyword))
     }

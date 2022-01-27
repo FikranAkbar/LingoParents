@@ -22,6 +22,7 @@ import com.glints.lingoparents.utils.dataStore
 import kotlinx.coroutines.flow.collect
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class LifestyleInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
 
@@ -92,7 +93,7 @@ class LifestyleInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
         }
     }
 
-    @Subscribe(sticky = true)
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     fun onKeywordSent(insight: InsightListViewModel.InsightSearchList.SendKeywordToInsightListFragment) {
         viewModel.getInsightSearchList(InsightListViewModel.LIFESTYLE_TAG, insight.keyword)
         EventBus.getDefault().removeStickyEvent(insight)
