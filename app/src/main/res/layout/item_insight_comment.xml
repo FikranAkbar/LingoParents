@@ -67,6 +67,7 @@
                 android:layout_marginTop="8dp"
                 android:foreground="?selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_insight_like"
+                android:visibility="invisible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_comment_body"
                 tools:ignore="ContentDescription,UnusedAttribute" />
@@ -79,6 +80,7 @@
                 android:fontFamily="@font/poppins_w700"
                 android:foreground="?selectableItemBackgroundBorderless"
                 android:textSize="11sp"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@id/iv_comment_like"
                 app:layout_constraintStart_toEndOf="@id/iv_comment_like"
                 app:layout_constraintTop_toTopOf="@id/iv_comment_like"
@@ -92,6 +94,7 @@
                 android:layout_marginStart="8dp"
                 android:foreground="?selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_insight_dislike"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@id/tv_like_count"
                 app:layout_constraintStart_toEndOf="@id/tv_like_count"
                 app:layout_constraintTop_toTopOf="@id/tv_like_count"
@@ -105,6 +108,7 @@
                 android:fontFamily="@font/poppins_w700"
                 android:foreground="?selectableItemBackgroundBorderless"
                 android:textSize="11sp"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@id/iv_comment_dislike"
                 app:layout_constraintStart_toEndOf="@id/iv_comment_dislike"
                 app:layout_constraintTop_toTopOf="@id/iv_comment_dislike"
@@ -135,16 +139,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_comment_body"
+                android:layout_marginEnd="8dp"
                 android:layout_toStartOf="@id/tv_reply_comment"
                 android:foreground="?selectableItemBackgroundBorderless"
                 android:text="@string/delete"
                 android:textColor="@color/grey_darker"
                 android:textSize="11sp"
                 android:textStyle="bold"
-                android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toBottomOf="@id/tv_report_comment"
                 app:layout_constraintEnd_toStartOf="@id/tv_reply_comment"
                 app:layout_constraintTop_toTopOf="@id/tv_report_comment"
-                app:layout_constraintBottom_toBottomOf="@id/tv_report_comment"
                 tools:ignore="UnusedAttribute" />
 
             <TextView
@@ -240,9 +244,9 @@
         android:id="@+id/rv_comment_reply"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/v_blank_space"
         tools:listitem="@layout/item_insight_comment" />
 </androidx.constraintlayout.widget.ConstraintLayout>

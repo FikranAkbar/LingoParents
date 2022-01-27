@@ -5,11 +5,13 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.text.TextUtils
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,12 +23,13 @@ import com.glints.lingoparents.databinding.ItemInsightCommentBinding
 import com.glints.lingoparents.ui.dashboard.hideKeyboard
 import com.glints.lingoparents.ui.dashboard.openKeyboard
 import com.glints.lingoparents.ui.insight.detail.DetailInsightFragment
+import kotlin.math.roundToInt
 
 class CommentsAdapter(
     private val listener: OnItemClickCallback,
     private val context: Context,
     private var uniqueAdapterId: Double,
-    var parentCommentListener: ParentCommentListener? = null
+    var parentCommentListener: ParentCommentListener? = null,
 ) :
     RecyclerView.Adapter<CommentsAdapter.AdapterHolder>() {
     companion object {
@@ -83,8 +86,6 @@ class CommentsAdapter(
 
                 tvUsernameComment.text = item.name
                 tvCommentBody.text = item.comment
-                tvLikeCount.text = item.totalLike.toString()
-                tvDislikeCount.text = item.totalDislike.toString()
 
                 tvShowReplyComment.text = ""
                 tvShowReplyComment.isVisible = false
@@ -269,7 +270,9 @@ class CommentsAdapter(
                                 tfReplyComment.editText?.text.toString(),
                                 (rvCommentReply.adapter as CommentsAdapter).getUniqueAdapterId()
                             )
-                            (rvCommentReply.adapter as CommentsAdapter).assignParentCommentListener(item.idComment, this@CommentsAdapter)
+                            (rvCommentReply.adapter as CommentsAdapter).assignParentCommentListener(
+                                item.idComment,
+                                this@CommentsAdapter)
                             item.totalReply = rvCommentReply.adapter!!.itemCount + 1
                         } else {
                             val newCommentsAdapter = createNewAdapter(item.idComment)
@@ -337,6 +340,11 @@ class CommentsAdapter(
         binding.rvCommentReply.apply {
             isVisible = true
             adapter = _adapter
+            if (parentCommentListener == null) {
+                this.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    setMargins(dpFormat(30), 0, 0, 0)
+                }
+            }
         }
     }
 
@@ -380,7 +388,7 @@ class CommentsAdapter(
         fun onReplyCommentClicked(
             item: InsightCommentItem,
             comment: String,
-            uniqueAdapterId: Double
+            uniqueAdapterId: Double,
         )
 
         fun onShowCommentRepliesClicked(
@@ -444,6 +452,11 @@ class CommentsAdapter(
                 })
             }
         }
+    }
+
+    private fun dpFormat(dp: Int): Int {
+        val displayMetrics = context.resources.displayMetrics
+        return (dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT)).roundToInt()
     }
 
 }
