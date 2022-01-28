@@ -1,10 +1,14 @@
 package com.glints.lingoparents.ui.accountsetting
 
+import android.app.AlertDialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.LinearLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.StringRes
@@ -16,8 +20,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
+import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageView
+import com.canhub.cropper.PickImageContractOptions
+import com.canhub.cropper.options
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentAccountSettingBinding
+import com.glints.lingoparents.databinding.ItemProfilePictureDialogBinding
 import com.glints.lingoparents.ui.accountsetting.profile.ProfileViewModel
 import com.glints.lingoparents.ui.dashboard.DashboardActivity
 import com.glints.lingoparents.utils.CustomViewModelFactory
@@ -32,6 +41,41 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var viewModel: AccountSettingViewModel
 
+    private lateinit var dialogBinding: ItemProfilePictureDialogBinding
+
+    //    private lateinit var dialogBinding: ItemViewProfilePictureBinding
+    private lateinit var customDialog: AlertDialog
+
+    private val cropImage = registerForActivityResult(CropImageContract()) { result ->
+        if (result.isSuccessful) {
+            // use the returned uri
+
+            val uriContent = result.uriContent
+            uriContent.let {
+                binding.ivProfilePicture.setImageURI(it)
+            }
+            val uriFilePath = result.getUriFilePath(requireContext()) // optional usage
+        } else {
+            val exception = result.error
+        }
+    }
+
+    private fun startCrop() {
+        // start picker to get image for cropping and then use the image in cropping activity
+        cropImage.launch(
+            options {
+                setGuidelines(CropImageView.Guidelines.ON)
+                setAspectRatio(1, 1)
+                setCropShape(CropImageView.CropShape.OVAL)
+                setImagePickerContractOptions(
+                    PickImageContractOptions(includeGallery = true, includeCamera = true)
+                )
+
+            }
+        )
+
+    }
+
     companion object {
         @StringRes
         private val TAB_TITLES = intArrayOf(
@@ -44,6 +88,7 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
     private val binding get() = _binding!!
     override fun onStart() {
         super.onStart()
+        (activity as DashboardActivity).showBottomNav(false)
         EventBus.getDefault().register(this)
     }
 
@@ -86,18 +131,21 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    findNavController().popBackStack()
                     (activity as DashboardActivity).showBottomNav(true)
+                    findNavController().popBackStack()
                 }
             })
 
-        (activity as DashboardActivity).showBottomNav(false)
 
         binding.apply {
             ivBackButton.setOnClickListener {
-                findNavController().popBackStack()
                 (activity as DashboardActivity).showBottomNav(true)
+                findNavController().popBackStack()
             }
+            ivProfilePicture.setOnClickListener {
+                showProfilePictureDialog()
+            }
+
         }
         lifecycleScope.launchWhenStarted {
             viewModel.accountSettingEvent.collect { event ->
@@ -121,12 +169,33 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
                 tvParent.text = name
                 if (photo != null) {
                     ivProfilePicture.load(photo)
-                } else {
-                    ivProfilePicture.load(R.drawable.ic_user_avatar_male_square)
                 }
-
             }
         }
+    }
+
+    private fun showProfilePictureDialog() {
+//        dialogBinding = ItemViewProfilePictureBinding.inflate(
+        dialogBinding = ItemProfilePictureDialogBinding.inflate(
+            LayoutInflater.from(requireContext()), null, false)
+        customDialog = AlertDialog.Builder(requireContext(), 0).create()
+
+        customDialog.apply {
+            setView(dialogBinding.root)
+            setCancelable(true)
+            requestWindowFeature(Window.FEATURE_NO_TITLE)
+            window!!.setBackgroundDrawable(ColorDrawable(Color.WHITE))
+        }.show()
+
+        dialogBinding.tvUpdate.setOnClickListener {
+            startCrop()
+            customDialog.dismiss()
+        }
+//        binding.apply {
+//            dialogBinding.apply {
+//                ivViewProfilePicture.setBackgroundResource(R.drawable.img_course_english)
+//            }
+//        }
     }
 
     private fun showLoading(boolean: Boolean) {
