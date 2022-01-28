@@ -52,6 +52,12 @@ class InsightListFragment : Fragment() {
                 TabLayoutMediator(binding.tlInsightCategory, binding.vpInsight) { tab, position ->
                     tab.text = tabNames[position]
                 }.attach()
+
+                repeat(tabNames.count()) {
+                    currentItem = it
+                }
+
+                currentItem = 0
             }
 
             tfSearchInsight.apply {
