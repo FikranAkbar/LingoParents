@@ -85,9 +85,7 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                 findNavController().popBackStack()
             }
             mbtnRegister.setOnClickListener {
-                //showDialog(inflater)
-                MidtransSDK.getInstance().transactionRequest = initTransactionRequest()
-                MidtransSDK.getInstance().startPaymentUiFlow(requireContext())
+                showDialog(inflater)
             }
             arguments?.get("category")?.apply {
                 eventType = this as String?
@@ -155,6 +153,7 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                         }
                     }
                     is LiveEventDetailViewModel.LiveEventDetailEvent.RegisterClick -> {
+                        /*
                         val phoneNumber = event.phone
                         val voucherCode = event.voucherCode
                         val fullname = event.fullname
@@ -176,8 +175,9 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                             idUser_createValue!!,
                             status
                         )
-
-
+                         */
+                        MidtransSDK.getInstance().transactionRequest = initTransactionRequest()
+                        MidtransSDK.getInstance().startPaymentUiFlow(requireContext())
                     }
                     is LiveEventDetailViewModel.LiveEventDetailEvent.RegisterSuccess -> {
                         Snackbar.make(
