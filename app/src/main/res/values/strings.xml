@@ -217,4 +217,6 @@
     <string name="event_was_finished">Event was finished!</string>
     <string name="relation_with_the_children_has_been_removed">Relation with the children has been removed</string>
     <string name="token_expired_error">Token expired. Please re-login…</string>
+    <string name="update_picture">Update Picture</string>
+    <string name="profile_picture">Profile Picture</string>
 </resources>
