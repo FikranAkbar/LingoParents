@@ -2,25 +2,29 @@ package com.glints.lingoparents.ui.insight.detail
 
 import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.glints.lingoparents.R
-import com.glints.lingoparents.data.model.response.GetCommentRepliesResponse
-import com.glints.lingoparents.data.model.response.InsightDetailResponse
+import com.glints.lingoparents.data.model.InsightCommentItem
 import com.glints.lingoparents.databinding.FragmentDetailInsightBinding
-import com.glints.lingoparents.ui.insight.detail.adapter.CommentRepliesAdapter
+import com.glints.lingoparents.databinding.ItemInsightCommentBinding
+import com.glints.lingoparents.ui.dashboard.hideKeyboard
+import com.glints.lingoparents.ui.dashboard.openKeyboard
 import com.glints.lingoparents.ui.insight.detail.adapter.CommentsAdapter
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
@@ -32,24 +36,33 @@ import kotlinx.coroutines.flow.collect
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.random.Random
 
-class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
-    CommentRepliesAdapter.OnItemClickCallback {
+class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
     private lateinit var binding: FragmentDetailInsightBinding
     private lateinit var viewModel: DetailInsightViewModel
     private lateinit var commentsAdapter: CommentsAdapter
-    private lateinit var commentRepliesAdapter: CommentRepliesAdapter
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
 
     companion object {
         val report_body = arrayOf("Spam", "Harassment", "Rules Violation", "Other")
+
+        // Save all generated comment adapter and needs unique adapter id to access
+        val commentAdapterMap: MutableMap<Double, CommentsAdapter> = mutableMapOf()
+
+        // Only build random generator once
+        val randomGenerator = Random
+    }
+
+    init {
+        commentAdapterMap.clear()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         binding = FragmentDetailInsightBinding.inflate(inflater, container, false)
         tokenPreferences = TokenPreferences.getInstance(requireContext().dataStore)
 
@@ -73,8 +86,11 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
         viewModel.loadInsightDetail(viewModel.getCurrentInsightId())
 
         viewModel.getParentId().observe(viewLifecycleOwner) { parentId ->
-            commentsAdapter.submitParentId(parentId.toInt())
+            CommentsAdapter.parentId = parentId.toInt()
         }
+
+        // only needed for mapping CreateCommentResponse to InsightCommentItem
+        viewModel.getParentProfile()
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.insightDetail.collect { insight ->
@@ -116,49 +132,91 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
             viewModel.actionInsight.collect { insight ->
                 when (insight) {
                     is DetailInsightViewModel.InsightAction.SuccessCreateComment -> {
-                        Snackbar.make(
-                            requireView(),
-                            "Add comment successfully",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
+                        showSuccessSnackbar("Add comment successfully")
+
+                        commentAdapterMap[insight.uniqueAdapterId]?.addNewCommentItem(insight.result)
+
+                        //region Scroll recycler view to comment position after few delay
+                        if (commentsAdapter.getUniqueAdapterId() == insight.uniqueAdapterId) {
+                            CoroutineScope(Dispatchers.Unconfined).launch {
+                                delay(200)
+                                binding.rvInsightComment.smoothScrollToPosition(0)
+                            }
+                        }
+                        //endregion
 
                         binding.apply {
                             tfInsightComment.editText?.setText("")
                         }
                     }
                     is DetailInsightViewModel.InsightAction.SuccessDeleteComment -> {
-                        Snackbar.make(
-                            requireView(),
-                            insight.result.message,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
+                        showSuccessSnackbar(insight.result.message)
+                        commentAdapterMap[insight.uniqueAdapterId]?.apply {
+                            deleteCommentItem(insight.item)
+                        }
                     }
                     is DetailInsightViewModel.InsightAction.SuccessGetCommentReplies -> {
-                        commentRepliesAdapter =
-                            CommentRepliesAdapter(this@DetailInsightFragment, requireContext())
-                        commentRepliesAdapter.submitList(insight.list)
-                        commentsAdapter.showCommentReplies(commentRepliesAdapter)
+                        //region Generate CommentsAdapter
+                        val uniqueAdapterId = randomGenerator.nextDouble()
+                        val newCommentsAdapter = CommentsAdapter(this@DetailInsightFragment,
+                            requireContext(),
+                            uniqueAdapterId)
+                        commentAdapterMap[uniqueAdapterId] = newCommentsAdapter
+                        newCommentsAdapter.submitList(insight.list)
+                        commentAdapterMap[insight.uniqueAdapterId]?.apply {
+                            newCommentsAdapter.assignParentCommentListener(insight.itemCommentId,
+                                this)
+                            showCommentReplies(
+                                newCommentsAdapter,
+                                insight.binding)
+                        }
+                        //endregion
+
+                        //region set adapter's differ list listener
+                        val onRvChildDifferListListener =
+                            AsyncListDiffer.ListListener<InsightCommentItem> { _, currentList ->
+                                if (currentList.size <= 0) {
+                                    insight.binding.apply {
+                                        rvCommentReply.isVisible = false
+                                        tvShowReplyComment.isVisible = false
+                                    }
+                                }
+                            }
+
+                        newCommentsAdapter.differ.apply {
+                            removeListListener(onRvChildDifferListListener)
+                            addListListener(onRvChildDifferListListener)
+                        }
+                        //endregion
                     }
                     is DetailInsightViewModel.InsightAction.SuccessLikeDislike -> {
-                        Snackbar.make(
-                            binding.root,
-                            insight.result.message,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
+                        insight.result.message.let { message ->
+                            val tvCount = insight.tvCount
+                            val tvOtherCount = insight.tvOtherCount
+                            when {
+                                message.lowercase().contains("unlike") ||
+                                        message.lowercase().contains("undislike") -> {
+                                    val count = tvCount.text.toString().toInt() - 1
+                                    tvCount.text = count.toString()
+                                }
+                                message.lowercase().contains("like") ||
+                                        message.lowercase().contains("dislike") -> {
+                                    val count = tvCount.text.toString().toInt() + 1
+                                    tvCount.text = count.toString()
+                                    if (tvOtherCount.text.toString().toInt() > 0) {
+                                        val otherCount = tvOtherCount.text.toString().toInt() - 1
+                                        tvOtherCount.text = otherCount.toString()
+                                    }
+                                }
+                            }
+                        }
                     }
                     is DetailInsightViewModel.InsightAction.SuccessUpdateComment -> {
-                        Snackbar.make(
-                            binding.root,
-                            insight.result.message,
-                            Snackbar.LENGTH_SHORT
-                        ).show()
+                        showSuccessSnackbar(insight.result.message)
+                        insight.tvCommentBody.text = insight.comment
                     }
                     is DetailInsightViewModel.InsightAction.SuccessReport -> {
-                        Snackbar.make(
-                            requireView(),
-                            "Reported successfully",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
+                        showSuccessSnackbar("Reported successfully")
                     }
                     is DetailInsightViewModel.InsightAction.Error -> {
                         noInternetAccessOrErrorHandler.onNoInternetAccessOrError(insight.message)
@@ -178,36 +236,49 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
     private fun initViews() {
         binding.apply {
             rvInsightComment.apply {
-                setHasFixedSize(true)
+                setHasFixedSize(false)
                 layoutManager = LinearLayoutManager(requireContext())
-                addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
-                commentsAdapter = CommentsAdapter(this@DetailInsightFragment, requireContext())
+                //region Generate CommentsAdapter
+                val uniqueAdapterId = randomGenerator.nextDouble()
+                commentsAdapter =
+                    CommentsAdapter(this@DetailInsightFragment, requireContext(), uniqueAdapterId)
+                commentAdapterMap[uniqueAdapterId] = commentsAdapter
                 adapter = commentsAdapter
+                //endregion
             }
 
             ivBackButton.setOnClickListener {
                 findNavController().popBackStack()
             }
             tvInsightAddComment.setOnClickListener {
-                tfInsightComment.visibility = View.VISIBLE
-                tfInsightComment.requestFocus()
-                btnComment.visibility = View.VISIBLE
+                tfInsightComment.isVisible = !tfInsightComment.isVisible
+                btnComment.isVisible = !btnComment.isVisible
+                if (tfInsightComment.isVisible) {
+                    tfInsightComment.requestFocus()
+                    requireActivity().openKeyboard()
+                } else {
+                    requireActivity().hideKeyboard()
+                }
             }
 
             tvInsightReport.setOnClickListener {
                 showReportDialog(requireContext())
             }
 
-            tvInsightLike.setOnClickListener {
+            ivLike.setOnClickListener {
                 viewModel.sendLikeRequest(
                     viewModel.getCurrentInsightId(),
-                    DetailInsightViewModel.INSIGHT_TYPE
+                    DetailInsightViewModel.INSIGHT_TYPE,
+                    tvInsightLike,
+                    tvInsightDislike,
                 )
             }
-            tvInsightDislike.setOnClickListener {
+            ivDislike.setOnClickListener {
                 viewModel.sendDislikeRequest(
                     viewModel.getCurrentInsightId(),
-                    DetailInsightViewModel.INSIGHT_TYPE
+                    DetailInsightViewModel.INSIGHT_TYPE,
+                    tvInsightDislike,
+                    tvInsightLike,
                 )
             }
 
@@ -218,9 +289,13 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
                 } else {
                     viewModel.createComment(
                         viewModel.getCurrentInsightId(),
+                        commentsAdapter.getUniqueAdapterId(),
                         DetailInsightViewModel.INSIGHT_TYPE,
                         tfInsightComment.editText?.text.toString()
                     )
+                    requireActivity().hideKeyboard()
+                    tfInsightComment.isVisible = false
+                    btnComment.isVisible = false
                 }
             }
         }
@@ -272,6 +347,20 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
         }
     }
 
+    private fun showSuccessSnackbar(message: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.success_color, null))
+                .setTextColor(Color.WHITE)
+                .show()
+        } else {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(Color.GREEN)
+                .setTextColor(Color.WHITE)
+                .show()
+        }
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
@@ -282,89 +371,73 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback,
     }
 
     override fun onReportCommentClicked(
-        item: InsightDetailResponse.MasterComment,
+        item: InsightCommentItem,
         id: Int,
         report_comment: String,
     ) {
         viewModel.reportInsight(id.toString(), DetailInsightViewModel.COMMENT_TYPE, report_comment)
     }
 
-    override fun onLikeCommentClicked(item: InsightDetailResponse.MasterComment) {
+    override fun onLikeCommentClicked(
+        item: InsightCommentItem,
+        tvLikeCount: TextView,
+        tvDislikeCount: TextView,
+    ) {
         viewModel.sendLikeRequest(
-            item.id,
-            DetailInsightViewModel.COMMENT_TYPE
+            item.idComment,
+            DetailInsightViewModel.COMMENT_TYPE,
+            tvLikeCount,
+            tvDislikeCount
         )
     }
 
-    override fun onDislikeCommentClicked(item: InsightDetailResponse.MasterComment) {
+    override fun onDislikeCommentClicked(
+        item: InsightCommentItem,
+        tvDislikeCount: TextView,
+        tvLikeCount: TextView,
+    ) {
         viewModel.sendDislikeRequest(
-            item.id,
-            DetailInsightViewModel.COMMENT_TYPE
+            item.idComment,
+            DetailInsightViewModel.COMMENT_TYPE,
+            tvDislikeCount,
+            tvLikeCount
         )
     }
 
-    override fun onReplyCommentClicked(item: InsightDetailResponse.MasterComment, comment: String) {
+    override fun onReplyCommentClicked(
+        item: InsightCommentItem,
+        comment: String,
+        uniqueAdapterId: Double,
+    ) {
         viewModel.createComment(
-            item.id,
+            item.idComment,
+            uniqueAdapterId,
             DetailInsightViewModel.COMMENT_TYPE,
             comment
         )
     }
 
-    override fun onShowCommentRepliesClicked(item: InsightDetailResponse.MasterComment) {
-        viewModel.getCommentReplies(item.id)
+    override fun onShowCommentRepliesClicked(
+        item: InsightCommentItem,
+        uniqueAdapterId: Double,
+        binding: ItemInsightCommentBinding,
+    ) {
+        viewModel.getCommentReplies(item.idComment, uniqueAdapterId, binding)
     }
 
-    override fun onDeleteCommentClicked(item: InsightDetailResponse.MasterComment, id: Int) {
-        viewModel.deleteComment(id)
+    override fun onDeleteCommentClicked(
+        item: InsightCommentItem,
+        id: Int,
+        uniqueAdapterId: Double,
+    ) {
+        viewModel.deleteComment(item, id, uniqueAdapterId)
     }
 
     override fun onUpdateCommentClicked(
-        item: InsightDetailResponse.MasterComment,
+        item: InsightCommentItem,
         comment: String,
+        tvCommentBody: TextView,
     ) {
-        viewModel.updateComment(item.id, comment)
-    }
-
-    override fun onReportCommentClicked(
-        item: GetCommentRepliesResponse.Message,
-        id: Int,
-        report_comment: String,
-    ) {
-        viewModel.reportInsight(id.toString(), DetailInsightViewModel.COMMENT_TYPE, report_comment)
-    }
-
-    override fun onLikeCommentClicked(item: GetCommentRepliesResponse.Message) {
-        viewModel.sendLikeRequest(
-            item.id,
-            DetailInsightViewModel.COMMENT_TYPE
-        )
-    }
-
-    override fun onDislikeCommentClicked(item: GetCommentRepliesResponse.Message) {
-        viewModel.sendDislikeRequest(
-            item.id,
-            DetailInsightViewModel.COMMENT_TYPE
-        )
-    }
-
-    override fun onReplyCommentClicked(item: GetCommentRepliesResponse.Message, comment: String) {
-        viewModel.createComment(
-            item.id,
-            DetailInsightViewModel.COMMENT_TYPE,
-            comment
-        )
-    }
-
-    override fun onShowCommentRepliesClicked(item: GetCommentRepliesResponse.Message) {
-        viewModel.getCommentReplies(item.id)
-    }
-
-    override fun onDeleteCommentClicked(item: GetCommentRepliesResponse.Message, id: Int) {
-        viewModel.deleteComment(id)
-    }
-
-    override fun onUpdateCommentClicked(item: GetCommentRepliesResponse.Message, comment: String) {
-        viewModel.updateComment(item.id, comment)
+        viewModel.updateComment(item.idComment, comment, tvCommentBody)
     }
 }

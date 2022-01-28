@@ -64,7 +64,7 @@
     </style>
 
     <style name="Typography.Body1">
-        <item name="android:fontFamily">@font/poppins_w600</item>
+        <item name="android:fontFamily">@font/poppins_w700</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:maxLines">1</item>
@@ -83,8 +83,7 @@
     <style name="Typography.Caption">
         <item name="android:fontFamily">@font/poppins_w400</item>
         <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/grey</item>
-        <item name="android:letterSpacing">0.12</item>
+        <item name="android:textColor">@color/grey_darker</item>
     </style>
 
     <style name="Typography.Overline">

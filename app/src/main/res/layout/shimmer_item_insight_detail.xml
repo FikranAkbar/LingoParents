@@ -18,6 +18,7 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_gravity="center_vertical"
+            android:layout_marginStart="24dp"
             android:background="@color/shimmer_placeholder"
             android:clickable="true"
             android:focusable="true"
@@ -39,6 +40,7 @@
         android:layout_width="0dp"
         android:layout_height="150dp"
         android:layout_marginVertical="12dp"
+        android:layout_marginHorizontal="20dp"
         app:cardBackgroundColor="@color/shimmer_placeholder"
         app:cardCornerRadius="12dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,8 +54,8 @@
         android:layout_height="44dp"
         android:layout_marginVertical="12dp"
         android:background="@color/shimmer_placeholder"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/shimmer_iv_insight_detail"
+        app:layout_constraintStart_toStartOf="@id/shimmer_iv_insight_detail"
         app:layout_constraintTop_toBottomOf="@+id/shimmer_iv_insight_detail" />
 
     <TextView
@@ -67,13 +69,13 @@
 
     <TextView
         android:id="@+id/shimmer_tv_insight_body"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="250dp"
         android:layout_marginTop="9dp"
         android:background="@color/shimmer_placeholder"
         android:translationY="-4.5sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/shimmer_iv_insight_detail"
+        app:layout_constraintStart_toStartOf="@id/shimmer_iv_insight_detail"
         app:layout_constraintTop_toBottomOf="@id/shimmer_tv_insight_date"
         tools:ignore="UnusedAttribute" />
 
@@ -83,7 +85,7 @@
         android:layout_height="24dp"
         android:background="@color/shimmer_placeholder"
         app:layout_constraintBottom_toBottomOf="@id/shimmer_tv_insight_dislike"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/shimmer_iv_insight_detail"
         app:layout_constraintTop_toTopOf="@id/shimmer_tv_insight_dislike" />
 
     <TextView
@@ -109,7 +111,7 @@
         android:layout_width="44sp"
         android:layout_height="wrap_content"
         android:background="@color/shimmer_placeholder"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/shimmer_iv_insight_detail"
         app:layout_constraintTop_toBottomOf="@id/shimmer_tv_insight_body" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -123,11 +125,11 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/shimmer_rv_insight_comment"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginVertical="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/shimmer_iv_insight_detail"
+        app:layout_constraintStart_toStartOf="@id/shimmer_iv_insight_detail"
         app:layout_constraintTop_toBottomOf="@id/shimmer_materialTextView"
         tools:listitem="@layout/shimmer_item_insight_comment" />
 </androidx.constraintlayout.widget.ConstraintLayout>

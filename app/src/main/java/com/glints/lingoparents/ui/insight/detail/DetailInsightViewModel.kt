@@ -1,10 +1,14 @@
 package com.glints.lingoparents.ui.insight.detail
 
+import android.widget.TextView
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.glints.lingoparents.data.api.APIClient
+import com.glints.lingoparents.data.model.InsightCommentItem
 import com.glints.lingoparents.data.model.response.*
+import com.glints.lingoparents.databinding.ItemInsightCommentBinding
+import com.glints.lingoparents.ui.insight.detail.adapter.CommentsAdapter
 import com.glints.lingoparents.utils.ErrorUtils
 import com.glints.lingoparents.utils.TokenPreferences
 import kotlinx.coroutines.channels.Channel
@@ -18,8 +22,6 @@ class DetailInsightViewModel(
     private val tokenPref: TokenPreferences,
     private val insightId: Int,
 ) : ViewModel() {
-    private var commentId: Int = 0
-
     companion object {
         const val INSIGHT_TYPE = "insight"
         const val COMMENT_TYPE = "comment"
@@ -31,13 +33,15 @@ class DetailInsightViewModel(
     private val actionInsightChannel = Channel<InsightAction>()
     val actionInsight = actionInsightChannel.receiveAsFlow()
 
+    lateinit var parentProfile: ParentProfileResponse
+
     private fun onApiCallStarted() = viewModelScope.launch {
         insightDetailChannel.send(InsightDetail.Loading)
     }
 
     private fun onApiCallSuccess(
         result: InsightDetailResponse.Message,
-        list: List<InsightDetailResponse.MasterComment>,
+        list: List<InsightCommentItem>,
     ) = viewModelScope.launch {
         insightDetailChannel.send(InsightDetail.Success(result))
         insightDetailChannel.send(InsightDetail.SuccessGetComment(list))
@@ -47,29 +51,51 @@ class DetailInsightViewModel(
         actionInsightChannel.send(InsightAction.SuccessReport(result))
     }
 
-    private fun onApiCallSuccessLikeDislike(result: InsightLikeDislikeResponse) =
+    private fun onApiCallSuccessLikeDislike(
+        result: InsightLikeDislikeResponse,
+        tvCount: TextView,
+        tvOtherCount: TextView,
+    ) =
         viewModelScope.launch {
-            actionInsightChannel.send(InsightAction.SuccessLikeDislike(result))
+            actionInsightChannel.send(InsightAction.SuccessLikeDislike(result,
+                tvCount,
+                tvOtherCount))
         }
 
-    private fun onApiCallSuccessCreateComment(result: CreateCommentResponse) =
+    private fun onApiCallSuccessCreateComment(
+        result: InsightCommentItem,
+        uniqueAdapterId: Double
+    ) =
         viewModelScope.launch {
-            actionInsightChannel.send(InsightAction.SuccessCreateComment(result))
+            actionInsightChannel.send(InsightAction.SuccessCreateComment(result, uniqueAdapterId))
         }
 
-    private fun onApiCallSuccessGetCommentReplies(list: List<GetCommentRepliesResponse.Message>) =
+    private fun onApiCallSuccessGetCommentReplies(
+        list: List<InsightCommentItem>,
+        uniqueAdapterId: Double,
+        binding: ItemInsightCommentBinding,
+        itemCommentId: Int
+    ) =
         viewModelScope.launch {
-            actionInsightChannel.send(InsightAction.SuccessGetCommentReplies(list))
+            actionInsightChannel.send(InsightAction.SuccessGetCommentReplies(list, uniqueAdapterId, binding, itemCommentId))
         }
 
-    private fun onApiCallSuccessDeleteComment(result: DeleteCommentResponse) =
+    private fun onApiCallSuccessDeleteComment(
+        result: DeleteCommentResponse,
+        item: InsightCommentItem,
+        uniqueAdapterId: Double,
+    ) =
         viewModelScope.launch {
-            actionInsightChannel.send(InsightAction.SuccessDeleteComment(result))
+            actionInsightChannel.send(InsightAction.SuccessDeleteComment(
+                result,
+                item,
+                uniqueAdapterId,
+            ))
         }
 
-    private fun onApiCallSuccessUpdateComment(result: UpdateCommentResponse) =
+    private fun onApiCallSuccessUpdateComment(result: UpdateCommentResponse, tvCommentBody: TextView, comment: String) =
         viewModelScope.launch {
-            actionInsightChannel.send(InsightAction.SuccessUpdateComment(result))
+            actionInsightChannel.send(InsightAction.SuccessUpdateComment(result, tvCommentBody, comment))
         }
 
     private fun onApiCallError(message: String) = viewModelScope.launch {
@@ -95,12 +121,11 @@ class DetailInsightViewModel(
                     response: Response<InsightDetailResponse>,
                 ) {
                     if (response.isSuccessful) {
-                        val result = response.body()?.message!!
-                        val commentId = result.Master_comments
-                        for (comment in commentId) {
-                            saveCommentId(comment.id)
-                        }
-                        onApiCallSuccess(result, result.Master_comments)
+                        val result = response.body()!!
+
+                        val comments = result.mapToInsightCommentItems()
+
+                        onApiCallSuccess(result.message!!, comments!!)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallError(apiError.message())
@@ -136,76 +161,84 @@ class DetailInsightViewModel(
             })
     }
 
-    fun sendLikeRequest(id: Int, type: String) = viewModelScope.launch {
-        APIClient
-            .service
-            .likeInsightDetail(id, type)
-            .enqueue(object : Callback<InsightLikeDislikeResponse> {
-                override fun onResponse(
-                    call: Call<InsightLikeDislikeResponse>,
-                    response: Response<InsightLikeDislikeResponse>,
-                ) {
-                    if (response.isSuccessful) {
-                        onApiCallSuccessLikeDislike(response.body()!!)
-                    } else {
-                        val apiError = ErrorUtils.parseError(response)
-                        onApiCallErrorAction(apiError.message())
+    fun sendLikeRequest(id: Int, type: String, tvLikeCount: TextView, tvDislikeCount: TextView) =
+        viewModelScope.launch {
+            APIClient
+                .service
+                .likeInsightDetail(id, type)
+                .enqueue(object : Callback<InsightLikeDislikeResponse> {
+                    override fun onResponse(
+                        call: Call<InsightLikeDislikeResponse>,
+                        response: Response<InsightLikeDislikeResponse>,
+                    ) {
+                        if (response.isSuccessful) {
+                            onApiCallSuccessLikeDislike(response.body()!!,
+                                tvCount = tvLikeCount,
+                                tvOtherCount = tvDislikeCount)
+                        } else {
+                            val apiError = ErrorUtils.parseError(response)
+                            onApiCallErrorAction(apiError.message())
+                        }
                     }
-                }
 
-                override fun onFailure(call: Call<InsightLikeDislikeResponse>, t: Throwable) {
-                    onApiCallErrorAction("Network Failed...")
-                }
-            })
-    }
-
-    fun sendDislikeRequest(id: Int, type: String) = viewModelScope.launch {
-        APIClient
-            .service
-            .dislikeInsightDetail(id, type)
-            .enqueue(object : Callback<InsightLikeDislikeResponse> {
-                override fun onResponse(
-                    call: Call<InsightLikeDislikeResponse>,
-                    response: Response<InsightLikeDislikeResponse>,
-                ) {
-                    if (response.isSuccessful) {
-                        onApiCallSuccessLikeDislike(response.body()!!)
-                    } else {
-                        val apiError = ErrorUtils.parseError(response)
-                        onApiCallErrorAction(apiError.message())
+                    override fun onFailure(call: Call<InsightLikeDislikeResponse>, t: Throwable) {
+                        onApiCallErrorAction("Network Failed...")
                     }
-                }
+                })
+        }
 
-                override fun onFailure(call: Call<InsightLikeDislikeResponse>, t: Throwable) {
-                    onApiCallErrorAction("Network Failed...")
-                }
-            })
-    }
-
-    fun createComment(id: Int, type: String, comment: String) = viewModelScope.launch {
-        APIClient
-            .service
-            .createComment(id, type, comment)
-            .enqueue(object : Callback<CreateCommentResponse> {
-                override fun onResponse(
-                    call: Call<CreateCommentResponse>,
-                    response: Response<CreateCommentResponse>,
-                ) {
-                    if (response.isSuccessful) {
-                        onApiCallSuccessCreateComment(response.body()!!)
-                    } else {
-                        val apiError = ErrorUtils.parseError(response)
-                        onApiCallErrorAction(apiError.message())
+    fun sendDislikeRequest(id: Int, type: String, tvDislikeCount: TextView, tvLikeCount: TextView) =
+        viewModelScope.launch {
+            APIClient
+                .service
+                .dislikeInsightDetail(id, type)
+                .enqueue(object : Callback<InsightLikeDislikeResponse> {
+                    override fun onResponse(
+                        call: Call<InsightLikeDislikeResponse>,
+                        response: Response<InsightLikeDislikeResponse>,
+                    ) {
+                        if (response.isSuccessful) {
+                            onApiCallSuccessLikeDislike(response.body()!!,
+                                tvCount = tvDislikeCount,
+                                tvOtherCount = tvLikeCount)
+                        } else {
+                            val apiError = ErrorUtils.parseError(response)
+                            onApiCallErrorAction(apiError.message())
+                        }
                     }
-                }
 
-                override fun onFailure(call: Call<CreateCommentResponse>, t: Throwable) {
-                    onApiCallErrorAction("Network Failed...")
-                }
-            })
-    }
+                    override fun onFailure(call: Call<InsightLikeDislikeResponse>, t: Throwable) {
+                        onApiCallErrorAction("Network Failed...")
+                    }
+                })
+        }
 
-    fun getCommentReplies(id: Int) = viewModelScope.launch {
+    fun createComment(id: Int, uniqueAdapterId: Double, type: String, comment: String) =
+        viewModelScope.launch {
+            APIClient
+                .service
+                .createComment(id, type, comment)
+                .enqueue(object : Callback<CreateCommentResponse> {
+                    override fun onResponse(
+                        call: Call<CreateCommentResponse>,
+                        response: Response<CreateCommentResponse>,
+                    ) {
+                        if (response.isSuccessful) {
+                            val result = response.body()!!.message!!.mapToInsightCommentItem(parentProfile)
+                            onApiCallSuccessCreateComment(result, uniqueAdapterId)
+                        } else {
+                            val apiError = ErrorUtils.parseError(response)
+                            onApiCallErrorAction(apiError.message())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<CreateCommentResponse>, t: Throwable) {
+                        onApiCallErrorAction("Network Failed...")
+                    }
+                })
+        }
+
+    fun getCommentReplies(id: Int, uniqueId: Double, binding: ItemInsightCommentBinding) = viewModelScope.launch {
         APIClient
             .service
             .getCommentReplies(id)
@@ -215,7 +248,8 @@ class DetailInsightViewModel(
                     response: Response<GetCommentRepliesResponse>,
                 ) {
                     if (response.isSuccessful) {
-                        onApiCallSuccessGetCommentReplies(response.body()?.message!!)
+                        val comments = response.body()?.mapToInsightCommentItems()
+                        onApiCallSuccessGetCommentReplies(comments!!, uniqueId, binding, id)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallErrorAction(apiError.message())
@@ -228,7 +262,11 @@ class DetailInsightViewModel(
             })
     }
 
-    fun deleteComment(id: Int) = viewModelScope.launch {
+    fun deleteComment(
+        item: InsightCommentItem,
+        id: Int,
+        uniqueAdapterId: Double,
+    ) = viewModelScope.launch {
         APIClient
             .service
             .deleteComment(id)
@@ -238,7 +276,9 @@ class DetailInsightViewModel(
                     response: Response<DeleteCommentResponse>,
                 ) {
                     if (response.isSuccessful) {
-                        onApiCallSuccessDeleteComment(response.body()!!)
+                        onApiCallSuccessDeleteComment(response.body()!!,
+                            item,
+                            uniqueAdapterId)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallErrorAction(apiError.message())
@@ -251,7 +291,7 @@ class DetailInsightViewModel(
             })
     }
 
-    fun updateComment(id: Int, comment: String) = viewModelScope.launch {
+    fun updateComment(id: Int, comment: String, tvCommentBody: TextView) = viewModelScope.launch {
         APIClient
             .service
             .updateComment(id, comment)
@@ -261,7 +301,7 @@ class DetailInsightViewModel(
                     response: Response<UpdateCommentResponse>,
                 ) {
                     if (response.isSuccessful) {
-                        onApiCallSuccessUpdateComment(response.body()!!)
+                        onApiCallSuccessUpdateComment(response.body()!!, tvCommentBody, comment)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onApiCallErrorAction(apiError.message())
@@ -275,29 +315,73 @@ class DetailInsightViewModel(
     }
 
     fun getCurrentInsightId(): Int = insightId
-    fun saveCommentId(id: Int) = viewModelScope.launch {
-        commentId = id
-    }
 
     fun getParentId() = tokenPref.getUserId().asLiveData()
+
+    fun getParentProfile() = viewModelScope.launch {
+        APIClient
+            .service
+            .getParentProfile()
+            .enqueue(object : Callback<ParentProfileResponse> {
+                override fun onResponse(
+                    call: Call<ParentProfileResponse>,
+                    response: Response<ParentProfileResponse>,
+                ) {
+                    if (response.isSuccessful) {
+                        val result = response.body()!!
+                        parentProfile = result
+                    } else {
+                        if (response.code() != 400) {
+                            val apiError = ErrorUtils.parseError(response)
+                            onApiCallError(apiError.message())
+                        } else {
+                            onApiCallError("Something went wrong...")
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ParentProfileResponse>, t: Throwable) {
+                    onApiCallError("Network Failed...")
+                }
+            })
+    }
 
     sealed class InsightDetail {
         object Loading : InsightDetail()
         data class Success(val result: InsightDetailResponse.Message) : InsightDetail()
-        data class SuccessGetComment(val list: List<InsightDetailResponse.MasterComment>) :
+        data class SuccessGetComment(val list: List<InsightCommentItem>) :
             InsightDetail()
 
         data class Error(val message: String) : InsightDetail()
     }
 
     sealed class InsightAction {
-        data class SuccessCreateComment(val result: CreateCommentResponse) : InsightAction()
-        data class SuccessDeleteComment(val result: DeleteCommentResponse) : InsightAction()
-        data class SuccessGetCommentReplies(val list: List<GetCommentRepliesResponse.Message>) :
+        data class SuccessCreateComment(
+            val result: InsightCommentItem,
+            val uniqueAdapterId: Double,
+        ) : InsightAction()
+
+        data class SuccessDeleteComment(
+            val result: DeleteCommentResponse,
+            val item: InsightCommentItem,
+            val uniqueAdapterId: Double,
+        ) : InsightAction()
+
+        data class SuccessGetCommentReplies(
+            val list: List<InsightCommentItem>,
+            val uniqueAdapterId: Double,
+            val binding: ItemInsightCommentBinding,
+            val itemCommentId: Int
+        ) :
             InsightAction()
 
-        data class SuccessLikeDislike(val result: InsightLikeDislikeResponse) : InsightAction()
-        data class SuccessUpdateComment(val result: UpdateCommentResponse) : InsightAction()
+        data class SuccessLikeDislike(
+            val result: InsightLikeDislikeResponse,
+            val tvCount: TextView,
+            val tvOtherCount: TextView,
+        ) : InsightAction()
+
+        data class SuccessUpdateComment(val result: UpdateCommentResponse, val tvCommentBody: TextView, val comment: String) : InsightAction()
         data class SuccessReport(val result: ReportResponse) : InsightAction()
         data class Error(val message: String) : InsightAction()
     }
