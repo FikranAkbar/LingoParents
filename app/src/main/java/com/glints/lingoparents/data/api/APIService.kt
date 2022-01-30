@@ -36,7 +36,7 @@ interface APIService {
     @POST("api/v1/forgot-password")
     fun sendForgotPasswordRequest(
         @Field("email") email: String,
-        @Field("frontend_url") url: String = "http://fe-main.ipe-glintsacademy.com/api/v1/reset-password"
+        @Field("frontend_url") url: String = "https://fe-main.ipe-glintsacademy.com/reset-password"
     ): Call<ForgotPasswordResponse>
 
     @FormUrlEncoded
