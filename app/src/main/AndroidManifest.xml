@@ -19,17 +19,30 @@
         tools:replace="android:allowBackup, android:usesCleartextTraffic"
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup,UnusedAttribute">
+
         <activity
             android:name="com.canhub.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
+
         <activity
             android:name=".ui.dashboard.DashboardActivity"
             android:exported="true">
         </activity>
+
         <activity
             android:name=".ui.authentication.AuthenticationActivity"
             android:exported="true">
+
+            <intent-filter>
+
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+
+            </intent-filter>
+
             <intent-filter android:label="@string/app_name">
+
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -39,18 +52,15 @@
                     android:scheme="https"
                     android:host="fe-main.ipe-glintsacademy.com"
                     android:pathPrefix="/reset-password" />
+
             </intent-filter>
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
     </application>
 
 </manifest>
