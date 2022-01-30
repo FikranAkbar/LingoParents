@@ -219,4 +219,5 @@
     <string name="token_expired_error">Token expired. Please re-login…</string>
     <string name="update_picture">Update Picture</string>
     <string name="profile_picture">Profile Picture</string>
+    <string name="edit_text_allowed_characters">!"#$&amp;'()*+,-./0123456789:;=?ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</string>
 </resources>
