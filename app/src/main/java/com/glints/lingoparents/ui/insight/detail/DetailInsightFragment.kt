@@ -111,6 +111,18 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                                 tvInsightBody.text = content
                                 tvInsightLike.text = total_like.toString()
                                 tvInsightDislike.text = total_dislike.toString()
+
+                                if (is_liked > 0) {
+                                    ivLike.setColorFilter(Color.BLUE)
+                                } else {
+                                    ivLike.clearColorFilter()
+                                }
+
+                                if (is_disliked > 0) {
+                                    ivDislike.setColorFilter(Color.BLUE)
+                                } else {
+                                    ivDislike.clearColorFilter()
+                                }
                             }
                         }
                     }

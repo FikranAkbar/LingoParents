@@ -22,7 +22,9 @@ class InsightDetailResponse{
         val total_like: Int,
         val total_report: Int,
         val total_views: Int,
-        val updatedAt: String
+        val updatedAt: String,
+        var is_liked: Int,
+        var is_disliked: Int,
     )
 
     data class MasterComment(
