@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Color
 import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -64,6 +65,100 @@ class CommentsAdapter(
             }
         }
 
+        private fun likeDislikeResponseToApiCall(resultMessage: String, id: Int) {
+            binding.apply {
+                var likeCount = tvLikeCount.text.toString().toInt()
+                var dislikeCount = tvDislikeCount.text.toString().toInt()
+
+                if (resultMessage.lowercase().contains("unlike")) {
+                    ivCommentLike.clearColorFilter()
+
+                    likeCount -= 1
+                    tvLikeCount.text = likeCount.toString()
+
+                    differ.submitList(differ.currentList.map {
+                        if (it.idComment == id) {
+                            it.copy(is_liked = 0, totalLike = it.totalLike - 1)
+                        } else {
+                            it.copy()
+                        }
+                    })
+                } else if (resultMessage.lowercase().contains("undislike")) {
+                    ivCommentDislike.clearColorFilter()
+
+                    dislikeCount -= 1
+                    tvDislikeCount.text = dislikeCount.toString()
+
+                    differ.submitList(differ.currentList.map {
+                        if (it.idComment == id) {
+                            it.copy(is_disliked = 0, totalDislike = it.totalDislike - 1)
+                        } else {
+                            it.copy()
+                        }
+                    })
+                } else if (resultMessage.lowercase().contains("dislike")) {
+                    ivCommentDislike.setColorFilter(Color.BLUE)
+
+                    dislikeCount += 1
+                    tvDislikeCount.text = dislikeCount.toString()
+
+                    if (ivCommentLike.colorFilter != null) {
+                        ivCommentLike.clearColorFilter()
+
+                        likeCount -= 1
+                        tvLikeCount.text = likeCount.toString()
+
+                        differ.submitList(differ.currentList.map {
+                            if (it.idComment == id) {
+                                it.copy(is_disliked = 1,
+                                    is_liked = 0,
+                                    totalDislike = it.totalDislike + 1,
+                                    totalLike = it.totalLike - 1)
+                            } else {
+                                it.copy()
+                            }
+                        })
+                    } else {
+                        differ.submitList(differ.currentList.map {
+                            if (it.idComment == id) {
+                                it.copy(is_disliked = 1, totalDislike = it.totalDislike + 1)
+                            } else {
+                                it.copy()
+                            }
+                        })
+                    }
+                } else if (resultMessage.lowercase().contains("like")) {
+                    ivCommentLike.setColorFilter(Color.BLUE)
+
+                    likeCount += 1
+                    tvLikeCount.text = likeCount.toString()
+
+                    if (ivCommentDislike.colorFilter != null) {
+                        ivCommentDislike.clearColorFilter()
+
+                        dislikeCount -= 1
+                        tvDislikeCount.text = dislikeCount.toString()
+
+                        differ.submitList(differ.currentList.map {
+                            if (it.idComment == id) {
+                                it.copy(is_liked = 1, is_disliked = 0, totalLike = it.totalLike + 1, totalDislike = it.totalDislike - 1)
+                            } else {
+                                it.copy()
+                            }
+                        })
+                    } else {
+                        differ.submitList(differ.currentList.map {
+                            if (it.idComment == id) {
+                                it.copy(is_liked = 1, totalLike = it.totalLike + 1)
+                            } else {
+                                it.copy()
+                            }
+                        })
+                    }
+                }
+            }
+        }
+
         @SuppressLint("SetTextI18n")
         fun bind(item: InsightCommentItem) {
             val onRvChildDifferListChangedListener =
@@ -93,6 +188,14 @@ class CommentsAdapter(
                 tvLikeCount.text = item.totalLike.toString()
                 tvDislikeCount.text = item.totalDislike.toString()
 
+                if (item.is_liked > 0) {
+                    ivCommentLike.setColorFilter(Color.BLUE)
+                } else ivCommentLike.clearColorFilter()
+
+                if (item.is_disliked > 0) {
+                    ivCommentDislike.setColorFilter(Color.BLUE)
+                } else ivCommentDislike.clearColorFilter()
+
                 rvCommentReply.apply {
                     setHasFixedSize(false)
                     isVisible = false
@@ -116,13 +219,19 @@ class CommentsAdapter(
 
                 //region Set like button onClickListener
                 ivCommentLike.setOnClickListener {
-                    listener.onLikeCommentClicked(item, tvLikeCount, tvDislikeCount)
+                    listener.onLikeCommentClicked(
+                        item,
+                        ::likeDislikeResponseToApiCall
+                    )
                 }
                 //endregion
 
                 //region Set dislike button onClickListener
                 ivCommentDislike.setOnClickListener {
-                    listener.onDislikeCommentClicked(item, tvDislikeCount, tvLikeCount)
+                    listener.onDislikeCommentClicked(
+                        item,
+                        ::likeDislikeResponseToApiCall
+                    )
                 }
                 //endregion
 
@@ -378,14 +487,12 @@ class CommentsAdapter(
 
         fun onLikeCommentClicked(
             item: InsightCommentItem,
-            tvLikeCount: TextView,
-            tvDislikeCount: TextView,
+            uiResponseAfterApiCall: (responseMessage: String, id: Int) -> Unit,
         )
 
         fun onDislikeCommentClicked(
             item: InsightCommentItem,
-            tvDislikeCount: TextView,
-            tvLikeCount: TextView,
+            uiResponseAfterApiCall: (responseMessage: String, id: Int) -> Unit,
         )
 
         fun onReplyCommentClicked(

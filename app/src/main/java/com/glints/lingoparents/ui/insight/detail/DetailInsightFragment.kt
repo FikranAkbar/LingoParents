@@ -202,26 +202,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                         //endregion
                     }
                     is DetailInsightViewModel.InsightAction.SuccessLikeDislike -> {
-                        insight.result.message.let { message ->
-                            val tvCount = insight.tvCount
-                            val tvOtherCount = insight.tvOtherCount
-                            when {
-                                message.lowercase().contains("unlike") ||
-                                        message.lowercase().contains("undislike") -> {
-                                    val count = tvCount.text.toString().toInt() - 1
-                                    tvCount.text = count.toString()
-                                }
-                                message.lowercase().contains("like") ||
-                                        message.lowercase().contains("dislike") -> {
-                                    val count = tvCount.text.toString().toInt() + 1
-                                    tvCount.text = count.toString()
-                                    if (tvOtherCount.text.toString().toInt() > 0) {
-                                        val otherCount = tvOtherCount.text.toString().toInt() - 1
-                                        tvOtherCount.text = otherCount.toString()
-                                    }
-                                }
-                            }
-                        }
+                        insight.uiResponseAfterApiCall.invoke(insight.result.message, insight.id)
                     }
                     is DetailInsightViewModel.InsightAction.SuccessUpdateComment -> {
                         showSuccessSnackbar(insight.result.message)
@@ -281,16 +262,14 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
                 viewModel.sendLikeRequest(
                     viewModel.getCurrentInsightId(),
                     DetailInsightViewModel.INSIGHT_TYPE,
-                    tvInsightLike,
-                    tvInsightDislike,
+                    ::likeDislikeResponseToApiCall
                 )
             }
             ivDislike.setOnClickListener {
                 viewModel.sendDislikeRequest(
                     viewModel.getCurrentInsightId(),
                     DetailInsightViewModel.INSIGHT_TYPE,
-                    tvInsightDislike,
-                    tvInsightLike,
+                    ::likeDislikeResponseToApiCall
                 )
             }
 
@@ -373,6 +352,53 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
         }
     }
 
+    private fun likeDislikeResponseToApiCall(resultMessage: String, id: Int) {
+        binding.apply {
+
+            var likeCount = tvInsightLike.text.toString().toInt()
+            var dislikeCount = tvInsightDislike.text.toString().toInt()
+
+            if (resultMessage.lowercase().contains("unlike")) {
+                ivLike.clearColorFilter()
+
+                likeCount -= 1
+                tvInsightLike.text = likeCount.toString()
+
+            } else if (resultMessage.lowercase().contains("undislike")) {
+                ivDislike.clearColorFilter()
+
+                dislikeCount -= 1
+                tvInsightDislike.text = dislikeCount.toString()
+
+            } else if (resultMessage.lowercase().contains("dislike")) {
+                ivDislike.setColorFilter(Color.BLUE)
+
+                dislikeCount += 1
+                tvInsightDislike.text = dislikeCount.toString()
+
+                if (ivLike.colorFilter != null) {
+                    ivLike.clearColorFilter()
+
+                    likeCount -= 1
+                    tvInsightLike.text = likeCount.toString()
+                }
+            } else if (resultMessage.lowercase().contains("like")) {
+                ivLike.setColorFilter(Color.BLUE)
+
+                likeCount += 1
+                tvInsightLike.text = likeCount.toString()
+
+                if (ivDislike.colorFilter != null) {
+                    ivDislike.clearColorFilter()
+
+                    dislikeCount -= 1
+                    tvInsightDislike.text = dislikeCount.toString()
+                }
+
+            }
+        }
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
@@ -392,27 +418,23 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
 
     override fun onLikeCommentClicked(
         item: InsightCommentItem,
-        tvLikeCount: TextView,
-        tvDislikeCount: TextView,
+        uiResponseAfterApiCall: (responseMessage: String, id: Int) -> Unit,
     ) {
         viewModel.sendLikeRequest(
             item.idComment,
             DetailInsightViewModel.COMMENT_TYPE,
-            tvLikeCount,
-            tvDislikeCount
+            uiResponseAfterApiCall
         )
     }
 
     override fun onDislikeCommentClicked(
         item: InsightCommentItem,
-        tvDislikeCount: TextView,
-        tvLikeCount: TextView,
+        uiResponseAfterApiCall: (responseMessage: String, id: Int) -> Unit,
     ) {
         viewModel.sendDislikeRequest(
             item.idComment,
             DetailInsightViewModel.COMMENT_TYPE,
-            tvDislikeCount,
-            tvLikeCount
+            uiResponseAfterApiCall
         )
     }
 
