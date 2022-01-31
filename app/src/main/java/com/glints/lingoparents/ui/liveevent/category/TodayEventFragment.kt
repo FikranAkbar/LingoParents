@@ -130,12 +130,12 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
     }
 
     @Subscribe
-    fun onBlankQuerySent(event: LiveEventListViewModel.LiveEventListEvent.SendBlankQueryToTodayEventList) {
+    fun onBlankQuerySent(event: LiveEventListViewModel.LiveEventListEvent.SendBlankQueryToEventList) {
         viewModel.loadTodayLiveEventList()
     }
 
     @Subscribe
-    fun onSearchViewDoneEditing(event: LiveEventListViewModel.LiveEventListEvent.SendQueryToTodayEventList) {
+    fun onSearchViewDoneEditing(event: LiveEventListViewModel.LiveEventListEvent.SendQueryToEventList) {
         viewModel.searchTodayLiveEventList(event.query)
     }
 
@@ -148,6 +148,7 @@ class TodayEventFragment : Fragment(R.layout.fragment_today_event),
 
     private fun showEmptyWarning(bool: Boolean) {
         binding.apply {
+            rvTodayEvent.isVisible = !bool
             ivNoEvent.isVisible = bool
             tvNoEvent.isVisible = bool
         }

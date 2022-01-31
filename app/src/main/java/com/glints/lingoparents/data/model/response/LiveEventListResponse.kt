@@ -9,6 +9,6 @@ class LiveEventListResponse {
         val id: Int,
         val title: String,
         val date: String,
-        val speaker_photo: String
+        val speaker_photo: String?
     )
 }

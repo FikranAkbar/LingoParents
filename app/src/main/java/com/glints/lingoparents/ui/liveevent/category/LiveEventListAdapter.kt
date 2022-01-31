@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import coil.imageLoader
 import coil.load
 import com.glints.lingoparents.data.model.response.LiveEventListResponse
 import com.glints.lingoparents.databinding.ItemLiveEventBinding
@@ -55,7 +56,11 @@ class LiveEventListAdapter(
                 tvLiveEventTitle.text = item.title
                 tvLiveEventDate.text = item.date
 
-                ivImage.load(item.speaker_photo)
+                val imageLoader = itemView.context.imageLoader
+
+                item.speaker_photo?.let {
+                    ivImage.load(it, imageLoader)
+                }
 
                 detailText.text =
                     if (category.lowercase() == "completed") "Completed" else "Show more"

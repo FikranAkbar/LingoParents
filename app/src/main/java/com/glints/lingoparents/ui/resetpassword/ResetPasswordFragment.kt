@@ -1,9 +1,11 @@
 package com.glints.lingoparents.ui.resetpassword
 
-import android.content.Context
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -13,7 +15,6 @@ import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentResetPasswordBinding
 import com.glints.lingoparents.utils.AuthFormValidator
-import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 
@@ -22,8 +23,6 @@ class ResetPasswordFragment : Fragment(R.layout.fragment_reset_password) {
     private var _binding: FragmentResetPasswordBinding? = null
     private val binding get() = _binding!!
     private val viewModel: ResetPasswordViewModel by viewModels()
-
-    private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _binding = FragmentResetPasswordBinding.bind(view)
@@ -56,11 +55,15 @@ class ResetPasswordFragment : Fragment(R.layout.fragment_reset_password) {
                     }
                     is ResetPasswordViewModel.ResetPasswordEvent.Success -> {
                         showLoading(false)
-                        Snackbar.make(binding.root, event.message, Snackbar.LENGTH_SHORT).show()
+                        showSuccessSnackbar(event.message)
                     }
                     is ResetPasswordViewModel.ResetPasswordEvent.Error -> {
                         showLoading(false)
-                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(getString(R.string.default_error_message))
+                        if (event.message.lowercase().contains("invalid request")) {
+                            showErrorSnackbar("Reset password token was expired or has been used")
+                        } else {
+                            showErrorSnackbar(event.message)
+                        }
                     }
                     is ResetPasswordViewModel.ResetPasswordEvent.NavigateToLogin -> {
                         val action = ResetPasswordFragmentDirections.actionGlobalLoginFragment()
@@ -116,12 +119,35 @@ class ResetPasswordFragment : Fragment(R.layout.fragment_reset_password) {
         }
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        try {
-            noInternetAccessOrErrorHandler = context as NoInternetAccessOrErrorListener
-        } catch (e: ClassCastException) {
-            println("DEBUG: $context must be implement NoInternetAccessOrErrorListener")
+    private fun showErrorSnackbar(message: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Snackbar.make(binding.root,
+                message,
+                Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.error_color, null))
+                .setTextColor(Color.WHITE)
+                .show()
+        } else {
+            Snackbar.make(binding.root,
+                message,
+                Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(Color.RED)
+                .setTextColor(Color.WHITE)
+                .show()
+        }
+    }
+
+    private fun showSuccessSnackbar(message: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.success_color, null))
+                .setTextColor(Color.WHITE)
+                .show()
+        } else {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(Color.GREEN)
+                .setTextColor(Color.WHITE)
+                .show()
         }
     }
 
