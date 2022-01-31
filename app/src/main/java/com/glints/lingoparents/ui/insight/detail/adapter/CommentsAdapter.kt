@@ -90,6 +90,9 @@ class CommentsAdapter(
                 tvShowReplyComment.text = ""
                 tvShowReplyComment.isVisible = false
 
+                tvLikeCount.text = item.totalLike.toString()
+                tvDislikeCount.text = item.totalDislike.toString()
+
                 rvCommentReply.apply {
                     setHasFixedSize(false)
                     isVisible = false

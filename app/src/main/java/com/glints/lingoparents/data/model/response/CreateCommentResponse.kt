@@ -32,5 +32,7 @@ fun CreateCommentResponse.Message.mapToInsightCommentItem(parentProfile: ParentP
         totalLike = 0,
         totalDislike = 0,
         totalReply = 0,
+        is_liked = 0,
+        is_disliked = 0
     )
 }
