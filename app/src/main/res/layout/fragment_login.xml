@@ -51,6 +51,7 @@
             android:imeOptions="actionNext"
             android:inputType="textEmailAddress"
             android:maxLines="1"
+            android:digits="@string/edit_text_allowed_characters"
             android:textAppearance="@style/Typography.Body1"
             android:textColor="@color/primary_orange"
             android:textColorHint="@color/primary_orange" />
@@ -79,6 +80,7 @@
             android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:maxLines="1"
+            android:digits="@string/edit_text_allowed_characters"
             android:textAppearance="@style/Typography.Body1"
             android:textColor="@color/primary_orange"
             android:textColorHint="@color/primary_orange" />

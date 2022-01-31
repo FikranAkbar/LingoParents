@@ -127,15 +127,13 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
         Log.d("IDEvent", item.id.toString())
     }
 
-    @Subscribe(sticky = true)
-    fun onBlankQuerySent(event: LiveEventListViewModel.LiveEventListEvent.SendBlankQueryToUpcomingEventList) {
-        println("EVENT RECEIVED (UPCOMING): ${event::class.java}")
+    @Subscribe
+    fun onBlankQuerySent(event: LiveEventListViewModel.LiveEventListEvent.SendBlankQueryToEventList) {
         viewModel.loadUpcomingLiveEventList()
     }
 
-    @Subscribe(sticky = true)
-    fun onSearchViewDoneEditing(event: LiveEventListViewModel.LiveEventListEvent.SendQueryToUpcomingEventList) {
-        println("EVENT RECEIVED (UPCOMING): ${event::class.java}")
+    @Subscribe
+    fun onSearchViewDoneEditing(event: LiveEventListViewModel.LiveEventListEvent.SendQueryToEventList) {
         viewModel.searchUpcomingLiveEventList(event.query)
     }
 
@@ -148,6 +146,7 @@ class UpcomingEventFragment : Fragment(R.layout.fragment_upcoming_event),
 
     private fun showEmptyWarning(bool: Boolean) {
         binding.apply {
+            rvUpcomingEvent.isVisible = !bool
             ivNoEvent.isVisible = bool
             tvNoEvent.isVisible = bool
         }

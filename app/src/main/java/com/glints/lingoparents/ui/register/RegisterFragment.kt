@@ -16,10 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentRegisterBinding
 import com.glints.lingoparents.ui.authentication.AuthenticationActivity
-import com.glints.lingoparents.utils.AuthFormValidator
-import com.glints.lingoparents.utils.CustomViewModelFactory
-import com.glints.lingoparents.utils.TokenPreferences
-import com.glints.lingoparents.utils.dataStore
+import com.glints.lingoparents.utils.*
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
