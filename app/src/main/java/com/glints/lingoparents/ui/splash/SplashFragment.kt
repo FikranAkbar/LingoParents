@@ -71,7 +71,7 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
                 if (it.isEmpty()) {
                     viewModel.sendNavigateToAuthScreenEvent()
                 }
-                else if (it.isNotEmpty()) {
+                else {
                     viewModel.sendNavigateToHomeScreenEvent()
                 }
             }

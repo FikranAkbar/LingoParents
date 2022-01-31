@@ -1,6 +1,8 @@
 package com.glints.lingoparents.ui.register
 
+import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -13,11 +15,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentRegisterBinding
+import com.glints.lingoparents.ui.authentication.AuthenticationActivity
 import com.glints.lingoparents.utils.AuthFormValidator
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
@@ -69,100 +73,139 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             viewModel.registerEvent.collect { event ->
                 when (event) {
                     is RegisterViewModel.RegisterEvent.NavigateBackToLogin -> {
-                        findNavController().popBackStack()
+                        handleOnNavigateBackToLogin()
                     }
                     is RegisterViewModel.RegisterEvent.NavigateBackWithResult -> {
-                        setFragmentResult(
-                            "register_user",
-                            bundleOf("register_user" to event.result)
-                        )
-                        findNavController().popBackStack()
+                        handleOnNavigateBackWithResult(event)
                     }
                     is RegisterViewModel.RegisterEvent.TryToRegisterUser -> {
-                        binding.apply {
-                            AuthFormValidator.apply {
-                                hideFieldError(
-                                    arrayListOf(
-                                        tilEmail,
-                                        tilFirstName,
-                                        tilLastName,
-                                        tilPassword,
-                                        tilPhone
-                                    )
-                                )
-
-                                val firstName = event.firstName
-                                val lastName = event.lastName
-                                val email = event.email
-                                val password = event.password
-                                val phone = event.phone
-
-                                if (isValidEmail(email) &&
-                                    isValidPassword(password) &&
-                                    isValidField(firstName) &&
-                                    isValidField(lastName) &&
-                                    isValidField(phone)
-                                ) {
-                                    viewModel.registerUser(
-                                        email,
-                                        password,
-                                        firstName,
-                                        lastName,
-                                        phone
-                                    )
-                                } else {
-                                    if (!isValidEmail(email)) {
-                                        showFieldError(tilEmail, EMAIL_WRONG_FORMAT_ERROR)
-                                    }
-                                    if (!isValidPassword(password)) {
-                                        showFieldError(tilPassword, PASSWORD_EMPTY_ERROR)
-                                    }
-                                    if (!isValidField(firstName)) {
-                                        showFieldError(tilFirstName, EMPTY_FIELD_ERROR)
-                                    }
-                                    if (!isValidField(lastName)) {
-                                        showFieldError(tilLastName, EMPTY_FIELD_ERROR)
-                                    }
-                                    if (!isValidField(phone)) {
-                                        showFieldError(tilPhone, EMPTY_FIELD_ERROR)
-                                    }
-                                }
-                            }
-                        }
+                        handleOnTryRegisterUser(event)
                     }
                     is RegisterViewModel.RegisterEvent.Loading -> {
-                        showLoading(true)
+                        handleOnLoading()
                     }
-                    is RegisterViewModel.RegisterEvent.Success -> {
-                        showLoading(false)
-                        viewModel.onRegisterSuccessful()
+                    is RegisterViewModel.RegisterEvent.RegisterSuccess -> {
+                        handleOnRegisterSuccess(event)
                     }
-                    is RegisterViewModel.RegisterEvent.Error -> {
-                        showLoading(false)
-                        event.message.let {
-                            when {
-                                it.contains("firstname", false) -> {
-                                    AuthFormValidator.showFieldError(binding.tilFirstName, it)
-                                }
-                                it.contains("lastname", false) -> {
-                                    AuthFormValidator.showFieldError(binding.tilLastName, it)
-                                }
-                                it.contains("email", false) -> {
-                                    AuthFormValidator.showFieldError(binding.tilEmail, it)
-                                }
-                                it.contains("phone", false) -> {
-                                    AuthFormValidator.showFieldError(binding.tilPhone, it)
-                                }
-                                else -> Snackbar.make(requireView(),
-                                    event.message,
-                                    Snackbar.LENGTH_SHORT
-                                )
-                                    .setBackgroundTint(Color.RED)
-                                    .setTextColor(Color.WHITE)
-                                    .show()
-                            }
-                        }
+                    is RegisterViewModel.RegisterEvent.LoginSuccess -> {
+                        handleOnLoginSuccess()
                     }
+                    is RegisterViewModel.RegisterEvent.RegisterError -> {
+                        handleOnErrorRegisterUser(event)
+                    }
+                    is RegisterViewModel.RegisterEvent.LoginError -> {
+                        showErrorSnackbar(event.message)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun handleOnLoginSuccess() {
+        CoroutineScope(Dispatchers.Unconfined).launch {
+            delay(100)
+
+            val intent = Intent(
+                this@RegisterFragment.requireContext(),
+                AuthenticationActivity::class.java
+            )
+            startActivity(intent)
+            requireActivity().finish()
+        }
+    }
+
+    private fun handleOnRegisterSuccess(event: RegisterViewModel.RegisterEvent.RegisterSuccess) {
+        showLoading(false)
+        viewModel.loginAfterSuccessfulRegister(event.email, event.password)
+    }
+
+    private fun handleOnLoading() {
+        showLoading(true)
+    }
+
+    private fun handleOnNavigateBackToLogin() {
+        findNavController().popBackStack()
+    }
+
+    private fun handleOnNavigateBackWithResult(event: RegisterViewModel.RegisterEvent.NavigateBackWithResult) {
+        setFragmentResult(
+            "register_user",
+            bundleOf("register_user" to event.result)
+        )
+        findNavController().popBackStack()
+    }
+
+    private fun handleOnTryRegisterUser(event: RegisterViewModel.RegisterEvent.TryToRegisterUser) {
+        binding.apply {
+            AuthFormValidator.apply {
+                hideFieldError(
+                    arrayListOf(
+                        tilEmail,
+                        tilFirstName,
+                        tilLastName,
+                        tilPassword,
+                        tilPhone
+                    )
+                )
+
+                val firstName = event.firstName
+                val lastName = event.lastName
+                val email = event.email
+                val password = event.password
+                val phone = event.phone
+
+                if (isValidEmail(email) &&
+                    isValidPassword(password) &&
+                    isValidField(firstName) &&
+                    isValidField(lastName) &&
+                    isValidField(phone)
+                ) {
+                    viewModel.registerUser(
+                        email,
+                        password,
+                        firstName,
+                        lastName,
+                        phone
+                    )
+                } else {
+                    if (!isValidEmail(email)) {
+                        showFieldError(tilEmail, EMAIL_WRONG_FORMAT_ERROR)
+                    }
+                    if (!isValidPassword(password)) {
+                        showFieldError(tilPassword, PASSWORD_EMPTY_ERROR)
+                    }
+                    if (!isValidField(firstName)) {
+                        showFieldError(tilFirstName, EMPTY_FIELD_ERROR)
+                    }
+                    if (!isValidField(lastName)) {
+                        showFieldError(tilLastName, EMPTY_FIELD_ERROR)
+                    }
+                    if (!isValidField(phone)) {
+                        showFieldError(tilPhone, EMPTY_FIELD_ERROR)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun handleOnErrorRegisterUser(event: RegisterViewModel.RegisterEvent.RegisterError) {
+        showLoading(false)
+        event.message.let {
+            when {
+                it.contains("firstname", false) -> {
+                    AuthFormValidator.showFieldError(binding.tilFirstName, it)
+                }
+                it.contains("lastname", false) -> {
+                    AuthFormValidator.showFieldError(binding.tilLastName, it)
+                }
+                it.contains("email", false) -> {
+                    AuthFormValidator.showFieldError(binding.tilEmail, it)
+                }
+                it.contains("phone", false) -> {
+                    AuthFormValidator.showFieldError(binding.tilPhone, it)
+                }
+                else -> {
+                    showErrorSnackbar(event.message)
                 }
             }
         }
@@ -180,6 +223,20 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             tilEmail.isEnabled = !bool
             tilPassword.isEnabled = !bool
             tilPhone.isEnabled = !bool
+        }
+    }
+
+    private fun showErrorSnackbar(message: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.error_color, null))
+                .setTextColor(Color.WHITE)
+                .show()
+        } else {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(Color.RED)
+                .setTextColor(Color.WHITE)
+                .show()
         }
     }
 

@@ -124,10 +124,13 @@ class HomeFragment : Fragment(R.layout.fragment_home), ChildrenAdapter.OnItemCli
                         showLoading(HomeViewModel.STUDENTLIST_TYPE, false)
                         showEmptyData(HomeViewModel.STUDENTLIST_TYPE, true)
 
-                        if (student.message.lowercase().contains("invalid token")) {
-                            viewModel.getStudentList(HomeViewModel.STUDENTLIST_TYPE, viewModel.parentId)
-                        } else {
-                            noInternetAccessOrErrorHandler.onNoInternetAccessOrError(student.message)
+                        when {
+                            student.message.lowercase().contains("invalid token") -> {
+                                viewModel.getStudentList(HomeViewModel.STUDENTLIST_TYPE, viewModel.parentId)
+                            }
+                            !student.message.lowercase().contains("failed") -> {
+                                noInternetAccessOrErrorHandler.onNoInternetAccessOrError(student.message)
+                            }
                         }
                     }
 

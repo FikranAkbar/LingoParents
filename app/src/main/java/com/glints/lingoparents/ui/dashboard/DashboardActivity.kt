@@ -1,14 +1,16 @@
 package com.glints.lingoparents.ui.dashboard
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -18,7 +20,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.data.api.interceptors.TokenAuthenticationInterceptor
 import com.glints.lingoparents.databinding.ActivityDashboardBinding
-import com.glints.lingoparents.ui.MainActivity
+import com.glints.lingoparents.ui.authentication.AuthenticationActivity
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
 import com.glints.lingoparents.utils.TokenPreferences
@@ -77,7 +79,8 @@ class DashboardActivity : AppCompatActivity(), Toolbar.OnMenuItemClickListener,
                         showLoading(false)
                         viewModel.resetToken()
 
-                        val intent = Intent(this@DashboardActivity, MainActivity::class.java)
+                        val intent =
+                            Intent(this@DashboardActivity, AuthenticationActivity::class.java)
                         intent.putExtra("flag", TOKEN_EXPIRED_FLAG)
                         startActivity(intent)
                         finish()
@@ -93,12 +96,18 @@ class DashboardActivity : AppCompatActivity(), Toolbar.OnMenuItemClickListener,
         }
     }
 
-    @SuppressLint("NewApi")
     private fun showSnackbar(message: String) {
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
-            .setBackgroundTint(resources.getColor(R.color.error_color, null))
-            .setTextColor(Color.parseColor("#FFFFFF"))
-            .show()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.error_color, null))
+                .setTextColor(Color.parseColor("#FFFFFF"))
+                .show()
+        } else {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(Color.RED)
+                .setTextColor(Color.parseColor("#FFFFFF"))
+                .show()
+        }
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
@@ -141,6 +150,14 @@ class DashboardActivity : AppCompatActivity(), Toolbar.OnMenuItemClickListener,
     override fun onNoInternetAccessOrError(errorMessage: String) {
         viewModel.onNoInternetAccessOrError(errorMessage)
     }
+}
+
+fun Activity.openKeyboard() {
+    WindowInsetsControllerCompat(window, window.decorView).show(WindowInsetsCompat.Type.ime())
+}
+
+fun Activity.hideKeyboard() {
+    WindowInsetsControllerCompat(window, window.decorView).hide(WindowInsetsCompat.Type.ime())
 }
 
 const val TOKEN_EXPIRED_FLAG = Activity.RESULT_FIRST_USER + 10

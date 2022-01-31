@@ -1,4 +1,7 @@
 package com.glints.lingoparents.data.model.response
+
+import com.glints.lingoparents.data.model.InsightCommentItem
+
 class InsightDetailResponse{
     val status: String? = null
     val message: Message? = null
@@ -77,8 +80,8 @@ class InsightDetailResponse{
     )
 
     data class MasterUser(
-        val Master_parent: MasterParent,
-        val Master_student: MasterStudent,
+        val Master_parent: MasterParent?,
+        val Master_student: MasterStudent?,
         val Master_tutor: Any,
         val id: Int,
         val role: String
@@ -96,7 +99,7 @@ class InsightDetailResponse{
         val is_active: String,
         val lastname: String,
         val phone: String,
-        val photo: String,
+        val photo: String?,
         val referral_code: String,
         val updatedAt: String
     )
@@ -128,4 +131,25 @@ class InsightDetailResponse{
         val tag_name: String,
         val updatedAt: Any
     )
+}
+
+fun InsightDetailResponse.mapToInsightCommentItems(): List<InsightCommentItem>? {
+    val result = this.message?.Master_comments?.map {
+        return@map InsightCommentItem(
+            idComment = it.id,
+            idUser = it.id_user,
+            photo = it.Master_user.Master_parent?.photo,
+            name = "${it.Master_user.Master_parent?.firstname} ${it.Master_user.Master_parent?.lastname}",
+            comment = it.comment,
+            totalLike = it.total_like,
+            totalDislike = it.total_dislike,
+            totalReply = it.replies
+        )
+    }
+
+    result?.let {
+        return it
+    }
+
+    return null
 }

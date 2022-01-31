@@ -38,7 +38,6 @@ class PasswordSettingViewModel(
         object Success : PasswordSettingEvent()
         data class Error(val message: String) : PasswordSettingEvent()
 
-        //amin
         data class TryToChangePassword(
             val currentPassword: String,
             val newPassword: String,
@@ -46,7 +45,6 @@ class PasswordSettingViewModel(
         ) : PasswordSettingEvent()
     }
 
-    //amin
     fun onSaveButtonClick(
         currentPassword: String,
         newPassword: String,
@@ -63,7 +61,6 @@ class PasswordSettingViewModel(
     }
 
     fun changePassword(
-        accessToken: String,
         currentPassword: String,
         newPassword: String,
         confirmPassword: String,
@@ -71,7 +68,7 @@ class PasswordSettingViewModel(
         onApiCallStarted()
         APIClient
             .service
-            .changePassword(accessToken, currentPassword, newPassword, confirmPassword)
+            .changePassword(currentPassword, newPassword, confirmPassword)
             .enqueue(object : Callback<ChangePasswordResponse> {
                 override fun onResponse(
                     call: Call<ChangePasswordResponse>,

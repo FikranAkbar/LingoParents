@@ -1,146 +1,239 @@
 package com.glints.lingoparents.ui.insight.detail.adapter
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.text.TextUtils
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.glints.lingoparents.R
-import com.glints.lingoparents.data.model.response.InsightDetailResponse
+import com.glints.lingoparents.data.model.InsightCommentItem
 import com.glints.lingoparents.databinding.ItemInsightCommentBinding
+import com.glints.lingoparents.ui.dashboard.hideKeyboard
+import com.glints.lingoparents.ui.dashboard.openKeyboard
 import com.glints.lingoparents.ui.insight.detail.DetailInsightFragment
+import kotlin.math.roundToInt
 
-class CommentsAdapter(private val listener: OnItemClickCallback, private val context: Context) :
+class CommentsAdapter(
+    private val listener: OnItemClickCallback,
+    private val context: Context,
+    private var uniqueAdapterId: Double,
+    var parentCommentListener: ParentCommentListener? = null,
+) :
     RecyclerView.Adapter<CommentsAdapter.AdapterHolder>() {
-    private lateinit var rvChild: RecyclerView
-    private var parentId: Int = 0
+    companion object {
+        var parentId: Int = 0
+    }
 
     private val diffUtilCallback = object :
-        DiffUtil.ItemCallback<InsightDetailResponse.MasterComment>() {
+        DiffUtil.ItemCallback<InsightCommentItem>() {
         override fun areItemsTheSame(
-            oldItem: InsightDetailResponse.MasterComment,
-            newItem: InsightDetailResponse.MasterComment,
+            oldItem: InsightCommentItem,
+            newItem: InsightCommentItem,
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.idComment == newItem.idComment
         }
 
         override fun areContentsTheSame(
-            oldItem: InsightDetailResponse.MasterComment,
-            newItem: InsightDetailResponse.MasterComment,
+            oldItem: InsightCommentItem,
+            newItem: InsightCommentItem,
         ): Boolean {
-            return oldItem == newItem
+            return oldItem.comment == newItem.comment
         }
     }
-    private val differ = AsyncListDiffer(this, diffUtilCallback)
+
+    val differ = AsyncListDiffer(this, diffUtilCallback)
 
     inner class AdapterHolder(private val binding: ItemInsightCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        @SuppressLint("SetTextI18n")
-        fun bind(item: InsightDetailResponse.MasterComment) {
-            binding.apply {
-                if (parentId == item.id_user)
-                    hideTextView(true)
-                else hideTextView(false)
 
-                ivComment.load(item.Master_user.Master_parent.photo)
-                tvUsernameComment.text =
-                    item.Master_user.Master_parent.firstname + " " + item.Master_user.Master_parent.lastname
-                tvCommentBody.text = item.comment
-                tvLikeComment.text = item.total_like.toString()
-                tvDislikeComment.text = item.total_dislike.toString()
-
-                tvLikeComment.setOnClickListener {
-                    listener.onLikeCommentClicked(item)
-                }
-
-                tvDislikeComment.setOnClickListener {
-                    listener.onDislikeCommentClicked(item)
-                }
-
-                tvReportComment.setOnClickListener {
-                    showReportDialog(context, item, item.id)
-                }
-
-                tvReplyComment.setOnClickListener {
-                    tfReplyComment.visibility = View.VISIBLE
-                    tfReplyComment.requestFocus()
-                    btnReplyComment.visibility = View.VISIBLE
-                    "Reply".also { btnReplyComment.text = it }
-
-                    btnReplyComment.setOnClickListener {
-                        if (TextUtils.isEmpty(tfReplyComment.editText?.text)) {
-                            tfReplyComment.requestFocus()
-                            tfReplyComment.error = "Please enter your comment"
-                        } else {
-                            listener.onReplyCommentClicked(
-                                item,
-                                tfReplyComment.editText?.text.toString()
-                            )
-                            tfReplyComment.editText?.setText("")
-                        }
-                    }
-                }
-
-                if (item.replies > 0) tvShowReplyComment.visibility = View.VISIBLE
-                tvShowReplyComment.text = "Show ${item.replies} Replies"
-                tvShowReplyComment.setOnClickListener {
-                    if (rvCommentReply.visibility == View.GONE) {
-                        rvCommentReply.visibility = View.VISIBLE
-                        tvShowReplyComment.text = "Hide Replies"
-                        rvChild = rvCommentReply
-                        listener.onShowCommentRepliesClicked(item)
-                    } else if (rvCommentReply.visibility == View.VISIBLE) {
-                        rvCommentReply.visibility = View.GONE
-                        tvShowReplyComment.text = "Show ${item.replies} Replies"
-                    }
-                }
-
-                tvDeleteComment.setOnClickListener {
-                    listener.onDeleteCommentClicked(item, item.id)
-                }
-
-                tvUpdateComment.setOnClickListener {
-                    tfReplyComment.visibility = View.VISIBLE
-                    tfReplyComment.requestFocus()
-                    btnReplyComment.visibility = View.VISIBLE
-                    "Update".also { btnReplyComment.text = it }
-
-                    btnReplyComment.setOnClickListener {
-                        if (TextUtils.isEmpty(tfReplyComment.editText?.text)) {
-                            tfReplyComment.requestFocus()
-                            tfReplyComment.error = "Please enter your comment"
-                        } else {
-                            listener.onUpdateCommentClicked(
-                                item,
-                                tfReplyComment.editText?.text.toString()
-                            )
-                            tfReplyComment.editText?.setText("")
-                        }
-                    }
-                }
+        private val linearLayoutManager = object : LinearLayoutManager(context) {
+            override fun canScrollVertically(): Boolean {
+                return false
             }
         }
 
-        private fun hideTextView(b: Boolean) {
+        @SuppressLint("SetTextI18n")
+        fun bind(item: InsightCommentItem) {
+            val onRvChildDifferListChangedListener =
+                AsyncListDiffer.ListListener<InsightCommentItem> { _, currentList ->
+                    if (currentList.size <= 0) {
+                        binding.rvCommentReply.isVisible = false
+                        binding.tvShowReplyComment.isVisible = false
+                    }
+                }
+
+            binding.apply {
+                //region Initialize views value
+                if (parentId == item.idUser)
+                    showDeleteAndUpdateTextView(true)
+                else showDeleteAndUpdateTextView(false)
+
+                item.photo?.let {
+                    ivComment.load(it)
+                }
+
+                tvUsernameComment.text = item.name
+                tvCommentBody.text = item.comment
+
+                tvShowReplyComment.text = ""
+                tvShowReplyComment.isVisible = false
+
+                rvCommentReply.apply {
+                    setHasFixedSize(false)
+                    isVisible = false
+
+                    layoutManager = linearLayoutManager
+
+                    if (item.totalReply > 0) {
+                        rvCommentReply.isVisible = false
+                        tvShowReplyComment.isVisible = true
+                        tvShowReplyComment.text = "Show ${item.totalReply} Replies"
+                        val newCommentsAdapter = createNewAdapter(item.idComment)
+                        adapter = newCommentsAdapter
+
+                        newCommentsAdapter.apply {
+                            this.differ.removeListListener(onRvChildDifferListChangedListener)
+                            this.differ.addListListener(onRvChildDifferListChangedListener)
+                        }
+                    }
+                }
+                //endregion
+
+                //region Set like button onClickListener
+                ivCommentLike.setOnClickListener {
+                    listener.onLikeCommentClicked(item, tvLikeCount, tvDislikeCount)
+                }
+                //endregion
+
+                //region Set dislike button onClickListener
+                ivCommentDislike.setOnClickListener {
+                    listener.onDislikeCommentClicked(item, tvDislikeCount, tvLikeCount)
+                }
+                //endregion
+
+                //region Set report button onClickListener
+                tvReportComment.setOnClickListener {
+                    showReportDialog(context, item, item.idComment)
+                }
+                //endregion
+
+                //region Set reply button onClickListener
+                tvReplyComment.setOnClickListener {
+                    if (btnReplyComment.text == "Update") {
+                        btnReplyComment.text = "Reply"
+                        tfReplyComment.editText?.setText("")
+                        setPostCommentListener(item)
+                    } else {
+                        tfReplyComment.isVisible = !tfReplyComment.isVisible
+                        btnReplyComment.isVisible = !btnReplyComment.isVisible
+
+                        if (tvShowReplyComment.text.toString().lowercase().contains("show") &&
+                            tfReplyComment.isVisible
+                        ) {
+                            rvCommentReply.visibility = View.VISIBLE
+                            tvShowReplyComment.text = "Hide Replies"
+                            listener.onShowCommentRepliesClicked(item, uniqueAdapterId, binding)
+                        }
+
+                        if (tfReplyComment.isVisible) {
+                            tfReplyComment.requestFocus()
+                            (context as Activity).openKeyboard()
+                            "Reply".also { btnReplyComment.text = it }
+
+                            setPostCommentListener(item)
+                        } else {
+                            (context as Activity).hideKeyboard()
+                            btnReplyComment.text = ""
+                            tfReplyComment.editText?.setText("")
+                        }
+                    }
+                }
+                //endregion
+
+                //region Set show replies button onClickListener
+                tvShowReplyComment.setOnClickListener {
+                    if (!rvCommentReply.isVisible) {
+                        rvCommentReply.isVisible = true
+
+                        tvShowReplyComment.text = "Hide Replies"
+                        listener.onShowCommentRepliesClicked(item, uniqueAdapterId, binding)
+                    } else {
+                        rvCommentReply.isVisible = false
+                        val childRvDiffer =
+                            (binding.rvCommentReply.adapter as CommentsAdapter).differ
+
+                        if (childRvDiffer.currentList.size > 0) {
+                            tvShowReplyComment.text =
+                                "Show ${childRvDiffer.currentList.size} Replies"
+                            tvShowReplyComment.isVisible = true
+                        } else {
+                            tvShowReplyComment.isVisible = false
+                        }
+                    }
+                }
+                //endregion
+
+                //region Set delete button onClickListener
+                tvDeleteComment.setOnClickListener {
+                    parentCommentListener?.onChildCommentDelete()
+                    listener.onDeleteCommentClicked(
+                        item,
+                        item.idComment,
+                        uniqueAdapterId
+                    )
+                }
+                //endregion
+
+                //region Set update button onClickListener
+                tvUpdateComment.setOnClickListener {
+                    if (btnReplyComment.text == "Reply") {
+                        btnReplyComment.text = "Update"
+                        tfReplyComment.editText?.setText(item.comment)
+                        tfReplyComment.editText?.selectAll()
+                        setUpdateCommentListener(item)
+                    } else {
+                        tfReplyComment.isVisible = !tfReplyComment.isVisible
+                        btnReplyComment.isVisible = !btnReplyComment.isVisible
+
+                        if (tfReplyComment.isVisible) {
+                            tfReplyComment.requestFocus()
+                            (context as Activity).openKeyboard()
+                            "Update".also { btnReplyComment.text = it }
+                            tfReplyComment.editText?.setText(item.comment)
+                            tfReplyComment.editText?.selectAll()
+
+                            setUpdateCommentListener(item)
+                        } else {
+                            (context as Activity).hideKeyboard()
+                            btnReplyComment.text = ""
+                            tfReplyComment.editText?.setText("")
+                        }
+                    }
+                }
+                //endregion
+            }
+        }
+
+        private fun showDeleteAndUpdateTextView(b: Boolean) {
             binding.apply {
                 tvDeleteComment.isVisible = b
                 tvUpdateComment.isVisible = b
             }
         }
 
-        private fun showReportDialog(
-            context: Context,
-            item: InsightDetailResponse.MasterComment,
-            id: Int,
-        ) {
+        private fun showReportDialog(context: Context, item: InsightCommentItem, id: Int) {
             val builder = AlertDialog.Builder(context)
             var text = ""
             builder.apply {
@@ -162,20 +255,96 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
             }
             builder.create().show()
         }
-    }
 
-    fun showCommentReplies(_adapter: CommentRepliesAdapter) {
-        rvChild.apply {
-            visibility = View.VISIBLE
-            setHasFixedSize(true)
+        @SuppressLint("SetTextI18n")
+        private fun setPostCommentListener(item: InsightCommentItem) {
+            binding.apply {
+                btnReplyComment.setOnClickListener {
+                    if (TextUtils.isEmpty(tfReplyComment.editText?.text)) {
+                        tfReplyComment.requestFocus()
+                        tfReplyComment.error = "Please enter your comment"
+                    } else {
+                        if (rvCommentReply.adapter != null) {
+                            listener.onReplyCommentClicked(
+                                item,
+                                tfReplyComment.editText?.text.toString(),
+                                (rvCommentReply.adapter as CommentsAdapter).getUniqueAdapterId()
+                            )
+                            (rvCommentReply.adapter as CommentsAdapter).assignParentCommentListener(
+                                item.idComment,
+                                this@CommentsAdapter)
+                            item.totalReply = rvCommentReply.adapter!!.itemCount + 1
+                        } else {
+                            val newCommentsAdapter = createNewAdapter(item.idComment)
+                            rvCommentReply.adapter = newCommentsAdapter
 
-            val linearLayoutManager = object : LinearLayoutManager(context) {
-                override fun canScrollVertically(): Boolean {
-                    return false
+                            listener.onReplyCommentClicked(
+                                item,
+                                tfReplyComment.editText?.text.toString(),
+                                newCommentsAdapter.getUniqueAdapterId()
+                            )
+
+                            newCommentsAdapter.apply {
+
+                                val onRvChildDifferListChangedListener =
+                                    AsyncListDiffer.ListListener<InsightCommentItem> { _, currentList ->
+                                        if (currentList.size <= 0) {
+                                            binding.rvCommentReply.isVisible = false
+                                            binding.tvShowReplyComment.isVisible = false
+                                        }
+                                    }
+
+                                this.differ.removeListListener(onRvChildDifferListChangedListener)
+                                this.differ.addListListener(onRvChildDifferListChangedListener)
+                            }
+
+                            item.totalReply += 1
+                        }
+
+                        tvShowReplyComment.text = "Hide Replies"
+                        tvShowReplyComment.isVisible = true
+                        rvCommentReply.isVisible = true
+
+                        tfReplyComment.editText?.setText("")
+                        tfReplyComment.isVisible = false
+                        btnReplyComment.isVisible = false
+                        (context as Activity).hideKeyboard()
+                    }
                 }
             }
-            layoutManager = linearLayoutManager
+        }
+
+        private fun setUpdateCommentListener(item: InsightCommentItem) {
+            binding.apply {
+                btnReplyComment.setOnClickListener {
+                    if (TextUtils.isEmpty(tfReplyComment.editText?.text)) {
+                        tfReplyComment.requestFocus()
+                        tfReplyComment.error = "Please enter your comment"
+                    } else {
+                        listener.onUpdateCommentClicked(
+                            item,
+                            tfReplyComment.editText?.text.toString(),
+                            binding.tvCommentBody
+                        )
+                        tfReplyComment.editText?.setText("")
+                        tfReplyComment.isVisible = false
+                        btnReplyComment.isVisible = false
+                        (context as Activity).hideKeyboard()
+                    }
+                }
+            }
+        }
+    }
+
+    fun showCommentReplies(_adapter: CommentsAdapter, binding: ItemInsightCommentBinding) {
+        binding.rvCommentReply.apply {
+            isVisible = true
             adapter = _adapter
+            if (parentCommentListener == null) {
+                this.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    setMargins(dpFormat(30), 0, 0, 0)
+                }
+            }
         }
     }
 
@@ -193,26 +362,101 @@ class CommentsAdapter(private val listener: OnItemClickCallback, private val con
 
     override fun getItemCount(): Int = differ.currentList.size
 
-    interface OnItemClickCallback : CommentRepliesAdapter.OnItemClickCallback {
+    interface ParentCommentListener {
+        fun onChildCommentDelete()
+    }
+
+    interface OnItemClickCallback {
         fun onReportCommentClicked(
-            item: InsightDetailResponse.MasterComment,
+            item: InsightCommentItem,
             id: Int,
             report_comment: String,
         )
 
-        fun onLikeCommentClicked(item: InsightDetailResponse.MasterComment)
-        fun onDislikeCommentClicked(item: InsightDetailResponse.MasterComment)
-        fun onReplyCommentClicked(item: InsightDetailResponse.MasterComment, comment: String)
-        fun onShowCommentRepliesClicked(item: InsightDetailResponse.MasterComment)
-        fun onDeleteCommentClicked(item: InsightDetailResponse.MasterComment, id: Int)
-        fun onUpdateCommentClicked(item: InsightDetailResponse.MasterComment, comment: String)
+        fun onLikeCommentClicked(
+            item: InsightCommentItem,
+            tvLikeCount: TextView,
+            tvDislikeCount: TextView,
+        )
+
+        fun onDislikeCommentClicked(
+            item: InsightCommentItem,
+            tvDislikeCount: TextView,
+            tvLikeCount: TextView,
+        )
+
+        fun onReplyCommentClicked(
+            item: InsightCommentItem,
+            comment: String,
+            uniqueAdapterId: Double,
+        )
+
+        fun onShowCommentRepliesClicked(
+            item: InsightCommentItem,
+            uniqueAdapterId: Double,
+            binding: ItemInsightCommentBinding,
+        )
+
+        fun onDeleteCommentClicked(
+            item: InsightCommentItem,
+            id: Int,
+            uniqueAdapterId: Double,
+        )
+
+        fun onUpdateCommentClicked(
+            item: InsightCommentItem,
+            comment: String,
+            tvCommentBody: TextView,
+        )
     }
 
-    fun submitList(list: List<InsightDetailResponse.MasterComment>) {
+    fun getUniqueAdapterId() = uniqueAdapterId
+
+    fun submitList(list: List<InsightCommentItem>) {
         differ.submitList(list)
     }
 
-    fun submitParentId(id: Int) {
-        parentId = id
+    fun addNewCommentItem(item: InsightCommentItem) {
+        val currentList = differ.currentList.map {
+            it.copy()
+        }
+        differ.submitList(listOf(item) + currentList)
     }
+
+    fun deleteCommentItem(item: InsightCommentItem) {
+        val newList = differ.currentList.filter {
+            it.idComment != item.idComment
+        }
+
+        differ.submitList(newList)
+    }
+
+    private fun createNewAdapter(itemCommentId: Int): CommentsAdapter {
+        val uniqueAdapterId = DetailInsightFragment.randomGenerator.nextDouble()
+        val newCommentsAdapter = CommentsAdapter(listener, context, uniqueAdapterId)
+        DetailInsightFragment.commentAdapterMap[uniqueAdapterId] = newCommentsAdapter
+        newCommentsAdapter.assignParentCommentListener(itemCommentId, this)
+
+        return newCommentsAdapter
+    }
+
+    fun assignParentCommentListener(itemCommentId: Int, parentAdapter: CommentsAdapter) {
+        this.parentCommentListener = object : ParentCommentListener {
+            override fun onChildCommentDelete() {
+                parentAdapter.differ.submitList(parentAdapter.differ.currentList.map {
+                    if (it.idComment == itemCommentId) {
+                        it.copy(totalReply = it.totalReply - 1)
+                    } else {
+                        it.copy()
+                    }
+                })
+            }
+        }
+    }
+
+    private fun dpFormat(dp: Int): Int {
+        val displayMetrics = context.resources.displayMetrics
+        return (dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT)).roundToInt()
+    }
+
 }
