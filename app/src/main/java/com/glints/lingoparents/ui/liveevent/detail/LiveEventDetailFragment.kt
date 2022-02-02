@@ -45,8 +45,8 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
     private lateinit var viewModel: LiveEventDetailViewModel
     private val paymentMethodItems = listOf<String>("Cash", "BRI", "BNI", "BCA", "GoPay", "OVO")
 
-    private var id_user: Int? = null
-    private var id_event: Int? = null
+    private var id_user: Int = 0
+    private var id_event: Int = 0
     private var eventType: String? = null
 
     private var fullname: String? = null
@@ -56,9 +56,9 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
     private var attendance_time_event: String? = null
 
     private var idUser_createValue: Int? = null
-    private var total_price: Int? = null
-    private var voucherCode: String? = null
-    private var paymentMethod: String? = null
+    private var total_price: Int = 0
+    private var voucherCode: String = ""
+    private var paymentMethod: String = ""
 
     private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
 
@@ -153,14 +153,21 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                         }
                     }
                     is LiveEventDetailViewModel.LiveEventDetailEvent.RegisterClick -> {
-                        /*
+
                         val phoneNumber = event.phone
                         val voucherCode = event.voucherCode
+
                         val fullname = event.fullname
+                        val nameParts = fullname.split(" ").toMutableList()
+                        val firstName = nameParts[0]
+                        nameParts.removeAt(0)
+                        val lastName = nameParts.joinToString(" ")
+
                         val email = event.email
                         val paymentMethod = event.paymentMethod
                         val status = "yes"
 
+                        /*
                         viewModel.registerLiveEvent(
                             total_price!!,
                             phoneNumber,
@@ -176,7 +183,17 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                             status
                         )
                          */
-                        MidtransSDK.getInstance().startPaymentUiFlow(requireContext())
+
+                        viewModel.createOrderEvent(
+                            firstName,
+                            lastName,
+                            email,
+                            phoneNumber,
+                            id_event,
+                            id_user,
+                            total_price,
+                            voucherCode
+                        )
                     }
                     is LiveEventDetailViewModel.LiveEventDetailEvent.RegisterSuccess -> {
                         Snackbar.make(
@@ -211,6 +228,10 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                             .setTextColor(Color.parseColor("#FFFFFF"))
                             .show()
                         showLoading(false)
+                    }
+                    is LiveEventDetailViewModel.LiveEventDetailEvent.CreateOrderEventSuccess -> {
+                        MidtransSDK.getInstance().startPaymentUiFlow(requireContext(), event.snapToken)
+                        //Snackbar.make(binding.root, "createOrderEventSuccess", Snackbar.LENGTH_SHORT).show()
                     }
                 }
             }
