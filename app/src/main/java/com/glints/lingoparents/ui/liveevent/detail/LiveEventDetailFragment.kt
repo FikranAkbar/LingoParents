@@ -176,7 +176,6 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                             status
                         )
                          */
-                        MidtransSDK.getInstance().transactionRequest = initTransactionRequest()
                         MidtransSDK.getInstance().startPaymentUiFlow(requireContext())
                     }
                     is LiveEventDetailViewModel.LiveEventDetailEvent.RegisterSuccess -> {
@@ -331,23 +330,21 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
         }
     }
 
-    private fun initTransactionRequest(): TransactionRequest {
+    /*private fun initTransactionRequest(): TransactionRequest {
         val transactionRequestNew =
             TransactionRequest(System.currentTimeMillis().toString() + "", 49900.0)
         transactionRequestNew.customerDetails = initCustomerDetails()
-        transactionRequestNew.gopay = Gopay("mysamplesdk:://midtrans")
-        transactionRequestNew.shopeepay = Shopeepay("mysamplesdk:://midtrans")
         return transactionRequestNew
-    }
+    }*/
 
-    private fun initCustomerDetails(): CustomerDetails{
+    /*private fun initCustomerDetails(): CustomerDetails{
         val mCustomerDetails = CustomerDetails()
         mCustomerDetails.phone = "085156283106"
         mCustomerDetails.firstName = "Fikran Akbar"
         mCustomerDetails.email = "mail@mail.com"
         mCustomerDetails.customerIdentifier = "mail@mail.com"
         return mCustomerDetails
-    }
+    }*/
 
     private fun initMidtransSdk() {
         val clientKey = MidtransSdkConfig.MERCHANT_CLIENT_KEY

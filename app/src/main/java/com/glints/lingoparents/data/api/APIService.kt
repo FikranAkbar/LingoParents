@@ -222,4 +222,16 @@ interface APIService {
         @Field("status") status: String
     ): Call<LiveEventRegisterResponse>
 
+    @FormUrlEncoded
+    @POST("api/v1/event_orders/create_order")
+    fun createEventOrder(
+        @Field("first_name") firstName: String,
+        @Field("last_name") lastName: String,
+        @Field ("email") email: String,
+        @Field("phone") phone: String,
+        @Field("id_event") idEvent: Int,
+        @Field("id_user") idUser: Int,
+        @Field("price") price: Int,
+        @Field("voucher_code") voucherCode: String
+    )
 }
