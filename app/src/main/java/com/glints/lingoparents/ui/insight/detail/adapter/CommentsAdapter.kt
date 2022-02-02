@@ -372,14 +372,14 @@ class CommentsAdapter(
         private fun setPostCommentListener(item: InsightCommentItem) {
             binding.apply {
                 btnReplyComment.setOnClickListener {
-                    if (TextUtils.isEmpty(tfReplyComment.editText?.text)) {
+                    if (TextUtils.isEmpty(tfReplyComment.editText?.text?.trim())) {
                         tfReplyComment.requestFocus()
                         tfReplyComment.error = "Please enter your comment"
                     } else {
                         if (rvCommentReply.adapter != null) {
                             listener.onReplyCommentClicked(
                                 item,
-                                tfReplyComment.editText?.text.toString(),
+                                tfReplyComment.editText?.text.toString().trim(),
                                 (rvCommentReply.adapter as CommentsAdapter).getUniqueAdapterId()
                             )
                             (rvCommentReply.adapter as CommentsAdapter).assignParentCommentListener(
@@ -392,7 +392,7 @@ class CommentsAdapter(
 
                             listener.onReplyCommentClicked(
                                 item,
-                                tfReplyComment.editText?.text.toString(),
+                                tfReplyComment.editText?.text.toString().trim(),
                                 newCommentsAdapter.getUniqueAdapterId()
                             )
 
