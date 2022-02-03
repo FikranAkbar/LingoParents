@@ -111,6 +111,7 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                         showLoading(false)
                         binding.apply {
                             event.result.apply {
+                                /*
                                 println("Event Detail: $this")
                                 if (eventType != "completed") {
                                     Trx_event_participants?.find { it.id_user == id_user }?.let {
@@ -118,6 +119,7 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                                         tvUserHasBeenRegistered.visibility = View.VISIBLE
                                     }
                                 }
+                                 */
 
                                 tvDetailEventTitle.text = title
                                 tvDateAndTimeContent.text = "$date, $started_at"
