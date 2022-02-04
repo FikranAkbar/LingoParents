@@ -50,6 +50,12 @@ class LiveEventListFragment : Fragment(R.layout.fragment_live_event_list) {
                 TabLayoutMediator(tlLiveEventCategory, this) { tab, position ->
                     tab.text = tabNames[position]
                 }.attach()
+
+                repeat(tabNames.count()) {
+                    currentItem = it
+                }
+
+                currentItem = 0
             }
             tfSearch.apply {
                 editText?.setOnEditorActionListener { textView, actionId, _ ->

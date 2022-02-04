@@ -1,8 +1,11 @@
 package com.glints.lingoparents.ui.forgotpassword
 
 import android.content.Context
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -69,7 +72,7 @@ class ForgotPasswordFragment : Fragment(R.layout.fragment_forgot_password) {
                         if (event.message.contains("email not found", ignoreCase = true)) {
                             AuthFormValidator.showFieldError(binding.tilEmail, event.message)
                         } else {
-                            noInternetAccessOrErrorHandler.onNoInternetAccessOrError(getString(R.string.default_error_message))
+                            noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
                         }
                     }
                     is ForgotPasswordViewModel.ForgotPasswordEvent.Loading -> {
@@ -77,14 +80,35 @@ class ForgotPasswordFragment : Fragment(R.layout.fragment_forgot_password) {
                     }
                     is ForgotPasswordViewModel.ForgotPasswordEvent.Success -> {
                         showLoading(false)
-                        binding.apply {
-                            Snackbar.make(root, event.message, Snackbar.LENGTH_LONG).show()
-                            tilEmail.editText?.setText("")
-                        }
-
+                        binding.tilEmail.editText?.setText("")
+                        showSuccessSnackbar(event.message)
                     }
                 }
             }
+        }
+    }
+
+    private fun showSuccessSnackbar(message: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val snackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.success_color, null))
+                .setTextColor(Color.WHITE)
+
+            val snackbarView = snackbar.view
+            val snackbarTextView = snackbarView.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+
+            snackbarTextView.maxLines = 4
+            snackbar.show()
+        } else {
+            val snackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(Color.GREEN)
+                .setTextColor(Color.WHITE)
+
+            val snackbarView = snackbar.view
+            val snackbarTextView = snackbarView.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+
+            snackbarTextView.maxLines = 4
+            snackbar.show()
         }
     }
 

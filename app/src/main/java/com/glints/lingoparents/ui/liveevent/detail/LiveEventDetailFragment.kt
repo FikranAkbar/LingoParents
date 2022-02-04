@@ -12,21 +12,34 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import coil.imageLoader
 import coil.load
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FormRegisterEventBinding
 import com.glints.lingoparents.databinding.FragmentLiveEventDetailBinding
 import com.glints.lingoparents.utils.*
 import com.google.android.material.snackbar.Snackbar
+import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback
+import com.midtrans.sdk.corekit.core.MidtransSDK
+import com.midtrans.sdk.corekit.core.TransactionRequest
+import com.midtrans.sdk.corekit.core.UIKitCustomSetting
+import com.midtrans.sdk.corekit.core.themes.CustomColorTheme
+import com.midtrans.sdk.corekit.models.CustomerDetails
+import com.midtrans.sdk.corekit.models.snap.Gopay
+import com.midtrans.sdk.corekit.models.snap.Shopeepay
+import com.midtrans.sdk.corekit.models.snap.TransactionResult
+import com.midtrans.sdk.uikit.SdkUIFlowBuilder
 import kotlinx.coroutines.flow.collect
 
-class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
+class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
+    TransactionFinishedCallback {
     private lateinit var binding: FragmentLiveEventDetailBinding
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var viewModel: LiveEventDetailViewModel
@@ -65,6 +78,8 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                 LiveEventDetailViewModel::class.java
         ]
 
+        initMidtransSdk()
+
         binding.apply {
             ivBackButton.setOnClickListener {
                 findNavController().popBackStack()
@@ -96,6 +111,7 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                         showLoading(false)
                         binding.apply {
                             event.result.apply {
+                                println("Event Detail: $this")
                                 if (eventType != "completed") {
                                     Trx_event_participants?.find { it.id_user == id_user }?.let {
                                         mbtnRegister.visibility = View.INVISIBLE
@@ -103,15 +119,21 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                                     }
                                 }
 
-                                cover?.let {
-                                    ivDetailEventPoster.load(it)
-                                }
-
                                 tvDetailEventTitle.text = title
                                 tvDateAndTimeContent.text = "$date, $started_at"
                                 tvPriceContentNumber.text = price
 
-                                ivPhotoContent.load(speaker_photo)
+                                val imageLoader = requireContext().imageLoader
+
+                                cover?.let {
+                                    ivDetailEventPoster.load(it, imageLoader)
+                                }
+
+                                speaker_photo?.let {
+                                    ivPhotoContent.load(it, imageLoader)
+                                }
+
+
 
                                 tvSpeakerName.text = speaker
                                 tvSpeakerProfession.text = speaker_profession
@@ -131,6 +153,7 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                         }
                     }
                     is LiveEventDetailViewModel.LiveEventDetailEvent.RegisterClick -> {
+                        /*
                         val phoneNumber = event.phone
                         val voucherCode = event.voucherCode
                         val fullname = event.fullname
@@ -152,8 +175,9 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
                             idUser_createValue!!,
                             status
                         )
-
-
+                         */
+                        MidtransSDK.getInstance().transactionRequest = initTransactionRequest()
+                        MidtransSDK.getInstance().startPaymentUiFlow(requireContext())
                     }
                     is LiveEventDetailViewModel.LiveEventDetailEvent.RegisterSuccess -> {
                         Snackbar.make(
@@ -307,12 +331,71 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail) {
         }
     }
 
+    private fun initTransactionRequest(): TransactionRequest {
+        val transactionRequestNew =
+            TransactionRequest(System.currentTimeMillis().toString() + "", 49900.0)
+        transactionRequestNew.customerDetails = initCustomerDetails()
+        transactionRequestNew.gopay = Gopay("mysamplesdk:://midtrans")
+        transactionRequestNew.shopeepay = Shopeepay("mysamplesdk:://midtrans")
+        return transactionRequestNew
+    }
+
+    private fun initCustomerDetails(): CustomerDetails{
+        val mCustomerDetails = CustomerDetails()
+        mCustomerDetails.phone = "085156283106"
+        mCustomerDetails.firstName = "Fikran Akbar"
+        mCustomerDetails.email = "mail@mail.com"
+        mCustomerDetails.customerIdentifier = "mail@mail.com"
+        return mCustomerDetails
+    }
+
+    private fun initMidtransSdk() {
+        val clientKey = MidtransSdkConfig.MERCHANT_CLIENT_KEY
+        val baseUrl = MidtransSdkConfig.MERCHANT_BASE_CHECKOUT_URL
+        val sdkFlowUiBuilder = SdkUIFlowBuilder.init()
+            .setClientKey(clientKey)
+            .setContext(requireContext())
+            .setTransactionFinishedCallback(this)
+            .setMerchantBaseUrl(baseUrl)
+            .setUIkitCustomSetting(uiKitCustomSetting())
+            .enableLog(true)
+            .setColorTheme(CustomColorTheme("#FFE51255", "#B61548", "#FFE51255"))
+            .setLanguage("en")
+        sdkFlowUiBuilder.buildSDK()
+    }
+
+    private fun uiKitCustomSetting(): UIKitCustomSetting {
+        val uIKitCustomSetting = UIKitCustomSetting()
+        uIKitCustomSetting.isSkipCustomerDetailsPages = true
+        uIKitCustomSetting.isShowPaymentStatus = true
+        return uIKitCustomSetting
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
             noInternetAccessOrErrorHandler = context as NoInternetAccessOrErrorListener
         } catch (e: ClassCastException) {
             println("DEBUG: $context must be implement NoInternetAccessOrErrorListener")
+        }
+    }
+
+    override fun onTransactionFinished(result: TransactionResult) {
+        if (result.response != null) {
+            when (result.status) {
+                TransactionResult.STATUS_SUCCESS -> Toast.makeText(requireContext(), "Transaction Finished. ID: " + result.response.transactionId, Toast.LENGTH_LONG).show()
+                TransactionResult.STATUS_PENDING -> Toast.makeText(requireContext(), "Transaction Pending. ID: " + result.response.transactionId, Toast.LENGTH_LONG).show()
+                TransactionResult.STATUS_FAILED -> Toast.makeText(requireContext(), "Transaction Failed. ID: " + result.response.transactionId.toString() + ". Message: " + result.response.statusMessage, Toast.LENGTH_LONG).show()
+            }
+            result.response.validationMessages
+        } else if (result.isTransactionCanceled) {
+            Toast.makeText(requireContext(), "Transaction Canceled", Toast.LENGTH_LONG).show()
+        } else {
+            if (result.status.equals(TransactionResult.STATUS_INVALID, true)) {
+                Toast.makeText(requireContext(), "Transaction Invalid", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(requireContext(), "Transaction Finished with failure.", Toast.LENGTH_LONG).show()
+            }
         }
     }
 }
