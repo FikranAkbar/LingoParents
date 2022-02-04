@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id "androidx.navigation.safeargs.kotlin"
     id 'kotlin-parcelize'
+    id 'kotlin-kapt'
 }
 
 // Define Google Auth ID
@@ -119,4 +120,10 @@ dependencies {
 
     // Ion Koush
     implementation 'com.koushikdutta.ion:ion:3.1.0'
+
+    // Room DB
+    implementation("androidx.room:room-runtime:2.4.1")
+    annotationProcessor("androidx.room:room-compiler:2.4.1")
+    kapt("androidx.room:room-compiler:2.4.1")
+    implementation("androidx.room:room-ktx:2.4.1")
 }

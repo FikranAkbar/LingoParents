@@ -402,6 +402,7 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
 
     override fun onTransactionFinished(result: TransactionResult) {
         if (result.response != null) {
+            println("account Numbers: ${result.response.accountNumbers[0].bank} - ${result.response.accountNumbers[0].accountNumber}")
             when (result.status) {
                 TransactionResult.STATUS_SUCCESS -> Toast.makeText(requireContext(), "Transaction Finished. ID: " + result.response.transactionId, Toast.LENGTH_LONG).show()
                 TransactionResult.STATUS_PENDING -> Toast.makeText(requireContext(), "Transaction Pending. ID: " + result.response.transactionId, Toast.LENGTH_LONG).show()
