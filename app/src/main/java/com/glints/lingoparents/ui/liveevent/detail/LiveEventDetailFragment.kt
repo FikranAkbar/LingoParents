@@ -287,11 +287,11 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                 }
 
                 mbtnRegister.setOnClickListener {
-                    fullname = tfFullName.editText?.text.toString()
-                    phoneNumber = tfPhoneNumber.editText?.text.toString()
-                    email = tfEmail.editText?.text.toString()
-                    voucherCode = tfVoucherCode.editText?.text.toString()
-                    paymentMethod = tfPaymentMethod.editText?.text.toString()
+                    fullname = tfFullName.editText?.text.toString().trim()
+                    phoneNumber = tfPhoneNumber.editText?.text.toString().trim()
+                    email = tfEmail.editText?.text.toString().trim()
+                    voucherCode = tfVoucherCode.editText?.text.toString().trim()
+                    paymentMethod = tfPaymentMethod.editText?.text.toString().trim()
                     AuthFormValidator.apply {
                         hideFieldError(
                             arrayListOf(
@@ -309,11 +309,11 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                             )
                         ) {
                             viewModel.onRegisterButtonClick(
-                                tfFullName.editText?.text.toString(),
-                                tfEmail.editText?.text.toString(),
-                                tfPhoneNumber.editText?.text.toString(),
-                                tfVoucherCode.editText?.text.toString(),
-                                tfPaymentMethod.editText?.text.toString()
+                                fullname!!,
+                                email!!,
+                                phoneNumber!!,
+                                voucherCode,
+                                paymentMethod
                             )
                             closeDialog()
                         } else {
