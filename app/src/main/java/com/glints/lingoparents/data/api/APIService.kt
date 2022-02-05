@@ -33,6 +33,11 @@ interface APIService {
         @Field("link_email") link: String = "https://fe-main.ipe-glintsacademy.com/verify-email"
     ): Call<RegisterUserResponse>
 
+    @PUT("api/v1/verify-email")
+    fun verifyEmail(
+        @QueryMap options: Map<String, String>
+    ): Call<VerifyEmailResponse>
+
     @FormUrlEncoded
     @POST("api/v1/forgot-password")
     fun sendForgotPasswordRequest(

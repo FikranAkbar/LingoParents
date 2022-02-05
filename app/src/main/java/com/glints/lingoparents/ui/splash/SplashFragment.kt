@@ -49,7 +49,8 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
                         findNavController().navigate(action)
                     }
                     is SplashViewModel.SplashEvent.NavigateToVerifyEmailScreen -> {
-                        Snackbar.make(binding.root, "HEHE BUOI", Snackbar.LENGTH_SHORT).show()
+                        val action = SplashFragmentDirections.actionGlobalVerifyEmailFragment(event.token, event.id)
+                        findNavController().navigate(action)
                     }
                 }
             }
