@@ -111,15 +111,13 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                         showLoading(false)
                         binding.apply {
                             event.result.apply {
-                                /*
                                 println("Event Detail: $this")
                                 if (eventType != "completed") {
                                     Trx_event_participants?.find { it.id_user == id_user }?.let {
                                         mbtnRegister.visibility = View.INVISIBLE
-                                        tvUserHasBeenRegistered.visibility = View.VISIBLE
+                                        mbtnJoinZoom.visibility = View.VISIBLE
                                     }
                                 }
-                                 */
 
                                 tvDetailEventTitle.text = title
                                 tvDateAndTimeContent.text = "$date, $started_at"
@@ -209,7 +207,7 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
 
                         binding.apply {
                             mbtnRegister.visibility = View.INVISIBLE
-                            tvUserHasBeenRegistered.visibility = View.VISIBLE
+                            mbtnJoinZoom.visibility = View.VISIBLE
                         }
                     }
                     is LiveEventDetailViewModel.LiveEventDetailEvent.Loading -> {
@@ -404,8 +402,26 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
         if (result.response != null) {
             println("account Numbers: ${result.response.accountNumbers[0].bank} - ${result.response.accountNumbers[0].accountNumber}")
             when (result.status) {
-                TransactionResult.STATUS_SUCCESS -> Toast.makeText(requireContext(), "Transaction Finished. ID: " + result.response.transactionId, Toast.LENGTH_LONG).show()
-                TransactionResult.STATUS_PENDING -> Toast.makeText(requireContext(), "Transaction Pending. ID: " + result.response.transactionId, Toast.LENGTH_LONG).show()
+                TransactionResult.STATUS_SUCCESS -> {
+                    Toast.makeText(requireContext(),
+                        "Transaction Finished. ID: " + result.response.transactionId,
+                        Toast.LENGTH_LONG).show()
+
+                    binding.apply {
+                        mbtnRegister.visibility = View.INVISIBLE
+                        mbtnJoinZoom.visibility = View.VISIBLE
+                    }
+                }
+                TransactionResult.STATUS_PENDING -> {
+                    Toast.makeText(requireContext(),
+                        "Transaction Pending. ID: " + result.response.transactionId,
+                        Toast.LENGTH_LONG).show()
+
+                    binding.apply {
+                        mbtnRegister.visibility = View.INVISIBLE
+                        mbtnJoinZoom.visibility = View.VISIBLE
+                    }
+                }
                 TransactionResult.STATUS_FAILED -> Toast.makeText(requireContext(), "Transaction Failed. ID: " + result.response.transactionId.toString() + ". Message: " + result.response.statusMessage, Toast.LENGTH_LONG).show()
             }
             result.response.validationMessages

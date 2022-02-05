@@ -37,17 +37,23 @@
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/ic_event.xml" value="0.2916666666666667" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/ic_home.xml" value="0.2916666666666667" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/ic_insight.xml" value="0.2916666666666667" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/ic_launcher_background.xml" value="0.22037037037037038" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/ic_ph_graduation_cap_duotone.xml" value="0.2916666666666667" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/ic_progress.xml" value="0.2916666666666667" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/ic_rectangle_4.xml" value="0.22037037037037038" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/ic_round_people_24.xml" value="0.22037037037037038" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/ic_small_germany_flag.xml" value="0.2824074074074074" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/ic_small_korea_flag.xml" value="0.275" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/ic_user.xml" value="0.22037037037037038" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/ic_user_avatar_female.xml" value="0.15989583333333332" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/ic_user_avatar_female_square.xml" value="0.22037037037037038" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/ic_user_avatar_male_square.xml" value="0.15989583333333332" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/img_affordable.xml" value="0.15989583333333332" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/img_city_scenery.xml" value="0.15989583333333332" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/img_city_scenery_transparant.xml" value="0.15989583333333332" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/img_easy_setup.xml" value="0.15989583333333332" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/img_lingoparents_header.xml" value="0.15989583333333332" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/join_zoom_color.xml" value="0.22037037037037038" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/shadow_border.xml" value="0.2916666666666667" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/tab_background.xml" value="0.2916666666666667" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/drawable/tab_background_selected.xml" value="0.2916666666666667" />
@@ -84,7 +90,7 @@
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_header.xml" value="0.22" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_home.xml" value="0.22" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_insight_list.xml" value="0.22" />
-        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_live_event_detail.xml" value="0.33" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_live_event_detail.xml" value="0.3779527559055118" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_live_event_list.xml" value="0.33" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_login.xml" value="0.33" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_parenting_insight.xml" value="0.2755208333333333" />
@@ -194,7 +200,7 @@
       <item index="0" class="java.lang.String" itemvalue="org.greenrobot.eventbus.Subscribe" />
     </list>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
