@@ -75,16 +75,8 @@ class RegisterViewModel(
         registerEventChannel.send(RegisterEvent.RegisterSuccess(email, password, message))
     }
 
-    private fun onLoginApiCallSuccess() = viewModelScope.launch {
-        registerEventChannel.send(RegisterEvent.LoginSuccess)
-    }
-
     private fun onRegisterApiCallError(message: String) = viewModelScope.launch {
         registerEventChannel.send(RegisterEvent.RegisterError(message))
-    }
-
-    private fun onLoginApiCallError(message: String) = viewModelScope.launch {
-        registerEventChannel.send(RegisterEvent.LoginError(message))
     }
 
     /**
@@ -146,45 +138,6 @@ class RegisterViewModel(
             })
     }
 
-    /**
-     * Method for auto login after user register success.
-     * @param email Email of the user
-     * @param password password for the email
-     */
-    fun loginAfterSuccessfulRegister(
-        email: String,
-        password: String,
-    ) = viewModelScope.launch {
-        onApiCallStarted()
-        APIClient
-            .service
-            .loginUser(email, password)
-            .enqueue(object : Callback<LoginUserResponse> {
-                override fun onResponse(
-                    call: Call<LoginUserResponse>,
-                    response: Response<LoginUserResponse>,
-                ) {
-                    if (response.isSuccessful) {
-                        val accessToken = response.body()?.data?.accessToken.toString()
-                        val refreshToken = response.body()?.data?.refreshToken.toString()
-
-                        val userId = JWTUtils.getIdFromAccessToken(accessToken)
-                        saveToken(accessToken, refreshToken)
-                        saveUserId(userId)
-
-                        onLoginApiCallSuccess()
-                    } else {
-                        val apiError = ErrorUtils.parseError(response)
-                        onLoginApiCallError(apiError.message())
-                    }
-                }
-
-                override fun onFailure(call: Call<LoginUserResponse>, t: Throwable) {
-                    onLoginApiCallError("Network Failed...")
-                }
-            })
-    }
-
     sealed class RegisterEvent {
         object NavigateBackToLogin : RegisterEvent()
         data class NavigateBackWithResult(val result: Int) : RegisterEvent()
@@ -199,7 +152,6 @@ class RegisterViewModel(
 
         object Loading : RegisterEvent()
         data class RegisterSuccess(val email: String, val password: String, val message: String) : RegisterEvent()
-        object LoginSuccess : RegisterEvent()
         data class RegisterError(val message: String) : RegisterEvent()
         data class LoginError(val message: String) : RegisterEvent()
     }

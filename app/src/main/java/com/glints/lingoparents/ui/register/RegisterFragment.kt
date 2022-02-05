@@ -46,11 +46,11 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             }
             mbtnSubmit.setOnClickListener {
                 viewModel.onSubmitButtonClick(
-                    firstName = tilFirstName.editText?.text.toString(),
-                    lastName = tilLastName.editText?.text.toString(),
-                    email = tilEmail.editText?.text.toString(),
+                    firstName = tilFirstName.editText?.text.toString().trim(),
+                    lastName = tilLastName.editText?.text.toString().trim(),
+                    email = tilEmail.editText?.text.toString().trim(),
                     password = tilPassword.editText?.text.toString(),
-                    phone = tilPhone.editText?.text.toString()
+                    phone = tilPhone.editText?.text.toString().trim()
                 )
             }
             tilFirstName.editText?.setText(viewModel.googleFirstName)
