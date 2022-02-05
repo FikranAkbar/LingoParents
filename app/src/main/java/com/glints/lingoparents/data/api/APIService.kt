@@ -1,6 +1,8 @@
 package com.glints.lingoparents.data.api
 
 import com.glints.lingoparents.data.model.response.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -144,8 +146,19 @@ interface APIService {
         @Field("firstname") firstname: String,
         @Field("lastname") lastname: String,
         @Field("address") address: String,
-        @Field("phone") phone: String
+        @Field("phone") phone: String,
     ): Call<EditParentProfileResponse>
+
+    @Multipart
+    @PUT("api/v1/parents/profile")
+    fun editParentProfileCoba(
+        @Part("firstname") firstname: RequestBody,
+        @Part("lastname") lastname: RequestBody,
+        @Part("address") address: RequestBody,
+        @Part("phone") phone: RequestBody,
+        @Part image: MultipartBody.Part
+    ): Call<EditParentProfileResponse>
+
 
     @FormUrlEncoded
     @PUT("api/v1/parents/profile/change-password")
