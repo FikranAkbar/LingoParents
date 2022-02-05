@@ -421,6 +421,14 @@ class CommentsAdapter(
                         tfReplyComment.isVisible = false
                         btnReplyComment.isVisible = false
                         (context as Activity).hideKeyboard()
+
+                        rvCommentReply.apply {
+                            if (parentCommentListener == null) {
+                                this.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                                    setMargins(dpFormat(30), 0, 0, 0)
+                                }
+                            }
+                        }
                     }
                 }
             }
