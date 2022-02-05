@@ -40,9 +40,9 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
         binding.apply {
             mbtnSave.setOnClickListener {
                 viewModel.onSaveButtonClick(
-                    tfCurrentPassword.editText?.text.toString(),
-                    tfNewPassword.editText?.text.toString(),
-                    tfConfirmPassword.editText?.text.toString(),
+                    tfCurrentPassword.editText?.text.toString().trim(),
+                    tfNewPassword.editText?.text.toString().trim(),
+                    tfConfirmPassword.editText?.text.toString().trim(),
                 )
 
             }

@@ -49,9 +49,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
             mbtnSave.setOnClickListener {
                 viewModel.onSaveButtonClick(
-                    tfFirstName.editText?.text.toString(),
-                    tfLastName.editText?.text.toString(),
-                    tfAddress.editText?.text.toString(),
+                    tfFirstName.editText?.text.toString().trim(),
+                    tfLastName.editText?.text.toString().trim(),
+                    tfAddress.editText?.text.toString().trim(),
                     tfPhoneNumber.editText?.text.toString()
                 )
             }
