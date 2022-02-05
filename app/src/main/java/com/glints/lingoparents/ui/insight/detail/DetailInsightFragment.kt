@@ -274,7 +274,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
             }
 
             btnComment.setOnClickListener {
-                if (TextUtils.isEmpty(tfInsightComment.editText?.text)) {
+                if (TextUtils.isEmpty(tfInsightComment.editText?.text.toString().trim())) {
                     tfInsightComment.requestFocus()
                     tfInsightComment.error = "Please enter your comment"
                 } else {

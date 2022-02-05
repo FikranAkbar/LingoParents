@@ -429,7 +429,7 @@ class CommentsAdapter(
         private fun setUpdateCommentListener(item: InsightCommentItem) {
             binding.apply {
                 btnReplyComment.setOnClickListener {
-                    if (TextUtils.isEmpty(tfReplyComment.editText?.text)) {
+                    if (TextUtils.isEmpty(tfReplyComment.editText?.text.toString().trim())) {
                         tfReplyComment.requestFocus()
                         tfReplyComment.error = "Please enter your comment"
                     } else {
