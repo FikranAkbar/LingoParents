@@ -84,9 +84,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                     is RegisterViewModel.RegisterEvent.RegisterSuccess -> {
                         handleOnRegisterSuccess(event)
                     }
-                    is RegisterViewModel.RegisterEvent.LoginSuccess -> {
-                        handleOnLoginSuccess()
-                    }
                     is RegisterViewModel.RegisterEvent.RegisterError -> {
                         handleOnErrorRegisterUser(event)
                     }
@@ -98,28 +95,11 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         }
     }
 
-    private fun handleOnLoginSuccess() {
-        CoroutineScope(Dispatchers.Unconfined).launch {
-            delay(100)
-
-            val intent = Intent(
-                this@RegisterFragment.requireContext(),
-                AuthenticationActivity::class.java
-            )
-            startActivity(intent)
-            requireActivity().finish()
-        }
-    }
-
     private fun handleOnRegisterSuccess(event: RegisterViewModel.RegisterEvent.RegisterSuccess) {
         showLoading(false)
         showSuccessSnackbar(event.message)
-        val intent = Intent(
-            this.requireContext(),
-            AuthenticationActivity::class.java
-        )
-        startActivity(intent)
-        requireActivity().finish()
+        findNavController().popBackStack()
+
         //viewModel.loginAfterSuccessfulRegister(event.email, event.password)
     }
 
