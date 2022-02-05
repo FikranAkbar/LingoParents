@@ -18,7 +18,7 @@
         tools:ignore="ContentDescription" />
 
     <TextView
-        android:id="@+id/tv_forgot_your_password"
+        android:id="@+id/tv_verify_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_w600"
@@ -40,9 +40,9 @@
         android:text="@string/please_wait_you_will_be_auto_redirected_to_login_screen_after_your_email_has_been_verified"
         android:textAlignment="center"
         android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@id/tv_forgot_your_password"
-        app:layout_constraintStart_toStartOf="@id/tv_forgot_your_password"
-        app:layout_constraintTop_toBottomOf="@id/tv_forgot_your_password" />
+        app:layout_constraintEnd_toEndOf="@id/tv_verify_email"
+        app:layout_constraintStart_toStartOf="@id/tv_verify_email"
+        app:layout_constraintTop_toBottomOf="@id/tv_verify_email" />
 
     <ImageView
         android:layout_width="wrap_content"
