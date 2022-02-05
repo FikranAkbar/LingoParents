@@ -71,8 +71,8 @@ class RegisterViewModel(
         registerEventChannel.send(RegisterEvent.Loading)
     }
 
-    private fun onRegisterApiCallSuccess(email: String, password: String) = viewModelScope.launch {
-        registerEventChannel.send(RegisterEvent.RegisterSuccess(email, password))
+    private fun onRegisterApiCallSuccess(email: String, password: String, message: String) = viewModelScope.launch {
+        registerEventChannel.send(RegisterEvent.RegisterSuccess(email, password, message))
     }
 
     private fun onLoginApiCallSuccess() = viewModelScope.launch {
@@ -133,7 +133,7 @@ class RegisterViewModel(
                     response: Response<RegisterUserResponse>,
                 ) {
                     if (response.isSuccessful) {
-                        onRegisterApiCallSuccess(email, password)
+                        onRegisterApiCallSuccess(email, password, response.body()?.message!!)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onRegisterApiCallError(apiError.message())
@@ -198,7 +198,7 @@ class RegisterViewModel(
         ) : RegisterEvent()
 
         object Loading : RegisterEvent()
-        data class RegisterSuccess(val email: String, val password: String) : RegisterEvent()
+        data class RegisterSuccess(val email: String, val password: String, val message: String) : RegisterEvent()
         object LoginSuccess : RegisterEvent()
         data class RegisterError(val message: String) : RegisterEvent()
         data class LoginError(val message: String) : RegisterEvent()

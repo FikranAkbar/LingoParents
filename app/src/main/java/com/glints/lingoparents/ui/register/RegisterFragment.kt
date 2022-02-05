@@ -113,6 +113,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
     private fun handleOnRegisterSuccess(event: RegisterViewModel.RegisterEvent.RegisterSuccess) {
         showLoading(false)
+        showSuccessSnackbar(event.message)
         val intent = Intent(
             this.requireContext(),
             AuthenticationActivity::class.java
@@ -238,6 +239,20 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         } else {
             Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(Color.RED)
+                .setTextColor(Color.WHITE)
+                .show()
+        }
+    }
+
+    private fun showSuccessSnackbar(message: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.success_color, null))
+                .setTextColor(Color.WHITE)
+                .show()
+        } else {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(Color.GREEN)
                 .setTextColor(Color.WHITE)
                 .show()
         }

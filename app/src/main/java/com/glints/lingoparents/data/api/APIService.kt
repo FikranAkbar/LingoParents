@@ -29,7 +29,8 @@ interface APIService {
         @Field("lastname") lastname: String,
         @Field("password") password: String,
         @Field("phone") phone: String,
-        @Field("role") role: String = "parent"
+        @Field("role") role: String = "parent",
+        @Field("link_email") link: String = "https://fe-main.ipe-glintsacademy.com/api/v1/verify-email"
     ): Call<RegisterUserResponse>
 
     @FormUrlEncoded
