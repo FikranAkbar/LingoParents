@@ -3,8 +3,10 @@ package com.glints.lingoparents.ui.liveevent.detail
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -142,6 +144,12 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                                 attendance_time_event = started_at
                                 total_price = price.toInt()
                                 idUser_createValue = idUser_create
+
+                                mbtnJoinZoom.setOnClickListener {
+                                    // TODO: Call backend API to verify payment
+                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(zoom_link))
+                                    requireContext().startActivity(intent)
+                                }
                             }
                         }
                     }
@@ -277,6 +285,7 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                 ivBackButton.setOnClickListener {
                     closeDialog()
                 }
+
                 mbtnRegister.setOnClickListener {
                     fullname = tfFullName.editText?.text.toString()
                     phoneNumber = tfPhoneNumber.editText?.text.toString()
