@@ -113,7 +113,13 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
     private fun handleOnRegisterSuccess(event: RegisterViewModel.RegisterEvent.RegisterSuccess) {
         showLoading(false)
-        viewModel.loginAfterSuccessfulRegister(event.email, event.password)
+        val intent = Intent(
+            this.requireContext(),
+            AuthenticationActivity::class.java
+        )
+        startActivity(intent)
+        requireActivity().finish()
+        //viewModel.loginAfterSuccessfulRegister(event.email, event.password)
     }
 
     private fun handleOnLoading() {
