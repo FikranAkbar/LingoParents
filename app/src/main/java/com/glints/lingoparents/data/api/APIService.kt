@@ -11,13 +11,13 @@ interface APIService {
     @POST("api/v1/login")
     fun loginUser(
         @Field("email") email: String,
-        @Field("password") password: String
+        @Field("password") password: String,
     ): Call<LoginUserResponse>
 
     @FormUrlEncoded
     @POST("api/v1/google-login")
     fun loginWithGoogle(
-        @Field("id_token") idToken: String
+        @Field("id_token") idToken: String,
     ): Call<LoginUserResponse>
 
     @POST("api/v1/logout")
@@ -31,14 +31,14 @@ interface APIService {
         @Field("lastname") lastname: String,
         @Field("password") password: String,
         @Field("phone") phone: String,
-        @Field("role") role: String = "parent"
+        @Field("role") role: String = "parent",
     ): Call<RegisterUserResponse>
 
     @FormUrlEncoded
     @POST("api/v1/forgot-password")
     fun sendForgotPasswordRequest(
         @Field("email") email: String,
-        @Field("frontend_url") url: String = "https://fe-main.ipe-glintsacademy.com/reset-password"
+        @Field("frontend_url") url: String = "https://fe-main.ipe-glintsacademy.com/reset-password",
     ): Call<ForgotPasswordResponse>
 
     @FormUrlEncoded
@@ -56,17 +56,17 @@ interface APIService {
 
     @GET("api/v1/events/parent/live/{title}")
     fun getTodayLiveEventByStatusAndTitle(
-        @Path("title") title: String
+        @Path("title") title: String,
     ): Call<LiveEventSearchListResponse>
 
     @GET("api/v1/events/parent/upcoming/{title}")
     fun getUpcomingLiveEventByStatusAndTitle(
-        @Path("title") title: String
+        @Path("title") title: String,
     ): Call<LiveEventSearchListResponse>
 
     @GET("api/v1/events/parent/completed/{title}")
     fun getCompletedLiveEventByStatusAndTitle(
-        @Path("title") title: String
+        @Path("title") title: String,
     ): Call<LiveEventSearchListResponse>
 
     @GET("api/v1/events/parent/{id}")
@@ -82,7 +82,7 @@ interface APIService {
 
     @GET("api/v1/insights?status=Publish")
     fun getInsightSearchList(
-        @QueryMap options: Map<String, String>
+        @QueryMap options: Map<String, String>,
     ): Call<AllInsightsListResponse>
 
     @GET("api/v1/insights/{id}")
@@ -94,7 +94,7 @@ interface APIService {
     @POST("api/v1/insights/report")
     fun reportInsight(
         @QueryMap options: Map<String, String>,
-        @Field("report_comment") report_comment: String
+        @Field("report_comment") report_comment: String,
     ): Call<ReportResponse>
 
     @POST("api/v1/insights/like/{id}/{type}")
@@ -114,24 +114,24 @@ interface APIService {
     fun createComment(
         @Path("id") id: Int,
         @Path("type") type: String,
-        @Field("comment") comment: String
+        @Field("comment") comment: String,
     ): Call<CreateCommentResponse>
 
     @GET("api/v1/insights/comment/{id}")
     fun getCommentReplies(
-        @Path("id") id: Int
+        @Path("id") id: Int,
     ): Call<GetCommentRepliesResponse>
 
     @DELETE("api/v1/insights/comment/{id}")
     fun deleteComment(
-        @Path("id") id: Int
+        @Path("id") id: Int,
     ): Call<DeleteCommentResponse>
 
     @FormUrlEncoded
     @PATCH("api/v1/insights/comment/{id}")
     fun updateComment(
         @Path("id") id: Int,
-        @Field("comment") comment: String
+        @Field("comment") comment: String,
     ): Call<UpdateCommentResponse>
 
     @GET("api/v1/courses")
@@ -152,12 +152,21 @@ interface APIService {
     @Multipart
     @PUT("api/v1/parents/profile")
     fun editParentProfileCoba(
-        @Part("firstname") firstname: RequestBody,
-        @Part("lastname") lastname: RequestBody,
-        @Part("address") address: RequestBody,
-        @Part("phone") phone: RequestBody,
-        @Part image: MultipartBody.Part
+        @Part("firstname") firstname: RequestBody?,
+        @Part("lastname") lastname: RequestBody?,
+        @Part("address") address: RequestBody?,
+        @Part("phone") phone: RequestBody?,
+        @Part image: MultipartBody.Part?,
     ): Call<EditParentProfileResponse>
+//    @Multipart
+//    @PUT("api/v1/parents/profile")
+//    fun editParentProfileCoba(
+//        @Part("firstname") firstname: RequestBody,
+//        @Part("lastname") lastname: RequestBody,
+//        @Part("address") address: RequestBody,
+//        @Part("phone") phone: RequestBody,
+//        @Part image: MultipartBody.Part
+//    ): Call<EditParentProfileResponse>
 
 
     @FormUrlEncoded
@@ -198,24 +207,24 @@ interface APIService {
 
     @GET("api/v1/students/{id}/courses")
     fun getCourseListByStudentId(
-        @Path("id") studentId: Int
+        @Path("id") studentId: Int,
     ): Call<CourseListByStudentIdResponse>
 
     @GET("api/v1/students/{studentId}/courses/{courseId}")
     fun getCourseDetailByStudentId(
         @Path("studentId") studentId: Int,
-        @Path("courseId") courseId: Int
+        @Path("courseId") courseId: Int,
     ): Call<CourseDetailByStudentIdResponse>
 
     @GET("api/v1/students/characters/{characterId}")
     fun getStudentCharacter(
-        @Path("characterId") characterId: Int
+        @Path("characterId") characterId: Int,
     ): Call<StudentCharacterResponse>
 
     @GET("api/v1/students/{studentId}/session-detail/{sessionId}")
     fun getSessionDetailBySessionId(
         @Path("studentId") studentId: Int,
-        @Path("sessionId") sessionId: Int
+        @Path("sessionId") sessionId: Int,
     ): Call<SessionDetailBySessionIdResponse>
 
     @FormUrlEncoded
@@ -232,7 +241,7 @@ interface APIService {
         @Field("total_prize") total_prize: Int,
         @Field("voucher_code") voucher_code: String,
         @Field("payment_method") payment_method: String,
-        @Field("status") status: String
+        @Field("status") status: String,
     ): Call<LiveEventRegisterResponse>
 
 }

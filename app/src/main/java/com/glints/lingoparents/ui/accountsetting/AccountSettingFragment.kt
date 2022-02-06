@@ -66,15 +66,16 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
                 file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
             val photo: MultipartBody.Part =
                 MultipartBody.Part.createFormData("photo", file.name, requestFile)
-            val firstname: RequestBody =
-                photoFirstname.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-            val lastname: RequestBody =
-                photoLastname.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-            val address: RequestBody =
-                photoAddress.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-            val phone: RequestBody =
-                photoPhone.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-            viewModel.onCroppedImage(firstname, lastname, address, phone, photo)
+//            val firstname: RequestBody =
+//                photoFirstname.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+//            val lastname: RequestBody =
+//                photoLastname.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+//            val address: RequestBody =
+//                photoAddress.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+//            val phone: RequestBody =
+//                photoPhone.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+//            viewModel.onCroppedImage(firstname, lastname, address, phone, photo)
+            viewModel.onCroppedImage(photo)
         } else {
             val exception = result.error
         }
@@ -176,12 +177,16 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
                         showLoading(true)
                     }
                     is AccountSettingViewModel.AccountSetting.TryToUploadPhoto -> {
-                        viewModel.uploadPhoto(event.firstname,
-                            event.firstname,
-                            event.address,
-                            event.phone,
+                        viewModel.uploadPhoto(
                             event.photo)
                     }
+//                    is AccountSettingViewModel.AccountSetting.TryToUploadPhoto -> {
+//                        viewModel.uploadPhoto(event.firstname,
+//                            event.firstname,
+//                            event.address,
+//                            event.phone,
+//                            event.photo)
+//                    }
                     is AccountSettingViewModel.AccountSetting.UploadPhotoSuccess -> {
                         latestPhoto.let {
                             binding.ivProfilePicture.setImageURI(it)

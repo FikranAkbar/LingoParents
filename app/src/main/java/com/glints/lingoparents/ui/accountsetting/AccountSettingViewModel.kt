@@ -40,15 +40,12 @@ class AccountSettingViewModel(private val tokenPreferences: TokenPreferences) : 
     }
 
     fun uploadPhoto(
-        firstname: RequestBody,
-        lastname: RequestBody,
-        address: RequestBody,
-        phone: RequestBody,
         photo: MultipartBody.Part,
     ) {
         APIClient
             .service
-            .editParentProfileCoba(firstname, lastname, address, phone, photo)
+//            .editParentProfileCoba(firstname, lastname, address, phone, photo)
+            .editParentProfileCoba(null,null,null,null,photo)
             .enqueue(object : Callback<EditParentProfileResponse> {
                 override fun onResponse(
                     call: Call<EditParentProfileResponse>,
@@ -70,33 +67,45 @@ class AccountSettingViewModel(private val tokenPreferences: TokenPreferences) : 
     }
 
     fun onCroppedImage(
-        firstname: RequestBody,
-        lastname: RequestBody,
-        address: RequestBody,
-        phone: RequestBody,
         photo: MultipartBody.Part,
     ) = viewModelScope.launch {
         accountSettingChannel.send(
             AccountSetting.TryToUploadPhoto(
-                firstname,
-                lastname,
-                address,
-                phone,
                 photo
             )
         )
     }
+//    fun onCroppedImage(
+//        firstname: RequestBody,
+//        lastname: RequestBody,
+//        address: RequestBody,
+//        phone: RequestBody,
+//        photo: MultipartBody.Part,
+//    ) = viewModelScope.launch {
+//        accountSettingChannel.send(
+//            AccountSetting.TryToUploadPhoto(
+//                firstname,
+//                lastname,
+//                address,
+//                phone,
+//                photo
+//            )
+//        )
+//    }
 
     sealed class AccountSetting {
         object Loading : AccountSetting()
         object UploadPhotoSuccess : AccountSetting()
         data class TryToUploadPhoto(
-            val firstname: RequestBody,
-            val lastname: RequestBody,
-            val address: RequestBody,
-            val phone: RequestBody,
             val photo: MultipartBody.Part,
         ) : AccountSetting()
+//        data class TryToUploadPhoto(
+//            val firstname: RequestBody,
+//            val lastname: RequestBody,
+//            val address: RequestBody,
+//            val phone: RequestBody,
+//            val photo: MultipartBody.Part,
+//        ) : AccountSetting()
 
         data class Error(val message: String) : AccountSetting()
 
