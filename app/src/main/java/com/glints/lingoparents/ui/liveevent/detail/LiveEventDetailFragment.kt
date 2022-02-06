@@ -31,12 +31,8 @@ import com.glints.lingoparents.utils.*
 import com.google.android.material.snackbar.Snackbar
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback
 import com.midtrans.sdk.corekit.core.MidtransSDK
-import com.midtrans.sdk.corekit.core.TransactionRequest
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting
 import com.midtrans.sdk.corekit.core.themes.CustomColorTheme
-import com.midtrans.sdk.corekit.models.CustomerDetails
-import com.midtrans.sdk.corekit.models.snap.Gopay
-import com.midtrans.sdk.corekit.models.snap.Shopeepay
 import com.midtrans.sdk.corekit.models.snap.TransactionResult
 import com.midtrans.sdk.uikit.SdkUIFlowBuilder
 import kotlinx.coroutines.flow.collect
@@ -239,7 +235,8 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                         showLoading(false)
                     }
                     is LiveEventDetailViewModel.LiveEventDetailEvent.CreateOrderEventSuccess -> {
-                        MidtransSDK.getInstance().startPaymentUiFlow(requireContext(), event.snapToken)
+                        MidtransSDK.getInstance()
+                            .startPaymentUiFlow(requireContext(), event.snapToken)
                         //Snackbar.make(binding.root, "createOrderEventSuccess", Snackbar.LENGTH_SHORT).show()
                     }
                 }
@@ -305,7 +302,7 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                         )
                         if (isValidEmail(email) && isValidField(fullname) && isValidPhoneNumber(
                                 phoneNumber
-                            ) && isValidField(voucherCode) && isValidField(
+                            ) && isValidField(
                                 paymentMethod
                             )
                         ) {
@@ -329,9 +326,6 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                             }
                             if (!isValidField(paymentMethod)) {
                                 showFieldError(tfPaymentMethod, EMPTY_FIELD_ERROR)
-                            }
-                            if (!isValidField(voucherCode)) {
-                                showFieldError(tfVoucherCode, EMPTY_FIELD_ERROR)
                             }
                         }
 

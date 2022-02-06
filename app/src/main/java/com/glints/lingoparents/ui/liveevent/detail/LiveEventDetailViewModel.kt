@@ -184,7 +184,7 @@ class LiveEventDetailViewModel(
         idEvent: Int,
         idUser: Int,
         price: Int,
-        voucherCode: String
+        voucherCode: String?
     ) = viewModelScope.launch {
         onApiCallStarted()
         APIClient

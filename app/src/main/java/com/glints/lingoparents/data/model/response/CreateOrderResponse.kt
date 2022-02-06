@@ -39,5 +39,5 @@ data class CreateOrderData(
     val id_event: Int,
     val id_user: Int,
     val price: Int,
-    val voucher_code: String
+    val voucher_code: String?
 )
