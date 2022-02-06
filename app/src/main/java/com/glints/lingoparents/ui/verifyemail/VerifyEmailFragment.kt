@@ -1,6 +1,7 @@
 package com.glints.lingoparents.ui.verifyemail
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -11,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentVerifyEmailBinding
+import com.glints.lingoparents.ui.authentication.AuthenticationActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
@@ -34,16 +36,25 @@ class VerifyEmailFragment : Fragment(R.layout.fragment_verify_email) {
                 when(event) {
                     is VerifyEmailViewModel.VerifyEmailEvent.Error -> {
                         showErrorSnackbar(event.message)
-                        delay(200)
+                        delay(1500)
+
+                        val intent = Intent(requireActivity(), AuthenticationActivity::class.java)
+                        requireActivity().apply {
+                            startActivity(intent)
+                            finish()
+                        }
                     }
                     is VerifyEmailViewModel.VerifyEmailEvent.Success -> {
                         showSuccessSnackbar(event.message)
-                        delay(200)
+                        delay(1500)
+
+                        val intent = Intent(requireActivity(), AuthenticationActivity::class.java)
+                        requireActivity().apply {
+                            startActivity(intent)
+                            finish()
+                        }
                     }
                 }
-
-                val action = VerifyEmailFragmentDirections.actionGlobalLoginFragment()
-                findNavController().navigate(action)
             }
         }
 
