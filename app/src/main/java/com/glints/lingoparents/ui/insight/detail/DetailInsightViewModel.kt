@@ -23,7 +23,7 @@ class DetailInsightViewModel(
 ) : ViewModel() {
     companion object {
         const val INSIGHT_TYPE = "insight"
-        const val COMMENT_TYPE = "comment"
+        const val COMMENT_TYPE = "reply"
     }
 
     private val insightDetailChannel = Channel<InsightDetail>()
