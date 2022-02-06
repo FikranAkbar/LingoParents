@@ -24,6 +24,8 @@ class DetailInsightViewModel(
     companion object {
         const val INSIGHT_TYPE = "insight"
         const val COMMENT_TYPE = "reply"
+        const val LIKE_DISLIKE_INSIGHT = "insight"
+        const val LIKE_DISLIKE_COMMENT = "comment"
     }
 
     private val insightDetailChannel = Channel<InsightDetail>()

@@ -261,14 +261,14 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
             ivLike.setOnClickListener {
                 viewModel.sendLikeRequest(
                     viewModel.getCurrentInsightId(),
-                    DetailInsightViewModel.INSIGHT_TYPE,
+                    DetailInsightViewModel.LIKE_DISLIKE_INSIGHT,
                     ::likeDislikeResponseToApiCall
                 )
             }
             ivDislike.setOnClickListener {
                 viewModel.sendDislikeRequest(
                     viewModel.getCurrentInsightId(),
-                    DetailInsightViewModel.INSIGHT_TYPE,
+                    DetailInsightViewModel.LIKE_DISLIKE_INSIGHT,
                     ::likeDislikeResponseToApiCall
                 )
             }
@@ -422,7 +422,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
     ) {
         viewModel.sendLikeRequest(
             item.idComment,
-            DetailInsightViewModel.COMMENT_TYPE,
+            DetailInsightViewModel.LIKE_DISLIKE_COMMENT,
             uiResponseAfterApiCall
         )
     }
@@ -433,7 +433,7 @@ class DetailInsightFragment : Fragment(), CommentsAdapter.OnItemClickCallback {
     ) {
         viewModel.sendDislikeRequest(
             item.idComment,
-            DetailInsightViewModel.COMMENT_TYPE,
+            DetailInsightViewModel.LIKE_DISLIKE_COMMENT,
             uiResponseAfterApiCall
         )
     }
