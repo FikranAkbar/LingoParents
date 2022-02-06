@@ -185,6 +185,20 @@
                 app:layout_constraintStart_toStartOf="@id/tv_price_content_kurs"
                 app:layout_constraintTop_toBottomOf="@id/tv_price_content_kurs" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mbtn_join_zoom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/join_zoom_color"
+                android:text="@string/join_here"
+                android:textAppearance="@style/Typography.Button"
+                android:visibility="invisible"
+                app:backgroundTint="@null"
+                app:icon="@drawable/join_zoom"
+                app:layout_constraintStart_toStartOf="@id/tv_price_content_kurs"
+                app:layout_constraintTop_toBottomOf="@id/tv_price_content_kurs" />
+
             <TextView
                 android:id="@+id/tv_user_has_been_registered"
                 android:layout_width="wrap_content"

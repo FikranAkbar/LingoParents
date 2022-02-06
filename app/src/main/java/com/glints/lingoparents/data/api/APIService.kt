@@ -228,4 +228,8 @@ interface APIService {
         @Field("status") status: String
     ): Call<LiveEventRegisterResponse>
 
+    @POST("api/v1/event_orders/create_order")
+    fun createEventOrder(
+        @Body createOrderData: CreateOrderData
+    ) : Call<CreateOrderResponse>
 }
