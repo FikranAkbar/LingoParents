@@ -81,7 +81,10 @@ class LifestyleInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallba
                     is InsightListViewModel.LifestyleInsightList.Error -> {
                         showLoading(false)
                         showEmptyWarning(true)
-                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(insight.message)
+
+                        if (!insight.message.lowercase().contains("not found")) {
+                            noInternetAccessOrErrorHandler.onNoInternetAccessOrError(insight.message)
+                        }
                     }
                     is InsightListViewModel.LifestyleInsightList.NavigateToDetailInsightFragment -> {
                         val action = InsightListFragmentDirections
