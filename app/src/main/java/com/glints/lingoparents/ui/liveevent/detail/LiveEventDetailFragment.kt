@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -122,7 +123,7 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                                 }
 
                                 tvDetailEventTitle.text = title
-                                tvDateAndTimeContent.text = "$date, $started_at"
+                                tvDateAndTimeContent.text = "$date at $started_at"
                                 tvPriceContentNumber.text = price
 
                                 val imageLoader = requireContext().imageLoader
@@ -422,26 +423,56 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                     }
                 }
                 TransactionResult.STATUS_PENDING -> {
-                    Toast.makeText(requireContext(),
-                        "Transaction Pending. ID: " + result.response.transactionId,
-                        Toast.LENGTH_LONG).show()
+                    showSuccessSnackbar("Transaction pending with Order Id: ${result.response.transactionId}")
 
                     binding.apply {
                         mbtnRegister.visibility = View.INVISIBLE
                         mbtnJoinZoom.visibility = View.VISIBLE
                     }
                 }
-                TransactionResult.STATUS_FAILED -> Toast.makeText(requireContext(), "Transaction Failed. ID: " + result.response.transactionId.toString() + ". Message: " + result.response.statusMessage, Toast.LENGTH_LONG).show()
+                TransactionResult.STATUS_FAILED -> showErrorSnackbar("Transaction failed with Order Id: ${result.response.transactionId}")
             }
             result.response.validationMessages
         } else if (result.isTransactionCanceled) {
-            Toast.makeText(requireContext(), "Transaction Canceled", Toast.LENGTH_LONG).show()
+            showErrorSnackbar("Transaction canceled")
         } else {
             if (result.status.equals(TransactionResult.STATUS_INVALID, true)) {
-                Toast.makeText(requireContext(), "Transaction Invalid", Toast.LENGTH_LONG).show()
+                showErrorSnackbar("Transaction invalid")
             } else {
-                Toast.makeText(requireContext(), "Transaction Finished with failure.", Toast.LENGTH_LONG).show()
+                showErrorSnackbar("Transaction finished with failure")
             }
+        }
+    }
+
+    private fun showErrorSnackbar(message: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Snackbar.make(binding.root,
+                message,
+                Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.error_color, null))
+                .setTextColor(Color.WHITE)
+                .show()
+        } else {
+            Snackbar.make(binding.root,
+                message,
+                Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(Color.RED)
+                .setTextColor(Color.WHITE)
+                .show()
+        }
+    }
+
+    private fun showSuccessSnackbar(message: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
+                .setBackgroundTint(resources.getColor(R.color.success_color, null))
+                .setTextColor(Color.WHITE)
+                .show()
+        } else {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
+                .setBackgroundTint(Color.GREEN)
+                .setTextColor(Color.WHITE)
+                .show()
         }
     }
 }

@@ -196,7 +196,7 @@ class LiveEventDetailViewModel(
                 phone,
                 idEvent,
                 idUser,
-                20000,
+                price,
                 voucherCode
             ))
             .enqueue(object : Callback<CreateOrderResponse> {
