@@ -65,12 +65,11 @@ class LiveEventDetailViewModel(
         fullname: String,
         email: String,
         phone: String,
-        voucherCode: String,
-        paymentMethod: String
+        voucherCode: String
     ) = viewModelScope.launch {
         liveEventDetailEventChannel.send(
             LiveEventDetailEvent.RegisterClick(
-                fullname, email, phone, voucherCode, paymentMethod
+                fullname, email, phone, voucherCode
             )
         )
     }
@@ -234,8 +233,7 @@ class LiveEventDetailViewModel(
             val fullname: String,
             val email: String,
             val phone: String,
-            val voucherCode: String,
-            val paymentMethod: String
+            val voucherCode: String
         ) :
             LiveEventDetailEvent()
 

@@ -42,7 +42,6 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
     private lateinit var binding: FragmentLiveEventDetailBinding
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var viewModel: LiveEventDetailViewModel
-    private val paymentMethodItems = listOf<String>("Cash", "BRI", "BNI", "BCA", "GoPay", "OVO")
 
     private var id_user: Int = 0
     private var id_event: Int = 0
@@ -169,8 +168,6 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                         val lastName = nameParts.joinToString(" ")
 
                         val email = event.email
-                        val paymentMethod = event.paymentMethod
-                        val status = "yes"
 
                         /*
                         viewModel.registerLiveEvent(
@@ -277,9 +274,6 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                 tfEmail.editText?.setText(email)
                 tfFullName.editText?.setText(fullname)
                 tfPhoneNumber.editText?.setText(phoneNumber)
-                val adapter =
-                    ArrayAdapter(context, R.layout.item_payment_method, paymentMethodItems)
-                (tfPaymentMethod.editText as AutoCompleteTextView).setAdapter(adapter)
                 ivBackButton.setOnClickListener {
                     closeDialog()
                 }
@@ -289,29 +283,22 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                     phoneNumber = tfPhoneNumber.editText?.text.toString().trim()
                     email = tfEmail.editText?.text.toString().trim()
                     voucherCode = tfVoucherCode.editText?.text.toString().trim()
-                    paymentMethod = tfPaymentMethod.editText?.text.toString().trim()
                     AuthFormValidator.apply {
                         hideFieldError(
                             arrayListOf(
                                 tfFullName,
                                 tfEmail,
                                 tfPhoneNumber,
-                                tfVoucherCode,
-                                tfPaymentMethod
+                                tfVoucherCode
                             )
                         )
-                        if (isValidEmail(email) && isValidField(fullname) && isValidPhoneNumber(
-                                phoneNumber
-                            ) && isValidField(
-                                paymentMethod
-                            )
+                        if (isValidEmail(email) && isValidField(fullname) && isValidPhoneNumber(phoneNumber)
                         ) {
                             viewModel.onRegisterButtonClick(
                                 fullname!!,
                                 email!!,
                                 phoneNumber!!,
-                                voucherCode,
-                                paymentMethod
+                                voucherCode
                             )
                             closeDialog()
                         } else {
@@ -324,16 +311,9 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                             if (!isValidPhoneNumber(phoneNumber)) {
                                 showFieldError(tfPhoneNumber, PHONENUMBER_ERROR)
                             }
-                            if (!isValidField(paymentMethod)) {
-                                showFieldError(tfPaymentMethod, EMPTY_FIELD_ERROR)
-                            }
                         }
-
-
                     }
                 }
-
-
             }
 
             setCancelable(false)

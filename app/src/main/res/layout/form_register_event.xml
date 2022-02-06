@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="28dp"
                 android:fontFamily="@font/poppins_w600"
                 android:text="@string/please_fill_the_form"
                 android:textColor="@color/grey"
@@ -64,13 +64,13 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
 
                     <TextView
                         android:id="@+id/tv_full_name_title"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
                         android:fontFamily="@font/poppins_w600"
                         android:text="@string/full_name"
                         android:textColor="@color/grey"
@@ -216,54 +216,6 @@
                             android:maxLines="1"
                             android:paddingVertical="12dp" />
                     </com.google.android.material.textfield.TextInputLayout>
-
-                    <TextView
-                        android:id="@+id/tv_payment_method_title"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:fontFamily="@font/poppins_w600"
-                        android:text="@string/payment_method"
-                        android:textColor="@color/grey"
-                        android:textSize="14sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tf_voucher_code" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/tf_payment_method"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        app:boxCornerRadiusBottomEnd="6dp"
-                        app:boxCornerRadiusBottomStart="6dp"
-                        app:boxCornerRadiusTopEnd="6dp"
-                        app:boxCornerRadiusTopStart="6dp"
-                        app:boxStrokeColor="@color/primary_orange"
-                        app:hintEnabled="false"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_payment_method_title">
-
-                        <AutoCompleteTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:hint="@string/select_your_payment_method"
-                            android:imeOptions="actionDone"
-                            android:inputType="none"
-                            android:paddingVertical="0dp"
-                            tools:ignore="LabelFor" />
-                        <!--                        <com.google.android.material.textfield.TextInputEditText-->
-                        <!--                            android:layout_width="match_parent"-->
-                        <!--                            android:layout_height="wrap_content"-->
-                        <!--                            android:hint="@string/bank_transfer"-->
-                        <!--                            android:imeOptions="actionDone"-->
-                        <!--                            android:inputType="textEmailAddress"-->
-                        <!--                            android:maxLines="1"-->
-                        <!--                            android:paddingVertical="12dp" />-->
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
 
@@ -272,7 +224,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="24dp"
                 android:text="@string/register"
                 android:textAppearance="@style/Typography.Button"
                 app:backgroundTint="@color/primary_orange"
