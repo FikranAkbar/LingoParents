@@ -80,7 +80,10 @@ class AllInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
                     is InsightListViewModel.AllInsightList.Error -> {
                         showLoading(false)
                         showEmptyWarning(true)
-                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(insight.message)
+
+                        if (!insight.message.lowercase().contains("not found")) {
+                            noInternetAccessOrErrorHandler.onNoInternetAccessOrError(insight.message)
+                        }
                     }
                     is InsightListViewModel.AllInsightList.NavigateToDetailInsightFragment -> {
                         val action = InsightListFragmentDirections

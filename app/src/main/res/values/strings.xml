@@ -222,4 +222,5 @@
     <string name="edit_text_allowed_characters">!@"#$&amp;'()*+,-./0123456789:;=?ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</string>
     <string name="verifying_your_email">Verifying Your Email</string>
     <string name="please_wait_you_will_be_auto_redirected_to_login_screen_after_your_email_has_been_verified">Please wait, you will be auto redirected to login screen after your email has been verified!</string>
+    <string name="join_here">Join Here</string>
 </resources>

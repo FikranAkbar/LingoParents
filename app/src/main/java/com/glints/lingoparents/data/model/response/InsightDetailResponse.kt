@@ -22,7 +22,9 @@ class InsightDetailResponse{
         val total_like: Int,
         val total_report: Int,
         val total_views: Int,
-        val updatedAt: String
+        val updatedAt: String,
+        var is_liked: Int,
+        var is_disliked: Int,
     )
 
     data class MasterComment(
@@ -41,7 +43,9 @@ class InsightDetailResponse{
         val total_dislike: Int,
         val total_like: Int,
         val total_report: Int,
-        val updatedAt: String
+        val updatedAt: String,
+        var is_liked: Int,
+        var is_disliked: Int,
     )
 
     data class MasterReportX(
@@ -143,7 +147,9 @@ fun InsightDetailResponse.mapToInsightCommentItems(): List<InsightCommentItem>? 
             comment = it.comment,
             totalLike = it.total_like,
             totalDislike = it.total_dislike,
-            totalReply = it.replies
+            totalReply = it.replies,
+            is_liked = it.is_liked,
+            is_disliked = it.is_disliked,
         )
     }
 

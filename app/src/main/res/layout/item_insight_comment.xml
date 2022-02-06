@@ -64,10 +64,9 @@
                 android:id="@+id/iv_comment_like"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:foreground="?selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_insight_like"
-                android:visibility="invisible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_comment_body"
                 tools:ignore="ContentDescription,UnusedAttribute" />
@@ -80,7 +79,6 @@
                 android:fontFamily="@font/poppins_w700"
                 android:foreground="?selectableItemBackgroundBorderless"
                 android:textSize="11sp"
-                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@id/iv_comment_like"
                 app:layout_constraintStart_toEndOf="@id/iv_comment_like"
                 app:layout_constraintTop_toTopOf="@id/iv_comment_like"
@@ -94,7 +92,6 @@
                 android:layout_marginStart="8dp"
                 android:foreground="?selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_insight_dislike"
-                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@id/tv_like_count"
                 app:layout_constraintStart_toEndOf="@id/tv_like_count"
                 app:layout_constraintTop_toTopOf="@id/tv_like_count"
@@ -108,7 +105,6 @@
                 android:fontFamily="@font/poppins_w700"
                 android:foreground="?selectableItemBackgroundBorderless"
                 android:textSize="11sp"
-                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@id/iv_comment_dislike"
                 app:layout_constraintStart_toEndOf="@id/iv_comment_dislike"
                 app:layout_constraintTop_toTopOf="@id/iv_comment_dislike"
@@ -128,6 +124,7 @@
                 android:textColor="@color/grey_darker"
                 android:textSize="11sp"
                 android:textStyle="bold"
+
                 app:layout_constraintBottom_toBottomOf="@id/tv_delete_comment"
                 app:layout_constraintEnd_toStartOf="@id/tv_delete_comment"
                 app:layout_constraintTop_toTopOf="@id/tv_delete_comment"
@@ -184,7 +181,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="16dp"
                 android:visibility="gone"
                 app:boxCornerRadiusBottomEnd="10dp"
                 app:boxCornerRadiusBottomStart="10dp"
@@ -194,7 +191,7 @@
                 app:hintEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_update_comment">
+                app:layout_constraintTop_toBottomOf="@id/iv_comment_like">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/Typography.Caption"
@@ -222,7 +219,7 @@
                 android:id="@+id/tv_show_reply_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:foreground="?selectableItemBackgroundBorderless"
                 android:textStyle="bold"
                 android:visibility="gone"
