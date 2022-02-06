@@ -140,34 +140,15 @@ interface APIService {
     @GET("api/v1/parents/profile")
     fun getParentProfile(): Call<ParentProfileResponse>
 
-    @FormUrlEncoded
-    @PUT("api/v1/parents/profile")
-    fun editParentProfile(
-        @Field("firstname") firstname: String,
-        @Field("lastname") lastname: String,
-        @Field("address") address: String,
-        @Field("phone") phone: String,
-    ): Call<EditParentProfileResponse>
-
     @Multipart
     @PUT("api/v1/parents/profile")
-    fun editParentProfileCoba(
+    fun editParentProfile(
         @Part("firstname") firstname: RequestBody?,
         @Part("lastname") lastname: RequestBody?,
         @Part("address") address: RequestBody?,
         @Part("phone") phone: RequestBody?,
         @Part image: MultipartBody.Part?,
     ): Call<EditParentProfileResponse>
-//    @Multipart
-//    @PUT("api/v1/parents/profile")
-//    fun editParentProfileCoba(
-//        @Part("firstname") firstname: RequestBody,
-//        @Part("lastname") lastname: RequestBody,
-//        @Part("address") address: RequestBody,
-//        @Part("phone") phone: RequestBody,
-//        @Part image: MultipartBody.Part
-//    ): Call<EditParentProfileResponse>
-
 
     @FormUrlEncoded
     @PUT("api/v1/parents/profile/change-password")

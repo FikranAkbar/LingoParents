@@ -16,12 +16,19 @@ import com.glints.lingoparents.ui.authentication.AuthenticationActivity
 import com.glints.lingoparents.utils.*
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var viewModel: ProfileViewModel
+    private lateinit var firstname: String
+    private lateinit var lastname: String
+    private lateinit var address: String
+    private lateinit var phone: String
 
     private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
 
@@ -48,11 +55,22 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 exitEditState()
             }
             mbtnSave.setOnClickListener {
+                firstname = tfFirstName.editText?.text.toString().trim()
+                lastname = tfLastName.editText?.text.toString().trim()
+                address = tfAddress.editText?.text.toString().trim()
+                phone = tfPhoneNumber.editText?.text.toString()
+                val firstname: RequestBody =
+                    firstname.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+                val lastname: RequestBody =
+                    lastname.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+                val address: RequestBody =
+                    address.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+                val phone: RequestBody =
+                    phone.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+
                 viewModel.onSaveButtonClick(
-                    tfFirstName.editText?.text.toString().trim(),
-                    tfLastName.editText?.text.toString().trim(),
-                    tfAddress.editText?.text.toString().trim(),
-                    tfPhoneNumber.editText?.text.toString()
+                    firstname, lastname, address, phone
+
                 )
             }
             mbtnLogout.setOnClickListener {
