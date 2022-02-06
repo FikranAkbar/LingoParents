@@ -29,11 +29,17 @@ class SplashViewModel(private val tokenPreferences: TokenPreferences) : ViewMode
         splashEventChannel.send(SplashEvent.NavigateToResetPasswordScreen(accessToken, id))
     }
 
+    fun sendNavigateToVerifyEmailEvent(token: String, id: String) = viewModelScope.launch {
+        delay(2000)
+        splashEventChannel.send(SplashEvent.NavigateToVerifyEmailScreen(token, id))
+    }
+
     fun getAccessToken(): LiveData<String> = tokenPreferences.getAccessToken().asLiveData()
 
     sealed class SplashEvent {
         object NavigateToHomeScreen : SplashEvent()
         object NavigateToAuthScreen : SplashEvent()
         data class NavigateToResetPasswordScreen(val token: String, val id: String) : SplashEvent()
+        data class NavigateToVerifyEmailScreen(val token: String, val id: String) : SplashEvent()
     }
 }

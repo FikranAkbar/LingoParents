@@ -71,20 +71,12 @@ class RegisterViewModel(
         registerEventChannel.send(RegisterEvent.Loading)
     }
 
-    private fun onRegisterApiCallSuccess(email: String, password: String) = viewModelScope.launch {
-        registerEventChannel.send(RegisterEvent.RegisterSuccess(email, password))
-    }
-
-    private fun onLoginApiCallSuccess() = viewModelScope.launch {
-        registerEventChannel.send(RegisterEvent.LoginSuccess)
+    private fun onRegisterApiCallSuccess(email: String, password: String, message: String) = viewModelScope.launch {
+        registerEventChannel.send(RegisterEvent.RegisterSuccess(email, password, message))
     }
 
     private fun onRegisterApiCallError(message: String) = viewModelScope.launch {
         registerEventChannel.send(RegisterEvent.RegisterError(message))
-    }
-
-    private fun onLoginApiCallError(message: String) = viewModelScope.launch {
-        registerEventChannel.send(RegisterEvent.LoginError(message))
     }
 
     /**
@@ -133,7 +125,7 @@ class RegisterViewModel(
                     response: Response<RegisterUserResponse>,
                 ) {
                     if (response.isSuccessful) {
-                        onRegisterApiCallSuccess(email, password)
+                        onRegisterApiCallSuccess(email, password, response.body()?.message!!)
                     } else {
                         val apiError = ErrorUtils.parseError(response)
                         onRegisterApiCallError(apiError.message())
@@ -142,45 +134,6 @@ class RegisterViewModel(
 
                 override fun onFailure(call: Call<RegisterUserResponse>, t: Throwable) {
                     onRegisterApiCallError("Network Failed...")
-                }
-            })
-    }
-
-    /**
-     * Method for auto login after user register success.
-     * @param email Email of the user
-     * @param password password for the email
-     */
-    fun loginAfterSuccessfulRegister(
-        email: String,
-        password: String,
-    ) = viewModelScope.launch {
-        onApiCallStarted()
-        APIClient
-            .service
-            .loginUser(email, password)
-            .enqueue(object : Callback<LoginUserResponse> {
-                override fun onResponse(
-                    call: Call<LoginUserResponse>,
-                    response: Response<LoginUserResponse>,
-                ) {
-                    if (response.isSuccessful) {
-                        val accessToken = response.body()?.data?.accessToken.toString()
-                        val refreshToken = response.body()?.data?.refreshToken.toString()
-
-                        val userId = JWTUtils.getIdFromAccessToken(accessToken)
-                        saveToken(accessToken, refreshToken)
-                        saveUserId(userId)
-
-                        onLoginApiCallSuccess()
-                    } else {
-                        val apiError = ErrorUtils.parseError(response)
-                        onLoginApiCallError(apiError.message())
-                    }
-                }
-
-                override fun onFailure(call: Call<LoginUserResponse>, t: Throwable) {
-                    onLoginApiCallError("Network Failed...")
                 }
             })
     }
@@ -198,8 +151,7 @@ class RegisterViewModel(
         ) : RegisterEvent()
 
         object Loading : RegisterEvent()
-        data class RegisterSuccess(val email: String, val password: String) : RegisterEvent()
-        object LoginSuccess : RegisterEvent()
+        data class RegisterSuccess(val email: String, val password: String, val message: String) : RegisterEvent()
         data class RegisterError(val message: String) : RegisterEvent()
         data class LoginError(val message: String) : RegisterEvent()
     }

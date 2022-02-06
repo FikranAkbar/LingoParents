@@ -12,3 +12,16 @@ class APIError {
         return message
     }
 }
+
+class APIErrorWithStatusAsString {
+    private val status: String = ""
+    private val message: String = ""
+
+    fun getStatus(): String {
+        return status
+    }
+
+    fun getMessage(): String {
+        return message
+    }
+}
