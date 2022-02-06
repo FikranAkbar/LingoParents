@@ -36,6 +36,11 @@ class LiveEventDetailViewModel(
             liveEventDetailEventChannel.send(LiveEventDetailEvent.RegisterSuccess)
         }
 
+    private fun onCreateEventOrderSuccess(snapToken: String) =
+        viewModelScope.launch {
+            liveEventDetailEventChannel.send(LiveEventDetailEvent.CreateOrderEventSuccess(snapToken))
+        }
+
     private fun onGetProfileApiCallSuccess(result: ParentProfileResponse) =
         viewModelScope.launch {
             liveEventDetailEventChannel.send(LiveEventDetailEvent.SuccessGetProfile(result))
@@ -60,12 +65,11 @@ class LiveEventDetailViewModel(
         fullname: String,
         email: String,
         phone: String,
-        voucherCode: String,
-        paymentMethod: String
+        voucherCode: String
     ) = viewModelScope.launch {
         liveEventDetailEventChannel.send(
             LiveEventDetailEvent.RegisterClick(
-                fullname, email, phone, voucherCode, paymentMethod
+                fullname, email, phone, voucherCode
             )
         )
     }
@@ -171,6 +175,48 @@ class LiveEventDetailViewModel(
 
     }
 
+    fun createOrderEvent(
+        firstName: String,
+        lastName: String,
+        email: String,
+        phone: String,
+        idEvent: Int,
+        idUser: Int,
+        price: Int,
+        voucherCode: String?
+    ) = viewModelScope.launch {
+        onApiCallStarted()
+        APIClient
+            .service
+            .createEventOrder(CreateOrderData(
+                firstName,
+                lastName,
+                email,
+                phone,
+                idEvent,
+                idUser,
+                price,
+                voucherCode
+            ))
+            .enqueue(object : Callback<CreateOrderResponse> {
+                override fun onResponse(
+                    call: Call<CreateOrderResponse>,
+                    response: Response<CreateOrderResponse>,
+                ) {
+                    if (response.isSuccessful) {
+                        onCreateEventOrderSuccess(response.body()!!.data.snapToken)
+                    } else {
+                        val apiError = ErrorUtils.parseError(response)
+                        onRegisterApiCallError(apiError.message())
+                    }
+                }
+
+                override fun onFailure(call: Call<CreateOrderResponse>, t: Throwable) {
+                    onApiCallError("Network Failed...")
+                }
+            })
+    }
+
 
     sealed class LiveEventDetailEvent {
         object Loading : LiveEventDetailEvent()
@@ -187,11 +233,12 @@ class LiveEventDetailViewModel(
             val fullname: String,
             val email: String,
             val phone: String,
-            val voucherCode: String,
-            val paymentMethod: String
+            val voucherCode: String
         ) :
             LiveEventDetailEvent()
 
         object RegisterSuccess : LiveEventDetailEvent()
+
+        data class CreateOrderEventSuccess(val snapToken: String) : LiveEventDetailEvent()
     }
 }

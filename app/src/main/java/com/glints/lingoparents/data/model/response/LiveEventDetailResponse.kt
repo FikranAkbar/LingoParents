@@ -19,6 +19,7 @@ class LiveEventDetailResponse {
         val status: String,
         val started_at: String,
         val idUser_create: Int,
+        val zoom_link: String,
         val Trx_event_participants: List<LiveEventParticipants>?
     )
 

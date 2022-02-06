@@ -3,8 +3,11 @@ package com.glints.lingoparents.ui.liveevent.detail
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -28,12 +31,8 @@ import com.glints.lingoparents.utils.*
 import com.google.android.material.snackbar.Snackbar
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback
 import com.midtrans.sdk.corekit.core.MidtransSDK
-import com.midtrans.sdk.corekit.core.TransactionRequest
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting
 import com.midtrans.sdk.corekit.core.themes.CustomColorTheme
-import com.midtrans.sdk.corekit.models.CustomerDetails
-import com.midtrans.sdk.corekit.models.snap.Gopay
-import com.midtrans.sdk.corekit.models.snap.Shopeepay
 import com.midtrans.sdk.corekit.models.snap.TransactionResult
 import com.midtrans.sdk.uikit.SdkUIFlowBuilder
 import kotlinx.coroutines.flow.collect
@@ -43,10 +42,9 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
     private lateinit var binding: FragmentLiveEventDetailBinding
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var viewModel: LiveEventDetailViewModel
-    private val paymentMethodItems = listOf<String>("Cash", "BRI", "BNI", "BCA", "GoPay", "OVO")
 
-    private var id_user: Int? = null
-    private var id_event: Int? = null
+    private var id_user: Int = 0
+    private var id_event: Int = 0
     private var eventType: String? = null
 
     private var fullname: String? = null
@@ -56,9 +54,9 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
     private var attendance_time_event: String? = null
 
     private var idUser_createValue: Int? = null
-    private var total_price: Int? = null
-    private var voucherCode: String? = null
-    private var paymentMethod: String? = null
+    private var total_price: Int = 0
+    private var voucherCode: String = ""
+    private var paymentMethod: String = ""
 
     private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
 
@@ -115,12 +113,12 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                                 if (eventType != "completed") {
                                     Trx_event_participants?.find { it.id_user == id_user }?.let {
                                         mbtnRegister.visibility = View.INVISIBLE
-                                        tvUserHasBeenRegistered.visibility = View.VISIBLE
+                                        mbtnJoinZoom.visibility = View.VISIBLE
                                     }
                                 }
 
                                 tvDetailEventTitle.text = title
-                                tvDateAndTimeContent.text = "$date, $started_at"
+                                tvDateAndTimeContent.text = "$date at $started_at"
                                 tvPriceContentNumber.text = price
 
                                 val imageLoader = requireContext().imageLoader
@@ -142,6 +140,12 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                                 attendance_time_event = started_at
                                 total_price = price.toInt()
                                 idUser_createValue = idUser_create
+
+                                mbtnJoinZoom.setOnClickListener {
+                                    // TODO: Call backend API to verify payment
+                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(zoom_link))
+                                    requireContext().startActivity(intent)
+                                }
                             }
                         }
                     }
@@ -153,14 +157,19 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                         }
                     }
                     is LiveEventDetailViewModel.LiveEventDetailEvent.RegisterClick -> {
-                        /*
+
                         val phoneNumber = event.phone
                         val voucherCode = event.voucherCode
-                        val fullname = event.fullname
-                        val email = event.email
-                        val paymentMethod = event.paymentMethod
-                        val status = "yes"
 
+                        val fullname = event.fullname
+                        val nameParts = fullname.split(" ").toMutableList()
+                        val firstName = nameParts[0]
+                        nameParts.removeAt(0)
+                        val lastName = nameParts.joinToString(" ")
+
+                        val email = event.email
+
+                        /*
                         viewModel.registerLiveEvent(
                             total_price!!,
                             phoneNumber,
@@ -176,8 +185,17 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                             status
                         )
                          */
-                        MidtransSDK.getInstance().transactionRequest = initTransactionRequest()
-                        MidtransSDK.getInstance().startPaymentUiFlow(requireContext())
+
+                        viewModel.createOrderEvent(
+                            firstName,
+                            lastName,
+                            email,
+                            phoneNumber,
+                            id_event,
+                            id_user,
+                            total_price,
+                            voucherCode
+                        )
                     }
                     is LiveEventDetailViewModel.LiveEventDetailEvent.RegisterSuccess -> {
                         Snackbar.make(
@@ -191,7 +209,7 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
 
                         binding.apply {
                             mbtnRegister.visibility = View.INVISIBLE
-                            tvUserHasBeenRegistered.visibility = View.VISIBLE
+                            mbtnJoinZoom.visibility = View.VISIBLE
                         }
                     }
                     is LiveEventDetailViewModel.LiveEventDetailEvent.Loading -> {
@@ -212,6 +230,11 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                             .setTextColor(Color.parseColor("#FFFFFF"))
                             .show()
                         showLoading(false)
+                    }
+                    is LiveEventDetailViewModel.LiveEventDetailEvent.CreateOrderEventSuccess -> {
+                        MidtransSDK.getInstance()
+                            .startPaymentUiFlow(requireContext(), event.snapToken)
+                        //Snackbar.make(binding.root, "createOrderEventSuccess", Snackbar.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -251,40 +274,31 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                 tfEmail.editText?.setText(email)
                 tfFullName.editText?.setText(fullname)
                 tfPhoneNumber.editText?.setText(phoneNumber)
-                val adapter =
-                    ArrayAdapter(context, R.layout.item_payment_method, paymentMethodItems)
-                (tfPaymentMethod.editText as AutoCompleteTextView).setAdapter(adapter)
                 ivBackButton.setOnClickListener {
                     closeDialog()
                 }
+
                 mbtnRegister.setOnClickListener {
-                    fullname = tfFullName.editText?.text.toString()
-                    phoneNumber = tfPhoneNumber.editText?.text.toString()
-                    email = tfEmail.editText?.text.toString()
-                    voucherCode = tfVoucherCode.editText?.text.toString()
-                    paymentMethod = tfPaymentMethod.editText?.text.toString()
+                    fullname = tfFullName.editText?.text.toString().trim()
+                    phoneNumber = tfPhoneNumber.editText?.text.toString().trim()
+                    email = tfEmail.editText?.text.toString().trim()
+                    voucherCode = tfVoucherCode.editText?.text.toString().trim()
                     AuthFormValidator.apply {
                         hideFieldError(
                             arrayListOf(
                                 tfFullName,
                                 tfEmail,
                                 tfPhoneNumber,
-                                tfVoucherCode,
-                                tfPaymentMethod
+                                tfVoucherCode
                             )
                         )
-                        if (isValidEmail(email) && isValidField(fullname) && isValidPhoneNumber(
-                                phoneNumber
-                            ) && isValidField(voucherCode) && isValidField(
-                                paymentMethod
-                            )
+                        if (isValidEmail(email) && isValidField(fullname) && isValidPhoneNumber(phoneNumber)
                         ) {
                             viewModel.onRegisterButtonClick(
-                                tfFullName.editText?.text.toString(),
-                                tfEmail.editText?.text.toString(),
-                                tfPhoneNumber.editText?.text.toString(),
-                                tfVoucherCode.editText?.text.toString(),
-                                tfPaymentMethod.editText?.text.toString()
+                                fullname!!,
+                                email!!,
+                                phoneNumber!!,
+                                voucherCode
                             )
                             closeDialog()
                         } else {
@@ -297,19 +311,9 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
                             if (!isValidPhoneNumber(phoneNumber)) {
                                 showFieldError(tfPhoneNumber, PHONENUMBER_ERROR)
                             }
-                            if (!isValidField(paymentMethod)) {
-                                showFieldError(tfPaymentMethod, EMPTY_FIELD_ERROR)
-                            }
-                            if (!isValidField(voucherCode)) {
-                                showFieldError(tfVoucherCode, EMPTY_FIELD_ERROR)
-                            }
                         }
-
-
                     }
                 }
-
-
             }
 
             setCancelable(false)
@@ -331,23 +335,21 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
         }
     }
 
-    private fun initTransactionRequest(): TransactionRequest {
+    /*private fun initTransactionRequest(): TransactionRequest {
         val transactionRequestNew =
             TransactionRequest(System.currentTimeMillis().toString() + "", 49900.0)
         transactionRequestNew.customerDetails = initCustomerDetails()
-        transactionRequestNew.gopay = Gopay("mysamplesdk:://midtrans")
-        transactionRequestNew.shopeepay = Shopeepay("mysamplesdk:://midtrans")
         return transactionRequestNew
-    }
+    }*/
 
-    private fun initCustomerDetails(): CustomerDetails{
+    /*private fun initCustomerDetails(): CustomerDetails{
         val mCustomerDetails = CustomerDetails()
         mCustomerDetails.phone = "085156283106"
         mCustomerDetails.firstName = "Fikran Akbar"
         mCustomerDetails.email = "mail@mail.com"
         mCustomerDetails.customerIdentifier = "mail@mail.com"
         return mCustomerDetails
-    }
+    }*/
 
     private fun initMidtransSdk() {
         val clientKey = MidtransSdkConfig.MERCHANT_CLIENT_KEY
@@ -382,20 +384,69 @@ class LiveEventDetailFragment : Fragment(R.layout.fragment_live_event_detail),
 
     override fun onTransactionFinished(result: TransactionResult) {
         if (result.response != null) {
+            println("account Numbers: ${result.response.accountNumbers[0].bank} - ${result.response.accountNumbers[0].accountNumber}")
             when (result.status) {
-                TransactionResult.STATUS_SUCCESS -> Toast.makeText(requireContext(), "Transaction Finished. ID: " + result.response.transactionId, Toast.LENGTH_LONG).show()
-                TransactionResult.STATUS_PENDING -> Toast.makeText(requireContext(), "Transaction Pending. ID: " + result.response.transactionId, Toast.LENGTH_LONG).show()
-                TransactionResult.STATUS_FAILED -> Toast.makeText(requireContext(), "Transaction Failed. ID: " + result.response.transactionId.toString() + ". Message: " + result.response.statusMessage, Toast.LENGTH_LONG).show()
+                TransactionResult.STATUS_SUCCESS -> {
+                    Toast.makeText(requireContext(),
+                        "Transaction Finished. ID: " + result.response.transactionId,
+                        Toast.LENGTH_LONG).show()
+
+                    binding.apply {
+                        mbtnRegister.visibility = View.INVISIBLE
+                        mbtnJoinZoom.visibility = View.VISIBLE
+                    }
+                }
+                TransactionResult.STATUS_PENDING -> {
+                    showSuccessSnackbar("Transaction pending with Order Id: ${result.response.transactionId}")
+
+                    binding.apply {
+                        mbtnRegister.visibility = View.INVISIBLE
+                        mbtnJoinZoom.visibility = View.VISIBLE
+                    }
+                }
+                TransactionResult.STATUS_FAILED -> showErrorSnackbar("Transaction failed with Order Id: ${result.response.transactionId}")
             }
             result.response.validationMessages
         } else if (result.isTransactionCanceled) {
-            Toast.makeText(requireContext(), "Transaction Canceled", Toast.LENGTH_LONG).show()
+            showErrorSnackbar("Transaction canceled")
         } else {
             if (result.status.equals(TransactionResult.STATUS_INVALID, true)) {
-                Toast.makeText(requireContext(), "Transaction Invalid", Toast.LENGTH_LONG).show()
+                showErrorSnackbar("Transaction invalid")
             } else {
-                Toast.makeText(requireContext(), "Transaction Finished with failure.", Toast.LENGTH_LONG).show()
+                showErrorSnackbar("Transaction finished with failure")
             }
+        }
+    }
+
+    private fun showErrorSnackbar(message: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Snackbar.make(binding.root,
+                message,
+                Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.error_color, null))
+                .setTextColor(Color.WHITE)
+                .show()
+        } else {
+            Snackbar.make(binding.root,
+                message,
+                Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(Color.RED)
+                .setTextColor(Color.WHITE)
+                .show()
+        }
+    }
+
+    private fun showSuccessSnackbar(message: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
+                .setBackgroundTint(resources.getColor(R.color.success_color, null))
+                .setTextColor(Color.WHITE)
+                .show()
+        } else {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
+                .setBackgroundTint(Color.GREEN)
+                .setTextColor(Color.WHITE)
+                .show()
         }
     }
 }
