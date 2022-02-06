@@ -53,4 +53,18 @@
             app:argType="string" />
     </fragment>
     <action android:id="@+id/action_global_resetPasswordFragment" app:destination="@id/resetPasswordFragment" />
+    <fragment
+        android:id="@+id/verifyEmailFragment"
+        android:name="com.glints.lingoparents.ui.verifyemail.VerifyEmailFragment"
+        android:label="fragment_verify_email"
+        tools:layout="@layout/fragment_verify_email">
+
+        <argument
+            android:name="token"
+            app:argType="string" />
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
+    <action android:id="@+id/action_global_verifyEmailFragment" app:destination="@id/verifyEmailFragment"/>
 </navigation>

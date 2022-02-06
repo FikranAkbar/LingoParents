@@ -14,6 +14,7 @@ import com.glints.lingoparents.ui.dashboard.DashboardActivity
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 
 class SplashFragment : Fragment(R.layout.fragment_splash) {
@@ -47,6 +48,10 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
                         val action = SplashFragmentDirections.actionGlobalResetPasswordFragment(event.token, event.id)
                         findNavController().navigate(action)
                     }
+                    is SplashViewModel.SplashEvent.NavigateToVerifyEmailScreen -> {
+                        val action = SplashFragmentDirections.actionGlobalVerifyEmailFragment(event.token, event.id)
+                        findNavController().navigate(action)
+                    }
                 }
             }
         }
@@ -62,9 +67,19 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
 
     private fun showDeepLinkOffer(appLinkAction: String?, appLinkData: Uri?) {
         if (appLinkAction == Intent.ACTION_VIEW && appLinkData != null) {
-            val accessToken = appLinkData.getQueryParameter("token") as String
-            val id = appLinkData.getQueryParameter("id") as String
-            viewModel.sendNavigateToResetPasswordEvent(accessToken, id)
+            val path = appLinkData.path!!
+            when {
+                path.contains("reset-password") -> {
+                    val accessToken = appLinkData.getQueryParameter("token") as String
+                    val id = appLinkData.getQueryParameter("id") as String
+                    viewModel.sendNavigateToResetPasswordEvent(accessToken, id)
+                }
+                path.contains("verify-email") -> {
+                    val token = appLinkData.getQueryParameter("token") as String
+                    val id = appLinkData.getQueryParameter("id") as String
+                    viewModel.sendNavigateToVerifyEmailEvent(token, id)
+                }
+            }
         }
         else {
             viewModel.getAccessToken().observe(viewLifecycleOwner) {

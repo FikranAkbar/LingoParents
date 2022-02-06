@@ -92,7 +92,6 @@
                 android:hint="@string/first_name"
                 android:imeOptions="actionNext"
                 android:inputType="textPersonName"
-                android:digits="@string/edit_text_allowed_characters"
                 android:maxLines="1"
                 android:paddingVertical="12dp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -138,7 +137,6 @@
                 android:hint="@string/last_name"
                 android:imeOptions="actionNext"
                 android:inputType="text"
-                android:digits="@string/edit_text_allowed_characters"
                 android:maxLines="1"
                 android:paddingVertical="12dp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -184,7 +182,6 @@
                 android:hint="@string/email"
                 android:imeOptions="actionNext"
                 android:inputType="textEmailAddress"
-                android:digits="@string/edit_text_allowed_characters"
                 android:maxLines="1"
                 android:paddingVertical="12dp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -231,7 +228,6 @@
                 android:hint="@string/password"
                 android:imeOptions="actionNext"
                 android:inputType="textPassword"
-                android:digits="@string/edit_text_allowed_characters"
                 android:maxLines="1"
                 android:paddingVertical="12dp" />
         </com.google.android.material.textfield.TextInputLayout>
