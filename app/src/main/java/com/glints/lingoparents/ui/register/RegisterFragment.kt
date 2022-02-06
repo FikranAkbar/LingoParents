@@ -46,11 +46,11 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             }
             mbtnSubmit.setOnClickListener {
                 viewModel.onSubmitButtonClick(
-                    firstName = tilFirstName.editText?.text.toString(),
-                    lastName = tilLastName.editText?.text.toString(),
-                    email = tilEmail.editText?.text.toString(),
+                    firstName = tilFirstName.editText?.text.toString().trim(),
+                    lastName = tilLastName.editText?.text.toString().trim(),
+                    email = tilEmail.editText?.text.toString().trim(),
                     password = tilPassword.editText?.text.toString(),
-                    phone = tilPhone.editText?.text.toString()
+                    phone = tilPhone.editText?.text.toString().trim()
                 )
             }
             tilFirstName.editText?.setText(viewModel.googleFirstName)
@@ -84,9 +84,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                     is RegisterViewModel.RegisterEvent.RegisterSuccess -> {
                         handleOnRegisterSuccess(event)
                     }
-                    is RegisterViewModel.RegisterEvent.LoginSuccess -> {
-                        handleOnLoginSuccess()
-                    }
                     is RegisterViewModel.RegisterEvent.RegisterError -> {
                         handleOnErrorRegisterUser(event)
                     }
@@ -98,22 +95,12 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         }
     }
 
-    private fun handleOnLoginSuccess() {
-        CoroutineScope(Dispatchers.Unconfined).launch {
-            delay(100)
-
-            val intent = Intent(
-                this@RegisterFragment.requireContext(),
-                AuthenticationActivity::class.java
-            )
-            startActivity(intent)
-            requireActivity().finish()
-        }
-    }
-
     private fun handleOnRegisterSuccess(event: RegisterViewModel.RegisterEvent.RegisterSuccess) {
         showLoading(false)
-        viewModel.loginAfterSuccessfulRegister(event.email, event.password)
+        showSuccessSnackbar(event.message)
+        findNavController().popBackStack()
+
+        //viewModel.loginAfterSuccessfulRegister(event.email, event.password)
     }
 
     private fun handleOnLoading() {
@@ -232,6 +219,20 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         } else {
             Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(Color.RED)
+                .setTextColor(Color.WHITE)
+                .show()
+        }
+    }
+
+    private fun showSuccessSnackbar(message: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.success_color, null))
+                .setTextColor(Color.WHITE)
+                .show()
+        } else {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(Color.GREEN)
                 .setTextColor(Color.WHITE)
                 .show()
         }
