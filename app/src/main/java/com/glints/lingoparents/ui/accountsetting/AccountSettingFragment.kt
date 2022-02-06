@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,32 +30,43 @@ import com.glints.lingoparents.databinding.FragmentAccountSettingBinding
 import com.glints.lingoparents.databinding.ItemProfilePictureDialogBinding
 import com.glints.lingoparents.ui.accountsetting.profile.ProfileViewModel
 import com.glints.lingoparents.ui.dashboard.DashboardActivity
-import com.glints.lingoparents.utils.CustomViewModelFactory
-import com.glints.lingoparents.utils.TokenPreferences
-import com.glints.lingoparents.utils.dataStore
+import com.glints.lingoparents.utils.*
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.flow.collect
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import java.io.File
 
 class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var viewModel: AccountSettingViewModel
-
+    private lateinit var photoFirstname: String
+    private lateinit var photoLastname: String
+    private lateinit var photoAddress: String
+    private lateinit var photoPhone: String
     private lateinit var dialogBinding: ItemProfilePictureDialogBinding
+    private lateinit var latestPhoto: Uri
+    private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
 
-    //    private lateinit var dialogBinding: ItemViewProfilePictureBinding
     private lateinit var customDialog: AlertDialog
 
     private val cropImage = registerForActivityResult(CropImageContract()) { result ->
         if (result.isSuccessful) {
             // use the returned uri
-
-            val uriContent = result.uriContent
-            uriContent.let {
-                binding.ivProfilePicture.setImageURI(it)
-            }
-            val uriFilePath = result.getUriFilePath(requireContext()) // optional usage
+            latestPhoto = result.uriContent!!
+            val uriFilePath = result.getUriFilePath(requireContext())!! // optional usage
+            val file = File(uriFilePath)
+            val requestFile: RequestBody =
+                file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val photo: MultipartBody.Part =
+                MultipartBody.Part.createFormData("photo", file.name, requestFile)
+            viewModel.onCroppedImage(photo)
         } else {
             val exception = result.error
         }
@@ -86,6 +98,8 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
 
     private var _binding: FragmentAccountSettingBinding? = null
     private val binding get() = _binding!!
+
+
     override fun onStart() {
         super.onStart()
         (activity as DashboardActivity).showBottomNav(false)
@@ -153,6 +167,22 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
                     is AccountSettingViewModel.AccountSetting.Loading -> {
                         showLoading(true)
                     }
+                    is AccountSettingViewModel.AccountSetting.TryToUploadPhoto -> {
+                        viewModel.uploadPhoto(
+                            event.photo)
+                    }
+                    is AccountSettingViewModel.AccountSetting.UploadPhotoSuccess -> {
+                        latestPhoto.let {
+                            binding.ivProfilePicture.setImageURI(it)
+                        }
+                        Snackbar.make(requireView(), "Change Avatar Success", Snackbar.LENGTH_LONG)
+                            .setBackgroundTint(Color.parseColor("#42ba96"))
+                            .setTextColor(Color.parseColor("#FFFFFF"))
+                            .show()
+                    }
+                    is AccountSettingViewModel.AccountSetting.Error -> {
+                        noInternetAccessOrErrorHandler.onNoInternetAccessOrError(event.message)
+                    }
                 }
             }
         }
@@ -175,7 +205,6 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
     }
 
     private fun showProfilePictureDialog() {
-//        dialogBinding = ItemViewProfilePictureBinding.inflate(
         dialogBinding = ItemProfilePictureDialogBinding.inflate(
             LayoutInflater.from(requireContext()), null, false)
         customDialog = AlertDialog.Builder(requireContext(), 0).create()
@@ -191,11 +220,6 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
             startCrop()
             customDialog.dismiss()
         }
-//        binding.apply {
-//            dialogBinding.apply {
-//                ivViewProfilePicture.setBackgroundResource(R.drawable.img_course_english)
-//            }
-//        }
     }
 
     private fun showLoading(boolean: Boolean) {
@@ -205,6 +229,7 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
             tvParent.isVisible = !boolean
         }
     }
+
 
     override fun onStop() {
         super.onStop()

@@ -12,6 +12,7 @@ import com.glints.lingoparents.utils.TokenPreferences
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import retrofit2.Call
 import retrofit2.Callback
@@ -46,8 +47,6 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
     }
 
     fun getAccessToken(): LiveData<String> = tokenPreferences.getAccessToken().asLiveData()
-    fun getAccessEmail(): LiveData<String> = tokenPreferences.getAccessEmail().asLiveData()
-
 
     fun getParentProfile() = viewModelScope.launch {
         onApiCallStarted()
@@ -57,7 +56,7 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
             .enqueue(object : Callback<ParentProfileResponse> {
                 override fun onResponse(
                     call: Call<ParentProfileResponse>,
-                    response: Response<ParentProfileResponse>
+                    response: Response<ParentProfileResponse>,
                 ) {
                     if (response.isSuccessful) {
                         val result = response.body()!!
@@ -79,19 +78,19 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
     }
 
     fun editParentProfile(
-        firstname: String,
-        lastname: String,
-        address: String,
-        phone: String
+        firstname: RequestBody,
+        lastname: RequestBody,
+        address: RequestBody,
+        phone: RequestBody,
     ) = viewModelScope.launch {
         onApiCallStarted()
         APIClient
             .service
-            .editParentProfile(firstname, lastname, address, phone)
+            .editParentProfile(firstname, lastname, address, phone, null)
             .enqueue(object : Callback<EditParentProfileResponse> {
                 override fun onResponse(
                     call: Call<EditParentProfileResponse>,
-                    response: Response<EditParentProfileResponse>
+                    response: Response<EditParentProfileResponse>,
                 ) {
                     if (response.isSuccessful) {
                         onEditApiCallSuccess()
@@ -109,10 +108,10 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
 
 
     fun onSaveButtonClick(
-        firstname: String,
-        lastname: String,
-        address: String,
-        phone: String
+        firstname: RequestBody,
+        lastname: RequestBody,
+        address: RequestBody,
+        phone: RequestBody,
     ) = viewModelScope.launch {
         profileChannel.send(
             ProfileEvent.TryToEditProfile(
@@ -137,10 +136,10 @@ class ProfileViewModel(private val tokenPreferences: TokenPreferences) : ViewMod
         data class Error(val message: String) : ProfileEvent()
         object EditSuccess : ProfileEvent()
         data class TryToEditProfile(
-            val firstname: String,
-            val lastname: String,
-            val address: String,
-            val phone: String
+            val firstname: RequestBody,
+            val lastname: RequestBody,
+            val address: RequestBody,
+            val phone: RequestBody,
         ) : ProfileEvent()
     }
 
