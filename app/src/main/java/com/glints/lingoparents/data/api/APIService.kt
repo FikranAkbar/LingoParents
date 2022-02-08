@@ -258,7 +258,8 @@ interface APIService {
 
     @GET("api/v1/linking/parent/{{parent_id}}/list")
     fun getListOfLinkedAccount(
-        @Path("parent_id") id: Int
+        @Path("parent_id") id: Int,
+        @QueryMap options: Map<String, String>? = null
     ) : Call<LinkedAccountsResponse>
 
     @POST("api/v1/linking/parent/{{parent_id}}/list/{{student_id}}")
