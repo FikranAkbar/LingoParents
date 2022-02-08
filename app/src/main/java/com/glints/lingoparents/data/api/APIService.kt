@@ -247,4 +247,24 @@ interface APIService {
         @Field("referral_code") code: String,
         @Path("parent_id") id: Int,
     ) : Call<ChildrenSearchResponse>
+
+    @FormUrlEncoded
+    @POST("api/v1/linking/parent/{{parent_id}}/invite/{{referral_code}}")
+    fun inviteChild(
+        @Path("parent_id") id: Int,
+        @Path("referral_code") code: String,
+        @Field("parent_relationship") relationship: String
+    ) : Call<InviteChildResponse>
+
+    @GET("api/v1/linking/parent/{{parent_id}}/list")
+    fun getListOfLinkedAccount(
+        @Path("parent_id") id: Int
+    ) : Call<LinkedAccountsResponse>
+
+    @POST("api/v1/linking/parent/{{parent_id}}/list/{{student_id}}")
+    fun doActionWithLinkingAccount(
+        @Path("parent_id") parent_id: Int,
+        @Path("student_id") student_id: Int,
+        @QueryMap options: Map<String, String>
+    ) : Call<LinkingAccountActionResponse>
 }

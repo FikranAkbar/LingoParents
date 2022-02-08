@@ -3,7 +3,7 @@ package com.glints.lingoparents.data.model.response
 data class ChildrenSearchResponse(
     val status: String,
     val message: String,
-    val data: List<ChildrenData>
+    val data: ChildrenData
 ) {
     data class ChildrenData(
         val id: Int,
