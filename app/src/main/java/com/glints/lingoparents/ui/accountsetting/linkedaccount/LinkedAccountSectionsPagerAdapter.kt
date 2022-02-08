@@ -13,8 +13,8 @@ class LinkedAccountSectionsPagerAdapter(activity: AppCompatActivity) : FragmentS
     override fun createFragment(position: Int): Fragment {
         var fragment: Fragment? = null
         when(position) {
-            0 -> fragment = LinkedAccountListFragment()
-            1 -> fragment = LinkedAccountListFragment()
+            0 -> fragment = LinkedAccountListFragment(LinkedAccountListFragment.INVITED_TYPE)
+            1 -> fragment = LinkedAccountListFragment(LinkedAccountListFragment.REQUESTED_TYPE)
         }
 
         return fragment as Fragment

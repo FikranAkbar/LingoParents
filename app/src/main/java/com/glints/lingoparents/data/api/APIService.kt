@@ -236,33 +236,33 @@ interface APIService {
         @Body createOrderData: CreateOrderData
     ) : Call<CreateOrderResponse>
 
-    @GET("api/v1/linking/parent/{{parent_id}}")
+    @GET("api/v1/linking/parent/{parent_id}")
     fun getParentCode(
         @Path("parent_id") id: Int
     ) : Call<ShowParentCodeResponse>
 
     @FormUrlEncoded
-    @POST("api/v1/linking/parent/{{parent_id}}/invite")
+    @POST("api/v1/linking/parent/{parent_id}/invite")
     fun searchChildUsingStudentCode(
         @Field("referral_code") code: String,
         @Path("parent_id") id: Int,
     ) : Call<ChildrenSearchResponse>
 
     @FormUrlEncoded
-    @POST("api/v1/linking/parent/{{parent_id}}/invite/{{referral_code}}")
+    @POST("api/v1/linking/parent/{parent_id}/invite/{referral_code}")
     fun inviteChild(
         @Path("parent_id") id: Int,
         @Path("referral_code") code: String,
         @Field("parent_relationship") relationship: String
     ) : Call<InviteChildResponse>
 
-    @GET("api/v1/linking/parent/{{parent_id}}/list")
+    @GET("api/v1/linking/parent/{parent_id}/list/")
     fun getListOfLinkedAccount(
-        @Path("parent_id") id: Int,
+        @Path("parent_id") id: String,
         @QueryMap options: Map<String, String>? = null
     ) : Call<LinkedAccountsResponse>
 
-    @POST("api/v1/linking/parent/{{parent_id}}/list/{{student_id}}")
+    @POST("api/v1/linking/parent/{parent_id}/list/{student_id}")
     fun doActionWithLinkingAccount(
         @Path("parent_id") parent_id: Int,
         @Path("student_id") student_id: Int,

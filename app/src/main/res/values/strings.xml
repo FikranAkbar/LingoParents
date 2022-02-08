@@ -225,4 +225,6 @@
     <string name="join_here">Join Here</string>
     <string name="account_setting_tab_text_3">Linked Account</string>
     <string name="decline">Decline</string>
+    <string name="invited">Invited</string>
+    <string name="requesuted">Requested</string>
 </resources>

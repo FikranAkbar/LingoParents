@@ -15,39 +15,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LinkedAccountViewModel(private val tokenPreferences: TokenPreferences) : ViewModel() {
-    companion object {
-        const val ACCEPT_ACTION = "accept"
-        const val DECLINE_ACTION = "decline"
-        const val CANCEL_ACTION = "cancel"
-    }
-
-    private val linkedAccountListChannel = Channel<LinkedAccountListEvent>()
-    val linkedAccountListEvent = linkedAccountListChannel.receiveAsFlow()
-
-    private fun onApiCallGetListOfLinkedAccountStarted() = viewModelScope.launch {
-        linkedAccountListChannel.send(LinkedAccountListEvent.LoadingGetList)
-    }
-
-    private fun onApiCallGetListOfLinkedAccountSuccess(result: List<LinkedAccountsResponse.ChildrenData>) = viewModelScope.launch {
-        linkedAccountListChannel.send(LinkedAccountListEvent.SuccessGetList(result))
-    }
-
-    private fun onApiCallGetListOfLinkedAccountError(message: String) = viewModelScope.launch {
-        linkedAccountListChannel.send(LinkedAccountListEvent.ErrorGetList(message))
-    }
-
-    private fun onApiCallDoActionWithLinkingAccountStarted() = viewModelScope.launch {
-        linkedAccountListChannel.send(LinkedAccountListEvent.LoadingAction)
-    }
-
-    private fun onApiCallDoActionWithLinkingAccountSuccess(result: LinkingAccountActionResponse.ChildrenData) = viewModelScope.launch {
-        linkedAccountListChannel.send(LinkedAccountListEvent.SuccessAction(result))
-    }
-
-    private fun onApiCallDoActionWithLinkingAccountError(message: String) = viewModelScope.launch {
-        linkedAccountListChannel.send(LinkedAccountListEvent.ErrorAction(message))
-    }
-
     private val parentCodeChannel = Channel<ParentCodeEvent>()
     val parentCodeEvent = parentCodeChannel.receiveAsFlow()
 
@@ -160,87 +127,6 @@ class LinkedAccountViewModel(private val tokenPreferences: TokenPreferences) : V
                     onApiCallInviteChildrenError("Network Failed...")
                 }
             })
-    }
-
-    fun getListOfRequestedLinkedAccount(parentId: Int) = viewModelScope.launch {
-        onApiCallGetListOfLinkedAccountStarted()
-        APIClient
-            .service
-            .getListOfLinkedAccount(parentId, mapOf("idCreated" to parentId.toString()))
-            .enqueue(object : Callback<LinkedAccountsResponse> {
-                override fun onResponse(
-                    call: Call<LinkedAccountsResponse>,
-                    response: Response<LinkedAccountsResponse>,
-                ) {
-                    if (response.isSuccessful) {
-                        onApiCallGetListOfLinkedAccountSuccess(response.body()!!.data)
-                    } else {
-                        val apiError = ErrorUtils.parseErrorWithStatusAsString(response)
-                        onApiCallGetListOfLinkedAccountError(apiError.getMessage())
-                    }
-                }
-
-                override fun onFailure(call: Call<LinkedAccountsResponse>, t: Throwable) {
-                    onApiCallGetListOfLinkedAccountError("Network Failed...")
-                }
-            })
-    }
-
-    fun getListOfInvitedLinkedAccount(parentId: Int) = viewModelScope.launch {
-        onApiCallGetListOfLinkedAccountStarted()
-        APIClient
-            .service
-            .getListOfLinkedAccount(parentId)
-            .enqueue(object : Callback<LinkedAccountsResponse> {
-                override fun onResponse(
-                    call: Call<LinkedAccountsResponse>,
-                    response: Response<LinkedAccountsResponse>,
-                ) {
-                    if (response.isSuccessful) {
-                        onApiCallGetListOfLinkedAccountSuccess(response.body()!!.data)
-                    } else {
-                        val apiError = ErrorUtils.parseErrorWithStatusAsString(response)
-                        onApiCallGetListOfLinkedAccountError(apiError.getMessage())
-                    }
-                }
-
-                override fun onFailure(call: Call<LinkedAccountsResponse>, t: Throwable) {
-                    onApiCallGetListOfLinkedAccountError("Network Failed...")
-                }
-            })
-    }
-
-    fun doActionWithLinkingAccount(parentId: Int, studentId: Int, actionType: String) = viewModelScope.launch {
-        onApiCallDoActionWithLinkingAccountStarted()
-        APIClient
-            .service
-            .doActionWithLinkingAccount(parentId, studentId, mapOf("button" to actionType))
-            .enqueue(object : Callback<LinkingAccountActionResponse> {
-                override fun onResponse(
-                    call: Call<LinkingAccountActionResponse>,
-                    response: Response<LinkingAccountActionResponse>,
-                ) {
-                    if (response.isSuccessful) {
-                        onApiCallDoActionWithLinkingAccountSuccess(response.body()!!.data)
-                    } else {
-                        val apiError = ErrorUtils.parseErrorWithStatusAsString(response)
-                        onApiCallDoActionWithLinkingAccountError(apiError.getMessage())
-                    }
-                }
-
-                override fun onFailure(call: Call<LinkingAccountActionResponse>, t: Throwable) {
-                    onApiCallDoActionWithLinkingAccountError("Network Failed...")
-                }
-            })
-    }
-
-    sealed class LinkedAccountListEvent {
-        object LoadingGetList: LinkedAccountListEvent()
-        object LoadingAction: LinkedAccountListEvent()
-        data class SuccessGetList(val result: List<LinkedAccountsResponse.ChildrenData>): LinkedAccountListEvent()
-        data class SuccessAction(val result: LinkingAccountActionResponse.ChildrenData): LinkedAccountListEvent()
-        data class ErrorGetList(val message: String): LinkedAccountListEvent()
-        data class ErrorAction(val message: String): LinkedAccountListEvent()
     }
 
     sealed class ParentCodeEvent {

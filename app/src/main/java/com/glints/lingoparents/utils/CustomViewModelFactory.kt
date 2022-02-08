@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import com.glints.lingoparents.ui.accountsetting.AccountSettingViewModel
 import com.glints.lingoparents.ui.accountsetting.changepassword.PasswordSettingViewModel
+import com.glints.lingoparents.ui.accountsetting.linkedaccount.category.LinkedAccountListViewModel
 import com.glints.lingoparents.ui.accountsetting.profile.ProfileViewModel
 import com.glints.lingoparents.ui.course.AllCoursesViewModel
 import com.glints.lingoparents.ui.home.HomeViewModel
@@ -112,6 +113,9 @@ class CustomViewModelFactory(
             }
             modelClass.isAssignableFrom(AccountSettingViewModel::class.java) -> {
                 AccountSettingViewModel(tokenPref) as T
+            }
+            modelClass.isAssignableFrom(LinkedAccountListViewModel::class.java) -> {
+                LinkedAccountListViewModel(tokenPref) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }
