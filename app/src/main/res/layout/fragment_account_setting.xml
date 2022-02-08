@@ -101,7 +101,7 @@
         app:layout_constraintTop_toBottomOf="@id/line_separator"
         app:tabGravity="start"
         app:tabIndicator="@null"
-        app:tabMode="fixed"
+        app:tabMode="scrollable"
         app:tabSelectedTextColor="@color/black"
         app:tabTextColor="@color/line_divider_color"
         app:tabUnboundedRipple="false" />
