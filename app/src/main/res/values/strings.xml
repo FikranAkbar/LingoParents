@@ -229,4 +229,5 @@
     <string name="requesuted">Requested</string>
     <string name="show_code">Show Code</string>
     <string name="plus_sign">+</string>
+    <string name="no_linked_account_found">No Linked Account found</string>
 </resources>

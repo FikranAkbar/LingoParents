@@ -74,28 +74,42 @@ class LinkedAccountListFragment(private val listType: String) : Fragment(R.layou
 
                     }
                     is LinkedAccountListViewModel.LinkedAccountListEvent.ErrorGetInvitedList -> {
-
+                        showEmptyContent()
                     }
                     is LinkedAccountListViewModel.LinkedAccountListEvent.ErrorGetRequestedList -> {
-
+                        showEmptyContent()
                     }
                     is LinkedAccountListViewModel.LinkedAccountListEvent.LoadingAction -> {
 
                     }
                     is LinkedAccountListViewModel.LinkedAccountListEvent.LoadingGetInvitedList -> {
-
+                        showLoading()
                     }
                     is LinkedAccountListViewModel.LinkedAccountListEvent.LoadingGetRequestedList -> {
-
+                        showLoading()
                     }
                     is LinkedAccountListViewModel.LinkedAccountListEvent.SuccessAction -> {
 
                     }
                     is LinkedAccountListViewModel.LinkedAccountListEvent.SuccessGetInvitedList -> {
-                        linkedAccountListAdapter.submitList(event.result)
+                        val result = event.result
+
+                        if (result.isNotEmpty()) {
+                            showMainContent()
+                            linkedAccountListAdapter.submitList(event.result)
+                        } else {
+                            showEmptyContent()
+                        }
                     }
                     is LinkedAccountListViewModel.LinkedAccountListEvent.SuccessGetRequestedList -> {
-                        linkedAccountListAdapter.submitList(event.result)
+                        val result = event.result
+
+                        if (result.isNotEmpty()) {
+                            showMainContent()
+                            linkedAccountListAdapter.submitList(event.result)
+                        } else {
+                            showEmptyContent()
+                        }
                     }
                 }
             }
@@ -104,5 +118,32 @@ class LinkedAccountListFragment(private val listType: String) : Fragment(R.layou
 
     override fun onItemClicked(item: LinkedAccountsResponse.ChildrenData) {
 
+    }
+
+    private fun showMainContent() {
+        binding.apply {
+            rvLinkedAccountList.visibility = View.VISIBLE
+            shimmerLayout.visibility = View.GONE
+            ivNoChildren.visibility = View.GONE
+            tvNoChildren.visibility = View.GONE
+        }
+    }
+
+    private fun showLoading() {
+        binding.apply {
+            rvLinkedAccountList.visibility = View.GONE
+            shimmerLayout.visibility = View.VISIBLE
+            ivNoChildren.visibility = View.GONE
+            tvNoChildren.visibility = View.GONE
+        }
+    }
+
+    private fun showEmptyContent() {
+        binding.apply {
+            rvLinkedAccountList.visibility = View.GONE
+            shimmerLayout.visibility = View.GONE
+            ivNoChildren.visibility = View.VISIBLE
+            tvNoChildren.visibility = View.VISIBLE
+        }
     }
 }

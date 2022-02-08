@@ -80,14 +80,14 @@ class LinkedAccountListViewModel(private val tokenPreferences: TokenPreferences)
                     response: Response<LinkedAccountsResponse>,
                 ) {
                     if (response.isSuccessful) {
-                        if (response.body()!!.data != null) {
-                            if (response.body()!!.data!!.isNotEmpty()) {
-                                onApiCallGetListOfInvitedLinkedAccountSuccess(response.body()!!.data!!)
-                            } else {
-                                val apiError = ErrorUtils.parseErrorWithStatusAsString(response)
-                                onApiCallGetListOfInvitedLinkedAccountError(apiError.getMessage())
-                            }
+                        val result = response.body()!!.data
+
+                        if (result != null) {
+                            onApiCallGetListOfInvitedLinkedAccountSuccess(result)
+                        } else {
+                            onApiCallGetListOfInvitedLinkedAccountError(response.body()!!.message)
                         }
+
                     } else {
                         val apiError = ErrorUtils.parseErrorWithStatusAsString(response)
                         onApiCallGetListOfInvitedLinkedAccountError(apiError.getMessage())
@@ -111,14 +111,14 @@ class LinkedAccountListViewModel(private val tokenPreferences: TokenPreferences)
                     response: Response<LinkedAccountsResponse>,
                 ) {
                     if (response.isSuccessful) {
-                        if (response.body()!!.data != null) {
-                            if (response.body()!!.data!!.isNotEmpty()) {
-                                onApiCallGetListOfInvitedLinkedAccountSuccess(response.body()!!.data!!)
-                            } else {
-                                val apiError = ErrorUtils.parseErrorWithStatusAsString(response)
-                                onApiCallGetListOfInvitedLinkedAccountError(apiError.getMessage())
-                            }
+                        val result = response.body()!!.data
+
+                        if (result != null) {
+                            onApiCallGetListOfInvitedLinkedAccountSuccess(result)
+                        } else {
+                            onApiCallGetListOfInvitedLinkedAccountError(response.body()!!.message)
                         }
+
                     } else {
                         val apiError = ErrorUtils.parseErrorWithStatusAsString(response)
                         onApiCallGetListOfInvitedLinkedAccountError(apiError.getMessage())
