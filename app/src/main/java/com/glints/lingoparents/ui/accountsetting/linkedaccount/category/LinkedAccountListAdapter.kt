@@ -1,6 +1,7 @@
 package com.glints.lingoparents.ui.accountsetting.linkedaccount.category
 
 import android.annotation.SuppressLint
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,13 +58,13 @@ class LinkedAccountListAdapter(
                 )
 
                 if (category == LinkedAccountListFragment.INVITED_TYPE) {
-                    mbtnCancel.isVisible = true
-                    mbtnAccept.isVisible = false
-                    mbtnDecline.isVisible = false
+                    mbtnCancel.visibility = View.VISIBLE
+                    mbtnAccept.visibility = View.INVISIBLE
+                    mbtnDecline.visibility = View.INVISIBLE
                 } else if (category == LinkedAccountListFragment.REQUESTED_TYPE) {
-                    mbtnCancel.isVisible = false
-                    mbtnAccept.isVisible = true
-                    mbtnDecline.isVisible = true
+                    mbtnCancel.visibility = View.INVISIBLE
+                    mbtnAccept.visibility = View.VISIBLE
+                    mbtnDecline.visibility = View.VISIBLE
                 }
             }
         }

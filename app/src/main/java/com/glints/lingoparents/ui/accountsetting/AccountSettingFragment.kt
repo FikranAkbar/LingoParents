@@ -118,6 +118,7 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
         val sectionsPagerAdapter =
             AccountSettingSectionsPagerAdapter(requireActivity() as AppCompatActivity)
         val viewPager2 = binding.viewPagerAccountSetting
+        viewPager2.isUserInputEnabled = false
         viewPager2.adapter = sectionsPagerAdapter
         val tabs = binding.tabAccountSetting
         TabLayoutMediator(tabs, viewPager2) { tab, position ->

@@ -227,4 +227,6 @@
     <string name="decline">Decline</string>
     <string name="invited">Invited</string>
     <string name="requesuted">Requested</string>
+    <string name="show_code">Show Code</string>
+    <string name="plus_sign">+</string>
 </resources>

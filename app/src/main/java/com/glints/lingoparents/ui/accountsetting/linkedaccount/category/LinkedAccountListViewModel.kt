@@ -73,22 +73,24 @@ class LinkedAccountListViewModel(private val tokenPreferences: TokenPreferences)
         onApiCallGetListOfRequestedLinkedAccountStarted()
         APIClient
             .service
-            .getListOfLinkedAccount(parentId, mapOf("idCreated" to parentId))
+            .getListOfRequestedLinkedAccount(parentId)
             .enqueue(object : Callback<LinkedAccountsResponse> {
                 override fun onResponse(
                     call: Call<LinkedAccountsResponse>,
                     response: Response<LinkedAccountsResponse>,
                 ) {
                     if (response.isSuccessful) {
-                        if (response.body()!!.data.isNotEmpty()) {
-                            onApiCallGetListOfRequestedLinkedAccountSuccess(response.body()!!.data)
-                        } else {
-                            val apiError = ErrorUtils.parseErrorWithStatusAsString(response)
-                            onApiCallGetListOfRequestedLinkedAccountError(apiError.getMessage())
+                        if (response.body()!!.data != null) {
+                            if (response.body()!!.data!!.isNotEmpty()) {
+                                onApiCallGetListOfInvitedLinkedAccountSuccess(response.body()!!.data!!)
+                            } else {
+                                val apiError = ErrorUtils.parseErrorWithStatusAsString(response)
+                                onApiCallGetListOfInvitedLinkedAccountError(apiError.getMessage())
+                            }
                         }
                     } else {
                         val apiError = ErrorUtils.parseErrorWithStatusAsString(response)
-                        onApiCallGetListOfRequestedLinkedAccountError(apiError.getMessage())
+                        onApiCallGetListOfInvitedLinkedAccountError(apiError.getMessage())
                     }
                 }
 
@@ -102,18 +104,20 @@ class LinkedAccountListViewModel(private val tokenPreferences: TokenPreferences)
         onApiCallGetListOfInvitedLinkedAccountStarted()
         APIClient
             .service
-            .getListOfLinkedAccount(parentId)
+            .getListOfInvitedLinkedAccount(parentId, mapOf("idCreated" to parentId))
             .enqueue(object : Callback<LinkedAccountsResponse> {
                 override fun onResponse(
                     call: Call<LinkedAccountsResponse>,
                     response: Response<LinkedAccountsResponse>,
                 ) {
                     if (response.isSuccessful) {
-                        if (response.body()!!.data.isNotEmpty()) {
-                            onApiCallGetListOfInvitedLinkedAccountSuccess(response.body()!!.data)
-                        } else {
-                            val apiError = ErrorUtils.parseErrorWithStatusAsString(response)
-                            onApiCallGetListOfInvitedLinkedAccountError(apiError.getMessage())
+                        if (response.body()!!.data != null) {
+                            if (response.body()!!.data!!.isNotEmpty()) {
+                                onApiCallGetListOfInvitedLinkedAccountSuccess(response.body()!!.data!!)
+                            } else {
+                                val apiError = ErrorUtils.parseErrorWithStatusAsString(response)
+                                onApiCallGetListOfInvitedLinkedAccountError(apiError.getMessage())
+                            }
                         }
                     } else {
                         val apiError = ErrorUtils.parseErrorWithStatusAsString(response)

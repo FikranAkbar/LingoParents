@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="8dp">
+    android:layout_marginVertical="8dp"
+    android:layout_marginHorizontal="16dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -13,8 +16,8 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_profile_picture"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
             android:layout_marginVertical="4dp"
             android:layout_marginStart="4dp"
             android:clickable="true"
@@ -41,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:fontFamily="@font/poppins_w600"
-            android:textSize="16sp"
+            android:textSize="13sp"
             android:maxLines="1"
             android:ellipsize="end"
             app:layout_constraintBottom_toBottomOf="@id/cv_profile_picture"
@@ -58,19 +61,19 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:fontFamily="@font/poppins_w400"
-            android:textSize="12sp"
+            android:textSize="11sp"
             app:layout_constraintStart_toEndOf="@id/cv_profile_picture"
             app:layout_constraintTop_toBottomOf="@id/tv_child_name"
             tools:text="16 years old" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/mbtn_accept"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_width="70dp"
+            android:layout_height="36dp"
             android:layout_marginEnd="6dp"
             android:text="@string/btn_accept"
             android:textAppearance="@style/Typography.Button"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:visibility="invisible"
             app:backgroundTint="@color/navy_blue"
             app:layout_constraintEnd_toEndOf="parent"
@@ -78,12 +81,12 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/mbtn_decline"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="40dp"
             android:layout_marginEnd="6dp"
             android:text="@string/decline"
             android:textAppearance="@style/Typography.Button"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:visibility="invisible"
             app:backgroundTint="@color/primary_orange"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -92,12 +95,12 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/mbtn_cancel"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="40dp"
             android:layout_marginEnd="6dp"
             android:text="@string/cancel"
             android:textAppearance="@style/Typography.Button"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:visibility="invisible"
             app:backgroundTint="@color/navy_blue"
             app:layout_constraintBottom_toBottomOf="@id/mbtn_decline"

@@ -59,7 +59,7 @@ class LinkedAccountListFragment(private val listType: String) : Fragment(R.layou
             viewModel.parentId = parentId
 
             if (listType == REQUESTED_TYPE) {
-                viewModel.getListOfInvitedLinkedAccount(viewModel.parentId)
+                viewModel.getListOfRequestedLinkedAccount(viewModel.parentId)
                 println("LIST FRAGMENT TYPE: INI REQUESTED TYPE")
             } else if (listType == INVITED_TYPE) {
                 viewModel.getListOfInvitedLinkedAccount(viewModel.parentId)

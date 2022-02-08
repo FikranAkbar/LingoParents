@@ -256,10 +256,15 @@ interface APIService {
         @Field("parent_relationship") relationship: String
     ) : Call<InviteChildResponse>
 
-    @GET("api/v1/linking/parent/{parent_id}/list/")
-    fun getListOfLinkedAccount(
+    @GET("api/v1/linking/parent/{parent_id}/list")
+    fun getListOfRequestedLinkedAccount(
         @Path("parent_id") id: String,
-        @QueryMap options: Map<String, String>? = null
+    ) : Call<LinkedAccountsResponse>
+
+    @GET("api/v1/linking/parent/{parent_id}/list")
+    fun getListOfInvitedLinkedAccount(
+        @Path("parent_id") id: String,
+        @QueryMap options: Map<String, String>
     ) : Call<LinkedAccountsResponse>
 
     @POST("api/v1/linking/parent/{parent_id}/list/{student_id}")
