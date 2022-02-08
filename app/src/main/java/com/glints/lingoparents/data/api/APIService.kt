@@ -235,4 +235,16 @@ interface APIService {
     fun createEventOrder(
         @Body createOrderData: CreateOrderData
     ) : Call<CreateOrderResponse>
+
+    @GET("api/v1/linking/parent/{{parent_id}}")
+    fun getParentCode(
+        @Path("parent_id") id: Int
+    ) : Call<ShowParentCodeResponse>
+
+    @FormUrlEncoded
+    @POST("api/v1/linking/parent/{{parent_id}}/invite")
+    fun searchChildUsingStudentCode(
+        @Field("referral_code") code: String,
+        @Path("parent_id") id: Int,
+    ) : Call<ChildrenSearchResponse>
 }
