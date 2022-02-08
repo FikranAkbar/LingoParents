@@ -9,6 +9,7 @@ data class LinkedAccountsResponse(
         val id: Int,
         val parent_relationship: String,
         val status: String,
+        val id_student: String,
         val Master_student: MasterStudent
     )
 

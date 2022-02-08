@@ -35,7 +35,7 @@ class LinkedAccountListAdapter(
 
     }
 
-    private val differ = AsyncListDiffer(this, DIFF_CALLBACK)
+    val differ = AsyncListDiffer(this, DIFF_CALLBACK)
 
     inner class CustomViewHolder(
         private val itemLinkedAccountBinding: ItemLinkedAccountBinding,
@@ -45,10 +45,6 @@ class LinkedAccountListAdapter(
             holder: CustomViewHolder,
             item: LinkedAccountsResponse.ChildrenData
         ) {
-            holder.itemView.setOnClickListener {
-                listener.onItemClicked(item)
-            }
-
             itemLinkedAccountBinding.apply {
                 tvChildName.text = item.Master_student.fullname
                 tvChildAge.text = "${item.Master_student.age} years old"
@@ -66,12 +62,26 @@ class LinkedAccountListAdapter(
                     mbtnAccept.visibility = View.VISIBLE
                     mbtnDecline.visibility = View.VISIBLE
                 }
+
+                mbtnAccept.setOnClickListener {
+                    listener.onAcceptClicked(item)
+                }
+
+                mbtnDecline.setOnClickListener {
+                    listener.onDeclineClicked(item)
+                }
+
+                mbtnCancel.setOnClickListener {
+                    listener.onCancelClicked(item)
+                }
             }
         }
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(item: LinkedAccountsResponse.ChildrenData)
+        fun onCancelClicked(item: LinkedAccountsResponse.ChildrenData)
+        fun onAcceptClicked(item: LinkedAccountsResponse.ChildrenData)
+        fun onDeclineClicked(item: LinkedAccountsResponse.ChildrenData)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {

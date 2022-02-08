@@ -58,9 +58,9 @@ class LinkedAccountListViewModel(private val tokenPreferences: TokenPreferences)
         linkedAccountListChannel.send(LinkedAccountListEvent.LoadingAction)
     }
 
-    private fun onApiCallDoActionWithLinkingAccountSuccess(result: LinkingAccountActionResponse.ChildrenData) =
+    private fun onApiCallDoActionWithLinkingAccountSuccess(message: String, result: LinkingAccountActionResponse.ChildrenData, actionType: String) =
         viewModelScope.launch {
-            linkedAccountListChannel.send(LinkedAccountListEvent.SuccessAction(result))
+            linkedAccountListChannel.send(LinkedAccountListEvent.SuccessAction(message, result, actionType))
         }
 
     private fun onApiCallDoActionWithLinkingAccountError(message: String) = viewModelScope.launch {
@@ -143,7 +143,7 @@ class LinkedAccountListViewModel(private val tokenPreferences: TokenPreferences)
                         response: Response<LinkingAccountActionResponse>,
                     ) {
                         if (response.isSuccessful) {
-                            onApiCallDoActionWithLinkingAccountSuccess(response.body()!!.data)
+                            onApiCallDoActionWithLinkingAccountSuccess(response.body()!!.message, response.body()!!.data, actionType)
                         } else {
                             val apiError = ErrorUtils.parseErrorWithStatusAsString(response)
                             onApiCallDoActionWithLinkingAccountError(apiError.getMessage())
@@ -166,7 +166,7 @@ class LinkedAccountListViewModel(private val tokenPreferences: TokenPreferences)
         data class SuccessGetRequestedList(val result: List<LinkedAccountsResponse.ChildrenData>) :
             LinkedAccountListEvent()
 
-        data class SuccessAction(val result: LinkingAccountActionResponse.ChildrenData) :
+        data class SuccessAction(val message: String, val result: LinkingAccountActionResponse.ChildrenData, val actionType: String) :
             LinkedAccountListEvent()
 
         data class ErrorGetInvitedList(val message: String) : LinkedAccountListEvent()

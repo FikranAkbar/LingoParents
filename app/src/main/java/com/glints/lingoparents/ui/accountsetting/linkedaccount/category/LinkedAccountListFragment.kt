@@ -1,5 +1,7 @@
 package com.glints.lingoparents.ui.accountsetting.linkedaccount.category
 
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,9 +16,11 @@ import com.glints.lingoparents.databinding.FragmentLinkedAccountListBinding
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 
-class LinkedAccountListFragment(private val listType: String) : Fragment(R.layout.fragment_linked_account),
+class LinkedAccountListFragment(private val listType: String) :
+    Fragment(R.layout.fragment_linked_account),
     LinkedAccountListAdapter.OnItemClickCallback {
     companion object {
         const val INVITED_TYPE = "Invited"
@@ -33,7 +37,7 @@ class LinkedAccountListFragment(private val listType: String) : Fragment(R.layou
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentLinkedAccountListBinding.inflate(inflater)
 
@@ -45,7 +49,8 @@ class LinkedAccountListFragment(private val listType: String) : Fragment(R.layou
         binding.rvLinkedAccountList.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireActivity())
-            linkedAccountListAdapter = LinkedAccountListAdapter(this@LinkedAccountListFragment, listType)
+            linkedAccountListAdapter =
+                LinkedAccountListAdapter(this@LinkedAccountListFragment, listType)
             adapter = linkedAccountListAdapter
         }
 
@@ -60,18 +65,16 @@ class LinkedAccountListFragment(private val listType: String) : Fragment(R.layou
 
             if (listType == REQUESTED_TYPE) {
                 viewModel.getListOfRequestedLinkedAccount(viewModel.parentId)
-                println("LIST FRAGMENT TYPE: INI REQUESTED TYPE")
             } else if (listType == INVITED_TYPE) {
                 viewModel.getListOfInvitedLinkedAccount(viewModel.parentId)
-                println("LIST FRAGMENT TYPE: INI INVITED TYPE")
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.linkedAccountListEvent.collect { event ->
-                when(event) {
+                when (event) {
                     is LinkedAccountListViewModel.LinkedAccountListEvent.ErrorAction -> {
-
+                        showErrorSnackbar(event.message)
                     }
                     is LinkedAccountListViewModel.LinkedAccountListEvent.ErrorGetInvitedList -> {
                         showEmptyContent()
@@ -79,9 +82,7 @@ class LinkedAccountListFragment(private val listType: String) : Fragment(R.layou
                     is LinkedAccountListViewModel.LinkedAccountListEvent.ErrorGetRequestedList -> {
                         showEmptyContent()
                     }
-                    is LinkedAccountListViewModel.LinkedAccountListEvent.LoadingAction -> {
-
-                    }
+                    is LinkedAccountListViewModel.LinkedAccountListEvent.LoadingAction -> {}
                     is LinkedAccountListViewModel.LinkedAccountListEvent.LoadingGetInvitedList -> {
                         showLoading()
                     }
@@ -89,7 +90,17 @@ class LinkedAccountListFragment(private val listType: String) : Fragment(R.layou
                         showLoading()
                     }
                     is LinkedAccountListViewModel.LinkedAccountListEvent.SuccessAction -> {
+                        linkedAccountListAdapter.differ.submitList(
+                            linkedAccountListAdapter.differ.currentList.filter {
+                                it.id_student.toInt() != event.result.id_student
+                            }
+                        )
 
+                        showSuccessSnackbar(event.message)
+
+                        if (linkedAccountListAdapter.differ.currentList.isEmpty()) {
+                            showEmptyContent()
+                        }
                     }
                     is LinkedAccountListViewModel.LinkedAccountListEvent.SuccessGetInvitedList -> {
                         val result = event.result
@@ -114,10 +125,6 @@ class LinkedAccountListFragment(private val listType: String) : Fragment(R.layou
                 }
             }
         }
-    }
-
-    override fun onItemClicked(item: LinkedAccountsResponse.ChildrenData) {
-
     }
 
     private fun showMainContent() {
@@ -145,5 +152,55 @@ class LinkedAccountListFragment(private val listType: String) : Fragment(R.layou
             ivNoChildren.visibility = View.VISIBLE
             tvNoChildren.visibility = View.VISIBLE
         }
+    }
+
+    private fun showErrorSnackbar(message: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Snackbar.make(binding.root,
+                message,
+                Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.error_color, null))
+                .setTextColor(Color.WHITE)
+                .show()
+        } else {
+            Snackbar.make(binding.root,
+                message,
+                Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(Color.RED)
+                .setTextColor(Color.WHITE)
+                .show()
+        }
+    }
+
+    private fun showSuccessSnackbar(message: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.success_color, null))
+                .setTextColor(Color.WHITE)
+                .show()
+        } else {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(Color.GREEN)
+                .setTextColor(Color.WHITE)
+                .show()
+        }
+    }
+
+    override fun onCancelClicked(item: LinkedAccountsResponse.ChildrenData) {
+        viewModel.doActionWithLinkingAccount(viewModel.parentId.toInt(),
+            item.id_student.toInt(),
+            LinkedAccountListViewModel.CANCEL_ACTION)
+    }
+
+    override fun onAcceptClicked(item: LinkedAccountsResponse.ChildrenData) {
+        viewModel.doActionWithLinkingAccount(viewModel.parentId.toInt(),
+            item.id_student.toInt(),
+            LinkedAccountListViewModel.ACCEPT_ACTION)
+    }
+
+    override fun onDeclineClicked(item: LinkedAccountsResponse.ChildrenData) {
+        viewModel.doActionWithLinkingAccount(viewModel.parentId.toInt(),
+            item.id_student.toInt(),
+            LinkedAccountListViewModel.DECLINE_ACTION)
     }
 }
