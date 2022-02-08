@@ -1,4 +1,8 @@
 package com.glints.lingoparents.ui.accountsetting.linkedaccount
 
-class LinkedAccountFragment {
+import androidx.fragment.app.Fragment
+import com.glints.lingoparents.R
+
+class LinkedAccountFragment : Fragment(R.layout.fragment_linked_account) {
+
 }
