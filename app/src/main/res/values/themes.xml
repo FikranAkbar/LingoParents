@@ -166,8 +166,21 @@
         <item name="boxCornerRadiusBottomStart">0dp</item>
         <item name="boxCornerRadiusTopEnd">5dp</item>
         <item name="boxCornerRadiusTopStart">0dp</item>
-        <item name="boxStrokeColor">#F9663A</item>
+        <item name="boxStrokeColor">@color/primary_orange</item>
     </style>
+
+    <style name="OutlineBoxTextFieldCodeInvitation" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusBottomEnd">5dp</item>
+        <item name="boxCornerRadiusBottomStart">5dp</item>
+        <item name="boxCornerRadiusTopEnd">5dp</item>
+        <item name="boxCornerRadiusTopStart">5dp</item>
+        <item name="boxStrokeColor">@color/grey_darker</item>
+    </style>
+
+    <item type="id" name="radioButton_Father" />
+    <item type="id" name="radioButton_Mother" />
+    <item type="id" name="radioButton_Guardian" />
+    <item type="id" name="radioButton_Other" />
 
     <!--    <style name="DialogTheme" parent="android:Theme.Material.Dialog.NoActionBar">-->
 

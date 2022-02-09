@@ -230,4 +230,10 @@
     <string name="show_code">Show Code</string>
     <string name="plus_sign">+</string>
     <string name="no_linked_account_found">No Linked Account found</string>
+    <string name="enter_code">Enter Code</string>
+    <string name="invite">Invite</string>
+    <string name="pending_invitation_message">Once the person is accepted,\nyou will receive an email notification</string>
+    <string name="father">Father</string>
+    <string name="guardian">Guardian</string>
+    <string name="other">Other</string>
 </resources>
