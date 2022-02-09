@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentLinkedAccountBinding
+import com.glints.lingoparents.ui.accountsetting.linkedaccount.codeinvitation.ChildrenCodeInvitationFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
 class LinkedAccountFragment : Fragment(R.layout.fragment_linked_account) {
@@ -32,6 +33,10 @@ class LinkedAccountFragment : Fragment(R.layout.fragment_linked_account) {
 
         initViewPager()
 
+        binding.mbtnAddChild.setOnClickListener {
+            val dialog = ChildrenCodeInvitationFragment()
+            dialog.show(childFragmentManager, "Children Code Invitation")
+        }
         return binding.root
     }
 
