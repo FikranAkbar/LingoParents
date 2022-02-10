@@ -53,7 +53,6 @@
         android:id="@+id/tv_referral_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:fontFamily="@font/poppins_w600"
         android:text="@string/referral_code"
         android:textSize="12sp"

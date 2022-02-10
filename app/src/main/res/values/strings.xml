@@ -239,6 +239,6 @@
     <string name="relationship_as">Relationship as:</string>
     <string name="parent_has_already_invited">Parent has already invited this student. Please check on the invited list</string>
     <string name="incorrectly_entered_parent_relationship">incorrectly entered parent relationship</string>
-    <string name="referral_code">Referral Code:</string>
+    <string name="referral_code">Referral Code: (Click to copy)</string>
     <string name="failed_to_get_the_code">Failed to get the code</string>
 </resources>
