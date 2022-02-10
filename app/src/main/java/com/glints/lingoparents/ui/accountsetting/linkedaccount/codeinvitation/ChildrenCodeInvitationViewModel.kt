@@ -37,6 +37,10 @@ class ChildrenCodeInvitationViewModel(private val tokenPreferences: TokenPrefere
             message))
     }
 
+    private fun onApiCallInviteChildrenLoading() = viewModelScope.launch {
+        searchChildrenCodeInvitationChannel.send(SearchChildrenCodeInvitationEvent.LoadingInvite)
+    }
+
     private fun onApiCallInviteChildrenSuccess(message: String, result: InviteChildResponse.ChildrenData) =
         viewModelScope.launch {
             searchChildrenCodeInvitationChannel.send(SearchChildrenCodeInvitationEvent.SuccessInvite(
@@ -74,6 +78,7 @@ class ChildrenCodeInvitationViewModel(private val tokenPreferences: TokenPrefere
 
     fun inviteChild(parentId: Int, referralCode: String, parentRelationShip: String) =
         viewModelScope.launch {
+            onApiCallInviteChildrenLoading()
             APIClient
                 .service
                 .inviteChild(parentId, referralCode, parentRelationShip)
@@ -98,6 +103,7 @@ class ChildrenCodeInvitationViewModel(private val tokenPreferences: TokenPrefere
 
     sealed class SearchChildrenCodeInvitationEvent {
         object LoadingGetChildren : SearchChildrenCodeInvitationEvent()
+        object LoadingInvite : SearchChildrenCodeInvitationEvent()
         data class SuccessGetChildren(val result: ChildrenSearchResponse.ChildrenData) :
             SearchChildrenCodeInvitationEvent()
 

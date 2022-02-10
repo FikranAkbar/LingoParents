@@ -15,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentForgotPasswordBinding
 import com.glints.lingoparents.utils.AuthFormValidator
-import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
+import com.glints.lingoparents.utils.interfaces.NoInternetAccessOrErrorListener
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 

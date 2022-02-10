@@ -2,8 +2,6 @@ package com.glints.lingoparents.ui.accountsetting.linkedaccount.codeinvitation
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,19 +14,20 @@ import coil.load
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentChildrenCodeInvitationBinding
 import com.glints.lingoparents.ui.dashboard.hideKeyboard
-import com.glints.lingoparents.utils.CustomViewModelFactory
-import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
-import com.glints.lingoparents.utils.TokenPreferences
-import com.glints.lingoparents.utils.dataStore
-import com.google.android.material.snackbar.Snackbar
+import com.glints.lingoparents.utils.*
+import com.glints.lingoparents.utils.interfaces.ApiCallSuccessCallback
+import com.glints.lingoparents.utils.interfaces.NoInternetAccessOrErrorListener
+import com.glints.lingoparents.utils.interfaces.OnInviteChildrenSuccess
 import kotlinx.coroutines.flow.collect
 
-class ChildrenCodeInvitationFragment : DialogFragment() {
+class ChildrenCodeInvitationFragment(private val listener: OnInviteChildrenSuccess) : DialogFragment() {
 
     private lateinit var binding: FragmentChildrenCodeInvitationBinding
     private lateinit var viewModel: ChildrenCodeInvitationViewModel
     private lateinit var tokenPreferences: TokenPreferences
+
     private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
+    private lateinit var apiCallSuccessCallback: ApiCallSuccessCallback
 
     private var relation = ""
     override fun onCreateView(
@@ -55,13 +54,14 @@ class ChildrenCodeInvitationFragment : DialogFragment() {
                 when (event) {
                     is ChildrenCodeInvitationViewModel.SearchChildrenCodeInvitationEvent.LoadingGetChildren -> {
                         showLoading(true)
+                        requireActivity().hideKeyboard()
                         relation = ""
                     }
                     is ChildrenCodeInvitationViewModel.SearchChildrenCodeInvitationEvent.SuccessGetChildren -> {
                         showLoading(false)
-                        requireActivity().hideKeyboard()
                         event.result.apply {
                             binding.apply {
+                                messageCodeInvitation.text = ""
                                 rlCodeInvitation.visibility = View.VISIBLE
                                 photo.let { ivChildren.load(it) }
                                 tvUsernameChildren.text = fullname
@@ -108,16 +108,22 @@ class ChildrenCodeInvitationFragment : DialogFragment() {
                             }
                         }
                     }
+                    is ChildrenCodeInvitationViewModel.SearchChildrenCodeInvitationEvent.LoadingInvite -> {
+                        showLoading(true)
+                    }
                     is ChildrenCodeInvitationViewModel.SearchChildrenCodeInvitationEvent.SuccessInvite -> {
                         (this@ChildrenCodeInvitationFragment as DialogFragment).dialog?.cancel()
-                        showSuccessSnackbar(event.message)
+                        apiCallSuccessCallback.onApiCallSuccessCallback(event.message)
+                        listener.onInviteChildrenSuccess()
                     }
                     is ChildrenCodeInvitationViewModel.SearchChildrenCodeInvitationEvent.ErrorGetChildren -> {
                         showLoading(false)
                         binding.messageCodeInvitation.text = event.message
                     }
-                    is ChildrenCodeInvitationViewModel.SearchChildrenCodeInvitationEvent.ErrorInvite ->
-                        showErrorSnackbar(event.message)
+                    is ChildrenCodeInvitationViewModel.SearchChildrenCodeInvitationEvent.ErrorInvite -> {
+                        showLoading(false)
+                        binding.messageCodeInvitation.text = event.message
+                    }
                 }
             }
         }
@@ -142,38 +148,6 @@ class ChildrenCodeInvitationFragment : DialogFragment() {
         }
     }
 
-    private fun showSuccessSnackbar(message: String) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(resources.getColor(R.color.success_color, null))
-                .setTextColor(Color.WHITE)
-                .show()
-        } else {
-            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(Color.GREEN)
-                .setTextColor(Color.WHITE)
-                .show()
-        }
-    }
-
-    private fun showErrorSnackbar(message: String) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Snackbar.make(binding.root,
-                message,
-                Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(resources.getColor(R.color.error_color, null))
-                .setTextColor(Color.WHITE)
-                .show()
-        } else {
-            Snackbar.make(binding.root,
-                message,
-                Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(Color.RED)
-                .setTextColor(Color.WHITE)
-                .show()
-        }
-    }
-
     override fun onStart() {
         super.onStart()
         val window = dialog!!.window
@@ -186,6 +160,7 @@ class ChildrenCodeInvitationFragment : DialogFragment() {
         super.onAttach(context)
         try {
             noInternetAccessOrErrorHandler = context as NoInternetAccessOrErrorListener
+            apiCallSuccessCallback = context as ApiCallSuccessCallback
         } catch (e: ClassCastException) {
             println("DEBUG: $context must be implement NoInternetAccessOrErrorListener")
         }

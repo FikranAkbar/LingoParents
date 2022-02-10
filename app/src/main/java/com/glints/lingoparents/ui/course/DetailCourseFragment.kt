@@ -17,7 +17,7 @@ import com.glints.lingoparents.data.model.response.TrxCourseCardsItem
 import com.glints.lingoparents.databinding.FragmentDetailCourseBinding
 import com.glints.lingoparents.ui.course.adapter.DetailCourseAdapter
 import com.glints.lingoparents.utils.CustomViewModelFactory
-import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
+import com.glints.lingoparents.utils.interfaces.NoInternetAccessOrErrorListener
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import kotlinx.coroutines.flow.collect

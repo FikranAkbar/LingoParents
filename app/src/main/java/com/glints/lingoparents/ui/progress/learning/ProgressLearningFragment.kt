@@ -21,7 +21,7 @@ import com.glints.lingoparents.data.model.response.CourseListByStudentIdResponse
 import com.glints.lingoparents.databinding.FragmentProgressLearningBinding
 import com.glints.lingoparents.ui.progress.ProgressViewModel
 import com.glints.lingoparents.utils.CustomViewModelFactory
-import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
+import com.glints.lingoparents.utils.interfaces.NoInternetAccessOrErrorListener
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import com.google.android.material.tabs.TabLayout

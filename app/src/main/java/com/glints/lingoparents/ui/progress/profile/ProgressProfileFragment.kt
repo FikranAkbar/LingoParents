@@ -19,7 +19,7 @@ import com.glints.lingoparents.databinding.FragmentProgressProfileBinding
 import com.glints.lingoparents.databinding.ItemPopupCharacterBinding
 import com.glints.lingoparents.ui.progress.ProgressViewModel
 import com.glints.lingoparents.utils.CustomViewModelFactory
-import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
+import com.glints.lingoparents.utils.interfaces.NoInternetAccessOrErrorListener
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import kotlinx.coroutines.flow.collect

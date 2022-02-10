@@ -27,7 +27,7 @@ import com.glints.lingoparents.databinding.FragmentProgressLearningCourseBinding
 import com.glints.lingoparents.ui.progress.ProgressFragmentDirections
 import com.glints.lingoparents.ui.progress.adapter.SessionAdapter
 import com.glints.lingoparents.utils.CustomViewModelFactory
-import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
+import com.glints.lingoparents.utils.interfaces.NoInternetAccessOrErrorListener
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import com.google.android.material.card.MaterialCardView

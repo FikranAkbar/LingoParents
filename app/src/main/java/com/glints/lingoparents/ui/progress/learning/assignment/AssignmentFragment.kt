@@ -16,7 +16,7 @@ import com.glints.lingoparents.data.model.QuestionItem
 import com.glints.lingoparents.databinding.FragmentAssignmentBinding
 import com.glints.lingoparents.ui.progress.adapter.QuestionAdapter
 import com.glints.lingoparents.utils.CustomViewModelFactory
-import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
+import com.glints.lingoparents.utils.interfaces.NoInternetAccessOrErrorListener
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import kotlinx.coroutines.flow.collect

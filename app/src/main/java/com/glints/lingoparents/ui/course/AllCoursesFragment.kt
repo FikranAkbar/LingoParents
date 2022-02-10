@@ -17,7 +17,7 @@ import com.glints.lingoparents.data.model.response.AllCoursesResponse
 import com.glints.lingoparents.databinding.FragmentAllCoursesBinding
 import com.glints.lingoparents.ui.course.adapter.CourseAdapter
 import com.glints.lingoparents.utils.CustomViewModelFactory
-import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
+import com.glints.lingoparents.utils.interfaces.NoInternetAccessOrErrorListener
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import kotlinx.coroutines.flow.collect

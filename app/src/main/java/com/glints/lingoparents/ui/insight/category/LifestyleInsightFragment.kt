@@ -16,13 +16,12 @@ import com.glints.lingoparents.databinding.FragmentLifestyleInsightBinding
 import com.glints.lingoparents.ui.insight.InsightListFragmentDirections
 import com.glints.lingoparents.ui.insight.InsightListViewModel
 import com.glints.lingoparents.utils.CustomViewModelFactory
-import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
+import com.glints.lingoparents.utils.interfaces.NoInternetAccessOrErrorListener
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import kotlinx.coroutines.flow.collect
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 class LifestyleInsightFragment : Fragment(), CategoriesAdapter.OnItemClickCallback {
 

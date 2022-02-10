@@ -54,6 +54,10 @@ class DashboardViewModel(private val tokenPreferences: TokenPreferences) : ViewM
         dashboardChannel.send(DashboardEvent.NoInternetAccessOrSomethingError(errorMessage))
     }
 
+    fun onApiCallSuccessCallback(message: String) = viewModelScope.launch {
+        dashboardChannel.send(DashboardEvent.ApiCallSuccessCallback(message))
+    }
+
     fun resetToken() = viewModelScope.launch {
         tokenPreferences.resetToken()
     }
@@ -64,5 +68,6 @@ class DashboardViewModel(private val tokenPreferences: TokenPreferences) : ViewM
         object Success : DashboardEvent()
         data class Failed(val message: String) : DashboardEvent()
         data class NoInternetAccessOrSomethingError(val message: String) : DashboardEvent()
+        data class ApiCallSuccessCallback(val message: String) : DashboardEvent()
     }
 }
