@@ -268,7 +268,14 @@ interface APIService {
     ) : Call<LinkedAccountsResponse>
 
     @POST("api/v1/linking/parent/{parent_id}/list/{student_id}")
-    fun doActionWithLinkingAccount(
+    fun doActionWithRequestedLinkingAccount(
+        @Path("parent_id") parent_id: Int,
+        @Path("student_id") student_id: Int,
+        @QueryMap options: Map<String, String>
+    ) : Call<LinkingAccountActionResponse>
+
+    @POST("api/v1/linking/parent/{parent_id}/list/{student_id}")
+    fun doActionWithInvitedLinkingAccount(
         @Path("parent_id") parent_id: Int,
         @Path("student_id") student_id: Int,
         @QueryMap options: Map<String, String>

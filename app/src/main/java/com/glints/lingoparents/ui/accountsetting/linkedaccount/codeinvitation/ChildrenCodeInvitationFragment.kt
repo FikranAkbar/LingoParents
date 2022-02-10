@@ -123,6 +123,9 @@ class ChildrenCodeInvitationFragment(private val listener: OnInviteChildrenSucce
                     is ChildrenCodeInvitationViewModel.SearchChildrenCodeInvitationEvent.ErrorInvite -> {
                         showLoading(false)
                         binding.messageCodeInvitation.text = event.message
+                        if (event.message.lowercase().contains(getString(R.string.incorrectly_entered_parent_relationship))) {
+                            binding.messageCodeInvitation.text = getString(R.string.parent_has_already_invited)
+                        }
                     }
                 }
             }

@@ -94,13 +94,13 @@ class LinkedAccountListFragment(private val listType: String) :
                             linkedAccountListAdapter.differ.currentList.filter {
                                 it.id_student.toInt() != event.result.id_student
                             }
-                        )
+                        ).also {
+                            if (linkedAccountListAdapter.differ.currentList.size <= 1) {
+                                showEmptyContent()
+                            }
+                        }
 
                         showSuccessSnackbar(event.message)
-
-                        if (linkedAccountListAdapter.differ.currentList.isEmpty()) {
-                            showEmptyContent()
-                        }
                     }
                     is LinkedAccountListViewModel.LinkedAccountListEvent.SuccessGetInvitedList -> {
                         val result = event.result
@@ -187,19 +187,19 @@ class LinkedAccountListFragment(private val listType: String) :
     }
 
     override fun onCancelClicked(item: LinkedAccountsResponse.ChildrenData) {
-        viewModel.doActionWithLinkingAccount(viewModel.parentId.toInt(),
+        viewModel.doActionWithInvitedLinkingAccount(viewModel.parentId.toInt(),
             item.id_student.toInt(),
             LinkedAccountListViewModel.CANCEL_ACTION)
     }
 
     override fun onAcceptClicked(item: LinkedAccountsResponse.ChildrenData) {
-        viewModel.doActionWithLinkingAccount(viewModel.parentId.toInt(),
+        viewModel.doActionWithRequestedLinkingAccount(viewModel.parentId.toInt(),
             item.id_student.toInt(),
             LinkedAccountListViewModel.ACCEPT_ACTION)
     }
 
     override fun onDeclineClicked(item: LinkedAccountsResponse.ChildrenData) {
-        viewModel.doActionWithLinkingAccount(viewModel.parentId.toInt(),
+        viewModel.doActionWithRequestedLinkingAccount(viewModel.parentId.toInt(),
             item.id_student.toInt(),
             LinkedAccountListViewModel.DECLINE_ACTION)
     }

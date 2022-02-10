@@ -131,12 +131,37 @@ class LinkedAccountListViewModel(private val tokenPreferences: TokenPreferences)
             })
     }
 
-    fun doActionWithLinkingAccount(parentId: Int, studentId: Int, actionType: String) =
+    fun doActionWithRequestedLinkingAccount(parentId: Int, studentId: Int, actionType: String) =
         viewModelScope.launch {
             onApiCallDoActionWithLinkingAccountStarted()
             APIClient
                 .service
-                .doActionWithLinkingAccount(parentId, studentId, mapOf("button" to actionType))
+                .doActionWithRequestedLinkingAccount(parentId, studentId, mapOf("button" to actionType))
+                .enqueue(object : Callback<LinkingAccountActionResponse> {
+                    override fun onResponse(
+                        call: Call<LinkingAccountActionResponse>,
+                        response: Response<LinkingAccountActionResponse>,
+                    ) {
+                        if (response.isSuccessful) {
+                            onApiCallDoActionWithLinkingAccountSuccess(response.body()!!.message, response.body()!!.data, actionType)
+                        } else {
+                            val apiError = ErrorUtils.parseErrorWithStatusAsString(response)
+                            onApiCallDoActionWithLinkingAccountError(apiError.getMessage())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<LinkingAccountActionResponse>, t: Throwable) {
+                        onApiCallDoActionWithLinkingAccountError("Network Failed...")
+                    }
+                })
+        }
+
+    fun doActionWithInvitedLinkingAccount(parentId: Int, studentId: Int, actionType: String) =
+        viewModelScope.launch {
+            onApiCallDoActionWithLinkingAccountStarted()
+            APIClient
+                .service
+                .doActionWithRequestedLinkingAccount(parentId, studentId, mapOf("idCreated" to parentId.toString(), "button" to actionType))
                 .enqueue(object : Callback<LinkingAccountActionResponse> {
                     override fun onResponse(
                         call: Call<LinkingAccountActionResponse>,

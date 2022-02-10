@@ -237,4 +237,6 @@
     <string name="guardian">Guardian</string>
     <string name="other">Other</string>
     <string name="relationship_as">Relationship as:</string>
+    <string name="parent_has_already_invited">Parent has already invited this student. Please check on the invited list</string>
+    <string name="incorrectly_entered_parent_relationship">incorrectly entered parent relationship</string>
 </resources>
