@@ -15,6 +15,7 @@ import com.glints.lingoparents.databinding.FragmentLiveEventListBinding
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import org.greenrobot.eventbus.EventBus
 
@@ -23,6 +24,8 @@ class LiveEventListFragment : Fragment(R.layout.fragment_live_event_list) {
     private lateinit var binding: FragmentLiveEventListBinding
     private lateinit var viewModel: LiveEventListViewModel
     private lateinit var tokenPreferences: TokenPreferences
+
+    private var lastSelectedTabIndex = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -76,6 +79,21 @@ class LiveEventListFragment : Fragment(R.layout.fragment_live_event_list) {
                     true
                 }
             }
+            tlLiveEventCategory.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    tab?.let {
+                        lastSelectedTabIndex = it.position
+                    }
+                }
+                override fun onTabReselected(tab: TabLayout.Tab?) {
+                    tab?.let {
+                        lastSelectedTabIndex = it.position
+                    }
+                }
+                override fun onTabUnselected(tab: TabLayout.Tab?) {}
+
+
+            })
         }
 
         return binding.root
@@ -84,5 +102,6 @@ class LiveEventListFragment : Fragment(R.layout.fragment_live_event_list) {
     override fun onResume() {
         super.onResume()
         viewModel.sendBlankQueryToLiveEventListFragment()
+        binding.tlLiveEventCategory.getTabAt(lastSelectedTabIndex)!!.select()
     }
 }

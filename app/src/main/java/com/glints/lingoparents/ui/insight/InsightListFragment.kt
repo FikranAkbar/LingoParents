@@ -13,6 +13,7 @@ import com.glints.lingoparents.databinding.FragmentInsightListBinding
 import com.glints.lingoparents.utils.CustomViewModelFactory
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 class InsightListFragment : Fragment() {
@@ -20,6 +21,8 @@ class InsightListFragment : Fragment() {
     private lateinit var binding: FragmentInsightListBinding
     private lateinit var viewModel: InsightListViewModel
     private lateinit var tokenPreferences: TokenPreferences
+
+    private var lastSelectedTabIndex = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,8 +36,8 @@ class InsightListFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(
             requireActivity(),
             CustomViewModelFactory(tokenPreferences, requireActivity())
@@ -73,6 +76,25 @@ class InsightListFragment : Fragment() {
                     true
                 }
             }
+
+            tlInsightCategory.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    tab?.let {
+                        lastSelectedTabIndex = it.position
+                    }
+                }
+                override fun onTabReselected(tab: TabLayout.Tab?) {
+                    tab?.let {
+                        lastSelectedTabIndex = it.position
+                    }
+                }
+                override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            })
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.tlInsightCategory.getTabAt(lastSelectedTabIndex)!!.select()
     }
 }
