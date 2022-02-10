@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import com.glints.lingoparents.ui.accountsetting.AccountSettingViewModel
 import com.glints.lingoparents.ui.accountsetting.changepassword.PasswordSettingViewModel
+import com.glints.lingoparents.ui.accountsetting.linkedaccount.LinkedAccountViewModel
 import com.glints.lingoparents.ui.accountsetting.linkedaccount.category.LinkedAccountListViewModel
 import com.glints.lingoparents.ui.accountsetting.linkedaccount.codeinvitation.ChildrenCodeInvitationFragment
 import com.glints.lingoparents.ui.accountsetting.linkedaccount.codeinvitation.ChildrenCodeInvitationViewModel
@@ -115,6 +116,9 @@ class CustomViewModelFactory(
             }
             modelClass.isAssignableFrom(AccountSettingViewModel::class.java) -> {
                 AccountSettingViewModel(tokenPref) as T
+            }
+            modelClass.isAssignableFrom(LinkedAccountViewModel::class.java) -> {
+                LinkedAccountViewModel(tokenPref) as T
             }
             modelClass.isAssignableFrom(LinkedAccountListViewModel::class.java) -> {
                 LinkedAccountListViewModel(tokenPref) as T
