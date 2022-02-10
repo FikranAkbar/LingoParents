@@ -12,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentChangePasswordBinding
 import com.glints.lingoparents.utils.CustomViewModelFactory
-import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
+import com.glints.lingoparents.utils.interfaces.NoInternetAccessOrErrorListener
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import com.google.android.material.snackbar.Snackbar

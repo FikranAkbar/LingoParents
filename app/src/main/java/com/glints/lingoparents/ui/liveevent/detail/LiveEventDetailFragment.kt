@@ -13,8 +13,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
@@ -28,6 +26,7 @@ import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FormRegisterEventBinding
 import com.glints.lingoparents.databinding.FragmentLiveEventDetailBinding
 import com.glints.lingoparents.utils.*
+import com.glints.lingoparents.utils.interfaces.NoInternetAccessOrErrorListener
 import com.google.android.material.snackbar.Snackbar
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback
 import com.midtrans.sdk.corekit.core.MidtransSDK

@@ -31,6 +31,7 @@ import com.glints.lingoparents.databinding.ItemProfilePictureDialogBinding
 import com.glints.lingoparents.ui.accountsetting.profile.ProfileViewModel
 import com.glints.lingoparents.ui.dashboard.DashboardActivity
 import com.glints.lingoparents.utils.*
+import com.glints.lingoparents.utils.interfaces.NoInternetAccessOrErrorListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.flow.collect
@@ -38,7 +39,6 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import java.io.File
@@ -46,10 +46,6 @@ import java.io.File
 class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
     private lateinit var tokenPreferences: TokenPreferences
     private lateinit var viewModel: AccountSettingViewModel
-    private lateinit var photoFirstname: String
-    private lateinit var photoLastname: String
-    private lateinit var photoAddress: String
-    private lateinit var photoPhone: String
     private lateinit var dialogBinding: ItemProfilePictureDialogBinding
     private lateinit var latestPhoto: Uri
     private lateinit var noInternetAccessOrErrorHandler: NoInternetAccessOrErrorListener
@@ -92,7 +88,8 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
         @StringRes
         private val TAB_TITLES = intArrayOf(
             R.string.account_setting_tab_text_1,
-            R.string.account_setting_tab_text_2
+            R.string.account_setting_tab_text_2,
+            R.string.account_setting_tab_text_3
         )
     }
 
@@ -120,8 +117,9 @@ class AccountSettingFragment : Fragment(R.layout.fragment_account_setting) {
         _binding = FragmentAccountSettingBinding.inflate(inflater)
 
         val sectionsPagerAdapter =
-            ProgressSectionsPagerAdapter(requireActivity() as AppCompatActivity)
+            AccountSettingSectionsPagerAdapter(requireActivity() as AppCompatActivity)
         val viewPager2 = binding.viewPagerAccountSetting
+        viewPager2.isUserInputEnabled = false
         viewPager2.adapter = sectionsPagerAdapter
         val tabs = binding.tabAccountSetting
         TabLayoutMediator(tabs, viewPager2) { tab, position ->

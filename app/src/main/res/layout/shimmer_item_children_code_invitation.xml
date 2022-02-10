@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_children_shimmer"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/shimmer_placeholder"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tv_username_children_shimmer"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/iv_children_shimmer"
+        android:background="@color/shimmer_placeholder"
+        android:maxLines="1" />
+
+    <TextView
+        android:id="@+id/tv_comment_body"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_username_children_shimmer"
+        android:layout_marginVertical="4dp"
+        android:layout_toEndOf="@+id/iv_children_shimmer"
+        android:background="@color/shimmer_placeholder"
+        tools:ignore="UnusedAttribute" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/invite_button_shimmer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:fontFamily="@font/poppins_w500"
+        android:letterSpacing="0.01"
+        android:textAllCaps="false"
+        app:backgroundTint="@color/shimmer_placeholder" />
+</RelativeLayout>

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".ui.accountsetting.linkedaccount.codeinvitation.ChildrenCodeInvitationFragment">
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <include layout="@layout/shimmer_item_children_code_invitation" />
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <LinearLayout
+        android:id="@+id/main_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/Typography.Headline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/enter_code" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tf_search_insight"
+            style="@style/OutlineBoxTextFieldCodeInvitation"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="4dp"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_w400"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingVertical="4dp"
+                android:textSize="12sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/search_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:fontFamily="@font/poppins_w500"
+            android:letterSpacing="0.01"
+            android:text="@string/search"
+            android:textAllCaps="false"
+            app:backgroundTint="@color/navy_blue" />
+
+        <RelativeLayout
+            android:id="@+id/rl_code_invitation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="24dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_children"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_user_avatar_female"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/tv_username_children"
+                style="@style/Typography.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/iv_children"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/grey_darker"
+                android:textIsSelectable="true"
+                tools:text="@string/olivia_putri_rosmala" />
+
+            <TextView
+                android:id="@+id/tv_children_age"
+                style="@style/Typography.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_username_children"
+                android:layout_marginVertical="4dp"
+                android:layout_toEndOf="@+id/iv_children"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textIsSelectable="true"
+                tools:ignore="UnusedAttribute"
+                tools:text="@string/_1s_years_old" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/invite_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rg_parent_relationship"
+                android:layout_alignParentEnd="true"
+                android:fontFamily="@font/poppins_w500"
+                android:letterSpacing="0.01"
+                android:text="@string/invite"
+                android:textAllCaps="false"
+                app:backgroundTint="@null" />
+
+            <TextView
+                android:id="@+id/tv_relationship_as"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_children_age"
+                android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/relationship_as"
+                android:textColor="@color/black" />
+
+            <RadioGroup
+                android:id="@+id/rg_parent_relationship"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_relationship_as">
+
+                <RadioButton
+                    android:id="@+id/rb_father"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/father" />
+
+                <RadioButton
+                    android:id="@+id/rb_mother"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mother" />
+
+                <RadioButton
+                    android:id="@+id/rb_guardian"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/guardian" />
+
+                <RadioButton
+                    android:id="@+id/rb_other"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/other" />
+            </RadioGroup>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/message_code_invitation"
+            style="@style/Typography.Body2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:gravity="end"
+            android:textColor="@color/error_color"
+            tools:text="@string/pending_invitation_message" />
+    </LinearLayout>
+</LinearLayout>

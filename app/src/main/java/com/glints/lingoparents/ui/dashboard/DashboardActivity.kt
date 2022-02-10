@@ -21,17 +21,16 @@ import com.glints.lingoparents.R
 import com.glints.lingoparents.data.api.interceptors.TokenAuthenticationInterceptor
 import com.glints.lingoparents.databinding.ActivityDashboardBinding
 import com.glints.lingoparents.ui.authentication.AuthenticationActivity
-import com.glints.lingoparents.utils.CustomViewModelFactory
-import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
-import com.glints.lingoparents.utils.TokenPreferences
-import com.glints.lingoparents.utils.dataStore
+import com.glints.lingoparents.utils.*
+import com.glints.lingoparents.utils.interfaces.ApiCallSuccessCallback
+import com.glints.lingoparents.utils.interfaces.NoInternetAccessOrErrorListener
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 
 class DashboardActivity : AppCompatActivity(), Toolbar.OnMenuItemClickListener,
-    NoInternetAccessOrErrorListener {
+    NoInternetAccessOrErrorListener, ApiCallSuccessCallback {
 
     private lateinit var binding: ActivityDashboardBinding
     private lateinit var navController: NavController
@@ -89,14 +88,31 @@ class DashboardActivity : AppCompatActivity(), Toolbar.OnMenuItemClickListener,
                         showLoading(false)
                     }
                     is DashboardViewModel.DashboardEvent.NoInternetAccessOrSomethingError -> {
-                        showSnackbar(event.message)
+                        showErrorSnackbar(event.message)
+                    }
+                    is DashboardViewModel.DashboardEvent.ApiCallSuccessCallback -> {
+                        showSuccessSnackbar(event.message)
                     }
                 }
             }
         }
     }
 
-    private fun showSnackbar(message: String) {
+    private fun showSuccessSnackbar(message: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.success_color, null))
+                .setTextColor(Color.WHITE)
+                .show()
+        } else {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(Color.GREEN)
+                .setTextColor(Color.WHITE)
+                .show()
+        }
+    }
+
+    private fun showErrorSnackbar(message: String) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(resources.getColor(R.color.error_color, null))
@@ -149,6 +165,10 @@ class DashboardActivity : AppCompatActivity(), Toolbar.OnMenuItemClickListener,
 
     override fun onNoInternetAccessOrError(errorMessage: String) {
         viewModel.onNoInternetAccessOrError(errorMessage)
+    }
+
+    override fun onApiCallSuccessCallback(message: String) {
+        viewModel.onApiCallSuccessCallback(message)
     }
 }
 

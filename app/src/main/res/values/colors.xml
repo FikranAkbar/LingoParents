@@ -13,6 +13,7 @@
     <color name="navy_blue">#182E7C</color>
     <color name="primary_orange">#F9663A</color>
     <color name="primary_orange_variant">#FF7900</color>
+    <color name="primary_orange_disable_button">#F6D2B1</color>
     <color name="primary_blue">#465896</color>
     <color name="secondary_variant">#C2C9D1</color>
     <color name="grey_darker">#797979</color>

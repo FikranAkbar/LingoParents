@@ -223,4 +223,22 @@
     <string name="verifying_your_email">Verifying Your Email</string>
     <string name="please_wait_you_will_be_auto_redirected_to_login_screen_after_your_email_has_been_verified">Please wait, you will be auto redirected to login screen after your email has been verified!</string>
     <string name="join_here">Join Here</string>
+    <string name="account_setting_tab_text_3">Linked Account</string>
+    <string name="decline">Decline</string>
+    <string name="invited">Invited</string>
+    <string name="requesuted">Requested</string>
+    <string name="show_code">Show Code</string>
+    <string name="plus_sign">+</string>
+    <string name="no_linked_account_found">No Linked Account found</string>
+    <string name="enter_code">Enter Code</string>
+    <string name="invite">Invite</string>
+    <string name="pending_invitation_message">Once the person is accepted,\nyou will receive an email notification</string>
+    <string name="father">Father</string>
+    <string name="guardian">Guardian</string>
+    <string name="other">Other</string>
+    <string name="relationship_as">Relationship as:</string>
+    <string name="parent_has_already_invited">Parent has already invited this student. Please check on the invited list</string>
+    <string name="incorrectly_entered_parent_relationship">incorrectly entered parent relationship</string>
+    <string name="referral_code">Referral Code: (Click to copy)</string>
+    <string name="failed_to_get_the_code">Failed to get the code</string>
 </resources>

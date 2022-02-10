@@ -15,7 +15,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.glints.lingoparents.R
 import com.glints.lingoparents.databinding.FragmentProgressBinding
 import com.glints.lingoparents.utils.CustomViewModelFactory
-import com.glints.lingoparents.utils.NoInternetAccessOrErrorListener
+import com.glints.lingoparents.utils.interfaces.NoInternetAccessOrErrorListener
 import com.glints.lingoparents.utils.TokenPreferences
 import com.glints.lingoparents.utils.dataStore
 import com.google.android.material.tabs.TabLayout

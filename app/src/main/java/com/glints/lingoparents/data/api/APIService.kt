@@ -235,4 +235,49 @@ interface APIService {
     fun createEventOrder(
         @Body createOrderData: CreateOrderData
     ) : Call<CreateOrderResponse>
+
+    @GET("api/v1/linking/parent/{parent_id}")
+    fun getParentCode(
+        @Path("parent_id") id: Int
+    ) : Call<ShowParentCodeResponse>
+
+    @FormUrlEncoded
+    @POST("api/v1/linking/parent/{parent_id}/invite")
+    fun searchChildUsingStudentCode(
+        @Field("referral_code") code: String,
+        @Path("parent_id") id: Int,
+    ) : Call<ChildrenSearchResponse>
+
+    @FormUrlEncoded
+    @POST("api/v1/linking/parent/{parent_id}/invite/{referral_code}")
+    fun inviteChild(
+        @Path("parent_id") id: Int,
+        @Path("referral_code") code: String,
+        @Field("parent_relationship") relationship: String
+    ) : Call<InviteChildResponse>
+
+    @GET("api/v1/linking/parent/{parent_id}/list")
+    fun getListOfRequestedLinkedAccount(
+        @Path("parent_id") id: String,
+    ) : Call<LinkedAccountsResponse>
+
+    @GET("api/v1/linking/parent/{parent_id}/list")
+    fun getListOfInvitedLinkedAccount(
+        @Path("parent_id") id: String,
+        @QueryMap options: Map<String, String>
+    ) : Call<LinkedAccountsResponse>
+
+    @POST("api/v1/linking/parent/{parent_id}/list/{student_id}")
+    fun doActionWithRequestedLinkingAccount(
+        @Path("parent_id") parent_id: Int,
+        @Path("student_id") student_id: Int,
+        @QueryMap options: Map<String, String>
+    ) : Call<LinkingAccountActionResponse>
+
+    @POST("api/v1/linking/parent/{parent_id}/list/{student_id}")
+    fun doActionWithInvitedLinkingAccount(
+        @Path("parent_id") parent_id: Int,
+        @Path("student_id") student_id: Int,
+        @QueryMap options: Map<String, String>
+    ) : Call<LinkingAccountActionResponse>
 }
