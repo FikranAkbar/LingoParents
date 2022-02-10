@@ -20,6 +20,8 @@ class ChildrenCodeInvitationViewModel(private val tokenPreferences: TokenPrefere
     private val searchChildrenCodeInvitationChannel = Channel<SearchChildrenCodeInvitationEvent>()
     val searchChildrenEvent = searchChildrenCodeInvitationChannel.receiveAsFlow()
 
+    var parentId = 0
+
     private fun onApiCallSearchChildrenByCodeStarted() = viewModelScope.launch {
         searchChildrenCodeInvitationChannel.send(SearchChildrenCodeInvitationEvent.LoadingGetChildren)
     }
@@ -35,10 +37,10 @@ class ChildrenCodeInvitationViewModel(private val tokenPreferences: TokenPrefere
             message))
     }
 
-    private fun onApiCallInviteChildrenSuccess(result: InviteChildResponse.ChildrenData) =
+    private fun onApiCallInviteChildrenSuccess(message: String, result: InviteChildResponse.ChildrenData) =
         viewModelScope.launch {
             searchChildrenCodeInvitationChannel.send(SearchChildrenCodeInvitationEvent.SuccessInvite(
-                result))
+                message, result))
         }
 
     private fun onApiCallInviteChildrenError(message: String) = viewModelScope.launch {
@@ -81,7 +83,7 @@ class ChildrenCodeInvitationViewModel(private val tokenPreferences: TokenPrefere
                         response: Response<InviteChildResponse>,
                     ) {
                         if (response.isSuccessful) {
-                            onApiCallInviteChildrenSuccess(response.body()!!.data)
+                            onApiCallInviteChildrenSuccess(response.body()!!.message, response.body()!!.data)
                         } else {
                             val apiError = ErrorUtils.parseErrorWithStatusAsString(response)
                             onApiCallInviteChildrenError(apiError.getMessage())
@@ -99,7 +101,7 @@ class ChildrenCodeInvitationViewModel(private val tokenPreferences: TokenPrefere
         data class SuccessGetChildren(val result: ChildrenSearchResponse.ChildrenData) :
             SearchChildrenCodeInvitationEvent()
 
-        data class SuccessInvite(val result: InviteChildResponse.ChildrenData) :
+        data class SuccessInvite(val message: String, val result: InviteChildResponse.ChildrenData) :
             SearchChildrenCodeInvitationEvent()
 
         data class ErrorGetChildren(val message: String) : SearchChildrenCodeInvitationEvent()

@@ -17,7 +17,7 @@ import retrofit2.http.HTTP
 import java.util.concurrent.TimeUnit
 
 object APIClient {
-    private const val BASE_URL = "https://be-server.ipe-glintsacademy.com/"
+    private const val BASE_URL = "http://192.168.1.6:3000"
 
     private val gson = GsonBuilder().setLenient().create()
 

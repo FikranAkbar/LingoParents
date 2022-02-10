@@ -71,6 +71,7 @@
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_all_insight.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_assignment.xml" value="0.3010869565217391" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_change_password.xml" value="0.544799176107106" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_children_code_invitation.xml" value="0.2916666666666667" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_completed_event.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_dashboard.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/fragment_detail_insight.xml" value="1.25" />
@@ -102,6 +103,7 @@
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/item_student.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/item_tab_course.xml" value="0.5" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/layout_or_divider.xml" value="0.67" />
+        <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/shimmer_item_children_code_invitation.xml" value="0.2916666666666667" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/layout/shimmer_item_insight_detail.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/menu/dashboard_app_bar_menu.xml" value="0.2755208333333333" />
         <entry key="..\:/Projects/AndroidStudio/Glints/LingoParents/app/src/main/res/menu/dashboard_bottom_nav_menu.xml" value="0.25" />
