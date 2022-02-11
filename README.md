@@ -92,10 +92,14 @@ Make sure you use Android Studio Arctic Fox (2020.3.1 Patch 4) or later and Kotl
 
 ## Screenshots
 
-Authentication | Home | Live Event | Insight
---- | --- | --- | ---
-<img align="center" src="./app/src/main/res/drawable/authentication.gif" width="240"> | <img align="center" src="./app/src/main/res/drawable/home.gif" width="240"> | <img align="center" src="./app/src/main/res/drawable/live_event.gif" width="240"> | <img align="center" src="./app/src/main/res/drawable/insight.gif" width="240">
+Home | Live Event
+--- | ---
+<img align="center" src="./app/src/main/res/drawable/home.gif" width="240"> | <img align="center" src="./app/src/main/res/drawable/live_event.gif" width="240">
 
 Course | Progress Children | Account Setting
 --- | --- | --- 
 <img align="center" src="./app/src/main/res/drawable/course.gif" width="240"> | <img align="center" src="./app/src/main/res/drawable/progress_children.gif" width="240"> | <img align="center" src="./app/src/main/res/drawable/account_setting.gif" width="240"> 
+
+Insight | Auth
+--- | ---
+<img align="center" src="./app/src/main/res/drawable/insight.gif" width="240"> | <img align="center" src="./app/src/main/res/drawable/authentication.gif" width="240">
