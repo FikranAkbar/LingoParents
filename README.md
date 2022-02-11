@@ -9,7 +9,7 @@ The Lingo Parent application is built with the aim that parents can monitor the 
 </p>
 
 <p align="center">
-<img src="./app/src/main/res/drawable/logo_lingoparents_big.png">
+<img src="./app/src/main/res/drawable/logo_lingoparents_big.png" width="400">
 </p>
 
 ## Prerequisites
@@ -92,13 +92,13 @@ Make sure you use Android Studio Arctic Fox (2020.3.1 Patch 4) or later and Kotl
 
 ## Screenshots
 
-Home | Live Event
---- | ---
-<img align="center" src="./app/src/main/res/drawable/home.gif" width="240"> | <img align="center" src="./app/src/main/res/drawable/live_event.gif" width="240">
-
-Course | Progress Children | Account Setting
+Home | Live Event  | Account Setting
 --- | --- | --- 
-<img align="center" src="./app/src/main/res/drawable/course.gif" width="240"> | <img align="center" src="./app/src/main/res/drawable/progress_children.gif" width="240"> | <img align="center" src="./app/src/main/res/drawable/account_setting.gif" width="240"> 
+<img align="center" src="./app/src/main/res/drawable/home.gif" width="240"> | <img align="center" src="./app/src/main/res/drawable/live_event.gif" width="240"> | <img align="center" src="./app/src/main/res/drawable/account_setting.gif" width="240"> 
+
+Course | Progress Children
+--- | ---
+<img align="center" src="./app/src/main/res/drawable/course.gif" width="240"> | <img align="center" src="./app/src/main/res/drawable/progress_children.gif" width="240">
 
 Insight | Auth
 --- | ---
